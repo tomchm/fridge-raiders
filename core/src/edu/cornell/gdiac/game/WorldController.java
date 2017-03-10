@@ -1,0 +1,209 @@
+/*
+ * WorldController.java
+ *
+ * This is the most important new class in this lab.  This class serves as a combination 
+ * of the CollisionController and GameplayController from the previous lab.  There is not 
+ * much to do for collisions; Box2d takes care of all of that for us.  This controller 
+ * invokes Box2d and then performs any after the fact modifications to the data 
+ * (e.g. gameplay).
+ *
+ * If you study this class, and the contents of the edu.cornell.cs3152.physics.obstacles
+ * package, you should be able to understand how the Physics engine works.
+ *
+ * Author: Walker M. White
+ * Based on original PhysicsDemo Lab by Don Holden, 2007
+ * LibGDX version, 2/6/2015
+ */
+package edu.cornell.gdiac.game;
+
+import java.util.Iterator;
+
+import com.badlogic.gdx.*;
+import edu.cornell.gdiac.game.model.GameObject;
+import edu.cornell.gdiac.game.model.DetectiveModel;
+import edu.cornell.gdiac.util.*;
+
+public class WorldController implements Screen {
+
+	private static final float DRAW_SCALE = 32f;
+	private WorldModel worldModel;
+	private boolean debug;
+	private DetectiveModel detective;
+
+	/** Exit code for quitting the game */
+	public static final int EXIT_QUIT = 0;
+	/** The amount of time for a game engine step. */
+	public static final float WORLD_STEP = 1/60.0f;
+	/** Number of velocity iterations for the constrain solvers */
+	public static final int WORLD_VELOC = 6;
+	/** Number of position iterations for the constrain solvers */
+	public static final int WORLD_POSIT = 2;
+
+	/** Reference to the game canvas */
+	protected GameCanvas canvas;
+	/** Listener that will update the player mode when we are done */
+	private ScreenListener listener;
+
+	private AssetLoader assetLoader;
+
+	public AssetLoader getAssetLoader() {
+		return assetLoader;
+	}
+
+	public WorldController() {
+		setDebug(false);
+		WorldModel worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
+		assetLoader = new AssetLoader();
+		GameObject.setDrawScale(worldModel.getScale());
+	}
+
+	public void reset() {
+		worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
+		populateLevel();
+	}
+
+	/**
+	 * Lays out the game geography.
+	 */
+	private void populateLevel() {
+		// Create the player avatar
+		detective = new DetectiveModel(10, 10);
+		worldModel.addGameObject(detective);
+
+		assetLoader.assignContent(worldModel);
+	}
+
+	public boolean isDebug( ) {
+		return debug;
+	}
+
+	public void setDebug(boolean value) {
+		debug = value;
+	}
+
+	public GameCanvas getCanvas() {
+		return canvas;
+	}
+
+	public void setCanvas(GameCanvas canvas) {
+		this.canvas = canvas;
+	}
+	
+	/**
+	 * Dispose of all (non-static) resources allocated to this mode.
+	 */
+	public void dispose() {
+		canvas = null;
+	}
+
+	public boolean preUpdate(float dt) {
+		InputController input = InputController.getInstance();
+		input.readInput();
+		if (listener == null) {
+			return true;
+		}
+
+		if (input.didDebug()) {
+			debug = !debug;
+		}
+
+		if (input.didReset()) {
+			reset();
+		}
+
+		return true;
+	}
+
+	public void update(float dt) {
+		float thrust = 20f;
+		float horizontal = InputController.getInstance().getHorizontal();
+		float vertical = InputController.getInstance().getVertical();
+		detective.getBody().setLinearVelocity(thrust*horizontal, thrust*vertical);
+
+		SoundController.getInstance().update();
+	}
+
+	public void postUpdate(float dt) {
+		// Add any objects created by actions
+		worldModel.addGameObjects();
+		worldModel.updateJoints();
+		worldModel.applyDynamic();
+		worldModel.applyStatic();
+
+		worldModel.getWorld().step(WORLD_STEP,WORLD_VELOC,WORLD_POSIT);
+
+		Iterator<PooledList<GameObject>.Entry> iterator = worldModel.getGameObjects().entryIterator();
+		while (iterator.hasNext()) {
+			PooledList<GameObject>.Entry entry = iterator.next();
+			GameObject obj = entry.getValue();
+			if (obj.isRemoved()) {
+				obj.deactivate(worldModel.getWorld());
+				entry.remove();
+			} else {
+				obj.update(dt);
+			}
+		}
+	}
+
+	public void draw(float delta) {
+		canvas.clear();
+		
+		canvas.begin();
+		worldModel.drawGameObjects(canvas);
+		canvas.end();
+	}
+
+	public void resize(int width, int height) {
+		// IGNORE FOR NOW
+	}
+
+
+	public void render(float delta) {
+		if (preUpdate(delta)) {
+			update(delta); // This is the one that must be defined.
+			postUpdate(delta);
+		}
+		draw(delta);
+	}
+
+	/**
+	 * Called when the Screen is paused.
+	 * 
+	 * This is usually when it's not active or visible on screen. An Application is 
+	 * also paused before it is destroyed.
+	 */
+	public void pause() {
+		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * Called when the Screen is resumed from a paused state.
+	 *
+	 * This is usually when it regains focus.
+	 */
+	public void resume() {
+		// TODO Auto-generated method stub
+	}
+	
+	/**
+	 * Called when this screen becomes the current screen for a Game.
+	 */
+	public void show() {
+	}
+
+	/**
+	 * Called when this screen is no longer the current screen for a Game.
+	 */
+	public void hide() {
+	}
+
+	/**
+	 * Sets the ScreenListener for this mode
+	 *
+	 * The ScreenListener will respond to requests to quit.
+	 */
+	public void setScreenListener(ScreenListener listener) {
+		this.listener = listener;
+	}
+
+}
