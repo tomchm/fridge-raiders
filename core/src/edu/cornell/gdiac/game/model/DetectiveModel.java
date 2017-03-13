@@ -30,7 +30,4 @@ public class DetectiveModel extends GameObject{
         tag = "detective";
     }
 
-    public void update(float delta){
-        System.out.println(body.getPosition().y);
-    }
 }
