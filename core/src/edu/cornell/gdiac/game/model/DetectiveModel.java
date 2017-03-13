@@ -22,7 +22,7 @@ public class DetectiveModel extends GameObject{
         bodyDef.position.set(x,y);
 
         Shape shape = new CircleShape();
-        shape.setRadius(3f);
+        shape.setRadius(1.2f);
         fixtureDef = new FixtureDef();
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
@@ -30,11 +30,7 @@ public class DetectiveModel extends GameObject{
         tag = "detective";
     }
 
-    @Override
-    public void draw(GameCanvas canvas) {
-        if(texture != null){
-            canvas.draw(texture, Color.WHITE,origin.x,origin.y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0f,imageScale.x,imageScale.y);
-        }
+    public void update(float delta){
+        System.out.println(body.getPosition().y);
     }
-
 }

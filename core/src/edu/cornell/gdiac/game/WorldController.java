@@ -19,6 +19,9 @@ package edu.cornell.gdiac.game;
 import java.util.Iterator;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
+import edu.cornell.gdiac.game.model.DEMOFood;
 import edu.cornell.gdiac.game.model.GameObject;
 import edu.cornell.gdiac.game.model.DetectiveModel;
 import edu.cornell.gdiac.util.*;
@@ -55,6 +58,7 @@ public class WorldController implements Screen {
 		WorldModel worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
 		assetLoader = new AssetLoader();
 		GameObject.setDrawScale(worldModel.getScale());
+		setDebug(true);
 	}
 
 	public void reset() {
@@ -69,6 +73,8 @@ public class WorldController implements Screen {
 		// Create the player avatar
 		detective = new DetectiveModel(10, 10);
 		worldModel.addGameObject(detective);
+
+		worldModel.addGameObject(new DEMOFood(20,10));
 
 		assetLoader.assignContent(worldModel);
 	}
@@ -143,6 +149,8 @@ public class WorldController implements Screen {
 				obj.update(dt);
 			}
 		}
+		Vector2 position = detective.getBody().getPosition();
+		canvas.moveCamera(position.x, position.y);
 	}
 
 	public void draw(float delta) {
@@ -151,6 +159,12 @@ public class WorldController implements Screen {
 		canvas.begin();
 		worldModel.drawGameObjects(canvas);
 		canvas.end();
+	}
+
+	public void drawDebug(float delta){
+		canvas.beginDebug();
+		worldModel.drawDebugGameObjects(canvas);
+		canvas.endDebug();
 	}
 
 	public void resize(int width, int height) {
@@ -164,6 +178,9 @@ public class WorldController implements Screen {
 			postUpdate(delta);
 		}
 		draw(delta);
+		if(isDebug()){
+			drawDebug(delta);
+		}
 	}
 
 	/**

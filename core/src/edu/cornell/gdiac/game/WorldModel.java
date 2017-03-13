@@ -1,10 +1,13 @@
 package edu.cornell.gdiac.game;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import edu.cornell.gdiac.game.model.GameObject;
 import edu.cornell.gdiac.util.PooledList;
+
+import java.util.Collections;
 
 /**
  * Created by tomchm on 3/9/17.
@@ -109,8 +112,15 @@ public class WorldModel {
     }
 
     public void drawGameObjects(GameCanvas canvas){
+        Collections.sort(gameObjects);
         for(GameObject gm : gameObjects){
             gm.draw(canvas);
+        }
+    }
+
+    public void drawDebugGameObjects(GameCanvas canvas){
+        for(GameObject gm : gameObjects){
+            gm.drawDebug(canvas);
         }
     }
 

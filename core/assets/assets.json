@@ -1,0 +1,41 @@
+{
+  "data":
+  [
+    {
+      "type": "image",
+      "tag": "detective",
+      "filename": "player/man.png",
+      "origin_x": 64,
+      "origin_y": 64,
+      "scale_x": 0.5,
+      "scale_y": 0.5
+    },
+    {
+      "type": "image",
+      "tag": "couch",
+      "filename": "furniture/couch.png",
+      "origin_x": 0,
+      "origin_y": 0,
+      "scale_x": 1,
+      "scale_y": 1
+    },
+    {
+      "type": "image",
+      "tag": "turkey",
+      "filename": "food/turkey.png",
+      "origin_x": 64,
+      "origin_y": 48,
+      "scale_x": 1,
+      "scale_y": 1
+    },
+    {
+      "type": "image",
+      "tag": "couch",
+      "filename": "furniture/couch.png",
+      "origin_x": 256,
+      "origin_y": 168,
+      "scale_x": 0.5,
+      "scale_y": 0.5
+    }
+  ]
+}

@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.*;
 import com.badlogic.gdx.physics.box2d.*;
+import edu.cornell.gdiac.game.model.GameObject;
 
 /**
  * Primary view class for the game, abstracting the basic graphics calls.
@@ -1107,7 +1108,7 @@ public class GameCanvas {
 		}
 		
     	debugRender.setColor(color);
-    	debugRender.circle(x, y, shape.getRadius(),12);
+    	debugRender.circle(x*GameObject.getDrawScale().x, y*GameObject.getDrawScale().y, shape.getRadius()*GameObject.getDrawScale().x,12);
     }
     
     /** 
@@ -1153,5 +1154,11 @@ public class GameCanvas {
 		local.rotate(180.0f*angle/(float)Math.PI);
 		local.scale(sx,sy);
 		local.translate(-ox,-oy);
+	}
+
+	public void moveCamera(float x, float y){
+		Vector2 scale = GameObject.getDrawScale();
+		camera.position.set(x*scale.x,y*scale.y,0);
+		camera.update();
 	}
 }

@@ -6,10 +6,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ObjectMap;
 import edu.cornell.gdiac.game.model.GameObject;
 import edu.cornell.gdiac.util.FilmStrip;
 import edu.cornell.gdiac.util.SoundController;
+
+import java.io.FileReader;
 
 /**
  * Created by tomchm on 3/10/17.
@@ -38,7 +42,29 @@ public class AssetLoader
 
     public AssetLoader(){
         assetMap = new ObjectMap<String, Asset>();
-        assetMap.put("detective", new Asset("player/player.png", new Vector2(), new Vector2(1,1)));
+
+        JsonReader parser = new JsonReader();
+        JsonValue value;
+        try{
+            value = parser.parse(new FileReader("assets.json"));
+            JsonValue map = value.get("data");
+            for (JsonValue entry = map.child; entry != null; entry = entry.next){
+                String type = entry.getString("type");
+                if(type.equals("image")){
+                    String tag = entry.getString("tag");
+                    String filename = entry.getString("filename");
+                    float origin_x = entry.getFloat("origin_x");
+                    float origin_y = entry.getFloat("origin_y");
+                    float scale_x = entry.getFloat("scale_x");
+                    float scale_y = entry.getFloat("scale_y");
+                    Asset asset = new Asset(filename, new Vector2(origin_x, origin_y), new Vector2(scale_x, scale_y));
+                    assetMap.put(tag, asset);
+                }
+            }
+        }
+        catch(Exception e){
+            System.out.println("assets.json not found.");
+        }
     }
 
     public void preLoadContent(AssetManager manager) {
