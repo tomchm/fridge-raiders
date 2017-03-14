@@ -45,8 +45,8 @@ public abstract class GameObject implements Comparable{
     }
 
     public void draw(GameCanvas canvas){
-        if(texture != null){
-            canvas.draw(texture, Color.WHITE,origin.x,origin.y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0f,imageScale.x,imageScale.y);
+        if(texture != null && body != null){
+            canvas.draw(texture, Color.WHITE,origin.x,origin.y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),imageScale.x,imageScale.y);
         }
     }
 

@@ -19,9 +19,10 @@ package edu.cornell.gdiac.game;
 import java.util.Iterator;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import edu.cornell.gdiac.game.model.DEMOFood;
+import edu.cornell.gdiac.game.model.FoodModel;
+import edu.cornell.gdiac.game.model.FurnitureModel;
 import edu.cornell.gdiac.game.model.GameObject;
 import edu.cornell.gdiac.game.model.DetectiveModel;
 import edu.cornell.gdiac.util.*;
@@ -74,7 +75,8 @@ public class WorldController implements Screen {
 		detective = new DetectiveModel(10, 10);
 		worldModel.addGameObject(detective);
 
-		worldModel.addGameObject(new DEMOFood(20,10));
+		worldModel.addGameObject(new FoodModel(20,10, 1.5f, 0, "turkey"));
+		worldModel.addGameObject(new FurnitureModel(10,20, 6f, 4.7f, -45 * MathUtils.degreesToRadians, "couch"));
 
 		assetLoader.assignContent(worldModel);
 	}

@@ -28,11 +28,4 @@ public class FurnitureModel extends GameObject {
         this.tag = tag;
     }
 
-
-    @Override
-    public void draw(GameCanvas canvas) {
-        if(texture != null){
-            canvas.draw(texture, Color.WHITE,origin.x,origin.y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0f,imageScale.x,imageScale.y);
-        }
-    }
 }

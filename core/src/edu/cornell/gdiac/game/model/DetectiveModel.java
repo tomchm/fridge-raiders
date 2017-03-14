@@ -14,7 +14,7 @@ public class DetectiveModel extends GameObject{
     public DetectiveModel(float x, float y){
         bodyDef = new BodyDef();
         bodyDef.active = true;
-        bodyDef.fixedRotation = false;
+        bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.5f;
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.awake  = true;
