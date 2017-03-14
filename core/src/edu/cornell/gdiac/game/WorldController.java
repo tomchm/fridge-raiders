@@ -21,10 +21,7 @@ import java.util.Iterator;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import edu.cornell.gdiac.game.model.FoodModel;
-import edu.cornell.gdiac.game.model.FurnitureModel;
-import edu.cornell.gdiac.game.model.GameObject;
-import edu.cornell.gdiac.game.model.DetectiveModel;
+import edu.cornell.gdiac.game.model.*;
 import edu.cornell.gdiac.util.*;
 
 public class WorldController implements Screen {
@@ -32,7 +29,7 @@ public class WorldController implements Screen {
 	private static final float DRAW_SCALE = 32f;
 	private WorldModel worldModel;
 	private boolean debug;
-	private DetectiveModel detective;
+	private SpacebarController spacebarController;
 
 	/** Exit code for quitting the game */
 	public static final int EXIT_QUIT = 0;
@@ -60,11 +57,13 @@ public class WorldController implements Screen {
 		assetLoader = new AssetLoader();
 		GameObject.setDrawScale(worldModel.getScale());
 		setDebug(true);
+		spacebarController = new SpacebarController(worldModel);
 	}
 
 	public void reset() {
 		worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
 		populateLevel();
+		spacebarController = new SpacebarController(worldModel);
 	}
 
 	/**
@@ -72,11 +71,20 @@ public class WorldController implements Screen {
 	 */
 	private void populateLevel() {
 		// Create the player avatar
-		detective = new DetectiveModel(10, 10);
-		worldModel.addGameObject(detective);
+		worldModel.setPlayer(new DetectiveModel(10, 10));
+		worldModel.addGameObject(worldModel.getPlayer());
 
 		worldModel.addGameObject(new FoodModel(20,10, 1.5f, 0, "turkey"));
 		worldModel.addGameObject(new FurnitureModel(10,20, 6f, 4.7f, -45 * MathUtils.degreesToRadians, "couch"));
+
+		WallModel wwall = new WallModel(new float[] {0f,0f, 1f,0f, 1f,30f, 0f, 30f}, "wall");
+		WallModel nwall = new WallModel(new float[] {0f,30f, 50f,30f, 50f,31f,0f,31f}, "wall");
+		WallModel ewall = new WallModel(new float[] {50f,0f, 50f,30f, 51f,30f,51f,0f}, "wall");
+		WallModel swall = new WallModel(new float[] {50f,0f,0f,0f,0f,1f,50f,1f}, "wall");
+		worldModel.addGameObject(wwall);
+		worldModel.addGameObject(nwall);
+		worldModel.addGameObject(ewall);
+		worldModel.addGameObject(swall);
 
 		assetLoader.assignContent(worldModel);
 	}
@@ -126,7 +134,10 @@ public class WorldController implements Screen {
 		float thrust = 20f;
 		float horizontal = InputController.getInstance().getHorizontal();
 		float vertical = InputController.getInstance().getVertical();
-		detective.getBody().setLinearVelocity(thrust*horizontal, thrust*vertical);
+		worldModel.getPlayer().getBody().setLinearVelocity(thrust*horizontal, thrust*vertical);
+
+		boolean pressed = InputController.getInstance().didSecondary();
+		if (pressed) spacebarController.keyDown();
 
 		SoundController.getInstance().update();
 	}
@@ -151,7 +162,7 @@ public class WorldController implements Screen {
 				obj.update(dt);
 			}
 		}
-		Vector2 position = detective.getBody().getPosition();
+		Vector2 position = worldModel.getPlayer().getBody().getPosition();
 		canvas.moveCamera(position.x, position.y);
 	}
 

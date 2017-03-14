@@ -7,6 +7,6 @@ import edu.cornell.gdiac.game.model.FurnitureModel;
  */
 public class GrabController {
     public void grab(FurnitureModel furniture) {
-
+        System.out.println("grabbing furniture!");
     }
 }
