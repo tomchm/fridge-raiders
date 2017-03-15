@@ -12,6 +12,15 @@
     },
     {
       "type": "image",
+      "tag": "ai",
+      "filename": "ai/homeowner.png",
+      "origin_x": 64,
+      "origin_y": 64,
+      "scale_x": 0.5,
+      "scale_y": 0.5
+    },
+    {
+      "type": "image",
       "tag": "turkey",
       "filename": "food/turkey.png",
       "origin_x": 64,
