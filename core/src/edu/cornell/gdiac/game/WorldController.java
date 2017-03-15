@@ -157,7 +157,7 @@ public class WorldController implements Screen {
 		if (pressed) spacebarController.keyDown();
 
 		for(AIController aic: aiControllers) {
-			aic.setNextAction(dt);
+			aic.update(dt);
 		}
 		SoundController.getInstance().update();
 	}
@@ -188,10 +188,7 @@ public class WorldController implements Screen {
 
 	public void draw(float delta) {
 		canvas.clear();
-		
-		canvas.begin();
-		worldModel.drawGameObjects(canvas);
-		canvas.end();
+		worldModel.draw(canvas);
 	}
 
 	public void drawDebug(float delta){

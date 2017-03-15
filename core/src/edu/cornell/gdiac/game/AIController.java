@@ -59,11 +59,18 @@ public class AIController {
      * @param worldModel the worldModel
      */
     public AIController(Vector2[] path, WorldModel worldModel) {
+        //physics
         this.ai = new AIModel(path);
         this.worldModel = worldModel;
         this.player = worldModel.getPlayer();
         worldModel.addGameObject(ai);
+        worldModel.addAI(ai);
 
+        //lights
+        ai.createConeLight(worldModel.rayhandler);
+        worldModel.addLight(ai.getConeLight());
+
+        //states
         state = FSMState.SPAWN;
         ticks = 0;
 
@@ -74,6 +81,16 @@ public class AIController {
         direction = 1;
     }
 
+    /**
+     * updates AI
+     */
+    public void update(float dt) {
+        setNextAction(dt);
+        ai.updateAngle();
+        ai.updateConeLight();
+        worldModel.rayhandler.update();
+
+    }
 
     /** Given the position of the next step, calculates appropriate velocity
      *
@@ -98,7 +115,7 @@ public class AIController {
     /**
      * Sets the aimodel parameters appropriately for AI to do next action
      */
-    public void setNextAction(float dt) {
+    private void setNextAction(float dt) {
         // Increment the number of ticks.
         ticks++;
 
