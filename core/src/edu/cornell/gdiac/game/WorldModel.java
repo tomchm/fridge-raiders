@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import edu.cornell.gdiac.game.model.AIModel;
 import edu.cornell.gdiac.game.model.DetectiveModel;
 import edu.cornell.gdiac.game.model.GameObject;
 import edu.cornell.gdiac.game.model.WallModel;
@@ -18,8 +19,9 @@ public class WorldModel {
 
     protected World world;
     protected Vector2 scale;
-    protected PooledList<GameObject> addGameObjectQueue;
-    protected PooledList<GameObject> gameObjects;
+    protected PooledList<GameObject> addGameObjectQueue = new PooledList <GameObject>();
+    protected PooledList<GameObject> gameObjects = new PooledList <GameObject>();
+    protected PooledList<AIModel> aiList = new PooledList <AIModel>();
     protected PooledList<JointDef> jointQueue = new PooledList<JointDef>();
     protected PooledList<Body> staticQueue = new PooledList<Body>();
     protected PooledList<Body> dynamicQueue = new PooledList<Body>();
@@ -29,11 +31,6 @@ public class WorldModel {
     public WorldModel(float sx, float sy){
         world = new World(new Vector2(), false);
         scale = new Vector2(sx,sy);
-        addGameObjectQueue = new PooledList<GameObject>();
-        gameObjects = new PooledList<GameObject>();
-        jointQueue = new PooledList<JointDef>();
-        staticQueue = new PooledList<Body>();
-        dynamicQueue = new PooledList<Body>();
         clearJoints = false;
     }
 
