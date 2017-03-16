@@ -12,7 +12,7 @@ public class DetectiveController {
 
     private DetectiveModel player;
     private WorldModel worldModel;
-    private boolean isSecondStage = true;
+    private boolean isSecondStage = false;
 
 //    private ShotModel[] dots;
 
