@@ -51,6 +51,9 @@ public class WorldController implements Screen {
 
 	private AssetLoader assetLoader;
 
+	private DetectiveController detectiveController;
+	private InputController input;
+
 	public AssetLoader getAssetLoader() {
 		return assetLoader;
 	}
@@ -79,6 +82,7 @@ public class WorldController implements Screen {
 		// Create the player avatar
 		worldModel.setPlayer(new DetectiveModel(10, 10));
 		worldModel.addGameObject(worldModel.getPlayer());
+		detectiveController = new DetectiveController(worldModel.getPlayer(), worldModel);
 
 		Vector2[] path1 = new Vector2[]{new Vector2(10,15), new Vector2(15,25)};
 		Vector2[] path2 = new Vector2[]{new Vector2(5,18), new Vector2(23,18)};
@@ -129,7 +133,7 @@ public class WorldController implements Screen {
 	}
 
 	public boolean preUpdate(float dt) {
-		InputController input = InputController.getInstance();
+		input = InputController.getInstance();
 		input.readInput();
 		if (listener == null) {
 			return true;
@@ -147,18 +151,11 @@ public class WorldController implements Screen {
 	}
 
 	public void update(float dt) {
-//		System.out.println(dt);
-		float thrust = 20f;
-		float horizontal = InputController.getInstance().getHorizontal();
-		float vertical = InputController.getInstance().getVertical();
-		worldModel.getPlayer().getBody().setLinearVelocity(thrust*horizontal, thrust*vertical);
 
-		if (InputController.getInstance().didSecondary()) {
-			spacebarController.keyDown();
-		}
-		else if (InputController.getInstance().releasedSecondary()) {
-			spacebarController.keyUp();
-		}
+		detectiveController.update(input);
+
+		boolean pressed = InputController.getInstance().didSecondary();
+		if (pressed) spacebarController.keyDown();
 
 		for(AIController aic: aiControllers) {
 			aic.update(dt);

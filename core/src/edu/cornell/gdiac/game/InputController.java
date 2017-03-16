@@ -33,7 +33,9 @@ public class InputController {
 
 	/** The singleton instance of the input controller */
 	private static InputController theController = null;
-	
+
+	/** Processor for handling clicking and such.*/
+	private static MyInputProcessor myProcessor  = new MyInputProcessor();
 	/** 
 	 * Return the singleton instance of the input controller
 	 *
@@ -43,6 +45,8 @@ public class InputController {
 		if (theController == null) {
 			theController = new InputController();
 		}
+
+		Gdx.input.setInputProcessor(myProcessor);
 		return theController;
 	}
 	
@@ -95,6 +99,8 @@ public class InputController {
 	public float getHorizontal() {
 		return horizontal;
 	}
+
+	public MyInputProcessor getMyProcessor() { return myProcessor ; }
 	
 	/**
 	 * Returns the amount of vertical movement. 
