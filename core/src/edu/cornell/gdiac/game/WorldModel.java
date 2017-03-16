@@ -1,14 +1,17 @@
 package edu.cornell.gdiac.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import edu.cornell.gdiac.game.model.AIModel;
-import edu.cornell.gdiac.game.model.DetectiveModel;
-import edu.cornell.gdiac.game.model.GameObject;
-import edu.cornell.gdiac.game.model.WallModel;
+import com.badlogic.gdx.utils.Pool;
+import edu.cornell.gdiac.game.model.*;
 import edu.cornell.gdiac.util.PooledList;
+import box2dLight.*;
+import com.badlogic.gdx.graphics.*;
+
+
 
 import java.util.Collections;
 
@@ -19,23 +22,79 @@ public class WorldModel {
 
     protected World world;
     protected Vector2 scale;
-    protected PooledList<GameObject> addGameObjectQueue = new PooledList <GameObject>();
-    protected PooledList<GameObject> gameObjects = new PooledList <GameObject>();
-    protected PooledList<AIModel> aiList = new PooledList <AIModel>();
-    protected PooledList<JointDef> jointQueue = new PooledList<JointDef>();
-    protected PooledList<Body> staticQueue = new PooledList<Body>();
-    protected PooledList<Body> dynamicQueue = new PooledList<Body>();
+    protected Vector2 bounds;
+    protected PooledList<GameObject> addGameObjectQueue;
+    protected PooledList<GameObject> solidGameObjects;
+    protected PooledList<GameObject> gameObjects;
+    protected PooledList<AIModel> aiList;
+    protected PooledList<JointDef> jointQueue;
+    protected PooledList<Body> staticQueue;
+    protected PooledList<Body> dynamicQueue;
     protected boolean clearJoints;
     protected DetectiveModel detective;
+
+    // Box2D lights
+    /** The camera defining the RayHandler view; scale is in physics coordinates */
+    protected OrthographicCamera raycamera;
+    /** The rayhandler for storing lights, and drawing them (SIGH) */
+    protected RayHandler rayhandler;
+    /** Active lights*/
+    private Array<Light> lights = new Array<Light>();
+
+    /**
+     * @return a list of all AI models currently populating the level
+     */
+    public PooledList<AIModel> getAIList() {return aiList;}
+
+    /** Adds ai to list of AIModels populating the level
+     *
+     * @param ai a new ai model to add to list of ai models in the current level
+     */
+    public void addAI(AIModel ai){aiList.add(ai);}
+
+    /**
+     * clears aiList
+     */
+    public void clearAIList() {aiList.clear();}
+
 
     public WorldModel(float sx, float sy){
         world = new World(new Vector2(), false);
         scale = new Vector2(sx,sy);
+        bounds = new Vector2(Gdx.graphics.getWidth()/scale.x, Gdx.graphics.getHeight()/scale.y);
+        addGameObjectQueue = new PooledList <GameObject>();
+        solidGameObjects = new PooledList <GameObject>();
+        gameObjects = new PooledList <GameObject>();
+        aiList = new PooledList <AIModel>();
+        jointQueue = new PooledList<JointDef>();
+        staticQueue = new PooledList<Body>();
+        dynamicQueue = new PooledList<Body>();
         clearJoints = false;
+        initLighting();
+    }
+
+    /**
+     * Creates the ambient lighting for the level
+     *
+     * This is the amount of lighting that the level has without any light sources.
+     */
+    private void initLighting() {
+        raycamera = new OrthographicCamera(bounds.x,bounds.y);
+        raycamera.position.set(bounds.x/2.0f, bounds.y/2.0f, 0);
+        raycamera.update();
+
+        rayhandler = new RayHandler(world, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
+        rayhandler.setCombinedMatrix(raycamera);
+        rayhandler.setAmbientLight(0,0,0,0.8f);
     }
 
     public DetectiveModel getPlayer() { return detective; }
     public void setPlayer(DetectiveModel dm) {detective=dm;}
+
+    /*Adds new light source to all lights in level*/
+    public void addLight(Light light) {
+        lights.add(light);
+    }
 
     public void addGameObjectQueue(GameObject gameObject){
         assert gameObject != null : "Tried to add null GameObject";
@@ -46,7 +105,9 @@ public class WorldModel {
         assert gameObject != null : "Tried to add null GameObject";
         gameObjects.add(gameObject);
         gameObject.activate(world);
-
+        if (gameObject.getClass() == FurnitureModel.class || gameObject.getClass() == WallModel.class) {
+            solidGameObjects.add(gameObject);
+        }
     }
 
     public void addGameObjects(){
@@ -114,10 +175,17 @@ public class WorldModel {
         }
     }
 
-    public void drawGameObjects(GameCanvas canvas){
+    private void drawGameObjects(GameCanvas canvas){
         Collections.sort(gameObjects);
         for(GameObject gm : gameObjects){
             gm.draw(canvas);
+        }
+    }
+
+    private void drawAIModels(GameCanvas canvas) {
+        Collections.sort(aiList);
+        for(GameObject ai : aiList){
+            ai.draw(canvas);
         }
     }
 
@@ -125,6 +193,34 @@ public class WorldModel {
         for(GameObject gm : gameObjects){
             gm.drawDebug(canvas);
         }
+    }
+
+    public void draw(GameCanvas canvas){
+        // draw objects
+        canvas.begin();
+        drawGameObjects(canvas);
+        canvas.end();
+
+        updateRayCamera();
+
+        // draw lights
+        if (rayhandler != null) {
+            rayhandler.render();
+        }
+
+        // draw AI again to cover light point source
+        canvas.begin();
+        drawAIModels(canvas);
+        canvas.end();
+
+    }
+
+    public void updateRayCamera() {
+        raycamera.position.set(detective.getBody().getPosition(), 0);
+        raycamera.update();
+        rayhandler.setCombinedMatrix(raycamera);
+        rayhandler.update();
+
     }
 
     public World getWorld() {
@@ -153,5 +249,29 @@ public class WorldModel {
 
     public Vector2 getScale(){
         return scale;
+    }
+
+    /** returns true if the point is not in some object*/
+    public boolean isAccessible(float x, float y) {
+        for(GameObject obj: solidGameObjects) {
+            if (obj.getBody().getFixtureList().get(0).testPoint(x,y)){return true;}
+        }
+        return false;
+    }
+
+    /** returns true if any of 8 cardinal points radius away from x y
+     *  are not in some solid object
+     */
+    public boolean isAccessibleWithRadius(float x, float y, float radius) {
+        for(GameObject obj: solidGameObjects) {
+            for(double i = 0; i < 2*Math.PI; i = i + Math.PI/4){
+                float tempx = (float)Math.cos(i)*radius + x;
+                float tempy = (float)Math.sin(i)*radius + y;
+                if (obj.getBody().getFixtureList().get(0).testPoint(tempx,tempy)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

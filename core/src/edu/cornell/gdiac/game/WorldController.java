@@ -21,6 +21,7 @@ import java.util.Iterator;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import edu.cornell.gdiac.game.model.*;
 import edu.cornell.gdiac.util.*;
 
@@ -28,8 +29,11 @@ public class WorldController implements Screen {
 
 	private static final float DRAW_SCALE = 32f;
 	private WorldModel worldModel;
-	private boolean debug;
+	private boolean debug = false;
 	private SpacebarController spacebarController;
+
+	/** List of ai controllers (one for each ai)*/
+	private PooledList<AIController> aiControllers;
 
 	/** Exit code for quitting the game */
 	public static final int EXIT_QUIT = 0;
@@ -58,12 +62,14 @@ public class WorldController implements Screen {
 		GameObject.setDrawScale(worldModel.getScale());
 		setDebug(true);
 		spacebarController = new SpacebarController(worldModel);
+		aiControllers = new PooledList <AIController>();
 	}
 
 	public void reset() {
 		worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
-		populateLevel();
 		spacebarController = new SpacebarController(worldModel);
+		aiControllers.clear();
+		populateLevel();
 	}
 
 	/**
@@ -73,6 +79,16 @@ public class WorldController implements Screen {
 		// Create the player avatar
 		worldModel.setPlayer(new DetectiveModel(10, 10));
 		worldModel.addGameObject(worldModel.getPlayer());
+
+		Vector2[] path1 = new Vector2[]{new Vector2(10,15), new Vector2(15,25)};
+		Vector2[] path2 = new Vector2[]{new Vector2(5,18), new Vector2(23,18)};
+
+		Vector2[][] aiPaths = new Vector2[][]{path1, path2};
+
+		for(Vector2[] path: aiPaths){
+			aiControllers.add(new AIController(path, worldModel));
+		}
+
 
 		worldModel.addGameObject(new FoodModel(20,10, 1.5f, 0, "turkey"));
 		worldModel.addGameObject(new FurnitureModel(10,20, 6f, 4.7f, -45 * MathUtils.degreesToRadians, "couch"));
@@ -131,6 +147,7 @@ public class WorldController implements Screen {
 	}
 
 	public void update(float dt) {
+//		System.out.println(dt);
 		float thrust = 20f;
 		float horizontal = InputController.getInstance().getHorizontal();
 		float vertical = InputController.getInstance().getVertical();
@@ -139,6 +156,9 @@ public class WorldController implements Screen {
 		boolean pressed = InputController.getInstance().didSecondary();
 		if (pressed) spacebarController.keyDown();
 
+		for(AIController aic: aiControllers) {
+			aic.update(dt);
+		}
 		SoundController.getInstance().update();
 	}
 
@@ -168,10 +188,7 @@ public class WorldController implements Screen {
 
 	public void draw(float delta) {
 		canvas.clear();
-		
-		canvas.begin();
-		worldModel.drawGameObjects(canvas);
-		canvas.end();
+		worldModel.draw(canvas);
 	}
 
 	public void drawDebug(float delta){
