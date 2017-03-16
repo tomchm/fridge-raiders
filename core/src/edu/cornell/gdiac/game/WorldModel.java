@@ -31,6 +31,7 @@ public class WorldModel {
     protected PooledList<Body> staticQueue;
     protected PooledList<Body> dynamicQueue;
     protected boolean clearJoints;
+    protected boolean addJoints;
     protected DetectiveModel detective;
 
     // Box2D lights
@@ -70,6 +71,7 @@ public class WorldModel {
         staticQueue = new PooledList<Body>();
         dynamicQueue = new PooledList<Body>();
         clearJoints = false;
+        addJoints = false;
         initLighting();
     }
 
@@ -120,6 +122,7 @@ public class WorldModel {
     public void addJoint(JointDef jointDef){
         assert jointDef != null : "Tried to add null JointDef";
         jointQueue.add(jointDef);
+        addJoints = true;
     }
 
     public void addJoints(){
@@ -134,7 +137,10 @@ public class WorldModel {
     }
 
     public void updateJoints(){
-        addJoints();
+        if (addJoints) {
+            addJoints();
+            addJoints = false;
+        }
         if(clearJoints){
             Array<Joint> joints = new Array<Joint>();
             world.getJoints(joints);
