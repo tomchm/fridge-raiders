@@ -1,20 +1,18 @@
-package edu.cornell.gdiac.game;
+package edu.cornell.gdiac.game.asset;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import javax.xml.soap.Text;
-
 /**
- * Created by tomchm on 3/10/17.
+ * Created by Tomasz on 3/15/2017.
  */
-public class Asset {
+public class ImageAsset extends Asset{
     private String fileName;
     private TextureRegion texture;
     private Vector2 origin;
     private Vector2 imageScale;
 
-    public Asset(String fileName, Vector2 origin, Vector2 imageScale){
+    public ImageAsset(String fileName, Vector2 origin, Vector2 imageScale){
         this.fileName = fileName;
         this.origin = origin;
         this.imageScale = imageScale;
@@ -39,7 +37,4 @@ public class Asset {
     public void setTexture(TextureRegion texture){
         this.texture = texture;
     }
-
-
-
 }

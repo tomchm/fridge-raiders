@@ -21,7 +21,7 @@ import java.util.Iterator;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
+import edu.cornell.gdiac.game.asset.AssetLoader;
 import edu.cornell.gdiac.game.model.*;
 import edu.cornell.gdiac.util.*;
 
@@ -161,6 +161,7 @@ public class WorldController implements Screen {
 			aic.update(dt);
 		}
 		SoundController.getInstance().update();
+		//System.out.println(1/dt);
 	}
 
 	public void postUpdate(float dt) {

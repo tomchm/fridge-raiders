@@ -2,11 +2,14 @@ package edu.cornell.gdiac.game.model;
 
 import box2dLight.ConeLight;
 import box2dLight.RayHandler;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.graphics.Color;
 import edu.cornell.gdiac.game.GameCanvas;
+import edu.cornell.gdiac.game.asset.Asset;
+import edu.cornell.gdiac.game.asset.ImageAsset;
 
 import java.awt.*;
 
@@ -77,7 +80,7 @@ public class AIModel extends GameObject{
         fixtureDef.shape = shape;
 
         this.path = path;
-        this.tag = "ai";
+        this.tags = new String[] {"ai"};
     }
 
     /**
@@ -122,8 +125,12 @@ public class AIModel extends GameObject{
 
     /** Overwrite GameObject draw method so the sprite does not turn akwardly*/
     public void draw(GameCanvas canvas){
-        if(texture != null && body != null){
-            canvas.draw(texture, Color.WHITE,origin.x,origin.y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0f,imageScale.x,imageScale.y);
+        if(tags.length > 0 && body != null){
+            Asset asset = assetMap.get(tags[0]);
+            if(asset instanceof ImageAsset){
+                ImageAsset ia = (ImageAsset) asset;
+                canvas.draw(ia.getTexture(), Color.WHITE,ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,ia.getImageScale().x,ia.getImageScale().y);
+            }
         }
     }
 }

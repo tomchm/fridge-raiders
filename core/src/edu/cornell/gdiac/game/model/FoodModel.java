@@ -27,7 +27,7 @@ public class FoodModel extends GameObject {
         fixtureDef.shape = shape;
         fixtureDef.isSensor = true;
 
-        this.tag = tag;
+        this.tags = new String[] {tag};
     }
 
 }

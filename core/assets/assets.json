@@ -45,6 +45,50 @@
       "origin_y": 0,
       "scale_x": 1,
       "scale_y": 1
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_down",
+      "filename": "player/man_down.png",
+      "origin_x": 128,
+      "origin_y": 128,
+      "scale_x": 0.25,
+      "scale_y": 0.25,
+      "frames": 16,
+      "speed": 3
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_left",
+      "filename": "player/man_left.png",
+      "origin_x": 128,
+      "origin_y": 128,
+      "scale_x": 0.25,
+      "scale_y": 0.25,
+      "frames": 16,
+      "speed": 3
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_right",
+      "filename": "player/man_right.png",
+      "origin_x": 128,
+      "origin_y": 128,
+      "scale_x": 0.25,
+      "scale_y": 0.25,
+      "frames": 16,
+      "speed": 3
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_up",
+      "filename": "player/man_down.png",
+      "origin_x": 128,
+      "origin_y": 128,
+      "scale_x": 0.25,
+      "scale_y": 0.25,
+      "frames": 16,
+      "speed": 3
     }
   ]
 }
