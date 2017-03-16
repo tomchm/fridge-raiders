@@ -153,8 +153,12 @@ public class WorldController implements Screen {
 		float vertical = InputController.getInstance().getVertical();
 		worldModel.getPlayer().getBody().setLinearVelocity(thrust*horizontal, thrust*vertical);
 
-		boolean pressed = InputController.getInstance().didSecondary();
-		if (pressed) spacebarController.keyDown();
+		if (InputController.getInstance().didSecondary()) {
+			spacebarController.keyDown();
+		}
+		else if (InputController.getInstance().releasedSecondary()) {
+			spacebarController.keyUp();
+		}
 
 		for(AIController aic: aiControllers) {
 			aic.update(dt);

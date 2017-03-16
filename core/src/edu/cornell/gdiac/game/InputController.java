@@ -146,6 +146,12 @@ public class InputController {
 		return secondPressed && !secondPrevious;
 	}
 
+	/** Returns true if the secondary action button was released.
+	 *
+	 * This is a one-time release. It only returns true at the moment it
+	 * it was released, and returns false at any frame afterward. */
+	public boolean releasedSecondary() { return !secondPressed & secondPrevious; }
+
 	/**
 	 * Returns true if the tertiary action button was pressed.
 	 *

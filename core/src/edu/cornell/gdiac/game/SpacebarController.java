@@ -1,13 +1,14 @@
 package edu.cornell.gdiac.game;
 
-import edu.cornell.gdiac.EatController;
-import edu.cornell.gdiac.GrabController;
 import edu.cornell.gdiac.game.model.*;
 import edu.cornell.gdiac.util.PooledList;
 
 /**
  * Created by Sal on 3/12/2017.
  */
+
+/** Used for all button-interactions. At the moment, grabbing/releasing furniture,
+ *  opening/shutting doors, and eating food. */
 public class SpacebarController {
     private HingeController hingeController;
     private EatController eatController;
@@ -28,6 +29,9 @@ public class SpacebarController {
         worldModel = wm;
     }
 
+    /** Closest object to the player which is both an interactible type AND close
+     * enough to interact with. Another name for this method could have been
+     * "getHighlightable." */
     private GameObject getClosest() {
         PooledList<GameObject> gobjs = worldModel.getGameObjects();
         float bestdist = Float.POSITIVE_INFINITY;
@@ -48,14 +52,25 @@ public class SpacebarController {
         else {return null;}
     }
 
+    /** Called once per secondary action button keydown. */
     public void keyDown() {
         GameObject closest = getClosest();
         if (closest == null) return;
         else {
             Class objType = closest.getClass();
-            if (objType == FurnitureModel.class) { grabController.grab((FurnitureModel) closest); }
-            else if (objType == FoodModel.class) {eatController.eat((FoodModel)closest);}
+            if (objType == FurnitureModel.class) {
+                grabController.grab((FurnitureModel) closest);
+            }
+            else if (objType == FoodModel.class) {
+                eatController.eat((FoodModel)closest);
+            }
             // else if (objType == DoorModel.class) {hingeController.toggle(); }
         }
+    }
+
+    /** Called once per secondary action button key release. */
+    public void keyUp() {
+        grabController.release();
+        eatController.stop();
     }
 }
