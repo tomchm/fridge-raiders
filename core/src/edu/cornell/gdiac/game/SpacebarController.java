@@ -74,6 +74,23 @@ public class SpacebarController implements RayCastCallback {
             }
         }
 
+        // Issue: raycasting ignores shapes containing the start point of the raycast.
+        // this will include food that we're standing on.
+        // So we need to do another loop over all the GameObjects to check simple distance
+        // and see if there's anything even closer.
+        PooledList<GameObject> gobjs = worldModel.getGameObjects();
+        for (GameObject gob : gobjs) {
+            if (gob == player) continue;
+            if (gob.getClass() != FoodModel.class
+                    && gob.getClass() != FurnitureModel.class
+                    && gob.getClass() != DoorModel.class) continue;
+            float dist2 = player.getBody().getPosition().sub(gob.getBody().getPosition()).len2();
+            if (dist2 < bestdist2) {
+                bestdist2 = dist2;
+                closest = gob;
+            }
+        }
+
         return closest;
     }
 
