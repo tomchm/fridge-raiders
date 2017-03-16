@@ -37,9 +37,9 @@ public class DetectiveModel extends GameObject{
         fixtureDef = new FixtureDef();
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
-        animation = Animation.DOWN_MOVE;
+        animation = Animation.RIGHT_STOP;
 
-        tags = new String[] {"player_down"};
+        tags = new String[] {"player_down", "player_up", "player_left", "player_right"};
     }
 
     public void setAnimation(Animation animation){
@@ -48,13 +48,35 @@ public class DetectiveModel extends GameObject{
 
     public void draw(GameCanvas canvas){
         if(body != null){
-            FilmstripAsset fa = (FilmstripAsset)assetMap.get("player_down");
+            FilmstripAsset fa = null;
+            switch (animation){
+                case DOWN_MOVE:
+                    frame++;
+                case DOWN_STOP:
+                    fa = (FilmstripAsset)assetMap.get("player_down");
+                    break;
+                case UP_MOVE:
+                    frame++;
+                case UP_STOP:
+                    fa = (FilmstripAsset)assetMap.get("player_up");
+                    break;
+                case LEFT_MOVE:
+                    frame++;
+                case LEFT_STOP:
+                    fa = (FilmstripAsset)assetMap.get("player_left");
+                    break;
+                case RIGHT_MOVE:
+                    frame++;
+                case RIGHT_STOP:
+                    fa = (FilmstripAsset)assetMap.get("player_right");
+                    break;
+            }
             if(fa != null){
-                frame++;
                 int nFrame = (frame / fa.getSpeed()) % fa.getNumFrames();
                 TextureRegion texture = fa.getTexture(nFrame);
                 canvas.draw(texture, Color.WHITE,fa.getOrigin().x,fa.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,fa.getImageScale().x,fa.getImageScale().y);
             }
+
         }
     }
 

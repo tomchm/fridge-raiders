@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.ObjectMap;
 import edu.cornell.gdiac.game.GameCanvas;
 import edu.cornell.gdiac.game.asset.Asset;
+import edu.cornell.gdiac.game.asset.FilmstripAsset;
 import edu.cornell.gdiac.game.asset.ImageAsset;
 
 import java.awt.*;
@@ -58,7 +59,8 @@ public abstract class GameObject implements Comparable{
 
     public void activate(World world){
         body = world.createBody(bodyDef);
-        body.createFixture(fixtureDef);
+        Fixture fix = body.createFixture(fixtureDef);
+        fix.setUserData(this);
     }
 
     public void deactivate(World world){
@@ -96,6 +98,10 @@ public abstract class GameObject implements Comparable{
                 if (asset instanceof ImageAsset) {
                     ImageAsset ia = (ImageAsset) asset;
                     return body.getPosition().y*getDrawScale().y - ia.getOrigin().y*ia.getImageScale().y;
+                }
+                else if(asset instanceof FilmstripAsset){
+                    FilmstripAsset fa = (FilmstripAsset) asset;
+                    return body.getPosition().y*getDrawScale().y - fa.getOrigin().y*fa.getImageScale().y;
                 }
             }
         return 0;

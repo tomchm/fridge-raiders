@@ -209,9 +209,9 @@ public class WorldModel {
         }
 
         // draw AI again to cover light point source
-        canvas.begin();
-        drawAIModels(canvas);
-        canvas.end();
+        //canvas.begin();
+        //drawAIModels(canvas);
+        //canvas.end();
 
     }
 
