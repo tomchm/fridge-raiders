@@ -5,7 +5,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.utils.ObjectMap;
 import edu.cornell.gdiac.game.GameCanvas;
+import edu.cornell.gdiac.game.asset.Asset;
+import edu.cornell.gdiac.game.asset.ImageAsset;
+
+import java.awt.*;
 
 
 /**
@@ -16,11 +22,9 @@ public abstract class GameObject implements Comparable{
     protected Body body;
     protected BodyDef bodyDef;
     protected FixtureDef fixtureDef;
-    protected TextureRegion texture;
-    protected Vector2 origin;
-    protected Vector2 imageScale;
     protected boolean isRemoved;
-    protected String tag;
+    protected String[] tags;
+    protected ObjectMap<String, Asset> assetMap = new ObjectMap<String, Asset>();
 
     public boolean isRemoved() {
         return isRemoved;
@@ -38,15 +42,17 @@ public abstract class GameObject implements Comparable{
         return bodyDef;
     }
 
-    public void setTexture(TextureRegion texture, Vector2 origin, Vector2 imageScale){
-        this.texture = texture;
-        this.origin = origin;
-        this.imageScale = imageScale;
+    public void addAsset(String tag, Asset asset){
+        assetMap.put(tag, asset);
     }
 
     public void draw(GameCanvas canvas){
-        if(texture != null && body != null){
-            canvas.draw(texture, Color.WHITE,origin.x,origin.y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),imageScale.x,imageScale.y);
+        if(tags.length > 0 && body != null){
+            Asset asset = assetMap.get(tags[0]);
+            if(asset instanceof ImageAsset){
+                ImageAsset ia = (ImageAsset) asset;
+                canvas.draw(ia.getTexture(), Color.WHITE,ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),ia.getImageScale().x,ia.getImageScale().y);
+            }
         }
     }
 
@@ -59,8 +65,8 @@ public abstract class GameObject implements Comparable{
         world.destroyBody(body);
     }
 
-    public String getTag(){
-        return tag;
+    public String[] getTags(){
+        return tags;
     }
 
     public void update(float dt){}
@@ -85,9 +91,13 @@ public abstract class GameObject implements Comparable{
     }
 
     public float getZ(){
-        if(body != null){
-            return body.getPosition().y*getDrawScale().y - origin.y*imageScale.y;
-        }
+            if(tags.length > 0 && body != null) {
+                Asset asset = assetMap.get(tags[0]);
+                if (asset instanceof ImageAsset) {
+                    ImageAsset ia = (ImageAsset) asset;
+                    return body.getPosition().y*getDrawScale().y - ia.getOrigin().y*ia.getImageScale().y;
+                }
+            }
         return 0;
     }
 

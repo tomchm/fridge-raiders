@@ -25,7 +25,7 @@ public class FurnitureModel extends GameObject {
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
 
-        this.tag = tag;
+        this.tags = new String[] {tag};
     }
 
 }

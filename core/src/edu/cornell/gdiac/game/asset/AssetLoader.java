@@ -1,4 +1,4 @@
-package edu.cornell.gdiac.game;
+package edu.cornell.gdiac.game.asset;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ObjectMap;
+import edu.cornell.gdiac.game.WorldModel;
 import edu.cornell.gdiac.game.model.GameObject;
 import edu.cornell.gdiac.util.FilmStrip;
 import edu.cornell.gdiac.util.SoundController;
@@ -57,7 +58,19 @@ public class AssetLoader
                     float origin_y = entry.getFloat("origin_y");
                     float scale_x = entry.getFloat("scale_x");
                     float scale_y = entry.getFloat("scale_y");
-                    Asset asset = new Asset(filename, new Vector2(origin_x, origin_y), new Vector2(scale_x, scale_y));
+                    Asset asset = new ImageAsset(filename, new Vector2(origin_x, origin_y), new Vector2(scale_x, scale_y));
+                    assetMap.put(tag, asset);
+                }
+                else if(type.equals("filmstrip")){
+                    String tag = entry.getString("tag");
+                    String filename = entry.getString("filename");
+                    float origin_x = entry.getFloat("origin_x");
+                    float origin_y = entry.getFloat("origin_y");
+                    float scale_x = entry.getFloat("scale_x");
+                    float scale_y = entry.getFloat("scale_y");
+                    int numFrames = entry.getInt("frames");
+                    int speed = entry.getInt("speed");
+                    Asset asset = new FilmstripAsset(filename, new Vector2(origin_x, origin_y), new Vector2(scale_x, scale_y), numFrames, speed);
                     assetMap.put(tag, asset);
                 }
             }
@@ -89,7 +102,12 @@ public class AssetLoader
         }
 
         for(Asset asset : assetMap.values()){
-            asset.setTexture(createTexture(manager,asset.getFileName(),false));
+            if(asset instanceof ImageAsset){
+                ((ImageAsset) asset).setTexture(createTexture(manager,asset.getFileName(),false));
+            }
+            else if(asset instanceof FilmstripAsset){
+                ((FilmstripAsset) asset).setTexture(createTexture(manager,asset.getFileName(),false));
+            }
         }
 
         SoundController sounds = SoundController.getInstance();
@@ -105,9 +123,12 @@ public class AssetLoader
 
     public void assignContent(WorldModel worldModel){
         for(GameObject go : worldModel.getGameObjects()){
-            Asset asset = assetMap.get(go.getTag());
-            if(asset != null){
-                go.setTexture(asset.getTexture(), asset.getOrigin(), asset.getImageScale());
+            String[] tags = go.getTags();
+            for(String tag : tags){
+                Asset asset = assetMap.get(tag);
+                if(asset != null){
+                    go.addAsset(tag, asset);
+                }
             }
         }
     }
