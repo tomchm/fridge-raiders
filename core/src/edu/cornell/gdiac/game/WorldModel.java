@@ -134,6 +134,7 @@ public class WorldModel {
     }
 
     public void updateJoints(){
+        addJoints();
         if(clearJoints){
             Array<Joint> joints = new Array<Joint>();
             world.getJoints(joints);

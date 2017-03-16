@@ -15,16 +15,9 @@ public class SpacebarController {
     private GrabController grabController;
     private WorldModel worldModel;
 
-    public SpacebarController(HingeController hc, EatController ec, GrabController gc, WorldModel wm) {
-        hingeController=hc;
-        eatController = ec;
-        grabController=gc;
-        worldModel=wm;
-    }
-
     public SpacebarController(WorldModel wm) {
         hingeController = new HingeController();
-        grabController = new GrabController();
+        grabController = new GrabController(wm);
         eatController = new EatController();
         worldModel = wm;
     }
@@ -48,7 +41,7 @@ public class SpacebarController {
                 bestdist = dist;
             }
         }
-        if (bestdist < 5f) {return closest;}
+        if (bestdist < 7f) {return closest;}
         else {return null;}
     }
 
