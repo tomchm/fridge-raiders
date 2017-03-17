@@ -50,6 +50,7 @@ public class WorldController implements Screen {
 	private ScreenListener listener;
 
 	private AssetLoader assetLoader;
+	private FileIOController fileIOController;
 
 	private DetectiveController detectiveController;
 	private InputController input;
@@ -66,12 +67,14 @@ public class WorldController implements Screen {
 		setDebug(true);
 		spacebarController = new SpacebarController(worldModel);
 		aiControllers = new PooledList <AIController>();
+		fileIOController = new FileIOController(worldModel);
 	}
 
 	public void reset() {
 		worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
 		spacebarController = new SpacebarController(worldModel);
 		aiControllers.clear();
+		fileIOController = new FileIOController(worldModel);
 		populateLevel();
 	}
 
@@ -79,11 +82,8 @@ public class WorldController implements Screen {
 	 * Lays out the game geography.
 	 */
 	private void populateLevel() {
-		// Create the player avatar
-		worldModel.setPlayer(new DetectiveModel(10, 10));
-		worldModel.addGameObject(worldModel.getPlayer());
-		detectiveController = new DetectiveController(worldModel.getPlayer(), worldModel);
-
+/*
+// this should be loaded by the FileIOController
 		Vector2[] path1 = new Vector2[]{new Vector2(10,15), new Vector2(15,25)};
 		Vector2[] path2 = new Vector2[]{new Vector2(5,18), new Vector2(23,18)};
 
@@ -92,20 +92,10 @@ public class WorldController implements Screen {
 		for(Vector2[] path: aiPaths){
 			aiControllers.add(new AIController(path, worldModel));
 		}
-
-
-		worldModel.addGameObject(new FoodModel(20,10, 1.5f, 0, "turkey"));
-		worldModel.addGameObject(new FurnitureModel(10,20, 6f, 4.7f, -45 * MathUtils.degreesToRadians, "couch"));
-
-		WallModel wwall = new WallModel(new float[] {0f,0f, 1f,0f, 1f,30f, 0f, 30f}, "wall");
-		WallModel nwall = new WallModel(new float[] {0f,30f, 50f,30f, 50f,31f,0f,31f}, "wall");
-		WallModel ewall = new WallModel(new float[] {50f,0f, 50f,30f, 51f,30f,51f,0f}, "wall");
-		WallModel swall = new WallModel(new float[] {50f,0f,0f,0f,0f,1f,50f,1f}, "wall");
-		worldModel.addGameObject(wwall);
-		worldModel.addGameObject(nwall);
-		worldModel.addGameObject(ewall);
-		worldModel.addGameObject(swall);
-
+*/
+		fileIOController.load("levels/techLevel.json");
+		detectiveController = new DetectiveController(worldModel.getPlayer(), worldModel);
+		// add ai controllers here
 		assetLoader.assignContent(worldModel);
 	}
 

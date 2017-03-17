@@ -9,7 +9,11 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
  * Created by Sal on 3/12/2017.
  */
 public class FoodModel extends GameObject {
-    public FoodModel(float x, float y, float radius, float theta, String tag){
+    private boolean isDessert;
+
+    public boolean isDessert() {return isDessert;}
+
+    public FoodModel(float x, float y, float radius, float theta, boolean dessert, String tag){
         bodyDef = new BodyDef();
         bodyDef.active = true;
         bodyDef.fixedRotation = true;
@@ -26,6 +30,8 @@ public class FoodModel extends GameObject {
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
         fixtureDef.isSensor = true;
+
+        isDessert = dessert;
 
         this.tags = new String[] {tag};
     }
