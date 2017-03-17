@@ -8,6 +8,8 @@ import edu.cornell.gdiac.game.GameCanvas;
  * Created by Sal on 3/12/2017.
  */
 public class FurnitureModel extends GameObject {
+    private float width, height;
+
     public FurnitureModel(float x, float y, float width, float height, float theta, String tag){
         bodyDef = new BodyDef();
         bodyDef.active = true;
@@ -25,7 +27,12 @@ public class FurnitureModel extends GameObject {
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
 
+        this.width = width;
+        this.height = height;
+
         this.tags = new String[] {tag};
     }
 
+    public float getWidth() {return width;}
+    public float getHeight() {return height;}
 }

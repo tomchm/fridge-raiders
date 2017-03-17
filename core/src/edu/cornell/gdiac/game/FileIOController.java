@@ -1,14 +1,17 @@
 package edu.cornell.gdiac.game;
 
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import edu.cornell.gdiac.game.model.DetectiveModel;
-import edu.cornell.gdiac.game.model.FoodModel;
-import edu.cornell.gdiac.game.model.FurnitureModel;
-import edu.cornell.gdiac.game.model.WallModel;
+import com.badlogic.gdx.utils.JsonWriter;
+import edu.cornell.gdiac.game.model.*;
+import edu.cornell.gdiac.util.PooledList;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
 
 /**
  * Created by Sal on 3/17/2017.
@@ -19,10 +22,14 @@ import java.io.FileReader;
 public class FileIOController {
     protected WorldModel worldModel;
     protected JsonReader parser;
+    protected FileWriter writer;
+    protected Json json;
 
     public FileIOController(WorldModel wm) {
         worldModel = wm;
         parser = new JsonReader();
+        json = new Json();
+        json.setOutputType(JsonWriter.OutputType.json);
     }
     /** Load the specified level into the WorldModel. */
     public void load(String filename) {
@@ -67,6 +74,71 @@ public class FileIOController {
     }
     /** Save the contents of the WorldModel into the specified file. */
     public void save(String filename) {
+        try {
+            writer = new FileWriter(filename);
+            PooledList<Furniture> furniture = new PooledList<Furniture>();
+            PooledList<Food> food = new PooledList<Food>();
+            PooledList<Wall> walls = new PooledList<Wall>();
+            Player p = new Player(worldModel.getPlayer().getBody().getPosition().x,
+                    worldModel.getPlayer().getBody().getPosition().y);
+            for (GameObject go : worldModel.getGameObjects()) {
+                if (go.getClass() == FurnitureModel.class) {
+                    FurnitureModel f = (FurnitureModel)go;
+                    Body b = f.getBody();
+                    furniture.add(new Furniture(b.getPosition().x, b.getPosition().y,
+                            f.getWidth(), f.getHeight(), b.getAngle()*180f/(float)Math.PI,
+                            f.getTags()[0]));
+                }
+                if (go.getClass() == FoodModel.class) {
+                    FoodModel f = (FoodModel)go;
+                    Body b = f.getBody();
+                    food.add(new Food(b.getPosition().x, b.getPosition().y,
+                            f.getRadius(), b.getAngle()*180f/(float)Math.PI,
+                            f.isDessert(), f.getTags()[0]));
+                }
+                if (go.getClass() == WallModel.class) {
+                    WallModel wm = (WallModel)go;
+                    walls.add(new Wall(wm.getCoords(), wm.getTags()[0]));
+                }
+            }
+            Level level = new Level(p, furniture.toArray(new Furniture[0]), food.toArray(new Food[0]), walls.toArray(new Wall[0]));
+            writer.write(json.prettyPrint(level));
 
+            writer.close();
+        } catch (Exception e) {}
+    }
+
+    private class Furniture{
+        float x, y, width, height, theta; String tag;
+        public Furniture(float x, float y, float width, float height, float theta, String tag) {
+            this.x=x; this.y=y; this.width=width; this.height = height; this.theta=theta; this.tag=tag;
+        }
+    }
+    private class Food{
+        float x, y, radius, theta; boolean dessert; String tag;
+        public Food(float x, float y, float radius, float theta, boolean dessert, String tag) {
+            this.x=x; this.y=y; this.radius=radius; this.theta=theta; this.dessert=dessert; this.tag=tag;
+        }
+    }
+    private class Wall{
+        float[] coords; String tag;
+        public Wall(float[] coords, String tag) {
+            this.coords=coords; this.tag=tag;
+        }
+    }
+    private class Player{
+        float x, y;
+        public Player(float x, float y) {
+            this.x=x; this.y=y;
+        }
+    }
+    private class Level {
+        private Furniture[] furniture;
+        private Food[] food;
+        private Wall[] walls;
+        private Player player;
+        public Level(Player p, Furniture[] fu, Food[] fo, Wall[] wa) {
+            player=p; furniture=fu; food=fo; walls=wa;
+        }
     }
 }

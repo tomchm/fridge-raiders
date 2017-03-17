@@ -97,6 +97,8 @@ public class WorldController implements Screen {
 		detectiveController = new DetectiveController(worldModel.getPlayer(), worldModel);
 		// add ai controllers here
 		assetLoader.assignContent(worldModel);
+
+		fileIOController.save("levels/testOutput.json");
 	}
 
 	public boolean isDebug( ) {
