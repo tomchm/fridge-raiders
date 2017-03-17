@@ -154,9 +154,8 @@ public class WorldController implements Screen {
 
 		detectiveController.update(input);
 
-		boolean pressed = InputController.getInstance().didSecondary();
-		if (pressed) spacebarController.keyDown();
-
+		if (InputController.getInstance().didSecondary()) spacebarController.keyDown();
+		else if (InputController.getInstance().releasedSecondary()) spacebarController.keyUp();
 		for(AIController aic: aiControllers) {
 			aic.update(dt);
 		}
