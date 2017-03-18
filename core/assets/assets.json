@@ -82,7 +82,7 @@
     {
       "type": "filmstrip",
       "tag": "player_up",
-      "filename": "player/man_down.png",
+      "filename": "player/man_up.png",
       "origin_x": 128,
       "origin_y": 128,
       "scale_x": 0.25,
