@@ -18,7 +18,11 @@ public class EatController {
 
     public void eat(FoodModel food) {
         worldModel.getPlayer().startEating(food);
+        worldModel.removeGameObject(food);
+
     }
 
-    public void stop() { worldModel.getPlayer().stopEating(); }
+    public void stop() {
+        worldModel.getPlayer().stopEating();
+    }
 }
