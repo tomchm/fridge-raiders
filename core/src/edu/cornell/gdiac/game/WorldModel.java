@@ -150,6 +150,7 @@ public class WorldModel {
     }
 
     public void removeGameObject(GameObject gameObject) {
+        gameObject.deactivate(world);
         gameObjects.remove(gameObject);
     }
 
