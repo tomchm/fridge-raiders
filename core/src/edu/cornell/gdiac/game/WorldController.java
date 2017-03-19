@@ -19,9 +19,10 @@ package edu.cornell.gdiac.game;
 import java.util.Iterator;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import edu.cornell.gdiac.game.asset.AssetLoader;
+import edu.cornell.gdiac.game.gui.AimGUIModel;
+import edu.cornell.gdiac.game.gui.GUIController;
 import edu.cornell.gdiac.game.model.*;
 import edu.cornell.gdiac.util.*;
 
@@ -31,6 +32,7 @@ public class WorldController implements Screen {
 	private WorldModel worldModel;
 	private boolean debug = false;
 	private SpacebarController spacebarController;
+	private GUIController guiController;
 
 	/** List of ai controllers (one for each ai)*/
 	private PooledList<AIController> aiControllers;
@@ -68,6 +70,7 @@ public class WorldController implements Screen {
 		spacebarController = new SpacebarController(worldModel);
 		aiControllers = new PooledList <AIController>();
 		fileIOController = new FileIOController(worldModel);
+		guiController = new GUIController();
 	}
 
 	public void reset() {
@@ -83,8 +86,9 @@ public class WorldController implements Screen {
 	 */
 	private void populateLevel() {
 		fileIOController.load("levels/techLevel.json");
-		detectiveController = new DetectiveController(worldModel.getPlayer(), worldModel);
+		detectiveController = new DetectiveController(worldModel.getPlayer(), worldModel, (AimGUIModel) guiController.getGUI("AimGUI"));
 		assetLoader.assignContent(worldModel);
+		assetLoader.assignContent(guiController);
 		for (AIModel ai: worldModel.getAIList()) {
 			aiControllers.add(new AIController(ai, worldModel));
 		}
@@ -147,6 +151,7 @@ public class WorldController implements Screen {
         for(AIController aic: aiControllers) {
 			aic.update(dt);
 		}
+		worldModel.updateGameObjects(dt);
 		SoundController.getInstance().update();
 		//System.out.println(1/dt);
 	}
@@ -178,6 +183,7 @@ public class WorldController implements Screen {
 	public void draw(float delta) {
 		canvas.clear();
 		worldModel.draw(canvas);
+		guiController.draw(canvas);
 	}
 
 	public void drawDebug(float delta){

@@ -37,6 +37,8 @@ public class DesktopLauncher {
 		config.width  = 1280;
 		config.height = 720;
 		config.resizable = false;
+		config.fullscreen = false;
+		config.vSyncEnabled = true;
 		new LwjglApplication(new GDXRoot(), config);
 	}
 }

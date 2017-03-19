@@ -28,6 +28,7 @@ public class GrabController {
         WeldJointDef jointDef = new WeldJointDef();
         jointDef.initialize(worldModel.getPlayer().getBody(), furniture.getBody(), new Vector2());
         jointDef.collideConnected = false;
+        worldModel.getPlayer().setGrappled(true);
         worldModel.addJoint(jointDef);
         worldModel.setDynamic(current.getBody());
     }
@@ -37,6 +38,7 @@ public class GrabController {
         // this check IS needed! Otherwise you'll get null pointer exceptions
         if (current == null) return;
 
+        worldModel.getPlayer().setGrappled(false);
         worldModel.setStatic(current.getBody());
         current = null;
         worldModel.clearJoints();
