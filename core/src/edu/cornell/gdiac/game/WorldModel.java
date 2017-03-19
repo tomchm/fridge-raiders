@@ -137,7 +137,7 @@ public class WorldModel {
         assert gameObject != null : "Tried to add null GameObject";
         gameObjects.add(gameObject);
         gameObject.activate(world);
-        if (gameObject.getClass() == FurnitureModel.class || gameObject.getClass() == WallModel.class) {
+        if (gameObject.getClass() == FurnitureModel.class || gameObject.getClass() == WallModel.class || gameObject.getClass() == DoorModel.class) {
             solidGameObjects.add(gameObject);
         }
     }

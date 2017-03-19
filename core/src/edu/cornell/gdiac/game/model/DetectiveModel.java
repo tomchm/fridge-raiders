@@ -73,6 +73,7 @@ public class DetectiveModel extends GameObject{
         fixtureDef = new FixtureDef();
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
+        fixtureDef.restitution = DEFAULT_RESTITUTION;
         animation = Animation.DOWN_MOVE;
 
         tags = new String[] {"player_down", "player_up", "player_left", "player_right"};
