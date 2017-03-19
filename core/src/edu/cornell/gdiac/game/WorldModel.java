@@ -245,14 +245,6 @@ public class WorldModel {
             rayhandler.render();
         }
 
-//        canvas.beginDebug();
-//        for(int i = 0; i < sensorBodies.size(); i ++) {
-//            Body b = sensorBodies.get(i);
-//            Color color = (sensors[(int)b.getPosition().x *width + (int)b.getPosition().y] > 0) ? Color.RED : Color.YELLOW;
-//            canvas.drawPhysics((CircleShape)b.getFixtureList().get(0).getShape(),color, b.getPosition().x, b.getPosition().y, scale.x, scale.y);
-//        }
-//        canvas.endDebug();
-
         // draw AI again to cover light point source
         //canvas.begin();
         //drawAIModels(canvas);

@@ -94,14 +94,13 @@ public class WorldController implements Screen {
 			worldModel.addAI(ai);
 		}
 
-		for (AIModel ai: worldModel.getAIList()) {
-			aiControllers.add(new AIController(ai, worldModel));
-		}
-
 		fileIOController.load("levels/techLevel.json");
 		detectiveController = new DetectiveController(worldModel.getPlayer(), worldModel);
 		assetLoader.assignContent(worldModel);
-
+		for (AIModel ai: worldModel.getAIList()) {
+			aiControllers.add(new AIController(ai, worldModel));
+		}
+		worldModel.updateSensors();
 		fileIOController.save("levels/testOutput.json");
 	}
 
@@ -152,7 +151,6 @@ public class WorldController implements Screen {
 		if (InputController.getInstance().didSecondary()) spacebarController.keyDown();
 		else if (InputController.getInstance().releasedSecondary()) spacebarController.keyUp();
 
-        worldModel.updateSensors();
         for(AIController aic: aiControllers) {
 			aic.update(dt);
 		}

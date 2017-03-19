@@ -40,5 +40,6 @@ public class GrabController {
         worldModel.setStatic(current.getBody());
         current = null;
         worldModel.clearJoints();
+        worldModel.updateSensors();
     }
 }

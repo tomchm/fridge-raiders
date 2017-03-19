@@ -2,10 +2,14 @@ package edu.cornell.gdiac.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
+import com.sun.corba.se.spi.orbutil.fsm.FSM;
 import edu.cornell.gdiac.game.model.AIModel;
 import edu.cornell.gdiac.game.model.DetectiveModel;
+import edu.cornell.gdiac.game.model.FurnitureModel;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -15,7 +19,7 @@ import java.util.Random;
 /**
  * Created by vanyaivan on 3/15/2017.
  */
-public class AIController {
+public class AIController implements RayCastCallback{
     /**
      * Enumeration to encode the finite state machine.
      */
@@ -53,6 +57,20 @@ public class AIController {
     /** The direction the ai is traversing the path*/
     private int direction;
 
+    // Chase attributes
+    /** the weight to apply to light time*/
+    protected static float DIST_SCL = 5.0f;
+    /** the limit of light time*/
+    protected static float LIGHT_LIM = 3.0f;
+    /** the threshold before chase*/
+    protected static float CHASE_LIM = 1.5f;
+    /** the distance at which the ai catches the player*/
+    protected static float CATCH_DIST = 1.0f;
+    /** the weighted time the player has been in the light*/
+    private float lightTime;
+    /** caches dt value for callback*/
+    private float dtCache;
+
     /**
      * Creates an AIController for the given ai.
      *
@@ -68,6 +86,7 @@ public class AIController {
         //lights
         ai.createConeLight(worldModel.rayhandler);
         worldModel.addLight(ai.getConeLight());
+        lightTime = 0;
 
         //states
         state = FSMState.SPAWN;
@@ -84,11 +103,68 @@ public class AIController {
      * updates AI
      */
     public void update(float dt) {
-        setNextAction(dt);
-        ai.updateAngle();
-        ai.updateConeLight();
-        worldModel.rayhandler.update();
+        dtCache = dt;
 
+        // calculate all attributes
+        checkSight();
+        setNextAction(dt);
+        updateLightColor();
+
+        // update ai model
+        if (state == FSMState.CHASE){
+            ai.updateAngle(new Vector2(target).sub(ai.getBody().getPosition()));
+        } else {
+            ai.updateAngle(ai.getBody().getLinearVelocity());
+        }
+        ai.updateConeLight();
+
+        // update light handler
+        worldModel.rayhandler.update();
+    }
+
+    /**
+     * Checks and updates lightTime appropriately given a player is standing in the light
+     */
+    private void checkSight() {
+        // Callback to figure out when player can see ai
+        Vector2 aiPos = ai.getBody().getPosition();
+        Vector2 playerPos = player.getBody().getPosition();
+        worldModel.world.rayCast(this, aiPos.x, aiPos.y, playerPos.x, playerPos.y);
+        if (ai.getBody().getPosition().dst(player.getBody().getPosition()) - ai.getRadius() - player.getRadius() < CATCH_DIST) {
+            lightTime = LIGHT_LIM;
+        }
+    }
+
+    /**
+     *A callback upon hitting fixture with a raycast. It figures out if player is in sight of ai and updates
+     * lighttime appropriately
+     */
+    public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
+        System.out.println(fixture.getUserData().getClass());
+        Vector2 temp = new Vector2(point);
+        temp.sub(ai.getBody().getPosition());
+
+        float angle = (float) Math.atan2(temp.y, temp.x);
+        double angledif = (ai.getBody().getAngle() - angle + Math.PI * 2) % (Math.PI * 2);
+        double angledifDeg = angledif * 180 / Math.PI;
+        float dist = ai.getBody().getPosition().dst(point);
+
+        if (fixture.getBody() == player.getBody() && (angledifDeg < (ai.getLightAngle()) || angledifDeg > (360 - ai.getLightAngle())) && dist < ai.getLightRadius()) {
+            lightTime = lightTime + dtCache * ((1-dist/ai.getLightRadius()) * DIST_SCL);
+            lightTime = (lightTime > LIGHT_LIM) ? LIGHT_LIM : lightTime;
+        } else {
+            lightTime = lightTime - dtCache/2;
+            lightTime = (lightTime < 0) ? 0 : lightTime;
+        }
+        return 0;
+    }
+
+    /**
+     * Updates the color of AI Light based off lightTime
+     */
+    private void updateLightColor() {
+        float lightscl = lightTime/LIGHT_LIM;
+        ai.getConeLight().setColor(1, 1-lightscl,1-lightscl, 1);
     }
 
     /** Given the position of the next step, calculates appropriate velocity
@@ -147,11 +223,16 @@ public class AIController {
                 break;
 
             // checks if player is in sight, switches to CHASE
-            // checks if pathing is not possible, switches to WANDER
             case PATHING:
+                if (lightTime > CHASE_LIM){
+                    state = FSMState.CHASE;
+                }
                 break;
 
             case CHASE:
+                if (lightTime  == 0){
+                    state = FSMState.PATHING;
+                }
                 break;
 
             default:
@@ -249,14 +330,6 @@ public class AIController {
                     queue.add(new searchPairs(x, y + i, loc));
                 }
             }
-//            for (int i = -1; i < 2; i = i +2) {
-//                if (worldModel.isAccessibleWithRadius(x+i, y, ai.getRadius()) && !visited.contains(new Vector2(x+i,y))) {
-//                    queue.add(new searchPairs(x + i, y, loc));
-//                }
-//                if (worldModel.isAccessibleWithRadius(x+i, y, ai.getRadius()) && !visited.contains(new Vector2(x,y+i))) {
-//                    queue.add(new searchPairs(x, y + i, loc));
-//                }
-//            }
         }
 
         return aiPos;
