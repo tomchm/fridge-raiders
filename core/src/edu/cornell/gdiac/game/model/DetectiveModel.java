@@ -53,6 +53,10 @@ public class DetectiveModel extends GameObject{
     private int frame = 0;
     private Animation animation;
 
+    private int capacity = 0;
+    private int maxCapacity = 80;
+    private boolean isSecondStage = false;
+
     public enum Animation {
         LEFT_MOVE, RIGHT_MOVE, UP_MOVE, DOWN_MOVE, LEFT_STOP, RIGHT_STOP, UP_STOP, DOWN_STOP
     }
@@ -73,7 +77,7 @@ public class DetectiveModel extends GameObject{
         fixtureDef = new FixtureDef();
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
-        fixtureDef.restitution = DEFAULT_RESTITUTION;
+        fixtureDef.restitution = 0.0f;
         animation = Animation.DOWN_MOVE;
 
         tags = new String[] {"player_down", "player_up", "player_left", "player_right"};
@@ -175,4 +179,25 @@ public class DetectiveModel extends GameObject{
 
     }
 
+    public void setDefaultRestitution(){
+        fixtureDef.restitution = DEFAULT_RESTITUTION;
+    }
+
+    public void eatFood(int value){
+        this.capacity = this.capacity + value;
+    }
+    public int getCapacity(){
+        return capacity;
+    }
+
+    public  int getMaxCapacity(){
+        return maxCapacity;
+    }
+
+    public void setStage(boolean b){
+        this.isSecondStage = b;
+    }
+    public boolean isSecondStage(){
+        return this.isSecondStage;
+    }
 }

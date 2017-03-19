@@ -12,7 +12,7 @@ public class DetectiveController {
 
     private DetectiveModel player;
     private WorldModel worldModel;
-    private boolean isSecondStage = false;
+    private boolean isSecondStage;
     private int lastMove = -1;
 
 //    private ShotModel[] dots;
@@ -22,6 +22,7 @@ public class DetectiveController {
     public  DetectiveController( DetectiveModel playerModel, WorldModel world){
         player = playerModel;
         worldModel = world;
+        isSecondStage = player.isSecondStage();
     }
 
     private boolean didClickOnPlayer(MyInputProcessor myProcessor){
@@ -75,7 +76,6 @@ public class DetectiveController {
             }
         }
         else{
-            System.out.println(lastMove);
             switch (lastMove) {
                 case -1:
                     player.setAnimation(DetectiveModel.Animation.DOWN_STOP);
@@ -101,6 +101,7 @@ public class DetectiveController {
     }
 
     public void update(InputController input){
+        isSecondStage = player.isSecondStage();
 
         // First we want to update walking mechanics if it's in stage one.
         if(!isSecondStage) {
