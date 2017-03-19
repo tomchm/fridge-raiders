@@ -12,7 +12,7 @@ public class FoodModel extends GameObject {
     private boolean isDessert;
     private float radius;
 
-    public FoodModel(float x, float y, float radius, float theta, boolean dessert, String tag){
+    public FoodModel(float x, float y, float radius, float theta, boolean dessert, String[] tags){
         bodyDef = new BodyDef();
         bodyDef.active = true;
         bodyDef.fixedRotation = true;
@@ -33,7 +33,7 @@ public class FoodModel extends GameObject {
         isDessert = dessert;
         this.radius = radius;
 
-        this.tags = new String[] {tag};
+        this.tags = tags;
     }
 
     public boolean isDessert() {return isDessert;}

@@ -147,9 +147,7 @@ public class DetectiveModel extends GameObject{
         velocity = v;
     }
 
-    public float getVX() {
-        return velocity.x;
-    }
+    public float getVX() {return velocity.x;}
     public float getVY() {
         return velocity.y;
     }

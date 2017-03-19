@@ -12,7 +12,7 @@ public class DoorModel extends GameObject {
     private float width, height;
     private boolean isOpen = false;
 
-    public DoorModel(float x, float y, float width, float height, float theta, String tag){
+    public DoorModel(float x, float y, float width, float height, float theta, String[] tags){
         bodyDef = new BodyDef();
         bodyDef.active = true;
         bodyDef.fixedRotation = false;
@@ -31,7 +31,7 @@ public class DoorModel extends GameObject {
         this.width = width;
         this.height = height;
 
-        this.tags = new String[] {tag};
+        this.tags = tags;
     }
 
     public float getWidth() {return width;}

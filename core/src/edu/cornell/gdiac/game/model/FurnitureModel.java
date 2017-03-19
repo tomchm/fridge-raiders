@@ -10,7 +10,7 @@ import edu.cornell.gdiac.game.GameCanvas;
 public class FurnitureModel extends GameObject {
     private float width, height;
 
-    public FurnitureModel(float x, float y, float width, float height, float theta, String tag){
+    public FurnitureModel(float x, float y, float width, float height, float theta, String[] tags){
         bodyDef = new BodyDef();
         bodyDef.active = true;
         bodyDef.fixedRotation = true;
@@ -30,7 +30,7 @@ public class FurnitureModel extends GameObject {
         this.width = width;
         this.height = height;
 
-        this.tags = new String[] {tag};
+        this.tags = tags;
     }
 
     public float getWidth() {return width;}

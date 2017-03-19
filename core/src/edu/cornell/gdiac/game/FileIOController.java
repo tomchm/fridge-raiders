@@ -2,9 +2,11 @@ package edu.cornell.gdiac.game;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.StringBuilder;
 import edu.cornell.gdiac.game.model.*;
 import edu.cornell.gdiac.util.PooledList;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -44,20 +46,20 @@ public class FileIOController {
                 float width = f.get("width").asFloat();
                 float height = f.get("height").asFloat();
                 float theta = f.get("theta").asFloat() * (float)Math.PI / 180f;
-                String tag = f.get("tag").asString();
-                worldModel.addGameObject(new FurnitureModel(x, y, width, height, theta, tag));
+                String[] tags = f.get("tags").asStringArray();
+                worldModel.addGameObject(new FurnitureModel(x, y, width, height, theta, tags));
             }
 
             // array of door objects
-            JsonValue door = level.get("door");
-            for (JsonValue f = door.child(); f != null; f = f.next() ) {
-                float x = f.get("x").asFloat();
-                float y = f.get("y").asFloat();
-                float width = f.get("width").asFloat();
-                float height = f.get("height").asFloat();
-                float theta = f.get("theta").asFloat() * (float)Math.PI / 180f;
-                String tag = f.get("tag").asString();
-                worldModel.addGameObject(new DoorModel(x, y, width, height, theta, tag));
+            JsonValue doors = level.get("doors");
+            for (JsonValue d = doors.child(); d != null; d = d.next() ) {
+                float x = d.get("x").asFloat();
+                float y = d.get("y").asFloat();
+                float width = d.get("width").asFloat();
+                float height = d.get("height").asFloat();
+                float theta = d.get("theta").asFloat() * (float)Math.PI / 180f;
+                String[] tags = d.get("tags").asStringArray();
+                worldModel.addGameObject(new DoorModel(x, y, width, height, theta, tags));
             }
 
             // array of food objects
@@ -68,16 +70,17 @@ public class FileIOController {
                 float radius = f.get("radius").asFloat();
                 float theta = f.get("theta").asFloat() * (float)Math.PI / 180f;
                 boolean dessert = f.get("dessert").asBoolean();
-                String tag = f.get("tag").asString();
-                worldModel.addGameObject(new FoodModel(x, y, radius, theta, dessert, tag));
+                String[] tags = f.get("tags").asStringArray();
+                worldModel.addGameObject(new FoodModel(x, y, radius, theta, dessert, tags));
             }
 
             // array of wall objects
             JsonValue walls = level.get("walls");
             for (JsonValue w = walls.child(); w != null; w = w.next()) {
                 float[] coords = w.get("coords").asFloatArray();
-                String tag = w.get("tag").asString();
-                worldModel.addGameObject(new WallModel(coords, tag));
+                String[] tags = w.get("tags").asStringArray();
+                worldModel.addGameObject(new WallModel(coords, tags));
+
             }
         } catch (Exception e) {}
     }
@@ -97,7 +100,7 @@ public class FileIOController {
                     Body b = f.getBody();
                     furniture.add(new Furniture(b.getPosition().x, b.getPosition().y,
                             f.getWidth(), f.getHeight(), b.getAngle()*180f/(float)Math.PI,
-                            f.getTags()[0]));
+                            f.getTags()));
                 }
 //                 Adding Doors to the list of game object
                 if (go.getClass() == DoorModel.class) {
@@ -105,18 +108,18 @@ public class FileIOController {
                     Body b = f.getBody();
                     doors.add(new Door(b.getPosition().x, b.getPosition().y,
                             f.getWidth(), f.getHeight(), b.getAngle()*180f/(float)Math.PI,
-                            f.getTags()[0]));
+                            f.getTags()));
                 }
                 if (go.getClass() == FoodModel.class) {
                     FoodModel f = (FoodModel)go;
                     Body b = f.getBody();
                     food.add(new Food(b.getPosition().x, b.getPosition().y,
                             f.getRadius(), b.getAngle()*180f/(float)Math.PI,
-                            f.isDessert(), f.getTags()[0]));
+                            f.isDessert(), f.getTags()));
                 }
                 if (go.getClass() == WallModel.class) {
                     WallModel wm = (WallModel)go;
-                    walls.add(new Wall(wm.getCoords(), wm.getTags()[0]));
+                    walls.add(new Wall(wm.getCoords(), wm.getTags()));
                 }
             }
             Level level = new Level(p, furniture.toArray(new Furniture[0]), food.toArray(new Food[0]), walls.toArray(new Wall[0]), doors.toArray( new Door[0]));
@@ -127,29 +130,29 @@ public class FileIOController {
     }
 
     private class Furniture{
-        float x, y, width, height, theta; String tag;
-        public Furniture(float x, float y, float width, float height, float theta, String tag) {
-            this.x=x; this.y=y; this.width=width; this.height = height; this.theta=theta; this.tag=tag;
+        float x, y, width, height, theta; String[] tags;
+        public Furniture(float x, float y, float width, float height, float theta, String[] tags) {
+            this.x=x; this.y=y; this.width=width; this.height = height; this.theta=theta; this.tags=tags;
         }
     }
 
     private class Door{
-        float x, y, width, height, theta; String tag;
-        public Door(float x, float y, float width, float height, float theta, String tag) {
-            this.x=x; this.y=y; this.width=width; this.height = height; this.theta=theta; this.tag=tag;
+        float x, y, width, height, theta; String[] tags;
+        public Door(float x, float y, float width, float height, float theta, String[] tags) {
+            this.x=x; this.y=y; this.width=width; this.height = height; this.theta=theta; this.tags=tags;
         }
     }
 
     private class Food{
-        float x, y, radius, theta; boolean dessert; String tag;
-        public Food(float x, float y, float radius, float theta, boolean dessert, String tag) {
-            this.x=x; this.y=y; this.radius=radius; this.theta=theta; this.dessert=dessert; this.tag=tag;
+        float x, y, radius, theta; boolean dessert; String[] tags;
+        public Food(float x, float y, float radius, float theta, boolean dessert, String[] tags) {
+            this.x=x; this.y=y; this.radius=radius; this.theta=theta; this.dessert=dessert; this.tags=tags;
         }
     }
     private class Wall{
-        float[] coords; String tag;
-        public Wall(float[] coords, String tag) {
-            this.coords=coords; this.tag=tag;
+        float[] coords; String[] tags;
+        public Wall(float[] coords, String[] tags) {
+            this.coords=coords; this.tags=tags;
         }
     }
     private class Player{
@@ -164,6 +167,7 @@ public class FileIOController {
         private Wall[] walls;
         private Door[] doors;
         private Player player;
+        public Level() {}
         public Level(Player p, Furniture[] fu, Food[] fo, Wall[] wa, Door[] dor) {
             player=p; furniture=fu; food=fo; walls=wa; doors = dor;
         }

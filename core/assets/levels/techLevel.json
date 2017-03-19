@@ -3,23 +3,23 @@
     "x": 10, "y": 10
   },
   "furniture": [
-    {"x": 10, "y": 20, "width": 6, "height": 4.7, "theta": -45, "tag": "couch"}
+    {"x": 10, "y": 20, "width": 6, "height": 4.7, "theta": -45, "tags": ["couch"]}
   ],
-  "door": [
-    {"x": 20, "y": 20, "width": 4, "height": 1, "theta": 0, "tag": "door"}
+  "doors": [
+    {"x": 20, "y": 20, "width": 4, "height": 1, "theta": 0, "tags": ["door"]}
   ],
   "food": [
-    {"x": 20, "y": 10, "radius": 1.5, "theta": 0, "tag": "turkey", "dessert": true}
+    {"x": 20, "y": 10, "radius": 1.5, "theta": 0, "tags": ["turkey"], "dessert": true}
   ],
   "ais": [
-    {"path": [10,15,15,25], "tag": "person"},
-    {"path": [5,18,23,18], "tag": "person"}
+    {"path": [10,15,15,25], "tags": ["person"]},
+    {"path": [5,18,23,18], "tags": ["person"]}
   ],
   "walls": [
-    {"coords": [0,0, 1,0, 1,30, 0, 30], "tag": "wall"},
-    {"coords": [0,30, 50,30, 50,31,0,31], "tag": "wall"},
-    {"coords": [50,0, 50,30, 51,30,51,0], "tag": "wall"},
-    {"coords": [50,0,0,0,0,1,50,1], "tag": "wall"},
-    {"coords": [25,0,25,15,26,0,26,15], "tag": "wall"}
+    {"coords": [0,0, 1,0, 1,30, 0, 30], "tags": ["wall"]},
+    {"coords": [0,30, 50,30, 50,31,0,31], "tags": ["wall"]},
+    {"coords": [50,0, 50,30, 51,30,51,0], "tags": ["wall"]},
+    {"coords": [50,0,0,0,0,1,50,1], "tags": ["wall"]},
+    {"coords": [25,0,25,15,26,0,26,15], "tags": ["wall"]}
   ]
 }

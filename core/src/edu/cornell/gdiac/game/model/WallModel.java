@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 public class WallModel extends GameObject {
     private float[] coords;
 
-    public WallModel(float[] coords, String tag) {
+    public WallModel(float[] coords, String[] tags) {
         bodyDef = new BodyDef();
         bodyDef.active = true;
         bodyDef.fixedRotation = true;
@@ -29,7 +29,7 @@ public class WallModel extends GameObject {
 
         this.coords = coords;
 
-        this.tags = new String[] {tag};
+        this.tags = tags;
     }
 
     public float[] getCoords() {return coords;}
