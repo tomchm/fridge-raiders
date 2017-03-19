@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 public class FoodModel extends GameObject {
     private boolean isDessert;
     private float radius;
+    private int amount;
 
     public FoodModel(float x, float y, float radius, float theta, boolean dessert, String tag){
         bodyDef = new BodyDef();
@@ -34,9 +35,12 @@ public class FoodModel extends GameObject {
         this.radius = radius;
 
         this.tags = new String[] {tag};
+        this.amount = 80;
     }
 
     public boolean isDessert() {return isDessert;}
     public float getRadius() {return radius;}
+
+    public int getValue(){return amount;}
 
 }

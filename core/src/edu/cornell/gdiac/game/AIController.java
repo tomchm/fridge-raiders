@@ -140,7 +140,6 @@ public class AIController implements RayCastCallback{
      * lighttime appropriately
      */
     public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
-        System.out.println(fixture.getUserData().getClass());
         Vector2 temp = new Vector2(point);
         temp.sub(ai.getBody().getPosition());
 

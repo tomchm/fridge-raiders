@@ -1,11 +1,32 @@
 package edu.cornell.gdiac.game;
 
+import edu.cornell.gdiac.game.model.DetectiveModel;
 import edu.cornell.gdiac.game.model.FoodModel;
 
 /**
  * Created by Sal on 3/12/2017.
  */
 public class EatController {
-    public void eat(FoodModel food) { System.out.println(food.getTags()[0]); }
+
+    private WorldModel world;
+
+    public  EatController(WorldModel wm){
+        this.world = wm;
+    }
+
+    public void eat(FoodModel food) {
+        DetectiveModel player = world.getPlayer();
+        player.eatFood(food.getValue());
+
+        player.eatFood(food.getValue());
+        if(player.getCapacity() >= player.getMaxCapacity()){
+            player.setStage(true);
+            player.getBody().getFixtureList().get(0).setRestitution(1.0f);
+
+        }
+
+
+    }
+
     public void stop() {}
 }

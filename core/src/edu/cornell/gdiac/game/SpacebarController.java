@@ -29,7 +29,7 @@ public class SpacebarController implements RayCastCallback {
     public SpacebarController(WorldModel wm) {
         hingeController = new HingeController();
         grabController = new GrabController(wm);
-        eatController = new EatController();
+        eatController = new EatController(wm);
         worldModel = wm;
         interactionCandidates = new Body[8];
         candidateIntersections = new Vector2[8];
