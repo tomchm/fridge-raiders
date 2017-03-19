@@ -28,6 +28,7 @@ public class WorldModel {
     protected PooledList<GameObject> addGameObjectQueue;
     protected PooledList<GameObject> solidGameObjects;
     protected PooledList<GameObject> gameObjects;
+    protected PooledList<GameObject> removeGameObjectQueue;
     protected PooledList<AIModel> aiList;
     protected PooledList<JointDef> jointQueue;
     protected PooledList<Body> staticQueue;
@@ -70,6 +71,7 @@ public class WorldModel {
         scale = new Vector2(sx,sy);
         bounds = new Vector2(Gdx.graphics.getWidth()/scale.x, Gdx.graphics.getHeight()/scale.y);
         addGameObjectQueue = new PooledList <GameObject>();
+        removeGameObjectQueue = new PooledList <GameObject>();
         gameObjects = new PooledList <GameObject>();
         jointQueue = new PooledList<JointDef>();
         staticQueue = new PooledList<Body>();
@@ -139,6 +141,29 @@ public class WorldModel {
         gameObject.activate(world);
         if (gameObject.getClass() == FurnitureModel.class || gameObject.getClass() == WallModel.class || gameObject.getClass() == DoorModel.class) {
             solidGameObjects.add(gameObject);
+        }
+    }
+
+    public void removeEatenFood(){
+        for(GameObject gm : gameObjects){
+            if(gm instanceof FoodModel){
+                if(((FoodModel) gm).getAmount() <= 0){
+                    removeGameObject(gm);
+                }
+            }
+        }
+    }
+
+    public void removeGameObject(GameObject gameObject){
+        assert gameObject != null : "Tried to remove null GameObject";
+        removeGameObjectQueue.add(gameObject);
+    }
+
+    public void removeGameObjects(){
+        while(!removeGameObjectQueue.isEmpty()){
+            GameObject gm = removeGameObjectQueue.pop();
+            world.destroyBody(gm.getBody());
+            gameObjects.remove(gm);
         }
     }
 

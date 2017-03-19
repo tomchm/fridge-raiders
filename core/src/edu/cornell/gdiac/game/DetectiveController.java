@@ -130,7 +130,9 @@ public class DetectiveController {
 
         // First we want to update walking mechanics if it's in stage one.
         if(!isSecondStage) {
-            animatePlayer(input);
+            if(!player.isEating()){
+                animatePlayer(input);
+            }
         }
 
         // If we are in stage two, no walking mechanics allowed
