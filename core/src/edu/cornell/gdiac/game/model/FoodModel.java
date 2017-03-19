@@ -1,9 +1,13 @@
 package edu.cornell.gdiac.game.model;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import edu.cornell.gdiac.game.GameCanvas;
+import edu.cornell.gdiac.game.asset.Asset;
+import edu.cornell.gdiac.game.asset.ImageAsset;
 
 /**
  * Created by Sal on 3/12/2017.
@@ -56,5 +60,19 @@ public class FoodModel extends GameObject {
             return biteSize;
         }
     }
+
+    public void draw(GameCanvas canvas){
+        if(tags.length > 0 && body != null){
+            Asset asset = assetMap.get(tags[0]);
+            if(asset instanceof ImageAsset){
+                ImageAsset ia = (ImageAsset) asset;
+                float alpha = 1 - (1/(maxAmount*maxAmount))*(maxAmount - amount)*(maxAmount - amount);
+                Color color = new Color(1,1,1, alpha);
+                canvas.draw(ia.getTexture(), color,ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),ia.getImageScale().x,ia.getImageScale().y);
+            }
+        }
+    }
+
+
 
 }

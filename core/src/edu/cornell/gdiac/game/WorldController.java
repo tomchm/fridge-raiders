@@ -152,6 +152,7 @@ public class WorldController implements Screen {
 			aic.update(dt);
 		}
 		worldModel.updateGameObjects(dt);
+        worldModel.removeEatenFood();
 		SoundController.getInstance().update();
 		//System.out.println(1/dt);
 	}
@@ -159,6 +160,7 @@ public class WorldController implements Screen {
 	public void postUpdate(float dt) {
 		// Add any objects created by actions
 		worldModel.addGameObjects();
+		worldModel.removeGameObjects();
 		worldModel.updateJoints();
 		worldModel.applyDynamic();
 		worldModel.applyStatic();
