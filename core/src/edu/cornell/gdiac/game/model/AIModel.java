@@ -31,7 +31,7 @@ public class AIModel extends GameObject{
     /*radius of light cone*/
     protected  float lightRadius = 15.0f;
     /*angle of light cone*/
-    protected float lightAngle = 30f;
+    protected float lightAngle = 30.0f;
     /*the path the ai takes around level*/
     protected Vector2[] path;
 
@@ -58,10 +58,19 @@ public class AIModel extends GameObject{
     public Vector2[] getPath() {return path;}
 
     /**
+     * @return the light radius of this ai
+     */
+    public float getLightRadius() {return lightRadius;}
+
+    /**
+     * @return the light angle of this ai
+     */
+    public float getLightAngle() {return lightAngle;}
+
+    /**
      * @return the radius of this ai
      */
     public float getRadius() {return getBody().getFixtureList().get(0).getShape().getRadius();}
-
 
     public AIModel(Vector2[] path){
         bodyDef = new BodyDef();
@@ -100,10 +109,10 @@ public class AIModel extends GameObject{
     }
 
     /**
-     * updates the angle of the model based on the velocity of the ai
+     * updates the angle of the model based on the vector given
      */
-    public void updateAngle() {
-        Vector2 vel = getBody().getLinearVelocity();
+    public void updateAngle(Vector2 angleVector) {
+        Vector2 vel = angleVector;
         if((vel.x != 0 || vel.y != 0)) {
             //regularizes angles to be between 0 and 2pi
             float angle = (float)((getBody().getAngle() + Math.PI * 4) % (Math.PI * 2));
