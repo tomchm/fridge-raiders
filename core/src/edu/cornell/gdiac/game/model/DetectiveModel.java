@@ -41,7 +41,7 @@ public class DetectiveModel extends GameObject{
     public boolean isWalking() { return isWalking; }
     public void setWalking(boolean b) { isWalking = b; }
 
-    private boolean isGrappled = true;
+    private boolean isGrappled = false;
     public boolean isGrappled() {return isGrappled;}
     public void setGrappled(boolean b) {isGrappled = b;}
 

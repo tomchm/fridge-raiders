@@ -50,6 +50,10 @@ public class AIController implements RayCastCallback{
     private Vector2 next;
     /** The number of ticks since we started this controller */
     private long ticks;
+    /** Count amount of objects before player in raycast path*/
+    private int rayCastCount;
+    /** store distance from raycast collision*/
+    private float distCache;
 
     // Path attributes
     /** The ai's currrent index in the path*/
@@ -70,6 +74,10 @@ public class AIController implements RayCastCallback{
     private float lightTime;
     /** caches dt value for callback*/
     private float dtCache;
+    /** true if player has been seen*/
+    private boolean seen;
+    /** true if player is blocked from sight by object*/
+    private boolean blocked;
 
     /**
      * Creates an AIController for the given ai.
@@ -82,11 +90,14 @@ public class AIController implements RayCastCallback{
         this.ai = ai;
         this.worldModel = worldModel;
         this.player = worldModel.getPlayer();
+        rayCastCount = 0;
 
         //lights
         ai.createConeLight(worldModel.rayhandler);
         worldModel.addLight(ai.getConeLight());
         lightTime = 0;
+        seen = false;
+        blocked = false;
 
         //states
         state = FSMState.SPAWN;
@@ -130,17 +141,34 @@ public class AIController implements RayCastCallback{
         Vector2 aiPos = ai.getBody().getPosition();
         Vector2 playerPos = player.getBody().getPosition();
         worldModel.world.rayCast(this, aiPos.x, aiPos.y, playerPos.x, playerPos.y);
+        updateLightTime();
         if (ai.getBody().getPosition().dst(player.getBody().getPosition()) - ai.getRadius() - player.getRadius() < CATCH_DIST) {
             lightTime = LIGHT_LIM;
         }
     }
 
     /**
+     * Updates the lightTime value based on the rayCastCount
+     */
+    private void updateLightTime() {
+        if (seen && (!blocked || player.isGrappled())) {
+            lightTime = lightTime + dtCache * ((1-distCache/ai.getLightRadius()) * DIST_SCL);
+            lightTime = (lightTime > LIGHT_LIM) ? LIGHT_LIM : lightTime;
+        }
+        else {
+            lightTime = lightTime - dtCache/2;
+            lightTime = (lightTime < 0) ? 0 : lightTime;
+        }
+        seen = false;
+        blocked = false;
+    }
+
+
+    /**
      *A callback upon hitting fixture with a raycast. It figures out if player is in sight of ai and updates
      * lighttime appropriately
      */
     public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
-        System.out.println(fixture.getUserData().getClass());
         Vector2 temp = new Vector2(point);
         temp.sub(ai.getBody().getPosition());
 
@@ -150,14 +178,18 @@ public class AIController implements RayCastCallback{
         float dist = ai.getBody().getPosition().dst(point);
 
         if (fixture.getBody() == player.getBody() && (angledifDeg < (ai.getLightAngle()) || angledifDeg > (360 - ai.getLightAngle())) && dist < ai.getLightRadius()) {
-            lightTime = lightTime + dtCache * ((1-dist/ai.getLightRadius()) * DIST_SCL);
-            lightTime = (lightTime > LIGHT_LIM) ? LIGHT_LIM : lightTime;
-        } else {
-            lightTime = lightTime - dtCache/2;
-            lightTime = (lightTime < 0) ? 0 : lightTime;
+            seen = true;
+            distCache = dist;
         }
-        return 0;
+        else if (fixture.getBody() != player.getBody()){
+            blocked = true;
+        }
+        return -1;
     }
+
+
+
+
 
     /**
      * Updates the color of AI Light based off lightTime
@@ -306,7 +338,7 @@ public class AIController implements RayCastCallback{
 
         Vector2 temp = ai.getBody().getPosition();
         Vector2 aiPos = new Vector2((float)Math.round(temp.x), (float)Math.round(temp.y));
-        Vector2 targetPos = new Vector2((float)Math.round(target.x), (float)Math.round(target.y));
+        Vector2 targetPos = getNearestValidLoc(target.x, target.y);
 
         queue.add(new searchPairs(aiPos));
         ObjectSet<Vector2> visited = new ObjectSet<Vector2>();
@@ -333,6 +365,41 @@ public class AIController implements RayCastCallback{
         }
 
         return aiPos;
+    }
+
+    /** Returns the nearest valid position for ai
+     *
+     * @return Vector2 which represents the point x,y which is a valid location
+     */
+    private Vector2 getNearestValidLoc(float x, float y) {
+        Queue<Vector2> queue = new LinkedList<Vector2>();
+
+        Vector2 targetPos = new Vector2((float)Math.round(x), (float)Math.round(y));
+
+        queue.add(targetPos);
+        ObjectSet<Vector2> visited = new ObjectSet<Vector2>();
+
+        while (!queue.isEmpty()){
+            Vector2 loc = queue.poll();
+            x = loc.x;
+            y = loc.y;
+            if (worldModel.isAccessibleByAI((int)loc.x, (int)loc.y)) {
+                return loc;
+            }
+            if (visited.contains(loc)) {
+                continue;
+            }
+            visited.add(loc);
+            for (int i = -1; i < 2; i = i +2) {
+                if (!visited.contains(new Vector2(x+i,y))) {
+                    queue.add(new Vector2(x+i, y));
+                }
+                if (!visited.contains(new Vector2(x,y+i))) {
+                    queue.add(new Vector2(x, y+i));
+                }
+            }
+        }
+        return null;
     }
 
     /**
