@@ -1,5 +1,6 @@
 package edu.cornell.gdiac.game.gui;
 
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import edu.cornell.gdiac.game.GameCanvas;
 import edu.cornell.gdiac.game.asset.Asset;
@@ -16,14 +17,16 @@ public class GUIController {
         guiMap.put(aimGUI.guiTag, aimGUI);
     }
 
-    public GUIModel[] getGUIs(){
-        return guiMap.values().toArray().items;
+    public Array<GUIModel> getGUIs(){
+        return guiMap.values().toArray();
     }
 
     public void draw(GameCanvas canvas){
+        canvas.begin();
         for(GUIModel gui: guiMap.values()){
             gui.draw(canvas);
         }
+        canvas.end();
     }
 
     public GUIModel getGUI(String tag){

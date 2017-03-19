@@ -2,7 +2,10 @@ package edu.cornell.gdiac.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
+import edu.cornell.gdiac.game.gui.AimGUIModel;
 import edu.cornell.gdiac.game.model.DetectiveModel;
+import edu.cornell.gdiac.game.model.GameObject;
 //import edu.cornell.gdiac.game.model.ShotModel;
 
 /**
@@ -12,26 +15,29 @@ public class DetectiveController {
 
     private DetectiveModel player;
     private WorldModel worldModel;
+    private AimGUIModel aimGUI;
     private boolean isSecondStage;
     private int lastMove = -1;
+    private final static float SHOOT_FORCE = 50f;
+    private final static float MAX_FORCE = 500*SHOOT_FORCE;
 
-//    private ShotModel[] dots;
 
-
-
-    public  DetectiveController( DetectiveModel playerModel, WorldModel world){
+    public  DetectiveController( DetectiveModel playerModel, WorldModel world, AimGUIModel aimGUI){
         player = playerModel;
         worldModel = world;
+        this.aimGUI = aimGUI;
         isSecondStage = player.isSecondStage();
     }
 
     private boolean didClickOnPlayer(MyInputProcessor myProcessor){
         // Checks center of screen +/- the player radius to see if we clicked inside the player box
 
-        boolean rx = myProcessor.lastX <= Gdx.graphics.getWidth()/2 + player.getRadius() * 32 /2;
-        boolean lx = myProcessor.lastX >= Gdx.graphics.getWidth()/2 - player.getRadius() * 32 /2;
-        boolean ty = myProcessor.lastY <= Gdx.graphics.getHeight()/2 + player.getRadius() * 32/2;
-        boolean by = myProcessor.lastY >= Gdx.graphics.getHeight()/2 - player.getRadius() * 32 /2;
+
+
+        boolean rx = myProcessor.lastX <= Gdx.graphics.getWidth()/2 + player.getRadius() * GameObject.getDrawScale().x /2;
+        boolean lx = myProcessor.lastX >= Gdx.graphics.getWidth()/2 - player.getRadius() * GameObject.getDrawScale().x /2;
+        boolean ty = myProcessor.lastY <= Gdx.graphics.getHeight()/2 + player.getRadius() * GameObject.getDrawScale().y /2;
+        boolean by = myProcessor.lastY >= Gdx.graphics.getHeight()/2 - player.getRadius() * GameObject.getDrawScale().y /2;
 
         return rx && lx && ty && by;
     }
@@ -40,11 +46,24 @@ public class DetectiveController {
         // Need to check if they have let go of the mouse click to actually shoot.
         if(myProcessor.released){
             // Applying forces on the player based on their shot.
-            player.setFX(myProcessor.magnitude.x * 100);
-            player.setFY(-myProcessor.magnitude.y * 100);
+            float fx = myProcessor.magnitude.x * SHOOT_FORCE;
+            if(fx > MAX_FORCE){
+                fx = MAX_FORCE;
+            }
+            float fy = myProcessor.magnitude.x * SHOOT_FORCE;
+            if(fy > MAX_FORCE){
+                fy = MAX_FORCE;
+            }
+            player.setFX(fx);
+            player.setFY(fy);
             player.applyForce();
             myProcessor.lastY = 0;
             myProcessor.lastX = 0;
+            aimGUI.setAim(false);
+        }
+        else {
+            aimGUI.setAimVector(myProcessor.magnitude, player.getBody().getPosition());
+            aimGUI.setAim(true);
         }
     }
 

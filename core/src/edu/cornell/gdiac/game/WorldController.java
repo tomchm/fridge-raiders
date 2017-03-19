@@ -21,6 +21,7 @@ import java.util.Iterator;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.math.Vector2;
 import edu.cornell.gdiac.game.asset.AssetLoader;
+import edu.cornell.gdiac.game.gui.AimGUIModel;
 import edu.cornell.gdiac.game.gui.GUIController;
 import edu.cornell.gdiac.game.model.*;
 import edu.cornell.gdiac.util.*;
@@ -85,10 +86,11 @@ public class WorldController implements Screen {
 	 */
 	private void populateLevel() {
 		fileIOController.load("levels/techLevel.json");
-		detectiveController = new DetectiveController(worldModel.getPlayer(), worldModel);
+		detectiveController = new DetectiveController(worldModel.getPlayer(), worldModel, (AimGUIModel) guiController.getGUI("AimGUI"));
 		assetLoader.assignContent(worldModel);
+		assetLoader.assignContent(guiController);
 		for (AIModel ai: worldModel.getAIList()) {
-			aiControllers.add(new AIController(ai, worldModel));
+			//aiControllers.add(new AIController(ai, worldModel));
 		}
 		worldModel.updateSensors();
 		fileIOController.save("levels/testOutput.json");
