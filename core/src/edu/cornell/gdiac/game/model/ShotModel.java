@@ -15,14 +15,16 @@
 //    /**
 //     * Created by tomchm on 3/6/17.
 //     */
-//    public class Dot extends WheelObstacle {
+//    public class Dot extends GameObject {
 //        private boolean visible = false;
 //
 //
 //        public Dot(float x, float y) {
+//            super();
+//            this.getBody().s
 //            super(x, y, 1f);
 //            this.setSensor(true);
-//            this.setAwake(false);
+//            this.getBody().setAwake(true);
 //        }
 //
 //        public boolean isVisisble() {

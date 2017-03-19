@@ -22,7 +22,6 @@ public class DoorModel extends GameObject {
         bodyDef.allowSleep = true;
         bodyDef.position.set(x,y);
         bodyDef.angle = theta;
-
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(0.5f*width, 0.5f*height);
         fixtureDef = new FixtureDef();
@@ -40,12 +39,13 @@ public class DoorModel extends GameObject {
     public boolean getStatus() {return  isOpen;}
 
     public void open(){
-
-        this.getBody().setTransform(this.getBody().getWorldCenter(), 45);
+        // Rotate The Body
+        this.getBody().setTransform(this.getBody().getPosition().x-this.getWidth()/2 , this.getBody().getPosition().y  + this.getWidth()/2, (float) Math.toRadians(90));
+        // Move the body into position
         isOpen = true;
     }
     public void close(){
-        this.getBody().setTransform(this.getBody().getPosition().x,this.getBody().getPosition().y, 0);
+        this.getBody().setTransform(this.getBody().getPosition().x+this.getWidth()/2,this.getBody().getPosition().y - this.getWidth()/2, 0);
         isOpen = false;
     }
 }
