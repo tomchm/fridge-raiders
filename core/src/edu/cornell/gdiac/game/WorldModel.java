@@ -32,7 +32,6 @@ public class WorldModel {
     protected PooledList<JointDef> jointQueue;
     protected PooledList<Body> staticQueue;
     protected PooledList<Body> dynamicQueue;
-    protected PooledList<Body> sensorBodies;
     protected int[] sensors;
     protected boolean clearJoints;
     protected boolean addJoints;
@@ -87,89 +86,21 @@ public class WorldModel {
         height = 60;
         width = 60;
         sensors = new int[height*width];
-        initSensors();
-    }
-
-
-    /**
-     * Initializes all sensors used for pathfinding for AI, creates bodies
-     * and attaches sensors shape of ai for every unit on screen
-     */
-    private void initSensors() {
-        world.setContactListener(new ContactListener() {
-
-            @Override
-            public void beginContact(Contact contact) {
-//                Body body = contact.getFixtureA().getBody();
-//                if(contact.getFixtureA().isSensor() &&
-//                        !contact.getFixtureB().isSensor() &&
-//                         contact.getFixtureB().getUserData().getClass() != AIModel.class){
-//                    System.out.println("Collision detected");
-//                    sensors[(int)(body.getPosition().x*width) + (int)(body.getPosition().y)] ++;
-//                }
-            }
-
-            @Override
-            public void endContact(Contact contact) {
-//                Body body = contact.getFixtureA().getBody();
-//                if(contact.getFixtureA().isSensor() &&
-//                        !contact.getFixtureB().isSensor() &&
-//                         contact.getFixtureB().getUserData().getClass() != AIModel.class){
-//                    System.out.println("Collision ended");
-//                    sensors[(int)(body.getPosition().x*width) + (int)(body.getPosition().y)] --;
-//                }
-            }
-
-            @Override
-            public void postSolve(Contact arg0, ContactImpulse arg1) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void preSolve(Contact arg0, Manifold arg1) {
-                // TODO Auto-generated method stub
-            }
-        });
-
-        Body body;
-        sensorBodies = new PooledList <Body>();
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.awake  = true;
-        bodyDef.allowSleep = true;
-        bodyDef.active = true;
-        for (int i = 0; i < width; i ++) {
-            for(int j = 0; j < height; j ++) {
-                bodyDef.position.set(i,j);
-                body = world.createBody(bodyDef);
-                sensorBodies.add(body);
-            }
-        }
-
-        FixtureDef fixtureDef = new FixtureDef();
-        Shape shape = new CircleShape();
-        shape.setRadius(1.2f);
-        fixtureDef.shape = shape;
-        fixtureDef.isSensor = true;
-        for(Body b: sensorBodies) {
-            b.createFixture(fixtureDef);
-        }
     }
 
     /**
      * Updates all sensors with static objects on them
      */
     public void updateSensors(){
-        float x;
-        float y;
-        for(Body b: sensorBodies){
-            x = b.getPosition().x;
-            y = b.getPosition().y;
-            if (isAccessibleWithRadius(x,y,1.2f)) {
-                sensors[(int)x*width + (int)y] = 0;
-            }
-            else {
-                sensors[(int)x*width + (int)y] = 1;
+        for(int i = 0; i < width ;i ++){
+            for(int j = 0; j < height; j++){
+                // CHANGE magic number
+                if (isAccessibleWithRadius(i,j,1.2f)) {
+                    sensors[i*width + j] = 0;
+                }
+                else {
+                    sensors[i*width + j] = 1;
+                }
             }
         }
     }
