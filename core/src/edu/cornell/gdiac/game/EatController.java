@@ -3,29 +3,22 @@ package edu.cornell.gdiac.game;
 import edu.cornell.gdiac.game.model.DetectiveModel;
 import edu.cornell.gdiac.game.model.FoodModel;
 
+import static sun.audio.AudioPlayer.player;
+
 /**
  * Created by Sal on 3/12/2017.
  */
 public class EatController {
 
-    private WorldModel world;
+    private WorldModel worldModel;
 
     public  EatController(WorldModel wm){
-        this.world = wm;
+        worldModel = wm;
     }
 
     public void eat(FoodModel food) {
-        DetectiveModel player = world.getPlayer();
-        player.eatFood(food.getAmount());
-
-        if(player.getCapacity() >= player.getMaxCapacity()){
-            player.setStage(true);
-            player.getBody().getFixtureList().get(0).setRestitution(1.0f);
-
-        }
-
-
+        worldModel.getPlayer().startEating(food);
     }
 
-    public void stop() {}
+    public void stop() { worldModel.getPlayer().stopEating(); }
 }

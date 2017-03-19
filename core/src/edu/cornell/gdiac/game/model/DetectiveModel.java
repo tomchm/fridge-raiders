@@ -26,11 +26,16 @@ public class DetectiveModel extends GameObject{
     /** The thrust factor to convert player input into thrust */
     private static final float DEFAULT_THRUST = 20.0f;
     private static final float DEFAULT_SPEED = 10.0f;
+    /** Amount of food eaten per SECOND. */
+    private static final float CHEWING_RATE = 50.0f;
 
     /** The force to apply to this rocket */
     private Vector2 force;
     private Vector2 velocity;
     private float radius;
+
+    /** The food the player is currently eating. */
+    private FoodModel chewing = null;
 
     /** Cache object for transforming the force according the object angle */
     public Affine2 affineCache = new Affine2();
@@ -45,16 +50,14 @@ public class DetectiveModel extends GameObject{
     public boolean isGrappled() {return isGrappled;}
     public void setGrappled(boolean b) {isGrappled = b;}
 
-    private boolean isEating = false;
-    public boolean isEating() {return isEating;}
-    public void setEating(boolean b ) {isEating = b;}
-
+    public boolean isEating() {return chewing != null;}
 
     private int frame = 0;
     private Animation animation;
 
-    private float capacity = 0;
-    private float maxCapacity = 80f;
+    private float amountEaten = 0;
+    /** Amount required to enter second stage. */
+    private float threshold = 80f;
     private boolean isSecondStage = false;
 
     public enum Animation {
@@ -84,6 +87,23 @@ public class DetectiveModel extends GameObject{
 
         force = new Vector2();
         velocity = new Vector2();
+    }
+
+    public void startEating(FoodModel f) { chewing = f; }
+    public void stopEating() { chewing = null; }
+
+    public void update(float dt) {
+        if (chewing != null) {
+            float tryToEat = CHEWING_RATE * dt;
+            float actuallyAte = chewing.eat(tryToEat);
+            if (chewing.getAmount() == 0f) { chewing = null; }
+            amountEaten += actuallyAte;
+
+            if (amountEaten > threshold) {
+                setStage(true);
+                getBody().getFixtureList().get(0).setRestitution(1f);
+            }
+        }
     }
 
     public void setAnimation(Animation animation){
@@ -183,15 +203,12 @@ public class DetectiveModel extends GameObject{
         fixtureDef.restitution = DEFAULT_RESTITUTION;
     }
 
-    public void eatFood(float amt){
-        this.capacity = this.capacity + amt;
-    }
-    public float getCapacity(){
-        return capacity;
+    public float getAmountEaten(){
+        return amountEaten;
     }
 
-    public  float getMaxCapacity(){
-        return maxCapacity;
+    public  float getThreshold(){
+        return threshold;
     }
 
     public void setStage(boolean b){
