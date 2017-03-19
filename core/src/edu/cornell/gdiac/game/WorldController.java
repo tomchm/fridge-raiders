@@ -90,7 +90,7 @@ public class WorldController implements Screen {
 		assetLoader.assignContent(worldModel);
 		assetLoader.assignContent(guiController);
 		for (AIModel ai: worldModel.getAIList()) {
-			//aiControllers.add(new AIController(ai, worldModel));
+			aiControllers.add(new AIController(ai, worldModel));
 		}
 		worldModel.updateSensors();
 		fileIOController.save("levels/testOutput.json");
