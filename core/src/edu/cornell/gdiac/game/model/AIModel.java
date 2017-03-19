@@ -72,7 +72,7 @@ public class AIModel extends GameObject{
      */
     public float getRadius() {return getBody().getFixtureList().get(0).getShape().getRadius();}
 
-    public AIModel(Vector2[] path){
+    public AIModel(Vector2[] path, String[] tags){
         bodyDef = new BodyDef();
         bodyDef.active = true;
         bodyDef.fixedRotation = true;
@@ -89,7 +89,7 @@ public class AIModel extends GameObject{
         fixtureDef.shape = shape;
 
         this.path = path;
-        this.tags = new String[] {"ai"};
+        this.tags = tags;
     }
 
     /**

@@ -53,8 +53,8 @@ public class DetectiveModel extends GameObject{
     private int frame = 0;
     private Animation animation;
 
-    private int capacity = 0;
-    private int maxCapacity = 80;
+    private float capacity = 0;
+    private float maxCapacity = 80f;
     private boolean isSecondStage = false;
 
     public enum Animation {
@@ -183,14 +183,14 @@ public class DetectiveModel extends GameObject{
         fixtureDef.restitution = DEFAULT_RESTITUTION;
     }
 
-    public void eatFood(int value){
-        this.capacity = this.capacity + value;
+    public void eatFood(float amt){
+        this.capacity = this.capacity + amt;
     }
-    public int getCapacity(){
+    public float getCapacity(){
         return capacity;
     }
 
-    public  int getMaxCapacity(){
+    public  float getMaxCapacity(){
         return maxCapacity;
     }
 

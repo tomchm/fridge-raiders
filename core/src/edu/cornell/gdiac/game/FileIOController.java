@@ -1,5 +1,6 @@
 package edu.cornell.gdiac.game;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.StringBuilder;
@@ -70,8 +71,23 @@ public class FileIOController {
                 float radius = f.get("radius").asFloat();
                 float theta = f.get("theta").asFloat() * (float)Math.PI / 180f;
                 boolean dessert = f.get("dessert").asBoolean();
+                float amount = f.get("amount").asFloat();
                 String[] tags = f.get("tags").asStringArray();
-                worldModel.addGameObject(new FoodModel(x, y, radius, theta, dessert, tags));
+                worldModel.addGameObject(new FoodModel(x, y, radius, theta, dessert, amount, tags));
+            }
+
+            // array of AI objects
+            JsonValue ais = level.get("ais");
+            for (JsonValue a = ais.child(); a != null; a = a.next()) {
+                float[] path = a.get("path").asFloatArray();
+                String[] tags = a.get("tags").asStringArray();
+                Vector2[] pathv = new Vector2[path.length/2];
+                for (int i = 0; i < path.length; i += 2) {
+                    pathv[i/2] = new Vector2(path[i], path[i+1]);
+                }
+                AIModel ai = new AIModel(pathv, tags);
+                worldModel.addGameObject(ai);
+                worldModel.addAI(ai);
             }
 
             // array of wall objects
@@ -92,6 +108,7 @@ public class FileIOController {
             PooledList<Food> food = new PooledList<Food>();
             PooledList<Wall> walls = new PooledList<Wall>();
             PooledList<Door> doors = new PooledList<Door>();
+            PooledList<AI> ais = new PooledList<AI>();
             Player p = new Player(worldModel.getPlayer().getBody().getPosition().x,
                     worldModel.getPlayer().getBody().getPosition().y);
             for (GameObject go : worldModel.getGameObjects()) {
@@ -110,19 +127,29 @@ public class FileIOController {
                             f.getWidth(), f.getHeight(), b.getAngle()*180f/(float)Math.PI,
                             f.getTags()));
                 }
+                if (go.getClass() == AIModel.class) {
+                    AIModel a = (AIModel)go;
+                    float[] path = new float[a.getPath().length*2];
+                    for (int i = 0; i < a.getPath().length; ++i) {
+                        path[2*i] = a.getPath()[i].x;
+                        path[2*i+1] = a.getPath()[i].y;
+                    }
+                    ais.add(new AI(path, a.getTags()));
+                }
                 if (go.getClass() == FoodModel.class) {
                     FoodModel f = (FoodModel)go;
                     Body b = f.getBody();
                     food.add(new Food(b.getPosition().x, b.getPosition().y,
                             f.getRadius(), b.getAngle()*180f/(float)Math.PI,
-                            f.isDessert(), f.getTags()));
+                            f.isDessert(), f.getAmount(), f.getTags()));
                 }
                 if (go.getClass() == WallModel.class) {
                     WallModel wm = (WallModel)go;
                     walls.add(new Wall(wm.getCoords(), wm.getTags()));
                 }
             }
-            Level level = new Level(p, furniture.toArray(new Furniture[0]), food.toArray(new Food[0]), walls.toArray(new Wall[0]), doors.toArray( new Door[0]));
+            Level level = new Level(p, furniture.toArray(new Furniture[0]), food.toArray(new Food[0]),
+                    walls.toArray(new Wall[0]), doors.toArray( new Door[0]), ais.toArray(new AI[0]));
             writer.write(json.prettyPrint(level));
 
             writer.close();
@@ -144,15 +171,22 @@ public class FileIOController {
     }
 
     private class Food{
-        float x, y, radius, theta; boolean dessert; String[] tags;
-        public Food(float x, float y, float radius, float theta, boolean dessert, String[] tags) {
-            this.x=x; this.y=y; this.radius=radius; this.theta=theta; this.dessert=dessert; this.tags=tags;
+        float x, y, radius, theta; boolean dessert; String[] tags; float amount;
+        public Food(float x, float y, float radius, float theta, boolean dessert, float amount, String[] tags) {
+            this.x=x; this.y=y; this.radius=radius; this.theta=theta;
+            this.dessert=dessert; this.amount = amount; this.tags=tags;
         }
     }
     private class Wall{
         float[] coords; String[] tags;
         public Wall(float[] coords, String[] tags) {
             this.coords=coords; this.tags=tags;
+        }
+    }
+    private class AI{
+        float[] path; String[] tags;
+        public AI(float[] path, String[] tags) {
+            this.path=path; this.tags=tags;
         }
     }
     private class Player{
@@ -166,10 +200,11 @@ public class FileIOController {
         private Food[] food;
         private Wall[] walls;
         private Door[] doors;
+        private AI[] ais;
         private Player player;
         public Level() {}
-        public Level(Player p, Furniture[] fu, Food[] fo, Wall[] wa, Door[] dor) {
-            player=p; furniture=fu; food=fo; walls=wa; doors = dor;
+        public Level(Player p, Furniture[] fu, Food[] fo, Wall[] wa, Door[] dor, AI[] as) {
+            player=p; furniture=fu; food=fo; walls=wa; doors = dor; ais = as;
         }
     }
 }

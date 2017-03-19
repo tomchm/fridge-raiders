@@ -16,9 +16,8 @@ public class EatController {
 
     public void eat(FoodModel food) {
         DetectiveModel player = world.getPlayer();
-        player.eatFood(food.getValue());
+        player.eatFood(food.getAmount());
 
-        player.eatFood(food.getValue());
         if(player.getCapacity() >= player.getMaxCapacity()){
             player.setStage(true);
             player.getBody().getFixtureList().get(0).setRestitution(1.0f);
