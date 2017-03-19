@@ -219,6 +219,12 @@ public class WorldModel {
         }
     }
 
+    public void updateGameObjects(float dt){
+        for(GameObject gm : gameObjects){
+            gm.update(dt);
+        }
+    }
+
     private void drawAIModels(GameCanvas canvas) {
         Collections.sort(aiList);
         for(GameObject ai : aiList){

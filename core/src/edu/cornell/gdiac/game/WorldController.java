@@ -151,6 +151,7 @@ public class WorldController implements Screen {
         for(AIController aic: aiControllers) {
 			aic.update(dt);
 		}
+		worldModel.updateGameObjects(dt);
 		SoundController.getInstance().update();
 		//System.out.println(1/dt);
 	}

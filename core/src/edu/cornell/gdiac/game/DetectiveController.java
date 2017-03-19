@@ -50,9 +50,15 @@ public class DetectiveController {
             if(fx > MAX_FORCE){
                 fx = MAX_FORCE;
             }
-            float fy = myProcessor.magnitude.x * SHOOT_FORCE;
+            else if(fx < -MAX_FORCE){
+                fx = -MAX_FORCE;
+            }
+            float fy = (-myProcessor.magnitude.y) * SHOOT_FORCE;
             if(fy > MAX_FORCE){
                 fy = MAX_FORCE;
+            }
+            else if(fy < -MAX_FORCE){
+                fy = -MAX_FORCE;
             }
             player.setFX(fx);
             player.setFY(fy);
