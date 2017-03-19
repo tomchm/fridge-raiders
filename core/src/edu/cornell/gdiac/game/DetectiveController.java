@@ -79,14 +79,19 @@ public class DetectiveController {
             switch (lastMove) {
                 case -1:
                     player.setAnimation(DetectiveModel.Animation.DOWN_STOP);
+                    break;
                 case 0:
                     player.setAnimation(DetectiveModel.Animation.UP_STOP);
+                    break;
                 case 1:
                     player.setAnimation(DetectiveModel.Animation.RIGHT_STOP);
+                    break;
                 case 2:
                     player.setAnimation(DetectiveModel.Animation.DOWN_STOP);
+                    break;
                 case 3:
                     player.setAnimation(DetectiveModel.Animation.LEFT_STOP);
+                    break;
             }
 
             player.getBody().setLinearVelocity(player.getThrust()*input.getHorizontal(), player.getThrust() * input.getVertical());
