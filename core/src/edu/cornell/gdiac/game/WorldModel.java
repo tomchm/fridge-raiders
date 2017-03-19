@@ -174,11 +174,6 @@ public class WorldModel {
         }
     }
 
-    public void removeGameObject(GameObject gameObject) {
-        gameObject.deactivate(world);
-        gameObjects.remove(gameObject);
-    }
-
     public void addJoint(JointDef jointDef){
         assert jointDef != null : "Tried to add null JointDef";
         jointQueue.add(jointDef);
