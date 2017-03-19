@@ -1,39 +1,29 @@
-package edu.cornell.gdiac.game;
+package edu.cornell.gdiac.game.gui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ObjectMap;
+import edu.cornell.gdiac.game.GameCanvas;
 import edu.cornell.gdiac.game.asset.Asset;
 import edu.cornell.gdiac.game.asset.ImageAsset;
 import edu.cornell.gdiac.game.model.GameObject;
 
-import java.awt.*;
-
 /**
  * Created by tomchm on 3/19/17.
  */
-public class GUIModel {
+public class AimGUIModel extends GUIModel{
 
     private final static float AIM_SCALE = 3;
     private final static int AIM_BALLS = 5;
     private Vector2 aimVector, aimPosition;
     private boolean isAiming;
-    protected String[] tags;
-    protected ObjectMap<String, Asset> assetMap = new ObjectMap<String, Asset>();
 
-    public GUIModel(){
+    public AimGUIModel(){
         isAiming = false;
         aimVector = null;
         aimPosition = null;
         tags = new String[] {"ball"};
-    }
-
-    public void addAsset(String tag, Asset asset){
-        assetMap.put(tag, asset);
-    }
-
-    public String[] getTags(){
-        return tags;
+        guiTag = "AimGUI";
     }
 
     public void draw(GameCanvas canvas){

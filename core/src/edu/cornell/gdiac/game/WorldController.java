@@ -19,9 +19,9 @@ package edu.cornell.gdiac.game;
 import java.util.Iterator;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import edu.cornell.gdiac.game.asset.AssetLoader;
+import edu.cornell.gdiac.game.gui.GUIController;
 import edu.cornell.gdiac.game.model.*;
 import edu.cornell.gdiac.util.*;
 
