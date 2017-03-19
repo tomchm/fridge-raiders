@@ -10,6 +10,8 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ObjectMap;
 import edu.cornell.gdiac.game.WorldModel;
+import edu.cornell.gdiac.game.gui.GUIController;
+import edu.cornell.gdiac.game.gui.GUIModel;
 import edu.cornell.gdiac.game.model.GameObject;
 import edu.cornell.gdiac.util.FilmStrip;
 import edu.cornell.gdiac.util.SoundController;
@@ -128,6 +130,18 @@ public class AssetLoader
                 Asset asset = assetMap.get(tag);
                 if(asset != null){
                     go.addAsset(tag, asset);
+                }
+            }
+        }
+    }
+
+    public void assignContent(GUIController guiController){
+        for(GUIModel gui : guiController.getGUIs()){
+            String[] tags = gui.getTags();
+            for(String tag : tags){
+                Asset asset = assetMap.get(tag);
+                if(asset != null){
+                    gui.addAsset(tag, asset);
                 }
             }
         }

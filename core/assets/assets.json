@@ -89,6 +89,15 @@
       "scale_y": 0.25,
       "frames": 16,
       "speed": 3
+    },
+    {
+      "type": "image",
+      "tag": "ball",
+      "filename": "gui/circle2.png",
+      "origin_x": 64,
+      "origin_y": 64,
+      "scale_x": 0.6,
+      "scale_y": 0.6
     }
   ]
 }
