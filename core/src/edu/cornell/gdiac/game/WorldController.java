@@ -82,20 +82,24 @@ public class WorldController implements Screen {
 	 * Lays out the game geography.
 	 */
 	private void populateLevel() {
-/*
-// this should be loaded by the FileIOController
+		// decoupled aiModel and Ai controller
 		Vector2[] path1 = new Vector2[]{new Vector2(10,15), new Vector2(15,25)};
 		Vector2[] path2 = new Vector2[]{new Vector2(5,18), new Vector2(23,18)};
 
 		Vector2[][] aiPaths = new Vector2[][]{path1, path2};
 
 		for(Vector2[] path: aiPaths){
-			aiControllers.add(new AIController(path, worldModel));
+			AIModel ai = new AIModel(path);
+			worldModel.addGameObject(ai);
+			worldModel.addAI(ai);
 		}
-*/
+
+		for (AIModel ai: worldModel.getAIList()) {
+			aiControllers.add(new AIController(ai, worldModel));
+		}
+
 		fileIOController.load("levels/techLevel.json");
 		detectiveController = new DetectiveController(worldModel.getPlayer(), worldModel);
-		// add ai controllers here
 		assetLoader.assignContent(worldModel);
 
 		fileIOController.save("levels/testOutput.json");
@@ -143,6 +147,7 @@ public class WorldController implements Screen {
 	}
 
 	public void update(float dt) {
+		worldModel.updateSensors();
 
 		detectiveController.update(input);
 

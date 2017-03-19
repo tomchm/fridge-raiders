@@ -17,7 +17,7 @@ public class FoodModel extends GameObject {
         bodyDef.active = true;
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.5f;
-        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.awake  = true;
         bodyDef.allowSleep = true;
         bodyDef.position.set(x,y);

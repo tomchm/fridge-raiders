@@ -12,7 +12,7 @@ import box2dLight.*;
 import com.badlogic.gdx.graphics.*;
 
 
-
+import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -23,6 +23,8 @@ public class WorldModel {
     protected World world;
     protected Vector2 scale;
     protected Vector2 bounds;
+    protected int width;
+    protected int height;
     protected PooledList<GameObject> addGameObjectQueue;
     protected PooledList<GameObject> solidGameObjects;
     protected PooledList<GameObject> gameObjects;
@@ -30,6 +32,8 @@ public class WorldModel {
     protected PooledList<JointDef> jointQueue;
     protected PooledList<Body> staticQueue;
     protected PooledList<Body> dynamicQueue;
+    protected PooledList<Body> sensorBodies;
+    protected int[] sensors;
     protected boolean clearJoints;
     protected boolean addJoints;
     protected DetectiveModel detective;
@@ -47,11 +51,14 @@ public class WorldModel {
      */
     public PooledList<AIModel> getAIList() {return aiList;}
 
-    /** Adds ai to list of AIModels populating the level
+    /** Adds ai to list of AIModels populating the level. Initializes sensors
+     * if the first ai
      *
      * @param ai a new ai model to add to list of ai models in the current level
      */
-    public void addAI(AIModel ai){aiList.add(ai);}
+    public void addAI(AIModel ai){
+        aiList.add(ai);
+    }
 
     /**
      * clears aiList
@@ -64,15 +71,107 @@ public class WorldModel {
         scale = new Vector2(sx,sy);
         bounds = new Vector2(Gdx.graphics.getWidth()/scale.x, Gdx.graphics.getHeight()/scale.y);
         addGameObjectQueue = new PooledList <GameObject>();
-        solidGameObjects = new PooledList <GameObject>();
         gameObjects = new PooledList <GameObject>();
-        aiList = new PooledList <AIModel>();
         jointQueue = new PooledList<JointDef>();
         staticQueue = new PooledList<Body>();
         dynamicQueue = new PooledList<Body>();
         clearJoints = false;
         addJoints = false;
+
+        // ai info
+        aiList = new PooledList <AIModel>();
+        solidGameObjects = new PooledList <GameObject>();
         initLighting();
+
+        // sensor info
+        height = 60;
+        width = 60;
+        sensors = new int[height*width];
+        initSensors();
+    }
+
+
+    /**
+     * Initializes all sensors used for pathfinding for AI, creates bodies
+     * and attaches sensors shape of ai for every unit on screen
+     */
+    private void initSensors() {
+        world.setContactListener(new ContactListener() {
+
+            @Override
+            public void beginContact(Contact contact) {
+//                Body body = contact.getFixtureA().getBody();
+//                if(contact.getFixtureA().isSensor() &&
+//                        !contact.getFixtureB().isSensor() &&
+//                         contact.getFixtureB().getUserData().getClass() != AIModel.class){
+//                    System.out.println("Collision detected");
+//                    sensors[(int)(body.getPosition().x*width) + (int)(body.getPosition().y)] ++;
+//                }
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+//                Body body = contact.getFixtureA().getBody();
+//                if(contact.getFixtureA().isSensor() &&
+//                        !contact.getFixtureB().isSensor() &&
+//                         contact.getFixtureB().getUserData().getClass() != AIModel.class){
+//                    System.out.println("Collision ended");
+//                    sensors[(int)(body.getPosition().x*width) + (int)(body.getPosition().y)] --;
+//                }
+            }
+
+            @Override
+            public void postSolve(Contact arg0, ContactImpulse arg1) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void preSolve(Contact arg0, Manifold arg1) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        Body body;
+        sensorBodies = new PooledList <Body>();
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.awake  = true;
+        bodyDef.allowSleep = true;
+        bodyDef.active = true;
+        for (int i = 0; i < width; i ++) {
+            for(int j = 0; j < height; j ++) {
+                bodyDef.position.set(i,j);
+                body = world.createBody(bodyDef);
+                sensorBodies.add(body);
+            }
+        }
+
+        FixtureDef fixtureDef = new FixtureDef();
+        Shape shape = new CircleShape();
+        shape.setRadius(1.2f);
+        fixtureDef.shape = shape;
+        fixtureDef.isSensor = true;
+        for(Body b: sensorBodies) {
+            b.createFixture(fixtureDef);
+        }
+    }
+
+    /**
+     * Updates all sensors with static objects on them
+     */
+    public void updateSensors(){
+        float x;
+        float y;
+        for(Body b: sensorBodies){
+            x = b.getPosition().x;
+            y = b.getPosition().y;
+            if (isAccessibleWithRadius(x,y,1.2f)) {
+                sensors[(int)x*width + (int)y] = 0;
+            }
+            else {
+                sensors[(int)x*width + (int)y] = 1;
+            }
+        }
     }
 
     /**
@@ -215,6 +314,14 @@ public class WorldModel {
             rayhandler.render();
         }
 
+//        canvas.beginDebug();
+//        for(int i = 0; i < sensorBodies.size(); i ++) {
+//            Body b = sensorBodies.get(i);
+//            Color color = (sensors[(int)b.getPosition().x *width + (int)b.getPosition().y] > 0) ? Color.RED : Color.YELLOW;
+//            canvas.drawPhysics((CircleShape)b.getFixtureList().get(0).getShape(),color, b.getPosition().x, b.getPosition().y, scale.x, scale.y);
+//        }
+//        canvas.endDebug();
+
         // draw AI again to cover light point source
         //canvas.begin();
         //drawAIModels(canvas);
@@ -222,6 +329,9 @@ public class WorldModel {
 
     }
 
+    /**
+     * updates camera used for drawing light
+     */
     public void updateRayCamera() {
         raycamera.position.set(detective.getBody().getPosition(), 0);
         raycamera.update();
@@ -258,12 +368,12 @@ public class WorldModel {
         return scale;
     }
 
-    /** returns true if the point is not in some object*/
-    public boolean isAccessible(float x, float y) {
-        for(GameObject obj: solidGameObjects) {
-            if (obj.getBody().getFixtureList().get(0).testPoint(x,y)){return true;}
+    /** returns true sensor at position x y is overlapping with some object */
+    public boolean isAccessibleByAI(int x, int y) {
+        if (x < 0 || y < 0 || x > width - 1 || y > width -1) {
+            return false;
         }
-        return false;
+        return sensors[x*width + y] <= 0;
     }
 
     /** returns true if any of 8 cardinal points radius away from x y

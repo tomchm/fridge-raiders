@@ -3,6 +3,7 @@ package edu.cornell.gdiac.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectSet;
 import edu.cornell.gdiac.game.model.AIModel;
 import edu.cornell.gdiac.game.model.DetectiveModel;
 
@@ -55,16 +56,14 @@ public class AIController {
     /**
      * Creates an AIController for the given ai.
      *
-     * @param path the path of this ai
+     * @param ai the ai model this controller is controlling
      * @param worldModel the worldModel
      */
-    public AIController(Vector2[] path, WorldModel worldModel) {
+    public AIController(AIModel ai, WorldModel worldModel) {
         //physics
-        this.ai = new AIModel(path);
+        this.ai = ai;
         this.worldModel = worldModel;
         this.player = worldModel.getPlayer();
-        worldModel.addGameObject(ai);
-        worldModel.addAI(ai);
 
         //lights
         ai.createConeLight(worldModel.rayhandler);
@@ -168,8 +167,9 @@ public class AIController {
      */
     private void selectPathTarget(){
         Vector2[] path = ai.getPath();
-        if (ai.getBody().getPosition().equals(path[pathIndex])) {
-
+        Vector2 temp = new Vector2(ai.getBody().getPosition());
+        temp.sub(path[pathIndex]);
+        if (temp.dst2(0,0) < 0.01) {
             if (pathIndex == path.length - 1) direction = -1;
             else if (pathIndex == 0) direction = 1;
 
@@ -221,35 +221,42 @@ public class AIController {
      * @return a valid position which is to first step in a path reaching the target
      */
     private Vector2 getStepToTarget() {
-        //#region PUT YOUR CODE HERE
         Queue<searchPairs> queue = new LinkedList<searchPairs>();
 
         Vector2 temp = ai.getBody().getPosition();
-        Vector2 aiPos = new Vector2((float)Math.floor(temp.x), (float)Math.floor(temp.y));
-        Vector2 targetPos = new Vector2((float)Math.floor(target.x), (float)Math.floor(target.y));
+        Vector2 aiPos = new Vector2((float)Math.round(temp.x), (float)Math.round(temp.y));
+        Vector2 targetPos = new Vector2((float)Math.round(target.x), (float)Math.round(target.y));
 
         queue.add(new searchPairs(aiPos));
-        Array<Vector2> visited = new Array <Vector2>();
+        ObjectSet<Vector2> visited = new ObjectSet<Vector2>();
 
         while (!queue.isEmpty()){
             searchPairs loc = queue.poll();
             float x = loc.position.x;
             float y = loc.position.y;
-            if (visited.contains(loc.position, false)) {
-                continue;
-            }
             if (loc.position.equals(targetPos)) {
                 return tracePathGetAction(loc);
             }
+            if (visited.contains(loc.position)) {
+                continue;
+            }
             visited.add(loc.position);
             for (int i = -1; i < 2; i = i +2) {
-                if (worldModel.isAccessibleWithRadius(x+i, y, ai.getRadius()) && !visited.contains(new Vector2(x+i,y), false)) {
+                if (worldModel.isAccessibleByAI((int)x+i, (int)y) && !visited.contains(new Vector2(x+i,y))) {
                     queue.add(new searchPairs(x + i, y, loc));
                 }
-                if (worldModel.isAccessibleWithRadius(x, y+i, ai.getRadius()) && !visited.contains(new Vector2(x,y+i), false)) {
+                if (worldModel.isAccessibleByAI((int)x, (int)y+i) && !visited.contains(new Vector2(x,y+i))) {
                     queue.add(new searchPairs(x, y + i, loc));
                 }
             }
+//            for (int i = -1; i < 2; i = i +2) {
+//                if (worldModel.isAccessibleWithRadius(x+i, y, ai.getRadius()) && !visited.contains(new Vector2(x+i,y))) {
+//                    queue.add(new searchPairs(x + i, y, loc));
+//                }
+//                if (worldModel.isAccessibleWithRadius(x+i, y, ai.getRadius()) && !visited.contains(new Vector2(x,y+i))) {
+//                    queue.add(new searchPairs(x, y + i, loc));
+//                }
+//            }
         }
 
         return aiPos;
