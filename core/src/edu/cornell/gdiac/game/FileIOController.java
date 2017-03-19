@@ -1,10 +1,7 @@
 package edu.cornell.gdiac.game;
 
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.JsonValue;
-import com.badlogic.gdx.utils.JsonWriter;
+import com.badlogic.gdx.utils.*;
 import edu.cornell.gdiac.game.model.*;
 import edu.cornell.gdiac.util.PooledList;
 
@@ -51,6 +48,18 @@ public class FileIOController {
                 worldModel.addGameObject(new FurnitureModel(x, y, width, height, theta, tag));
             }
 
+            // array of door objects
+            JsonValue door = level.get("door");
+            for (JsonValue f = door.child(); f != null; f = f.next() ) {
+                float x = f.get("x").asFloat();
+                float y = f.get("y").asFloat();
+                float width = f.get("width").asFloat();
+                float height = f.get("height").asFloat();
+                float theta = f.get("theta").asFloat() * (float)Math.PI / 180f;
+                String tag = f.get("tag").asString();
+                worldModel.addGameObject(new DoorModel(x, y, width, height, theta, tag));
+            }
+
             // array of food objects
             JsonValue food = level.get("food");
             for (JsonValue f = food.child(); f != null; f = f.next()) {
@@ -79,6 +88,7 @@ public class FileIOController {
             PooledList<Furniture> furniture = new PooledList<Furniture>();
             PooledList<Food> food = new PooledList<Food>();
             PooledList<Wall> walls = new PooledList<Wall>();
+            PooledList<Door> doors = new PooledList<Door>();
             Player p = new Player(worldModel.getPlayer().getBody().getPosition().x,
                     worldModel.getPlayer().getBody().getPosition().y);
             for (GameObject go : worldModel.getGameObjects()) {
@@ -86,6 +96,14 @@ public class FileIOController {
                     FurnitureModel f = (FurnitureModel)go;
                     Body b = f.getBody();
                     furniture.add(new Furniture(b.getPosition().x, b.getPosition().y,
+                            f.getWidth(), f.getHeight(), b.getAngle()*180f/(float)Math.PI,
+                            f.getTags()[0]));
+                }
+//                 Adding Doors to the list of game object
+                if (go.getClass() == DoorModel.class) {
+                    DoorModel f = (DoorModel)go;
+                    Body b = f.getBody();
+                    doors.add(new Door(b.getPosition().x, b.getPosition().y,
                             f.getWidth(), f.getHeight(), b.getAngle()*180f/(float)Math.PI,
                             f.getTags()[0]));
                 }
@@ -101,7 +119,7 @@ public class FileIOController {
                     walls.add(new Wall(wm.getCoords(), wm.getTags()[0]));
                 }
             }
-            Level level = new Level(p, furniture.toArray(new Furniture[0]), food.toArray(new Food[0]), walls.toArray(new Wall[0]));
+            Level level = new Level(p, furniture.toArray(new Furniture[0]), food.toArray(new Food[0]), walls.toArray(new Wall[0]), doors.toArray( new Door[0]));
             writer.write(json.prettyPrint(level));
 
             writer.close();
@@ -114,6 +132,14 @@ public class FileIOController {
             this.x=x; this.y=y; this.width=width; this.height = height; this.theta=theta; this.tag=tag;
         }
     }
+
+    private class Door{
+        float x, y, width, height, theta; String tag;
+        public Door(float x, float y, float width, float height, float theta, String tag) {
+            this.x=x; this.y=y; this.width=width; this.height = height; this.theta=theta; this.tag=tag;
+        }
+    }
+
     private class Food{
         float x, y, radius, theta; boolean dessert; String tag;
         public Food(float x, float y, float radius, float theta, boolean dessert, String tag) {
@@ -136,9 +162,10 @@ public class FileIOController {
         private Furniture[] furniture;
         private Food[] food;
         private Wall[] walls;
+        private Door[] doors;
         private Player player;
-        public Level(Player p, Furniture[] fu, Food[] fo, Wall[] wa) {
-            player=p; furniture=fu; food=fo; walls=wa;
+        public Level(Player p, Furniture[] fu, Food[] fo, Wall[] wa, Door[] dor) {
+            player=p; furniture=fu; food=fo; walls=wa; doors = dor;
         }
     }
 }

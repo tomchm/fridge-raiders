@@ -142,6 +142,11 @@ public class WorldController implements Screen {
 			reset();
 		}
 
+		if(input.didExit()){
+			listener.exitScreen(this, EXIT_QUIT);
+			return false;
+		}
+
 		return true;
 	}
 

@@ -13,6 +13,7 @@ public class DetectiveController {
     private DetectiveModel player;
     private WorldModel worldModel;
     private boolean isSecondStage = false;
+    private int lastMove = -1;
 
 //    private ShotModel[] dots;
 
@@ -34,7 +35,7 @@ public class DetectiveController {
         return rx && lx && ty && by;
     }
 
-    public void handleShots(MyInputProcessor myProcessor){
+    private void handleShots(MyInputProcessor myProcessor){
         // Need to check if they have let go of the mouse click to actually shoot.
         if(myProcessor.released){
             // Applying forces on the player based on their shot.
@@ -46,11 +47,59 @@ public class DetectiveController {
         }
     }
 
+    private void animatePlayer(InputController input){
+        // Check which direction we are allowing the player to move
+        if(input.getHorizontal() != 0.0){
+            if(input.getHorizontal() == -1.0){
+                player.setAnimation(DetectiveModel.Animation.LEFT_MOVE);
+                player.getBody().setLinearVelocity(player.getThrust() * input.getHorizontal(), 0);
+                lastMove = 3;
+
+            }
+            else{
+                player.setAnimation(DetectiveModel.Animation.RIGHT_MOVE);
+                player.getBody().setLinearVelocity(player.getThrust() * input.getHorizontal(), 0);
+                lastMove =1;
+            }
+        }
+        else if(input.getVertical() != 0.0){
+            if(input.getVertical() == -1.0){
+                player.setAnimation(DetectiveModel.Animation.DOWN_MOVE);
+                player.getBody().setLinearVelocity(0, player.getThrust() * input.getVertical());
+                lastMove =2;
+            }
+            else{
+                player.setAnimation(DetectiveModel.Animation.UP_MOVE);
+                player.getBody().setLinearVelocity(0, player.getThrust() * input.getVertical());
+                lastMove = 0;
+            }
+        }
+        else{
+            System.out.println(lastMove);
+            switch (lastMove) {
+                case -1:
+                    player.setAnimation(DetectiveModel.Animation.DOWN_STOP);
+                case 0:
+                    player.setAnimation(DetectiveModel.Animation.UP_STOP);
+                case 1:
+                    player.setAnimation(DetectiveModel.Animation.RIGHT_STOP);
+                case 2:
+                    player.setAnimation(DetectiveModel.Animation.DOWN_STOP);
+                case 3:
+                    player.setAnimation(DetectiveModel.Animation.LEFT_STOP);
+            }
+
+            player.getBody().setLinearVelocity(player.getThrust()*input.getHorizontal(), player.getThrust() * input.getVertical());
+
+
+        }
+    }
+
     public void update(InputController input){
 
         // First we want to update walking mechanics if it's in stage one.
         if(!isSecondStage) {
-            player.getBody().setLinearVelocity(player.getThrust() * input.getHorizontal(), player.getThrust() * input.getVertical());
+            animatePlayer(input);
         }
 
         // If we are in stage two, no walking mechanics allowed
