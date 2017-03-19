@@ -187,10 +187,6 @@ public class AIController implements RayCastCallback{
         return -1;
     }
 
-
-
-
-
     /**
      * Updates the color of AI Light based off lightTime
      */
