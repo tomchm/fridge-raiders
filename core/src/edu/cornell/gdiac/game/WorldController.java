@@ -147,13 +147,13 @@ public class WorldController implements Screen {
 	}
 
 	public void update(float dt) {
-		worldModel.updateSensors();
-
 		detectiveController.update(input);
 
 		if (InputController.getInstance().didSecondary()) spacebarController.keyDown();
 		else if (InputController.getInstance().releasedSecondary()) spacebarController.keyUp();
-		for(AIController aic: aiControllers) {
+
+        worldModel.updateSensors();
+        for(AIController aic: aiControllers) {
 			aic.update(dt);
 		}
 		SoundController.getInstance().update();
