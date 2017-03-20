@@ -3,6 +3,7 @@ package edu.cornell.gdiac.game.model;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import edu.cornell.gdiac.game.GameCanvas;
 
 /**
  * Created by Sal on 3/14/2017.
@@ -28,11 +29,12 @@ public class WallModel extends GameObject {
         fixtureDef = new FixtureDef();
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
-
         this.coords = coords;
 
         this.tags = tags;
     }
 
     public float[] getCoords() {return coords;}
+
+    public void draw(GameCanvas canvas){}
 }

@@ -215,6 +215,15 @@
       "origin_y": 340,
       "scale_x": 0.25,
       "scale_y": 0.25
+    },
+    {
+      "type": "image",
+      "tag": "floor",
+      "filename": "furniture/floor.png",
+      "origin_x": 43,
+      "origin_y": 194,
+      "scale_x": 1,
+      "scale_y": 1
     }
   ]
 }

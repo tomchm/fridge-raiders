@@ -86,6 +86,8 @@ public class WorldController implements Screen {
 	 */
 	private void populateLevel() {
 		fileIOController.load("levels/techLevel.json");
+		FloorModel floor = new FloorModel();
+		worldModel.addGameObject(floor);
 		detectiveController = new DetectiveController(worldModel.getPlayer(), worldModel, (AimGUIModel) guiController.getGUI("AimGUI"));
 		assetLoader.assignContent(worldModel);
 		assetLoader.assignContent(guiController);
