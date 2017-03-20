@@ -94,7 +94,7 @@ public class WorldController implements Screen {
 		for (AIModel ai: worldModel.getAIList()) {
 			aiControllers.add(new AIController(ai, worldModel));
 		}
-		worldModel.updateSensors();
+		worldModel.updateAllSensors();
 		fileIOController.save("levels/testOutput.json");
 	}
 
