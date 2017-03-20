@@ -140,6 +140,12 @@ public class WorldController implements Screen {
 			listener.exitScreen(this, EXIT_QUIT);
 			return false;
 		}
+		for(AIController ai : aiControllers){
+			if(ai.hasBeenCaught()){
+				reset();
+				break;
+			}
+		}
 
 		return true;
 	}
@@ -156,7 +162,7 @@ public class WorldController implements Screen {
 		worldModel.updateGameObjects(dt);
         worldModel.removeEatenFood();
 		SoundController.getInstance().update();
-		//System.out.println(1/dt);
+		//System.out.println(1/dt);f
 	}
 
 	public void postUpdate(float dt) {

@@ -416,6 +416,13 @@ public class AIController implements RayCastCallback{
         return result.position;
     }
 
+    /*
+     * Returns whether player has been caught by this AI
+     */
+    public boolean hasBeenCaught(){
+        return lightTime >= LIGHT_LIM;
+    }
+
     /**
      * A class to store int pairs and create a linked list
      */

@@ -94,6 +94,8 @@ public class DetectiveModel extends GameObject{
     public void stopEating() { chewing = null; }
 
     public void update(float dt) {
+        System.out.println(body.getPosition().x + " : "+body.getPosition().y);
+
         if (chewing != null) {
             float tryToEat = CHEWING_RATE * dt;
             float actuallyAte = chewing.eat(tryToEat);
