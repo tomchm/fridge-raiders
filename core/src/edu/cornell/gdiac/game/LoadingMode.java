@@ -49,6 +49,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private static final String BACKGROUND_FILE = "shared/loading.png";
 	private static final String PROGRESS_FILE = "shared/progressbar.png";
 	private static final String PLAY_BTN_FILE = "shared/play.png";
+	private static final String SPOTLIGHT_FILE = "shared/spotlight.png";
 	
 	/** Background texture for start-up */
 	private Texture background;
@@ -56,6 +57,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private Texture playButton;
 	/** Texture atlas to support a progress bar */
 	private Texture statusBar;
+	private Texture spotlight;
 	
 	// statusBar is a "texture atlas." Break it up into parts.
 	/** Left cap to the status background (grey region) */
@@ -123,6 +125,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private int   startButton;
 	/** Whether or not this player mode is still active */
 	private boolean active;
+
+	private float time = 0f;
 
 	/**
 	 * Returns the budget for the asset loader.
@@ -193,6 +197,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		playButton = null;
 		background = new Texture(BACKGROUND_FILE);
 		statusBar  = new Texture(PROGRESS_FILE);
+		spotlight = new Texture(SPOTLIGHT_FILE);
 		
 		// No progress so far.		
 		progress   = 0;
@@ -232,8 +237,10 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 
 		 background.dispose();
 		 statusBar.dispose();
+		 spotlight.dispose();
 		 background = null;
 		 statusBar  = null;
+		 spotlight = null;
 		 if (playButton != null) {
 			 playButton.dispose();
 			 playButton = null;
@@ -250,6 +257,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 * @param delta Number of seconds since last animation frame
 	 */
 	private void update(float delta) {
+		time += delta;
 		if (playButton == null) {
 			manager.update(budget);
 			this.progress = manager.getProgress();
@@ -271,6 +279,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private void draw() {
 		canvas.begin();
 		canvas.draw(background, 0, 0);
+		float theta = 0.5f*(float)Math.sin(1f*time + 0.2f);
+		canvas.draw(spotlight, Color.WHITE, spotlight.getWidth()*0.5f, 0f, 547f, 106f, theta, scale, scale);
 		if (playButton == null) {
 			drawProgress(canvas);
 		} else {
