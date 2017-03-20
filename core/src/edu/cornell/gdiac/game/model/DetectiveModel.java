@@ -58,6 +58,7 @@ public class DetectiveModel extends GameObject{
     private float amountEaten = 0;
     /** Amount required to enter second stage. */
     private float threshold = 60f;
+    private boolean hasEatenDessert = false;
     private boolean isSecondStage = false;
 
     public enum Animation {
@@ -96,10 +97,15 @@ public class DetectiveModel extends GameObject{
         if (chewing != null) {
             float tryToEat = CHEWING_RATE * dt;
             float actuallyAte = chewing.eat(tryToEat);
-            if (chewing.getAmount() == 0f) { chewing = null; }
+            if (chewing.getAmount() == 0f) {
+                if (chewing.isDessert()){
+                    hasEatenDessert = true;
+                }
+                chewing = null;
+            }
             amountEaten += actuallyAte;
 
-            if (amountEaten >= threshold) {
+            if (amountEaten >= threshold && hasEatenDessert) {
                 setStage(true);
                 getBody().getFixtureList().get(0).setRestitution(1f);
             }
