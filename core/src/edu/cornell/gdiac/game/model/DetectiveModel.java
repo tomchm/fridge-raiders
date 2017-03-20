@@ -61,6 +61,7 @@ public class DetectiveModel extends GameObject{
     private boolean hasEatenDessert = false;
     private boolean isSecondStage = false;
 
+
     public enum Animation {
         LEFT_MOVE, RIGHT_MOVE, UP_MOVE, DOWN_MOVE, LEFT_STOP, RIGHT_STOP, UP_STOP, DOWN_STOP
     }
