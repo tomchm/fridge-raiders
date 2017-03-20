@@ -224,6 +224,24 @@
       "origin_y": 194,
       "scale_x": 1,
       "scale_y": 1
+    },
+    {
+      "type": "image",
+      "tag": "foodbar",
+      "filename": "gui/foodbar.png",
+      "origin_x": 0,
+      "origin_y": 0,
+      "scale_x": 1,
+      "scale_y": 1
+    },
+    {
+      "type": "image",
+      "tag": "fat",
+      "filename": "player/fat.png",
+      "origin_x": 250,
+      "origin_y": 250,
+      "scale_x": 0.25,
+      "scale_y": 0.25
     }
   ]
 }

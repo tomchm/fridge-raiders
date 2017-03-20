@@ -1,5 +1,6 @@
 package edu.cornell.gdiac.game.gui;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import edu.cornell.gdiac.game.GameCanvas;
@@ -31,6 +32,10 @@ public class GUIController {
 
     public GUIModel getGUI(String tag){
         return guiMap.get(tag);
+    }
+
+    public void setOrigin(Vector2 new_origin){
+        GUIModel.setOrigin(new_origin);
     }
 
 }

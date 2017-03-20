@@ -57,7 +57,7 @@ public class DetectiveModel extends GameObject{
 
     private float amountEaten = 0;
     /** Amount required to enter second stage. */
-    private float threshold = 60f;
+    private float threshold = 150f;
     private boolean hasEatenDessert = false;
     private boolean isSecondStage = false;
 
@@ -85,7 +85,7 @@ public class DetectiveModel extends GameObject{
         fixtureDef.restitution = 0.0f;
         animation = Animation.DOWN_MOVE;
 
-        tags = new String[] {"player_down", "player_up", "player_left", "player_right"};
+        tags = new String[] {"player_down", "player_up", "player_left", "player_right", "fat"};
 
         force = new Vector2();
         velocity = new Vector2();
@@ -95,25 +95,32 @@ public class DetectiveModel extends GameObject{
     public void stopEating() { chewing = null; }
 
     public void update(float dt) {
-        System.out.println(body.getPosition().x + " : "+body.getPosition().y);
+        //System.out.println(body.getPosition().x + " : "+body.getPosition().y);
 
         if (chewing != null) {
             float tryToEat = CHEWING_RATE * dt;
-            float actuallyAte = chewing.eat(tryToEat);
-            if (chewing.getAmount() == 0f) {
-                if (chewing.isDessert()){
-                    hasEatenDessert = true;
+            boolean isDessert = chewing.isDessert();
+            if(!isDessert || amountEaten >= 0.999f*threshold){
+                float actuallyAte = chewing.eat(tryToEat);
+                if(!isDessert){
+                    amountEaten += actuallyAte;
                 }
-                chewing = null;
-            }
-            amountEaten += actuallyAte;
+                if (chewing.getAmount() == 0f) {
+                    if (isDessert){
+                        hasEatenDessert = true;
+                    }
+                    chewing = null;
+                }
 
-            if (amountEaten >= threshold && hasEatenDessert) {
-                setStage(true);
-                getBody().getFixtureList().get(0).setRestitution(1f);
+
+
+                if (amountEaten >= 0.999f*threshold && hasEatenDessert) {
+                    setStage(true);
+                    getBody().getFixtureList().get(0).setRestitution(1f);
+                }
             }
 
-            System.out.println(amountEaten);
+            //System.out.println(amountEaten);
         }
     }
 
@@ -123,34 +130,43 @@ public class DetectiveModel extends GameObject{
 
     public void draw(GameCanvas canvas){
         if(body != null){
-            FilmstripAsset fa = null;
-            switch (animation){
-                case DOWN_MOVE:
-                    frame++;
-                case DOWN_STOP:
-                    fa = (FilmstripAsset)assetMap.get("player_down");
-                    break;
-                case UP_MOVE:
-                    frame++;
-                case UP_STOP:
-                    fa = (FilmstripAsset)assetMap.get("player_up");
-                    break;
-                case LEFT_MOVE:
-                    frame++;
-                case LEFT_STOP:
-                    fa = (FilmstripAsset)assetMap.get("player_left");
-                    break;
-                case RIGHT_MOVE:
-                    frame++;
-                case RIGHT_STOP:
-                    fa = (FilmstripAsset)assetMap.get("player_right");
-                    break;
+            if(true){
+                FilmstripAsset fa = null;
+                switch (animation){
+                    case DOWN_MOVE:
+                        frame++;
+                    case DOWN_STOP:
+                        fa = (FilmstripAsset)assetMap.get("player_down");
+                        break;
+                    case UP_MOVE:
+                        frame++;
+                    case UP_STOP:
+                        fa = (FilmstripAsset)assetMap.get("player_up");
+                        break;
+                    case LEFT_MOVE:
+                        frame++;
+                    case LEFT_STOP:
+                        fa = (FilmstripAsset)assetMap.get("player_left");
+                        break;
+                    case RIGHT_MOVE:
+                        frame++;
+                    case RIGHT_STOP:
+                        fa = (FilmstripAsset)assetMap.get("player_right");
+                        break;
+                }
+                if(fa != null){
+                    int nFrame = (frame / fa.getSpeed()) % fa.getNumFrames();
+                    TextureRegion texture = fa.getTexture(nFrame);
+                    canvas.draw(texture, Color.WHITE,fa.getOrigin().x,fa.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,fa.getImageScale().x,fa.getImageScale().y);
+                }
             }
-            if(fa != null){
-                int nFrame = (frame / fa.getSpeed()) % fa.getNumFrames();
-                TextureRegion texture = fa.getTexture(nFrame);
-                canvas.draw(texture, Color.WHITE,fa.getOrigin().x,fa.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,fa.getImageScale().x,fa.getImageScale().y);
+            else{
+                ImageAsset ia = (ImageAsset) assetMap.get("fat");
+                if(ia != null){
+                    canvas.draw(ia.getTexture(), Color.WHITE,ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,ia.getImageScale().x,ia.getImageScale().y);
+                }
             }
+
 
         }
     }

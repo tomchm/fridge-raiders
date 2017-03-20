@@ -66,7 +66,7 @@ public class WorldController implements Screen {
 		WorldModel worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
 		assetLoader = new AssetLoader();
 		GameObject.setDrawScale(worldModel.getScale());
-		setDebug(true);
+		setDebug(false);
 		spacebarController = new SpacebarController(worldModel);
 		aiControllers = new PooledList <AIController>();
 		fileIOController = new FileIOController(worldModel);
@@ -140,12 +140,16 @@ public class WorldController implements Screen {
 			listener.exitScreen(this, EXIT_QUIT);
 			return false;
 		}
-		for(AIController ai : aiControllers){
-			if(ai.hasBeenCaught()){
-				reset();
-				break;
+		if(!worldModel.getPlayer().isSecondStage()){
+			for(AIController ai : aiControllers){
+				if(ai.hasBeenCaught()){
+					reset();
+					break;
+				}
 			}
 		}
+
+
 
 		return true;
 	}
@@ -188,6 +192,7 @@ public class WorldController implements Screen {
 		}
 		Vector2 position = worldModel.getPlayer().getBody().getPosition();
 		canvas.moveCamera(position.x, position.y);
+		guiController.setOrigin(position);
 	}
 
 	public void draw(float delta) {

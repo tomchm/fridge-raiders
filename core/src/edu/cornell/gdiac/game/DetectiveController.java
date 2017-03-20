@@ -18,7 +18,7 @@ public class DetectiveController {
     private AimGUIModel aimGUI;
     private boolean isSecondStage;
     private int lastMove = -1;
-    private final static float SHOOT_FORCE = 50f;
+    private final static float SHOOT_FORCE = 40f;
     private final static float MAX_FORCE = 500*SHOOT_FORCE;
 
 
@@ -160,6 +160,8 @@ public class DetectiveController {
 
 
         }
+
+        aimGUI.setFoodAmount(player.getAmountEaten());
 
     }
 
