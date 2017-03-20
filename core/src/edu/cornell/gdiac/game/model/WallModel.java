@@ -21,6 +21,8 @@ public class WallModel extends GameObject {
         //bodyDef.position.set(x,y);
         bodyDef.angle = 0f;
 
+        for (int i=0; i < coords.length; ++i) coords[i] *= 1.5f;
+
         PolygonShape shape = new PolygonShape();
         shape.set(coords);
         fixtureDef = new FixtureDef();

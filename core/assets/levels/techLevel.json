@@ -1,6 +1,6 @@
 {
   "player": {
-    "x": 27, "y": 3
+    "x": 40, "y": 5
   },
   "furniture": [
     {"x": 27, "y": 15, "width": 6, "height": 4.7, "theta": 0, "tags": ["couch"]}
