@@ -66,6 +66,7 @@ public class DetectiveController {
             myProcessor.lastY = 0;
             myProcessor.lastX = 0;
             aimGUI.setAim(false);
+            myProcessor.shouldRecordClick = false;
         }
         else {
             aimGUI.setAimVector(myProcessor.magnitude, player.getBody().getPosition());
@@ -137,6 +138,7 @@ public class DetectiveController {
 
         // If we are in stage two, no walking mechanics allowed
         if(isSecondStage){
+            player.setAnimation(DetectiveModel.Animation.DOWN_STOP);
             // Need the special input processor to do mouse commands from the input controller.
             MyInputProcessor processor = input.getMyProcessor();
             float speed = player.getSpeed();
@@ -144,6 +146,7 @@ public class DetectiveController {
             // Only want the player shooting when they've come to a stop
             // Slow them down otherwise.
             if(speed == 0) {
+                processor.shouldRecordClick = true;
                 if (didClickOnPlayer(processor)) {
                     handleShots(processor);
                 }

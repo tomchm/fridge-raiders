@@ -13,6 +13,7 @@ public class MyInputProcessor implements InputProcessor {
     public int dragX = 0;
     public int dragY = 0;
     public boolean released = false;
+    public boolean shouldRecordClick = true;
 
     public Vector2 magnitude = new Vector2(0,0);
 
@@ -29,10 +30,13 @@ public class MyInputProcessor implements InputProcessor {
     }
 
     public boolean touchDown (int x, int y, int pointer, int button) {
-        lastX = x;
-        lastY = y;
-        released = false;
-        return true;
+        if(shouldRecordClick) {
+            lastX = x;
+            lastY = y;
+            released = false;
+        }
+            return true;
+
     }
 
     public boolean touchUp (int x, int y, int pointer, int button) {
