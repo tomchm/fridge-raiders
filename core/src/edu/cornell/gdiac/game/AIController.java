@@ -63,13 +63,13 @@ public class AIController implements RayCastCallback{
 
     // Chase attributes
     /** the weight to apply to light time*/
-    protected static float DIST_SCL = 5.0f;
+    protected static float DIST_SCL = 8.0f;
     /** the limit of light time*/
-    protected static float LIGHT_LIM = 3.0f;
+    protected static float LIGHT_LIM = 4.0f;
     /** the threshold before chase*/
-    protected static float CHASE_LIM = 1.5f;
+    protected static float CHASE_LIM = 0.5f;
     /** the distance at which the ai catches the player*/
-    protected static float CATCH_DIST = 1.0f;
+    protected static float CATCH_DIST = 2.4f;
     /** the weighted time the player has been in the light*/
     private float lightTime;
     /** caches dt value for callback*/
@@ -142,9 +142,11 @@ public class AIController implements RayCastCallback{
         Vector2 playerPos = player.getBody().getPosition();
         worldModel.world.rayCast(this, aiPos.x, aiPos.y, playerPos.x, playerPos.y);
         updateLightTime();
-        if (ai.getBody().getPosition().dst(player.getBody().getPosition()) - ai.getRadius() - player.getRadius() < CATCH_DIST) {
-            lightTime = LIGHT_LIM;
+        if (ai.getBody().getPosition().dst(player.getBody().getPosition()) - ai.getRadius() - player.getRadius() < CATCH_DIST && !blocked) {
+            lightTime = (CHASE_LIM > lightTime) ? CHASE_LIM : lightTime;
         }
+        seen = false;
+        blocked = false;
     }
 
     /**
@@ -159,8 +161,6 @@ public class AIController implements RayCastCallback{
             lightTime = lightTime - dtCache/2;
             lightTime = (lightTime < 0) ? 0 : lightTime;
         }
-        seen = false;
-        blocked = false;
     }
 
 
@@ -252,13 +252,15 @@ public class AIController implements RayCastCallback{
 
             // checks if player is in sight, switches to CHASE
             case PATHING:
-                if (lightTime > CHASE_LIM){
+                if (lightTime >= CHASE_LIM){
+                    ai.setSpeed(ai.getSpeed()*ai.getSpeedUpScale());
                     state = FSMState.CHASE;
                 }
                 break;
 
             case CHASE:
                 if (lightTime  == 0){
+                    ai.setSpeed(ai.getSpeed()/ai.getSpeedUpScale());
                     state = FSMState.PATHING;
                 }
                 break;

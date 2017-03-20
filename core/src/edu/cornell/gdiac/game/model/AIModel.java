@@ -26,6 +26,8 @@ public class AIModel extends GameObject{
     // Variable Fields
     /*speed of the ai movement*/
     protected float speed = 3.0f;
+    /*scaling factor of speed after ai finds player*/
+    protected float speedUpScale = 1.5f;
     /*cone Light of the ai*/
     protected ConeLight coneLight;
     /*radius of light cone*/
@@ -51,6 +53,11 @@ public class AIModel extends GameObject{
      * @param val, speed to set
      */
     public void setSpeed(float val) {speed = val;}
+
+    /**
+     * @return the speed scale of this ai model
+     */
+    public float getSpeedUpScale() {return speedUpScale;}
 
     /**
      *@return the path of this ai

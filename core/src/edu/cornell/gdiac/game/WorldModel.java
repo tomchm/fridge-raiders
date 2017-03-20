@@ -85,15 +85,16 @@ public class WorldModel {
         initLighting();
 
         // sensor info
-        height = 60;
-        width = 60;
+        //TODO
+        height = 120;
+        width = 120;
         sensors = new int[height*width];
     }
 
     /**
-     * Updates all sensors with static objects on them
+     * Updates all sensors with static objects on them over the course of several ticks
      */
-    public void updateSensors(){
+    public void updateAllSensors(){
         for(int i = 0; i < width ;i ++){
             for(int j = 0; j < height; j++){
                 // CHANGE magic number
@@ -102,6 +103,20 @@ public class WorldModel {
                 }
                 else {
                     sensors[i*width + j] = 1;
+                }
+            }
+        }
+    }
+
+    /**
+     * Turns value of all sensors for a given object to onoff
+     */
+    public void turnOnOffObjSensors(GameObject object, int onoff){
+        for(int i = 0; i < width ;i ++){
+            for(int j = 0; j < height; j++){
+                // CHANGE magic number
+                if (!(isAccessibleWithRadiusSingleObject(i,j,1.2f, object))) {
+                    sensors[i*width + j] = onoff;
                 }
             }
         }
@@ -119,7 +134,7 @@ public class WorldModel {
 
         rayhandler = new RayHandler(world, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
         rayhandler.setCombinedMatrix(raycamera);
-        rayhandler.setAmbientLight(0,0,0,0.8f);
+        rayhandler.setAmbientLight(0,0,0,0.7f);
     }
 
     public DetectiveModel getPlayer() { return detective; }
@@ -335,12 +350,20 @@ public class WorldModel {
      */
     public boolean isAccessibleWithRadius(float x, float y, float radius) {
         for(GameObject obj: solidGameObjects) {
-            for(double i = 0; i < 2*Math.PI; i = i + Math.PI/4){
-                float tempx = (float)Math.cos(i)*radius + x;
-                float tempy = (float)Math.sin(i)*radius + y;
-                if (obj.getBody().getFixtureList().get(0).testPoint(tempx,tempy)) {
-                    return false;
-                }
+            if (!isAccessibleWithRadiusSingleObject(x,y,radius,obj)) return false;
+        }
+        return true;
+    }
+
+    /** returns true if any of 8 cardinal points radius away from x y
+     *  are not in the given object
+     */
+    public boolean isAccessibleWithRadiusSingleObject(float x, float y, float radius, GameObject obj) {
+        for(double i = 0; i < 2*Math.PI; i = i + Math.PI/4){
+            float tempx = (float)Math.cos(i)*radius + x;
+            float tempy = (float)Math.sin(i)*radius + y;
+            if (obj.getBody().getFixtureList().get(0).testPoint(tempx,tempy)) {
+                return false;
             }
         }
         return true;

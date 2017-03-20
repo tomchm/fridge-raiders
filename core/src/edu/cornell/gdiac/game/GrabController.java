@@ -31,6 +31,8 @@ public class GrabController {
         worldModel.getPlayer().setGrappled(true);
         worldModel.addJoint(jointDef);
         worldModel.setDynamic(current.getBody());
+        worldModel.turnOnOffObjSensors(current, 0);
+
     }
 
     /** Unweld the player. */
@@ -40,8 +42,8 @@ public class GrabController {
 
         worldModel.getPlayer().setGrappled(false);
         worldModel.setStatic(current.getBody());
+        worldModel.turnOnOffObjSensors(current, 1);
         current = null;
         worldModel.clearJoints();
-        worldModel.updateSensors();
     }
 }
