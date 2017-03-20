@@ -1,6 +1,7 @@
 package edu.cornell.gdiac.game.model;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -17,6 +18,7 @@ public class FoodModel extends GameObject {
     private float radius;
     private float amount;
     private float maxAmount;
+    private int counter;
 
     public FoodModel(float x, float y, float radius, float theta, boolean dessert, float amount, String[] tags){
         bodyDef = new BodyDef();
@@ -42,6 +44,7 @@ public class FoodModel extends GameObject {
         this.tags = tags;
         this.amount = amount;
         this.maxAmount = amount;
+        counter = 1;
     }
 
     public boolean isDessert() {return isDessert;}
@@ -66,8 +69,17 @@ public class FoodModel extends GameObject {
             Asset asset = assetMap.get(tags[0]);
             if(asset instanceof ImageAsset){
                 ImageAsset ia = (ImageAsset) asset;
-                float alpha = 1 - (1/(maxAmount*maxAmount))*(maxAmount - amount)*(maxAmount - amount);
-                Color color = new Color(1,1,1, alpha);
+                float alpha = (amount/maxAmount)*0.7f + 0.3f;
+                if(amount == 0){
+                    alpha = 0;
+                }
+                float col = 1;
+                if(isDessert){
+                    counter+=3;
+                    float step = MathUtils.cosDeg(counter);
+                    col = step*0.15f + 0.85f;
+                }
+                Color color = new Color(col,col,col, alpha);
                 canvas.draw(ia.getTexture(), color,ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),ia.getImageScale().x,ia.getImageScale().y);
             }
         }

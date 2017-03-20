@@ -35,7 +35,6 @@ public class AimGUIModel extends GUIModel{
                 if(asset != null){
                     float x = aimPosition.x*GameObject.getDrawScale().x + aimVector.x*AIM_SCALE*i;
                     float y = aimPosition.y*GameObject.getDrawScale().y - aimVector.y*AIM_SCALE*i;
-                    System.out.println(aimVector.len());
                     Color color = new Color(1-(aimVector.len()/MAX_FORCE),1,1-(aimVector.len()/MAX_FORCE), (((float)AIM_BALLS-i)/AIM_BALLS));
                     canvas.draw(asset.getTexture(), color,asset.getOrigin().x,asset.getOrigin().y,x,y,0,asset.getImageScale().x,asset.getImageScale().y);
 

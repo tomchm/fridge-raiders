@@ -44,11 +44,18 @@ public class FileIOController {
             for (JsonValue f = furniture.child(); f != null; f = f.next() ) {
                 float x = f.get("x").asFloat();
                 float y = f.get("y").asFloat();
-                float width = f.get("width").asFloat();
-                float height = f.get("height").asFloat();
                 float theta = f.get("theta").asFloat() * (float)Math.PI / 180f;
                 String[] tags = f.get("tags").asStringArray();
-                worldModel.addGameObject(new FurnitureModel(x, y, width, height, theta, tags));
+                float radius = f.get("radius").asFloat();
+                float width = f.get("width").asFloat();
+                float height = f.get("height").asFloat();
+                if(radius > 0){
+                    worldModel.addGameObject(new FurnitureModel(x, y, radius, theta, tags));
+                }
+                else {
+                    worldModel.addGameObject(new FurnitureModel(x, y, width, height, theta, tags));
+                }
+
             }
 
             // array of door objects
@@ -116,7 +123,7 @@ public class FileIOController {
                     FurnitureModel f = (FurnitureModel)go;
                     Body b = f.getBody();
                     furniture.add(new Furniture(b.getPosition().x, b.getPosition().y,
-                            f.getWidth(), f.getHeight(), b.getAngle()*180f/(float)Math.PI,
+                            f.getWidth(), f.getHeight(), f.getRadius(), b.getAngle()*180f/(float)Math.PI,
                             f.getTags()));
                 }
 //                 Adding Doors to the list of game object
@@ -157,8 +164,8 @@ public class FileIOController {
     }
 
     private class Furniture{
-        float x, y, width, height, theta; String[] tags;
-        public Furniture(float x, float y, float width, float height, float theta, String[] tags) {
+        float x, y, width, height, radius, theta; String[] tags;
+        public Furniture(float x, float y, float width, float height, float radius, float theta, String[] tags) {
             this.x=x; this.y=y; this.width=width; this.height = height; this.theta=theta; this.tags=tags;
         }
     }

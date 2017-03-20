@@ -3,12 +3,34 @@
     "x": 40, "y": 5
   },
   "furniture": [
-    {"x": 27, "y": 15, "width": 6, "height": 4.7, "theta": 0, "tags": ["couch"]}
+    {"x": 44, "y": 25, "width": 6, "height": 4.7, "radius": 0, "theta": 0, "tags": ["couch"]},
+    {"x": 30, "y": 40, "width": 5, "height": 5, "radius": 0, "theta": 0, "tags": ["bed"]},
+    {"x": 30, "y": 34, "width": 0, "height": 0, "radius": 2.15, "theta": 0, "tags": ["table"]},
+    {"x": 72, "y": 35, "width": 0, "height": 0, "radius": 1.5, "theta": 0, "tags": ["chair1"]},
+    {"x": 55, "y": 50, "width": 0, "height": 0, "radius": 1.5, "theta": 0, "tags": ["chair2"]}
   ],
   "doors": [
       ],
   "food": [
-    {"x": 30, "y": 30, "radius": 1.5, "theta": 0, "tags": ["turkey"], "dessert": true, "amount": 80}
+    {"x": 47, "y": 45, "radius": 2.5, "theta": 0, "tags": ["scamDessert"], "dessert": true, "amount": 80},
+    {"x": 54, "y": 43, "radius": 1, "theta": 0, "tags": ["scam1"], "dessert": false, "amount": 10},
+    {"x": 51, "y": 41, "radius": 1, "theta": 0, "tags": ["scam2"], "dessert": false, "amount": 10},
+    {"x": 49, "y": 50, "radius": 1, "theta": 0, "tags": ["scam2"], "dessert": false, "amount": 10},
+    {"x": 41, "y": 47, "radius": 1, "theta": 0, "tags": ["scam1"], "dessert": false, "amount": 10},
+    {"x": 65, "y": 33, "radius": 1.1, "theta": 0, "tags": ["scam2"], "dessert": false, "amount": 10},
+    {"x": 77, "y": 26, "radius": 1.1, "theta": 0, "tags": ["hotdog"], "dessert": false, "amount": 10},
+    {"x": 77, "y": 21, "radius": 1.6, "theta": 0, "tags": ["pie1"], "dessert": false, "amount": 20},
+    {"x": 56, "y": 25, "radius": 1, "theta": 0, "tags": ["tomato1"], "dessert": false, "amount": 10},
+    {"x": 58, "y": 27, "radius": 1, "theta": 0, "tags": ["tomato2"], "dessert": false, "amount": 10},
+    {"x": 50, "y": 25, "radius": 1, "theta": 0, "tags": ["scam1"], "dessert": false, "amount": 10},
+    {"x": 27, "y": 18, "radius": 1.1, "theta": 0, "tags": ["burger"], "dessert": false, "amount": 10},
+    {"x": 23, "y": 18, "radius": 1.1, "theta": 0, "tags": ["hotdog"], "dessert": false, "amount": 10},
+    {"x": 10, "y": 10, "radius": 1.1, "theta": 0, "tags": ["burger"], "dessert": false, "amount": 10},
+    {"x": 8, "y": 12, "radius": 1.1, "theta": 0, "tags": ["hotdog"], "dessert": false, "amount": 10},
+    {"x": 12, "y": 12, "radius": 1.6, "theta": 0, "tags": ["pie2"], "dessert": false, "amount": 20},
+    {"x": 5, "y": 20, "radius": 1, "theta": 0, "tags": ["tomato1"], "dessert": false, "amount": 10},
+    {"x": 3, "y": 22, "radius": 1, "theta": 0, "tags": ["tomato2"], "dessert": false, "amount": 10},
+    {"x": 4, "y": 30, "radius": 1.6, "theta": 0, "tags": ["pie1"], "dessert": false, "amount": 10}
   ],
   "ais": [
   ],
