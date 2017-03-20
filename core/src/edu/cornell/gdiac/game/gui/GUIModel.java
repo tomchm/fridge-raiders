@@ -18,6 +18,7 @@ public abstract class GUIModel {
     protected String[] tags;
     protected ObjectMap<String, Asset> assetMap = new ObjectMap<String, Asset>();
     protected String guiTag;
+    protected static Vector2 origin;
 
     public void addAsset(String tag, Asset asset){
         assetMap.put(tag, asset);
@@ -31,4 +32,7 @@ public abstract class GUIModel {
 
     public abstract void draw(GameCanvas canvas);
 
+    public static void setOrigin(Vector2 new_origin){
+        origin = new_origin;
+    }
 }
