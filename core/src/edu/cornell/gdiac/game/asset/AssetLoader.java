@@ -1,6 +1,8 @@
 package edu.cornell.gdiac.game.asset;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -75,6 +77,12 @@ public class AssetLoader
                     Asset asset = new FilmstripAsset(filename, new Vector2(origin_x, origin_y), new Vector2(scale_x, scale_y), numFrames, speed);
                     assetMap.put(tag, asset);
                 }
+                else if (type.equals("sound")) {
+                    String tag = entry.getString("tag");
+                    String filename = entry.getString("filename");
+                    Asset asset = new SoundAsset(filename);
+                    assetMap.put(tag, asset);
+                }
             }
         }
         catch(Exception e){
@@ -89,7 +97,13 @@ public class AssetLoader
         worldAssetState = AssetState.LOADING;
 
         for(Asset asset : assetMap.values()){
-            manager.load(asset.getFileName(), Texture.class);
+            if (asset instanceof FilmstripAsset || asset instanceof ImageAsset) {
+                manager.load(asset.getFileName(), Texture.class);
+            }
+            else if (asset instanceof SoundAsset){
+                System.out.println(((SoundAsset) asset).getFilename());
+                manager.load(asset.getFileName(), Sound.class);
+            }
         }
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
