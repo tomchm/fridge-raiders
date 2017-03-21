@@ -37,6 +37,8 @@ public class AIModel extends GameObject{
     /*the path the ai takes around level*/
     protected Vector2[] path;
 
+    public boolean isDead = false;
+
 
     /**
      * @return speed of the ai model
@@ -145,7 +147,8 @@ public class AIModel extends GameObject{
             Asset asset = assetMap.get(tags[0]);
             if(asset instanceof ImageAsset){
                 ImageAsset ia = (ImageAsset) asset;
-                canvas.draw(ia.getTexture(), Color.WHITE,ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,ia.getImageScale().x,ia.getImageScale().y);
+                float angle = isDead ? body.getAngle() : 0;
+                canvas.draw(ia.getTexture(), Color.WHITE,ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,angle,ia.getImageScale().x,ia.getImageScale().y);
             }
         }
     }

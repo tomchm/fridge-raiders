@@ -67,6 +67,7 @@ public class DetectiveController {
             myProcessor.lastX = 0;
             aimGUI.setAim(false);
             myProcessor.shouldRecordClick = false;
+            player.consumeShot();
         }
         else {
             aimGUI.setAimVector(myProcessor.magnitude, player.getBody().getPosition());

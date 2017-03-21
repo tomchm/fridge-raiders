@@ -244,4 +244,11 @@ public class DetectiveModel extends GameObject{
     public boolean isSecondStage(){
         return this.isSecondStage;
     }
+
+    public void consumeShot(){
+        amountEaten -= 10f;
+        if(amountEaten < 0f){
+            amountEaten = 0f;
+        }
+    }
 }

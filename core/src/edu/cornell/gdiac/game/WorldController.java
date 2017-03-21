@@ -148,6 +148,11 @@ public class WorldController implements Screen {
 				}
 			}
 		}
+		else {
+			if(worldModel.getPlayer().getAmountEaten() == 0){
+				reset();
+			}
+		}
 
 
 
@@ -160,9 +165,16 @@ public class WorldController implements Screen {
 		if (InputController.getInstance().didSecondary()) spacebarController.keyDown();
 		else if (InputController.getInstance().releasedSecondary()) spacebarController.keyUp();
 
-        for(AIController aic: aiControllers) {
-			aic.update(dt);
+		for (AIController aic : aiControllers) {
+
+			if(worldModel.getPlayer().isSecondStage()){
+				aic.update2(dt);
+			}
+			else {
+				aic.update(dt);
+			}
 		}
+
 		worldModel.updateGameObjects(dt);
         worldModel.removeEatenFood();
 		SoundController.getInstance().update();

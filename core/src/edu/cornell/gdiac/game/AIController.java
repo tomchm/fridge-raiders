@@ -1,6 +1,7 @@
 package edu.cornell.gdiac.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
@@ -78,6 +79,11 @@ public class AIController implements RayCastCallback{
     private boolean seen;
     /** true if player is blocked from sight by object*/
     private boolean blocked;
+
+    /** true is converted to second stage */
+    private boolean isSecondStage;
+    /** true if AI was run over */
+    private boolean isDead;
 
     /**
      * Creates an AIController for the given ai.
@@ -423,6 +429,27 @@ public class AIController implements RayCastCallback{
      */
     public boolean hasBeenCaught(){
         return lightTime >= LIGHT_LIM;
+    }
+
+    /*
+     * Updates the AI for the second stage
+     */
+    public void update2(float dt){
+        if(!isSecondStage){
+            ai.getBody().getFixtureList().first().setSensor(true);
+            worldModel.setStatic(ai.getBody());
+            ai.setSpeed(0);
+            isSecondStage = true;
+        }
+        Vector2 playerPos = player.getBody().getPosition().cpy();
+        Vector2 myPos = ai.getBody().getPosition().cpy();
+        if(!isDead && playerPos.dst(myPos) < ai.getRadius()*2){
+            ai.getBody().setTransform(ai.getBody().getPosition(), MathUtils.degreesToRadians*90);
+            ai.isDead = true;
+            System.out.println("DEAD");
+            System.out.println(ai.getBody().getAngle());
+            isDead = true;
+        }
     }
 
     /**
