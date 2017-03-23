@@ -26,6 +26,7 @@ public class FurnitureModel extends GameObject {
         fixtureDef = new FixtureDef();
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
+        fixtureDef.restitution = 1f;
 
         this.width = width;
         this.height = height;
