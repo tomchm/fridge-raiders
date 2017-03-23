@@ -82,6 +82,7 @@ public class DetectiveModel extends GameObject{
         fixtureDef = new FixtureDef();
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
+        fixtureDef.friction = 0f;
         fixtureDef.restitution = 0.0f;
         animation = Animation.DOWN_MOVE;
 

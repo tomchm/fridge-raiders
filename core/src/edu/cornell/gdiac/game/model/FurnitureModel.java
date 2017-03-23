@@ -49,6 +49,7 @@ public class FurnitureModel extends GameObject {
         fixtureDef = new FixtureDef();
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
+        fixtureDef.friction = 0f;
 
         this.radius = radius;
 
