@@ -10,6 +10,15 @@
       "scale_x": 0.5,
       "scale_y": 0.5
     },
+    { "type": "image", "tag": "hand", "filename": "player/hand.png", "origin_x": 26, "origin_y": 29, "scale_x": 0.5, "scale_y": 0.5 },
+    { "type": "image", "tag": "foot", "filename": "player/foot.png", "origin_x": 17, "origin_y": 38, "scale_x": 0.5, "scale_y": 0.5 },
+    { "type": "image", "tag": "hat", "filename": "player/hat.png", "origin_x": 54, "origin_y": 50, "scale_x": 0.5, "scale_y": 0.5 },
+    { "type": "image", "tag": "buckle", "filename": "player/buckle.png", "origin_x": 21, "origin_y": 20, "scale_x": 0.5, "scale_y": 0.5 },
+    { "type": "image", "tag": "loop", "filename": "player/loop.png", "origin_x": 6, "origin_y": 13, "scale_x": 0.5, "scale_y": 0.5 },
+    { "type": "image", "tag": "tie", "filename": "player/tie.png", "origin_x": 21, "origin_y": 53, "scale_x": 0.5, "scale_y": 0.5 },
+    { "type": "image", "tag": "mask", "filename": "player/mask.png", "origin_x": 140, "origin_y": 140, "scale_x": 0.5, "scale_y": 0.5 },
+    { "type": "image", "tag": "coat", "filename": "player/coat.png", "origin_x": 140, "origin_y": 140, "scale_x": 0.5, "scale_y": 0.5 },
+    { "type": "image", "tag": "backpocket", "filename": "player/backpocket.png", "origin_x": 23, "origin_y": 24, "scale_x": 0.5, "scale_y": 0.5 },
     {
       "type": "image",
       "tag": "ai",

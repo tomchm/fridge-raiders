@@ -1,5 +1,6 @@
 package edu.cornell.gdiac.game.model;
 
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,6 +11,7 @@ import edu.cornell.gdiac.game.WorldModel;
 import edu.cornell.gdiac.game.asset.Asset;
 import edu.cornell.gdiac.game.asset.FilmstripAsset;
 import edu.cornell.gdiac.game.asset.ImageAsset;
+import edu.cornell.gdiac.util.PooledList;
 
 /**
  * Created by tomchm on 3/9/17.
@@ -37,14 +39,12 @@ public class DetectiveModel extends GameObject{
     /** The food the player is currently eating. */
     private FoodModel chewing = null;
 
+    /** The list of stickers on the rolling ball version of the character. */
+    private PooledList<Sticker> stickers;
+
     /** Cache object for transforming the force according the object angle */
     public Affine2 affineCache = new Affine2();
     /** Cache object for left afterburner origin */
-
-    /** True: walking. False: rolling. */
-    private boolean isWalking = true;
-    public boolean isWalking() { return isWalking; }
-    public void setWalking(boolean b) { isWalking = b; }
 
     private boolean isGrappled = false;
     public boolean isGrappled() {return isGrappled;}
@@ -55,11 +55,11 @@ public class DetectiveModel extends GameObject{
     private int frame = 0;
     private Animation animation;
 
-    private float amountEaten = 0;
+    private float amountEaten = 160f;
     /** Amount required to enter second stage. */
     private float threshold = 150f;
-    private boolean hasEatenDessert = false;
-    private boolean isSecondStage = false;
+    private boolean hasEatenDessert = true;
+    private boolean isSecondStage = true;
 
 
     public enum Animation {
@@ -77,8 +77,8 @@ public class DetectiveModel extends GameObject{
         bodyDef.position.set(x,y);
 
         Shape shape = new CircleShape();
-        shape.setRadius(1.2f);
-        radius = 1.2f;
+        shape.setRadius(2.2f);
+        radius = 2.2f;
         fixtureDef = new FixtureDef();
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
@@ -86,7 +86,19 @@ public class DetectiveModel extends GameObject{
         fixtureDef.restitution = 0.0f;
         animation = Animation.DOWN_MOVE;
 
-        tags = new String[] {"player_down", "player_up", "player_left", "player_right", "fat"};
+        tags = new String[] {"player_down", "player_up", "player_left", "player_right", "fat",
+        "coat", "hat", "mask", "hand", "foot", "buckle", "loop", "tie", "backpocket"};
+
+        stickers = new PooledList<Sticker>();
+        stickers.add(new Sticker("hat", 0f, 0f, 0f));
+        stickers.add(new Sticker("tie", 0f, 50f, 0f));
+        stickers.add(new Sticker("hand", 75f, 65f, 180f));
+        stickers.add(new Sticker("hand", -75f, 65f, 180f));
+        stickers.add(new Sticker("buckle", 0f, 90f, 0f));
+        //stickers.add(new Sticker("backpocket", 155f, 120f, 0f));
+        //stickers.add(new Sticker("backpocket", -155f, 120f, 0f));
+        stickers.add(new Sticker("foot", 45f, 145f, 0f));
+        stickers.add(new Sticker("foot", -45f, 145f, 0f));
 
         force = new Vector2();
         velocity = new Vector2();
@@ -97,6 +109,16 @@ public class DetectiveModel extends GameObject{
 
     public void update(float dt) {
         //System.out.println(body.getPosition().x + " : "+body.getPosition().y);
+
+        /** Rotate all of the body parts in 3D on the balled-up character. */
+        if (isSecondStage) {
+            Vector2 vel = body.getLinearVelocity();
+            float omega = vel.len() / getRadius();
+            float phi = (float)Math.atan2(vel.y, vel.x) - 0.5f*(float)Math.PI;
+            for (Sticker s : stickers) {
+                s.rotate(phi, -omega*dt, -phi);
+            }
+        }
 
         if (chewing != null) {
             float tryToEat = CHEWING_RATE * dt;
@@ -130,46 +152,53 @@ public class DetectiveModel extends GameObject{
     }
 
     public void draw(GameCanvas canvas){
-        if(body != null){
-            if(true){
-                FilmstripAsset fa = null;
-                switch (animation){
-                    case DOWN_MOVE:
-                        frame++;
-                    case DOWN_STOP:
-                        fa = (FilmstripAsset)assetMap.get("player_down");
-                        break;
-                    case UP_MOVE:
-                        frame++;
-                    case UP_STOP:
-                        fa = (FilmstripAsset)assetMap.get("player_up");
-                        break;
-                    case LEFT_MOVE:
-                        frame++;
-                    case LEFT_STOP:
-                        fa = (FilmstripAsset)assetMap.get("player_left");
-                        break;
-                    case RIGHT_MOVE:
-                        frame++;
-                    case RIGHT_STOP:
-                        fa = (FilmstripAsset)assetMap.get("player_right");
-                        break;
-                }
-                if(fa != null){
-                    int nFrame = (frame / fa.getSpeed()) % fa.getNumFrames();
-                    TextureRegion texture = fa.getTexture(nFrame);
-                    canvas.draw(texture, Color.WHITE,fa.getOrigin().x,fa.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,fa.getImageScale().x,fa.getImageScale().y);
-                }
-            }
-            else{
-                ImageAsset ia = (ImageAsset) assetMap.get("fat");
-                if(ia != null){
-                    canvas.draw(ia.getTexture(), Color.WHITE,ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,ia.getImageScale().x,ia.getImageScale().y);
-                }
-            }
+        if(body == null) return;
 
-
+        if(!isSecondStage){
+            FilmstripAsset fa = null;
+            switch (animation){
+                case DOWN_MOVE:
+                    frame++;
+                case DOWN_STOP:
+                    fa = (FilmstripAsset)assetMap.get("player_down");
+                    break;
+                case UP_MOVE:
+                    frame++;
+                case UP_STOP:
+                    fa = (FilmstripAsset)assetMap.get("player_up");
+                    break;
+                case LEFT_MOVE:
+                    frame++;
+                case LEFT_STOP:
+                    fa = (FilmstripAsset)assetMap.get("player_left");
+                    break;
+                case RIGHT_MOVE:
+                    frame++;
+                case RIGHT_STOP:
+                    fa = (FilmstripAsset)assetMap.get("player_right");
+                    break;
+            }
+            if(fa != null){
+                int nFrame = (frame / fa.getSpeed()) % fa.getNumFrames();
+                TextureRegion texture = fa.getTexture(nFrame);
+                canvas.draw(texture, Color.WHITE,fa.getOrigin().x,fa.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,fa.getImageScale().x,fa.getImageScale().y);
+            }
         }
+        else{
+            drawFat(canvas);
+        }
+    }
+
+    public void drawFat(GameCanvas canvas) {
+        /*ImageAsset mask = (ImageAsset) assetMap.get("mask");
+        canvas.drawMask(mask.getTexture(), mask.getOrigin().x,mask.getOrigin().y,
+                body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,
+                mask.getImageScale().x,mask.getImageScale().y);*/
+        ImageAsset coat = (ImageAsset) assetMap.get("coat");
+        canvas.draw(coat.getTexture(), Color.WHITE,coat.getOrigin().x,coat.getOrigin().y,
+                body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,
+                coat.getImageScale().x,coat.getImageScale().y);
+        for (Sticker s : stickers) s.draw(canvas);
     }
 
     public Vector2 getForce() {
@@ -187,24 +216,6 @@ public class DetectiveModel extends GameObject{
     }
     public void setFY(float value) {
         force.y = value;
-    }
-
-    public void setVX(float value) {
-        velocity.x = value;
-    }
-    public void setVY(float value) {
-        velocity.y = value;
-    }
-    public void setVelocity(Vector2 v) {
-        velocity = v;
-    }
-
-    public float getVX() {return velocity.x;}
-    public float getVY() {
-        return velocity.y;
-    }
-    public Vector2 getVelocity() {
-        return velocity;
     }
 
     public float getThrust() {
@@ -250,6 +261,54 @@ public class DetectiveModel extends GameObject{
         amountEaten -= 10f;
         if(amountEaten < 0f){
             amountEaten = 0f;
+        }
+    }
+
+    private class Sticker {
+        public float x1, y1, z1;
+        public float x2, y2, z2;
+        public String tag;
+
+        /** Constructor takes angles in DEGREES */
+        public Sticker(String tag, float phi, float theta, float psi) {
+            this.tag = tag;
+            x1 = 0f; y1 = 0f; z1 = 1f;
+            x2 = 1f; y2 = 0f; z2 = 0f;
+            rotate(phi*(float)Math.PI/180f, theta*(float)Math.PI/180f, psi*(float)Math.PI/180f);
+        }
+        public void rotate(float phi, float theta, float psi) {
+            float c1 = (float)Math.cos(phi); float c2 = (float)Math.cos(theta); float c3 = (float)Math.cos(psi);
+            float s1 = (float)Math.sin(phi); float s2 = (float)Math.sin(theta); float s3 = (float)Math.sin(psi);
+
+            /** From Wolfram MathWorld, "Euler Angles."
+             *  This is the passive rotation. Use the transpose. */
+            float a11 = c3*c1 - c2*s1*s3; float a12 = c3*s1 + c2*c1*s3; float a13 = s3*s2;
+            float a21 = -s3*c1 - c2*s1*c3; float a22 = -s3*s1 + c2*c1*c3; float a23 = c3*s2;
+            float a31 = s2*s1; float a32 = -s2*c1; float a33 = c2;
+
+            float newX = a11*x1 + a21*y1 + a31*z1;
+            float newY = a12*x1 + a22*y1 + a32*z1;
+            float newZ = a13*x1 + a23*y1 + a33*z1;
+            x1 = newX; y1 = newY; z1 = newZ;
+
+            newX = a11*x2 + a21*y2 + a31*z2;
+            newY = a12*x2 + a22*y2 + a32*z2;
+            newZ = a13*x2 + a23*y2 + a33*z2;
+            x2 = newX; y2 = newY; z2 = newZ;
+        }
+        public void draw(GameCanvas canvas) {
+            ImageAsset ia = (ImageAsset) assetMap.get(tag);
+            if (ia == null) return;
+            if (z1 <= 0f) return;
+            // x, y relative to center of body. In physics coordinates.
+            float scale = (getRadius() + 0.5f*ia.getImageScale().x*ia.getTexture().getRegionWidth()/drawScale.x)/getRadius();
+            scale =1f;
+            float x = scale*getRadius()*x1;
+            float y = scale*getRadius()*y1;
+            float angle = (float)Math.atan2(y2, x2);
+            canvas.draw(ia.getTexture(), Color.WHITE, ia.getOrigin().x,ia.getOrigin().y,
+                    (x+body.getPosition().x)*drawScale.x,(y+body.getPosition().y)*drawScale.x,
+                    angle,ia.getImageScale().x,ia.getImageScale().y);
         }
     }
 }

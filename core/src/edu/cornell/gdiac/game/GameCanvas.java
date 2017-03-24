@@ -660,6 +660,19 @@ public class GameCanvas {
 		spriteBatch.draw(region, region.getRegionWidth(), region.getRegionHeight(), local);
 	}
 
+	/*
+	public void drawMask(TextureRegion region, float ox, float oy,
+						 float x, float y, float angle, float sx, float sy) {
+		Gdx.gl.glColorMask(false, false, false, true);
+		spriteBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ZERO);
+		computeTransform(ox,oy,x,y,angle,sx,sy);
+		spriteBatch.draw(region, region.getRegionWidth(), region.getRegionHeight(), local);
+		Gdx.gl.glColorMask(true, true, true, true);
+		spriteBatch.setBlendFunction(GL20.GL_DST_ALPHA, GL20.GL_ONE_MINUS_DST_ALPHA);
+		//end();
+		//begin();
+	}*/
+
 	/**
 	 * Draws the tinted texture with the given transformations
 	 *
