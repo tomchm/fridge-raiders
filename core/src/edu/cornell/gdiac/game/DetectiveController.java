@@ -76,29 +76,31 @@ public class DetectiveController {
     }
 
     private void animatePlayer(InputController input){
+        float multiplier = player.isGrappled() ? 0.30f : 0.55f;
+
         // Check which direction we are allowing the player to move
         if(input.getHorizontal() != 0.0){
             if(input.getHorizontal() == -1.0){
                 player.setAnimation(DetectiveModel.Animation.LEFT_MOVE);
-                player.getBody().setLinearVelocity(player.getThrust() * input.getHorizontal(), 0);
+                player.getBody().setLinearVelocity(player.getThrust() * input.getHorizontal() * multiplier, 0);
                 lastMove = 3;
 
             }
             else{
                 player.setAnimation(DetectiveModel.Animation.RIGHT_MOVE);
-                player.getBody().setLinearVelocity(player.getThrust() * input.getHorizontal(), 0);
+                player.getBody().setLinearVelocity(player.getThrust() * input.getHorizontal()* multiplier, 0);
                 lastMove =1;
             }
         }
         else if(input.getVertical() != 0.0){
             if(input.getVertical() == -1.0){
                 player.setAnimation(DetectiveModel.Animation.DOWN_MOVE);
-                player.getBody().setLinearVelocity(0, player.getThrust() * input.getVertical());
+                player.getBody().setLinearVelocity(0, player.getThrust() * input.getVertical()* multiplier);
                 lastMove =2;
             }
             else{
                 player.setAnimation(DetectiveModel.Animation.UP_MOVE);
-                player.getBody().setLinearVelocity(0, player.getThrust() * input.getVertical());
+                player.getBody().setLinearVelocity(0, player.getThrust() * input.getVertical()* multiplier);
                 lastMove = 0;
             }
         }
@@ -121,7 +123,7 @@ public class DetectiveController {
                     break;
             }
 
-            player.getBody().setLinearVelocity(player.getThrust()*input.getHorizontal(), player.getThrust() * input.getVertical());
+            player.getBody().setLinearVelocity(player.getThrust()*input.getHorizontal()* multiplier, player.getThrust() * input.getVertical()* multiplier);
 
 
         }

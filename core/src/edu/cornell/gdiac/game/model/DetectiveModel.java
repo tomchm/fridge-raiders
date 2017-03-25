@@ -55,11 +55,11 @@ public class DetectiveModel extends GameObject{
     private int frame = 0;
     private Animation animation;
 
-    private float amountEaten = 160f;
+    private float amountEaten = 0f;
     /** Amount required to enter second stage. */
     private float threshold = 150f;
     private boolean hasEatenDessert = true;
-    private boolean isSecondStage = true;
+    private boolean isSecondStage = false;
 
 
     public enum Animation {
@@ -77,7 +77,7 @@ public class DetectiveModel extends GameObject{
         bodyDef.position.set(x,y);
 
         Shape shape = new CircleShape();
-        shape.setRadius(2.2f);
+        shape.setRadius(1.2f);
         radius = 2.2f;
         fixtureDef = new FixtureDef();
         fixtureDef.density = 1.0f;
