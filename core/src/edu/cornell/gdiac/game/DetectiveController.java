@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 import edu.cornell.gdiac.game.gui.AimGUIModel;
 import edu.cornell.gdiac.game.model.DetectiveModel;
 import edu.cornell.gdiac.game.model.GameObject;
+
+import javax.annotation.processing.SupportedSourceVersion;
 //import edu.cornell.gdiac.game.model.ShotModel;
 
 /**
@@ -136,8 +138,15 @@ public class DetectiveController {
 
         // First we want to update walking mechanics if it's in stage one.
         if(!isSecondStage) {
-            if(!player.isEating()){
+            System.out.println(player.eatDelay);
+            if(!player.isEating() && player.eatDelay == 0.0){
                 animatePlayer(input);
+            }
+            else{
+                // player ate, need to decrement eatDelay
+                if(player.eatDelay > 0.0) {
+                    player.eatDelay -= 1.0f;
+                }
             }
         }
 

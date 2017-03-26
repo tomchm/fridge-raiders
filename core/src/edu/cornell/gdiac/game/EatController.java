@@ -17,7 +17,9 @@ public class EatController {
     }
 
     public void eat(FoodModel food) {
-        worldModel.getPlayer().startEating(food);
+        if(worldModel.getPlayer().getSpeed() == 0.0) {
+            worldModel.getPlayer().startEating(food);
+        }
     }
 
     public void stop() {

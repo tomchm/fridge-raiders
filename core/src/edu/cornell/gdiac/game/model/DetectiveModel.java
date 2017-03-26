@@ -60,6 +60,7 @@ public class DetectiveModel extends GameObject{
     private float threshold = 150f;
     private boolean hasEatenDessert = false;
     private boolean isSecondStage = false;
+    public float eatDelay = 0.0f;
 
 
     public enum Animation {
@@ -104,7 +105,10 @@ public class DetectiveModel extends GameObject{
         velocity = new Vector2();
     }
 
-    public void startEating(FoodModel f) { chewing = f; }
+    public void startEating(FoodModel f) {
+        chewing = f;
+        eatDelay += 30.0f;
+    }
     public void stopEating() { chewing = null; }
 
     public void update(float dt) {
