@@ -58,7 +58,7 @@ public class DetectiveModel extends GameObject{
     private float amountEaten = 0f;
     /** Amount required to enter second stage. */
     private float threshold = 150f;
-    private boolean hasEatenDessert = true;
+    private boolean hasEatenDessert = false;
     private boolean isSecondStage = false;
 
 
