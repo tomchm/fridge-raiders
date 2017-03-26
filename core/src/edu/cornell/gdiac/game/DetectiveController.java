@@ -18,8 +18,8 @@ public class DetectiveController {
     private AimGUIModel aimGUI;
     private boolean isSecondStage;
     private int lastMove = -1;
-    private final static float SHOOT_FORCE = 40f;
-    private final static float MAX_FORCE = 500*SHOOT_FORCE;
+    private final static float SHOOT_FORCE = 30f;
+    private final static float MAX_FORCE = 300*SHOOT_FORCE;
 
 
     public  DetectiveController( DetectiveModel playerModel, WorldModel world, AimGUIModel aimGUI){
