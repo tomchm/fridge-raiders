@@ -77,6 +77,26 @@ public class DetectiveController {
         }
     }
 
+    private void stopAnimating(){
+        switch (lastMove) {
+            case -1:
+                player.setAnimation(DetectiveModel.Animation.DOWN_STOP);
+                break;
+            case 0:
+                player.setAnimation(DetectiveModel.Animation.UP_STOP);
+                break;
+            case 1:
+                player.setAnimation(DetectiveModel.Animation.RIGHT_STOP);
+                break;
+            case 2:
+                player.setAnimation(DetectiveModel.Animation.DOWN_STOP);
+                break;
+            case 3:
+                player.setAnimation(DetectiveModel.Animation.LEFT_STOP);
+                break;
+        }
+    }
+
     private void animatePlayer(InputController input){
         boolean isDiag = input.getHorizontal() != 0.0 && input.getVertical() != 0.0;
         float multiplier = player.isGrappled() ? 0.30f : 0.55f;
@@ -138,13 +158,15 @@ public class DetectiveController {
 
         // First we want to update walking mechanics if it's in stage one.
         if(!isSecondStage) {
-            System.out.println(player.eatDelay);
+            System.out.println(player.getSpeed());
             if(!player.isEating() && player.eatDelay == 0.0){
                 animatePlayer(input);
             }
             else{
                 // player ate, need to decrement eatDelay
+
                 if(player.eatDelay > 0.0) {
+                    stopAnimating();
                     player.eatDelay -= 1.0f;
                 }
             }

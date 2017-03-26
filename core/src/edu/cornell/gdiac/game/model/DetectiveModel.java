@@ -229,6 +229,9 @@ public class DetectiveModel extends GameObject{
     public float getSpeed() {
         return this.getBody().getLinearVelocity().dst2(new Vector2(0,0));
     }
+    public void setSpeed() {
+        this.getBody().setLinearVelocity(0,0);
+    }
 
     public float getRadius() {
         return radius;
