@@ -34,6 +34,7 @@ public class MyInputProcessor implements InputProcessor {
             lastX = x;
             lastY = y;
             released = false;
+            magnitude = new Vector2(0,0);
         }
             return true;
 
