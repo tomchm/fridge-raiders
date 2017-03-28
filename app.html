@@ -1,0 +1,137 @@
+<html>
+    <head>
+        <script src="jquery-3.2.0.min.js"></script>
+        <script src="core/assets/levels/appLevel.json"></script>
+        <script src="core/assets/appAssets.json"></script>
+        <style type="text/css">
+        canvas{
+            width: 60%;
+            height: 400px;
+            float: left;
+        }
+        #panel{
+            display: block;
+            float: right;
+            width: 40%;
+            height: 400px;
+            overflow: scroll;
+            background: #eee;
+        }
+        #topbar{
+            width: 100%;
+        }
+        </style>
+        <script type="text/javascript">
+        $(document).ready(function() {
+            cnv = $('canvas')[0];
+            ctx = cnv.getContext('2d');
+            DRAW_SCALE = 10; // pixels per world unit
+            camX = 0; // camera position.
+            camY = 0; // ie. the world point to draw at bottom-left.
+
+            for (var a = 0; a < assets.data.length; a++) {
+                var asset = assets.data[a];
+                var directory = asset.filename.split('/')[0];
+                var imgtag = "<img height='50' src='core/assets/" + asset.filename + "' />";
+                var btntag = "<button onclick='update(\"" + directory + "\", \"" + asset.tag + "\")' id='btn" + asset.tag + "'>" + imgtag + "</button>";
+                if (directory == 'food') {
+                    $('#food').append(btntag);
+                } else if (directory == 'furniture') {
+                    $('#furniture').append(btntag);
+                }
+            }
+
+            selected = level.furniture[0];
+            draw(level);
+        });
+        function worldToScreen(xyPair) {
+            // note that the canvas draws from the top-left
+            worldX = xyPair[0];
+            worldY = xyPair[1];
+            screenX = (worldX-camX) * DRAW_SCALE;
+            screenY = cnv.height - (worldY-camY) * DRAW_SCALE;
+            return [screenX, screenY];
+        }
+        function screenToWorld(xyPair) {
+        }
+        function drawWall(wall, color) {
+            ctx.fillStyle = '#555';
+            ctx.strokeStyle = color;
+            ctx.beginPath();
+            var first = worldToScreen([wall.coords[0], wall.coords[1]]);
+            var second = worldToScreen([wall.coords[2], wall.coords[3]]);
+            var third = worldToScreen([wall.coords[4], wall.coords[5]]);
+            var fourth = worldToScreen([wall.coords[6], wall.coords[7]]);
+            ctx.moveTo(first[0], first[1]);
+            ctx.lineTo(second[0], second[1]);
+            ctx.lineTo(third[0], third[1]);
+            ctx.lineTo(fourth[0], fourth[1]);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+        }
+        function drawFood(item, color) {
+            drawFurniture(item, color);
+        }
+        function drawFurniture(item, color) {
+            tag = item.tags[0];
+            xy = worldToScreen([item.x, item.y]); // position of the item center
+            xytl = worldToScreen([item.x - item.radius, item.y + item.radius]); // position of item top-left
+            img = $('#btn'+tag).children('img')[0];
+            ctx.strokeStyle = color;
+            asset = null;
+            for (var i = 0; i < assets.data; i++) {
+                if (assets.data[i].tag == tag) {asset = assets.data[i];}
+            }
+            if (item.radius > 0) {
+                ctx.drawImage(img, xytl[0], xytl[1], item.radius*2*DRAW_SCALE, item.radius*2*DRAW_SCALE);
+                ctx.beginPath(); ctx.arc(xy[0], xy[1], item.radius*DRAW_SCALE, 0, 2*Math.PI, false);
+            }
+            else {
+                // rect function is top-left-x, top-left-y, width, height.
+                xytl = worldToScreen([item.x-item.width/2, item.y+item.height/2]);
+                ctx.drawImage(img, xytl[0], xytl[1], item.width*DRAW_SCALE, item.height*DRAW_SCALE);
+                ctx.rect(xytl[0], xytl[1], item.width*DRAW_SCALE, item.height*DRAW_SCALE);
+            }
+            ctx.stroke();
+        }
+        function draw(levelObject) {
+            cnv.width = $('canvas').width();
+            cnv.height = $('canvas').height();
+            ctx.fillStyle = '#fff';
+            ctx.clearRect(0,0,cnv.width,cnv.height);
+            walls = levelObject.walls;
+            for(var w = 0; w < walls.length; w++) {
+                drawWall(walls[w], '#ff0');
+            }
+            food = levelObject.food;
+            for (var f = 0; f < food.length; f++) {
+                drawFood(food[f], '#ff0');
+            }
+            furniture = levelObject.furniture;
+            for (var f = 0; f < furniture.length; f++) {
+                drawFurniture(furniture[f], '#ff0');
+            }
+            drawFurniture(selected, '#00f');
+        }
+        function update(type, newtag) {
+            selected.tags[0] = newtag;
+            draw(level);
+        }
+        </script>
+    </head>
+    <body>
+        <div id="topbar">
+            <input type="file" id="file"/>
+            <input type="button" value="Load" id="load"/>
+            <input type="button" value="Save" id="save"/>
+        </div>
+        <canvas></canvas>
+        <div id="panel">
+            <h2>Food</h2>
+            <div id="food"></div>
+            <h2>Furniture</h2>
+            <div id="furniture"></div>
+        </div>
+    </body>
+</html>
