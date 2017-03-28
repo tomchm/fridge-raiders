@@ -39,6 +39,7 @@ public class WorldController implements Screen {
 
 	/** Exit code for quitting the game */
 	public static final int EXIT_QUIT = 0;
+	public static final int CUTSCENE = 1;
 	/** The amount of time for a game engine step. */
 	public static final float WORLD_STEP = 1/60.0f;
 	/** Number of velocity iterations for the constrain solvers */
@@ -138,6 +139,10 @@ public class WorldController implements Screen {
 
 		if(input.didExit()){
 			listener.exitScreen(this, EXIT_QUIT);
+			return false;
+		}
+		if(input.didCutscene()) {
+			listener.exitScreen(this, CUTSCENE);
 			return false;
 		}
 		if(!worldModel.getPlayer().isSecondStage()){

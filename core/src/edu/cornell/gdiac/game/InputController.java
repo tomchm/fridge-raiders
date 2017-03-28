@@ -74,7 +74,10 @@ public class InputController {
 	/** Whether the exit button was pressed. */
 	private boolean exitPressed;
 	private boolean exitPrevious;
-	
+
+	private boolean cutscenePressed;
+	private boolean cutscenePrevious;
+
 	/** How much did we move horizontally? */
 	private float horizontal;
 	/** How much did we move vertically? */
@@ -151,6 +154,7 @@ public class InputController {
 	public boolean didSecondary() {
 		return secondPressed && !secondPrevious;
 	}
+	public boolean didCutscene() { return cutscenePressed && !cutscenePrevious; }
 
 	/** Returns true if the secondary action button was released.
 	 *
@@ -248,6 +252,7 @@ public class InputController {
 		exitPrevious = exitPressed;
 		nextPrevious = nextPressed;
 		prevPrevious = prevPressed;
+		cutscenePrevious = cutscenePressed;
 
 		readKeyboard();
 
@@ -273,6 +278,7 @@ public class InputController {
 		prevPressed = (secondary && prevPressed) || (Gdx.input.isKeyPressed(Input.Keys.P));
 		nextPressed = (secondary && nextPressed) || (Gdx.input.isKeyPressed(Input.Keys.N));
 		exitPressed  = (secondary && exitPressed) || (Gdx.input.isKeyPressed(Input.Keys.ESCAPE));
+		cutscenePressed = (Gdx.input.isKeyPressed(Input.Keys.C));
 		
 		// Directional controls
 		horizontal = (secondary ? horizontal : 0.0f);

@@ -38,6 +38,10 @@
                     DRAW_SCALE += 1;
                     draw(level);
                 }
+                else if (e.which == 46) {
+                    deleteSelected();
+                    draw(level);
+                }
             });
 
             for (var a = 0; a < assets.data.length; a++) {
@@ -123,7 +127,17 @@
             for (var f = 0; f < furniture.length; f++) {
                 drawFurniture(furniture[f], '#ff0');
             }
-            drawFurniture(selected, '#00f');
+            if (selected != null) {
+                drawFurniture(selected, '#00f');
+            }
+        }
+        function deleteSelected() {
+            for (var i = 0; i < level.furniture.length; i++) {
+                if (level.furniture[i] == selected) { selected = null; level.furniture.splice(i,1); }
+            }
+            for (var i = 0; i < level.food.length; i++) {
+                if (level.food[i] == selected) { selected = null; level.food.splice(i,1); }
+            }
         }
         function update(type, newtag) {
             selected.tags[0] = newtag;
