@@ -55,11 +55,12 @@ public class DetectiveModel extends GameObject{
     private int frame = 0;
     private Animation animation;
 
-    private float amountEaten = 160f;
+    private float amountEaten = 0f;
     /** Amount required to enter second stage. */
     private float threshold = 150f;
-    private boolean hasEatenDessert = true;
-    private boolean isSecondStage = true;
+    private boolean hasEatenDessert = false;
+    private boolean isSecondStage = false;
+    public float eatDelay = 0.0f;
 
 
     public enum Animation {
@@ -77,7 +78,7 @@ public class DetectiveModel extends GameObject{
         bodyDef.position.set(x,y);
 
         Shape shape = new CircleShape();
-        shape.setRadius(2.2f);
+        shape.setRadius(1.2f);
         radius = 2.2f;
         fixtureDef = new FixtureDef();
         fixtureDef.density = 1.0f;
@@ -104,7 +105,10 @@ public class DetectiveModel extends GameObject{
         velocity = new Vector2();
     }
 
-    public void startEating(FoodModel f) { chewing = f; }
+    public void startEating(FoodModel f) {
+        chewing = f;
+        eatDelay += 30.0f;
+    }
     public void stopEating() { chewing = null; }
 
     public void update(float dt) {
@@ -224,6 +228,9 @@ public class DetectiveModel extends GameObject{
 
     public float getSpeed() {
         return this.getBody().getLinearVelocity().dst2(new Vector2(0,0));
+    }
+    public void setSpeed() {
+        this.getBody().setLinearVelocity(0,0);
     }
 
     public float getRadius() {

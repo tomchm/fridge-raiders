@@ -17,7 +17,8 @@ public class EatController {
     }
 
     public void eat(FoodModel food) {
-        worldModel.getPlayer().startEating(food);
+            worldModel.getPlayer().startEating(food);
+            worldModel.getPlayer().setSpeed();
     }
 
     public void stop() {
