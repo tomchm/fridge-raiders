@@ -25,9 +25,20 @@
         $(document).ready(function() {
             cnv = $('canvas')[0];
             ctx = cnv.getContext('2d');
-            DRAW_SCALE = 10; // pixels per world unit
+            DRAW_SCALE = 12; // pixels per world unit
             camX = 0; // camera position.
             camY = 0; // ie. the world point to draw at bottom-left.
+
+            $(document).keydown(function(e) {
+                if (e.which == 40) { // down arrow
+                    DRAW_SCALE -= 1;
+                    draw(level);
+                }
+                else if (e.which == 38) { // up arrow
+                    DRAW_SCALE += 1;
+                    draw(level);
+                }
+            });
 
             for (var a = 0; a < assets.data.length; a++) {
                 var asset = assets.data[a];
