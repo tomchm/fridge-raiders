@@ -44,6 +44,25 @@
                 }
             });
 
+            $('canvas').mousedown(function(e) {
+                var screenXY = [e.offsetX, e.offsetY];
+                var worldXY = screenToWorld(screenXY);
+                for (var i = 0; i < level.food.length; i++) {
+                    if (inFood(level.food[i], worldXY)) { selected = level.food[i]; }
+                }
+                for (var i = 0; i < level.furniture.length; i++) {
+                    if (inFurniture(level.furniture[i], worldXY)) { selected = level.furniture[i]; }
+                }
+                for (var i = 0; i < level.walls.length; i++) {
+                    if (inWall(level.walls[i], worldXY)) { selected = level.walls[i]; }
+                }
+
+                draw(level);
+                ctx.fillStyle = '#000';
+                ctx.beginPath(); ctx.arc(screenXY[0], screenXY[1], 1.0, 0, 2*Math.PI, false);
+                ctx.fill();
+            });
+
             for (var a = 0; a < assets.data.length; a++) {
                 var asset = assets.data[a];
                 var directory = asset.filename.split('/')[0];
@@ -68,7 +87,25 @@
             return [screenX, screenY];
         }
         function screenToWorld(xyPair) {
+            screenX = xyPair[0];
+            screenY = xyPair[1];
+            worldX = camX + screenX / DRAW_SCALE;
+            worldY = camY - (screenY - cnv.height) / DRAW_SCALE;
+            return [worldX, worldY];
         }
+        function inFurniture(item, xyPair) {
+            // in world coordinates
+            if (item.radius > 0) {
+                return (item.x - xyPair[0])**2 + (item.y - xyPair[1])**2 < item.radius**2;
+            }
+            else {
+                return (xyPair[0] > item.x - 0.5*item.width) && (xyPair[0] < item.x + 0.5*item.width)
+                    && (xyPair[1] > item.y - 0.5*item.height) && (xyPair[1] < item.y + 0.5*item.height);
+            }
+        }
+        function inFood(item, xyPair) { return inFurniture(item, xyPair); }
+        function inWall(item, xyPair) { return inPolygon(item.coords, xyPair); }
+
         function drawWall(wall, color) {
             ctx.fillStyle = '#555';
             ctx.strokeStyle = color;
@@ -98,9 +135,10 @@
             for (var i = 0; i < assets.data; i++) {
                 if (assets.data[i].tag == tag) {asset = assets.data[i];}
             }
+            ctx.beginPath();
             if (item.radius > 0) {
                 ctx.drawImage(img, xytl[0], xytl[1], item.radius*2*DRAW_SCALE, item.radius*2*DRAW_SCALE);
-                ctx.beginPath(); ctx.arc(xy[0], xy[1], item.radius*DRAW_SCALE, 0, 2*Math.PI, false);
+                ctx.arc(xy[0], xy[1], item.radius*DRAW_SCALE, 0, 2*Math.PI, false);
             }
             else {
                 // rect function is top-left-x, top-left-y, width, height.
@@ -129,9 +167,11 @@
             }
             if (selected != null) {
                 drawFurniture(selected, '#00f');
+                drawWall(selected, '#00f');
             }
         }
         function deleteSelected() {
+            if (selected == null) return;
             for (var i = 0; i < level.furniture.length; i++) {
                 if (level.furniture[i] == selected) { selected = null; level.furniture.splice(i,1); }
             }
@@ -142,6 +182,27 @@
         function update(type, newtag) {
             selected.tags[0] = newtag;
             draw(level);
+        }
+        function inPolygon(coords, xyPair) {
+            var windingangle = 0;
+            windingangle += subtended(xyPair[0], xyPair[1], coords[0], coords[1], coords[2], coords[3]);
+            windingangle += subtended(xyPair[0], xyPair[1], coords[2], coords[3], coords[4], coords[5]);
+            windingangle += subtended(xyPair[0], xyPair[1], coords[4], coords[5], coords[6], coords[7]);
+            windingangle += subtended(xyPair[0], xyPair[1], coords[6], coords[7], coords[0], coords[1]);
+            if (Math.abs(windingangle) > 0.1) {return true;} else {return false;}
+        }
+        function subtended(x, y, ax, ay, cx, cy) {
+            ax -= x; ay -= y; cx -= x; cy -= y;
+            var bx = cx-ax; var by = cy-ay;
+            var alen = Math.sqrt(ax**2+ay**2);
+            var bdota = ax*bx+ay*by;
+            var Dx = alen + bdota / alen;
+            var Dyx = bx - bdota*ax/(alen*alen);
+            var Dyy = by - bdota*ay/(alen*alen);
+            var Dy = Math.sqrt(Dyx**2 + Dyy**2);
+            var th =  Math.atan2(Dy, Dx);
+            var sign = Math.sign(ax*by - ay*bx);
+            return th*sign;
         }
         </script>
     </head>
