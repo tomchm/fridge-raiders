@@ -30,11 +30,11 @@
             camY = 0; // ie. the world point to draw at bottom-left.
 
             $(document).keydown(function(e) {
-                if (e.which == 40) { // down arrow
+                if (e.which == 189) { // -
                     DRAW_SCALE -= 1;
                     draw(level);
                 }
-                else if (e.which == 38) { // up arrow
+                else if (e.which == 187) { // +
                     DRAW_SCALE += 1;
                     draw(level);
                 }
@@ -42,6 +42,19 @@
                     deleteSelected();
                     draw(level);
                 }
+                else if (e.which == 39) { camX += 2; draw(level); }
+                else if (e.which == 37) { camX -= 2; draw(level); }
+                else if (e.which == 38) { camY += 2; draw(level); }
+                else if (e.which == 40) { camY -= 2; draw(level); }
+
+                else if (e.which == 190) { if(selected != null) selected.theta += 5; draw(level); }
+                else if (e.which == 188) { if(selected != null) selected.theta -= 5; draw(level); }
+
+                else if (e.which == 191) { if(selected != null && level.food.includes(selected)) {
+                    for(var i=0; i < level.food.length; i++) { level.food[i].isDessert=false; }
+                    selected.isDessert=true;
+                    alert("Set dessert.");
+                } }
             });
 
             $('canvas').mousedown(function(e) {
@@ -100,8 +113,13 @@
                 return (item.x - xyPair[0])**2 + (item.y - xyPair[1])**2 < item.radius**2;
             }
             else {
-                return (xyPair[0] > item.x - 0.5*item.width) && (xyPair[0] < item.x + 0.5*item.width)
-                    && (xyPair[1] > item.y - 0.5*item.height) && (xyPair[1] < item.y + 0.5*item.height);
+                var dx = xyPair[0] - item.x; var dy = xyPair[1] - item.y;
+                // switch to local coordinates relative to center of rotated rectangle
+                var du = Math.cos(item.theta)*dx + Math.sin(item.theta)*dy;
+                var dv = -Math.sin(item.theta)*dx + Math.cos(item.theta)*dy;
+
+                return (du > -0.5*item.width) && (du < 0.5*item.width)
+                    && (dv > - 0.5*item.height) && (dv < 0.5*item.height);
             }
         }
         function inFood(item, xyPair) { return inFurniture(item, xyPair); }
@@ -144,8 +162,12 @@
             else {
                 // rect function is top-left-x, top-left-y, width, height.
                 xytl = worldToScreen([item.x-item.width/2, item.y+item.height/2]);
+                //ctx.translate(DRAW_SCALE*xytl[0], DRAW_SCALE*xytl[1]);
+                //ctx.rotate(-item.theta*Math.PI/180.0);
                 ctx.drawImage(img, xytl[0], xytl[1], item.width*DRAW_SCALE, item.height*DRAW_SCALE);
                 ctx.rect(xytl[0], xytl[1], item.width*DRAW_SCALE, item.height*DRAW_SCALE);
+                //ctx.rotate(item.theta*Math.PI/180.0);
+                //ctx.translate(-DRAW_SCALE*xytl[0],-DRAW_SCALE*xytl[1]);
             }
             ctx.stroke();
         }
@@ -230,5 +252,6 @@
             <h2>Furniture</h2>
             <div id="furniture"></div>
         </div>
+        <p>Arrow keys to maneuver level. -/= to zoom in and out. ,/. to  rotate an object. / to mark dessert.</p>
     </body>
 </html>
