@@ -48,19 +48,20 @@
                 var screenXY = [e.offsetX, e.offsetY];
                 var worldXY = screenToWorld(screenXY);
                 for (var i = 0; i < level.food.length; i++) {
-                    if (inFood(level.food[i], worldXY)) { selected = level.food[i]; }
+                    if (inFood(level.food[i], worldXY)) { selected = level.food[i]; draw(level); return; }
                 }
                 for (var i = 0; i < level.furniture.length; i++) {
-                    if (inFurniture(level.furniture[i], worldXY)) { selected = level.furniture[i]; }
+                    if (inFurniture(level.furniture[i], worldXY)) { selected = level.furniture[i]; draw(level); return; }
                 }
                 for (var i = 0; i < level.walls.length; i++) {
-                    if (inWall(level.walls[i], worldXY)) { selected = level.walls[i]; }
+                    if (inWall(level.walls[i], worldXY)) { selected = level.walls[i]; draw(level); return; }
                 }
+                selected = null;
 
                 draw(level);
-                ctx.fillStyle = '#000';
-                ctx.beginPath(); ctx.arc(screenXY[0], screenXY[1], 1.0, 0, 2*Math.PI, false);
-                ctx.fill();
+                //ctx.fillStyle = '#000';
+                //ctx.beginPath(); ctx.arc(screenXY[0], screenXY[1], 1.0, 0, 2*Math.PI, false);
+                //ctx.fill();
             });
 
             for (var a = 0; a < assets.data.length; a++) {
@@ -166,8 +167,8 @@
                 drawFurniture(furniture[f], '#ff0');
             }
             if (selected != null) {
-                drawFurniture(selected, '#00f');
-                drawWall(selected, '#00f');
+                if (selected.coords == undefined) { drawFurniture(selected, '#00f'); }
+                else { drawWall(selected, '#00f'); }
             }
         }
         function deleteSelected() {
@@ -180,7 +181,17 @@
             }
         }
         function update(type, newtag) {
-            selected.tags[0] = newtag;
+            if ((selected != null) &&
+                ((type=='furniture' && level.furniture.includes(selected)) ||
+                (type == 'food' && level.food.includes(selected)) ||
+                (type == 'wall' && level.walls.includes(selected)))) {
+                selected.tags[0] = newtag;
+            }
+            else {
+                // add a new one!
+                if (type == 'furniture') { level.furniture.push({"x": 25, "y": 25, "width": 6, "height": 4.7, "radius": 0, "theta": 0, "tags": [newtag]}); selected = level.furniture[level.furniture.length-1]; }
+                if (type == 'food') { level.food.push({"x": 25, "y": 25, "radius": 1, "theta": 0, "tags": [newtag], "dessert": false, "amount": 10}); selected = level.food[level.food.length-1]; }
+            }
             draw(level);
         }
         function inPolygon(coords, xyPair) {
