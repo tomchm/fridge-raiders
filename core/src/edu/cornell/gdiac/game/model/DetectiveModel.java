@@ -87,8 +87,9 @@ public class DetectiveModel extends GameObject{
         fixtureDef.restitution = 0.0f;
         animation = Animation.DOWN_MOVE;
 
-        tags = new String[] {"player_down", "player_up", "player_left", "player_right", "fat",
-        "coat", "hat", "mask", "hand", "foot", "buckle", "loop", "tie", "backpocket"};
+        tags = new String[] {"player_down", "player_up", "player_left", "player_right",
+                "player_down_idle", "player_up_idle", "player_left_idle", "player_right_idle",
+                "fat", "coat", "hat", "mask", "hand", "foot", "buckle", "loop", "tie", "backpocket"};
 
         stickers = new PooledList<Sticker>();
         stickers.add(new Sticker("hat", 0f, 0f, 0f));
@@ -160,26 +161,31 @@ public class DetectiveModel extends GameObject{
 
         if(!isSecondStage){
             FilmstripAsset fa = null;
+            frame++;
             switch (animation){
                 case DOWN_MOVE:
-                    frame++;
-                case DOWN_STOP:
                     fa = (FilmstripAsset)assetMap.get("player_down");
                     break;
+                case DOWN_STOP:
+                    fa = (FilmstripAsset)assetMap.get("player_down_idle");
+                    break;
                 case UP_MOVE:
-                    frame++;
-                case UP_STOP:
                     fa = (FilmstripAsset)assetMap.get("player_up");
                     break;
+                case UP_STOP:
+                    fa = (FilmstripAsset)assetMap.get("player_up_idle");
+                    break;
                 case LEFT_MOVE:
-                    frame++;
-                case LEFT_STOP:
                     fa = (FilmstripAsset)assetMap.get("player_left");
                     break;
+                case LEFT_STOP:
+                    fa = (FilmstripAsset)assetMap.get("player_left_idle");
+                    break;
                 case RIGHT_MOVE:
-                    frame++;
-                case RIGHT_STOP:
                     fa = (FilmstripAsset)assetMap.get("player_right");
+                    break;
+                case RIGHT_STOP:
+                    fa = (FilmstripAsset)assetMap.get("player_right_idle");
                     break;
             }
             if(fa != null){

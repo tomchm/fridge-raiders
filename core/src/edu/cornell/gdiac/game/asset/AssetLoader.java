@@ -80,7 +80,7 @@ public class AssetLoader
                 else if (type.equals("sound")) {
                     String tag = entry.getString("tag");
                     String filename = entry.getString("filename");
-                    Asset asset = new SoundAsset(filename);
+                    Asset asset = new SoundAsset(filename, tag);
                     assetMap.put(tag, asset);
                 }
             }

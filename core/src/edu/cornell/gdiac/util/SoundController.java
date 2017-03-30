@@ -21,6 +21,7 @@ package edu.cornell.gdiac.util;
 import com.badlogic.gdx.assets.*;
 import com.badlogic.gdx.audio.*;
 import com.badlogic.gdx.utils.*;
+import edu.cornell.gdiac.game.asset.SoundAsset;
 
 /**
  * A singleton class for controlling sound effects in LibGDX
@@ -244,6 +245,11 @@ public class SoundController {
 		Sound sound = manager.get(filename,Sound.class);
 		soundbank.put(filename,sound);
 	}
+
+	public void addSound(SoundAsset sa){
+		soundbank.put(sa.getTag(), sa.getSound());
+	}
+
 
 	/**
 	 * Plays the an instance of the given sound

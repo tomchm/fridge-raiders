@@ -100,6 +100,50 @@
       "speed": 3
     },
     {
+      "type": "filmstrip",
+      "tag": "player_up_idle",
+      "filename": "player/idle_up.png",
+      "origin_x": 128,
+      "origin_y": 144,
+      "scale_x": 0.25,
+      "scale_y": 0.25,
+      "frames": 8,
+      "speed": 6
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_down_idle",
+      "filename": "player/idle_down.png",
+      "origin_x": 128,
+      "origin_y": 144,
+      "scale_x": 0.25,
+      "scale_y": 0.25,
+      "frames": 8,
+      "speed": 6
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_left_idle",
+      "filename": "player/idle_left.png",
+      "origin_x": 128,
+      "origin_y": 144,
+      "scale_x": 0.25,
+      "scale_y": 0.25,
+      "frames": 8,
+      "speed": 6
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_right_idle",
+      "filename": "player/idle_right.png",
+      "origin_x": 128,
+      "origin_y": 144,
+      "scale_x": 0.25,
+      "scale_y": 0.25,
+      "frames": 8,
+      "speed": 6
+    },
+    {
       "type": "image",
       "tag": "ball",
       "filename": "gui/circle2.png",
