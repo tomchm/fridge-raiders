@@ -158,7 +158,6 @@ public class DetectiveController {
 
         // First we want to update walking mechanics if it's in stage one.
         if(!isSecondStage) {
-            System.out.println(player.getSpeed());
             if(!player.isEating() && player.eatDelay == 0.0){
                 animatePlayer(input);
             }

@@ -101,7 +101,6 @@ public class AssetLoader
                 manager.load(asset.getFileName(), Texture.class);
             }
             else if (asset instanceof SoundAsset){
-                System.out.println(((SoundAsset) asset).getFilename());
                 manager.load(asset.getFileName(), Sound.class);
             }
         }
@@ -124,9 +123,13 @@ public class AssetLoader
             else if(asset instanceof FilmstripAsset){
                 ((FilmstripAsset) asset).setTexture(createTexture(manager,asset.getFileName(),false));
             }
+            else if(asset instanceof SoundAsset){
+                ((SoundAsset) asset).setSound(createSound(manager, asset.getFileName()));
+                SoundController.getInstance().addSound((SoundAsset) asset);
+            }
         }
 
-        SoundController sounds = SoundController.getInstance();
+        //SoundController sounds = SoundController.getInstance();
 
         if (manager.isLoaded(FONT_FILE)) {
             displayFont = manager.get(FONT_FILE,BitmapFont.class);
@@ -178,6 +181,14 @@ public class AssetLoader
             FilmStrip strip = new FilmStrip(manager.get(file, Texture.class),rows,cols,size);
             strip.getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
             return strip;
+        }
+        return null;
+    }
+
+    protected Sound createSound(AssetManager manager, String file){
+        if(manager.isLoaded(file)){
+            Sound sound = manager.get(file, Sound.class);
+            return sound;
         }
         return null;
     }

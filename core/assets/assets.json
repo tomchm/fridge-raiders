@@ -295,6 +295,11 @@
       "origin_y": 250,
       "scale_x": 0.25,
       "scale_y": 0.25
+    },
+    {
+      "type": "sound",
+      "tag": "nom",
+      "filename": "sound/nom.wav"
     }
   ]
 }

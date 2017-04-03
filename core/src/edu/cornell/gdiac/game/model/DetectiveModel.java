@@ -29,7 +29,7 @@ public class DetectiveModel extends GameObject{
     private static final float DEFAULT_THRUST = 20.0f;
     private static final float DEFAULT_SPEED = 10.0f;
     /** Amount of food eaten per SECOND. */
-    private static final float CHEWING_RATE = 50.0f;
+    private static final float CHEWING_RATE = 5.0f;
 
     /** The force to apply to this rocket */
     private Vector2 force;

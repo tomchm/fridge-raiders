@@ -2,6 +2,7 @@ package edu.cornell.gdiac.game;
 
 import edu.cornell.gdiac.game.model.DetectiveModel;
 import edu.cornell.gdiac.game.model.FoodModel;
+import edu.cornell.gdiac.util.SoundController;
 
 import static sun.audio.AudioPlayer.player;
 
@@ -17,11 +18,13 @@ public class EatController {
     }
 
     public void eat(FoodModel food) {
-            worldModel.getPlayer().startEating(food);
-            worldModel.getPlayer().setSpeed();
+        worldModel.getPlayer().startEating(food);
+        worldModel.getPlayer().setSpeed();
+        SoundController.getInstance().play("nom", true);
     }
 
     public void stop() {
         worldModel.getPlayer().stopEating();
+        SoundController.getInstance().stop("nom");
     }
 }

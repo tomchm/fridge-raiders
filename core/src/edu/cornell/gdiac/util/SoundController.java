@@ -97,9 +97,9 @@ public class SoundController {
 	private static SoundController controller;
 	
 	/** Keeps track of all of the allocated sound resources */
-	private IdentityMap<String,Sound> soundbank;
+	private ObjectMap<String,Sound> soundbank;
 	/** Keeps track of all of the "active" sounds */
-	private IdentityMap<String,ActiveSound> actives;
+	private ObjectMap<String,ActiveSound> actives;
 	/** Support class for garbage collection */
 	private Array<String> collection;
 	
@@ -117,8 +117,8 @@ public class SoundController {
 	 * Creates a new SoundController with the default settings.
 	 */
 	private SoundController() {
-		soundbank = new IdentityMap<String,Sound>();
-		actives = new IdentityMap<String,ActiveSound>();
+		soundbank = new ObjectMap<String,Sound>();
+		actives = new ObjectMap<String,ActiveSound>();
 		collection = new Array<String>();
 		cooldown = DEFAULT_COOL;
 		timeLimit = DEFAULT_LIMIT;
@@ -247,6 +247,7 @@ public class SoundController {
 	}
 
 	public void addSound(SoundAsset sa){
+		System.out.println(sa.getTag());
 		soundbank.put(sa.getTag(), sa.getSound());
 	}
 
@@ -265,13 +266,12 @@ public class SoundController {
 	 * 
 	 * 
 	 * @param key		The identifier for this sound instance
-	 * @param filename	The filename of the sound asset
 	 * @param loop		Whether to loop the sound
 	 * 
 	 * @return True if the sound was successfully played
 	 */
-	public boolean play(String key, String filename, boolean loop) {
-		return play(key,filename,loop,1.0f);
+	public boolean play(String key, boolean loop) {
+		return play(key,loop,1.0f);
 	}
 
 	/**
@@ -288,20 +288,27 @@ public class SoundController {
 	 * 
 	 * 
 	 * @param key		The identifier for this sound instance
-	 * @param filename	The filename of the sound asset
 	 * @param loop		Whether to loop the sound
 	 * @param volume	The sound volume in the range [0,1]
 	 * 
 	 * @return True if the sound was successfully played
 	 */
-	public boolean play(String key, String filename, boolean loop, float volume) {
+	public boolean play(String key, boolean loop, float volume) {
 		// Get the sound for the file
-		if (!soundbank.containsKey(filename) || current >= frameLimit) {
+		System.out.println("ONE"+key);
+		for(String s : soundbank.keys()){
+			System.out.println("key: "+s);
+		}
+		if(soundbank.containsKey(key)){
+			System.out.println("HELLO");
+		}
+		if (!soundbank.containsKey(key) || current >= frameLimit) {
 			return false;
 		}
+		System.out.println("TWO");
 
 		// If there is a sound for this key, stop it
-		Sound sound = soundbank.get(filename);
+		Sound sound = soundbank.get(key);
 		if (actives.containsKey(key)) {
 			ActiveSound snd = actives.get(key);
 			if (!snd.loop && snd.lifespan > cooldown) {
@@ -312,6 +319,7 @@ public class SoundController {
 				return true;
 			}
 		}
+		System.out.println("THREE");
 		
 		// Play the new sound and add it
 		long id = sound.play(volume);
