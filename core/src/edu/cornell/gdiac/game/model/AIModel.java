@@ -25,7 +25,7 @@ public class AIModel extends GameObject{
     protected static final float ANG_VEL = 3.0f;
     // Variable Fields
     /*speed of the ai movement*/
-    protected float speed = 3.0f;
+    protected float speed = 4.0f;
     /*scaling factor of speed after ai finds player*/
     protected float speedUpScale = 1.5f;
     /*cone Light of the ai*/
@@ -33,7 +33,7 @@ public class AIModel extends GameObject{
     /*radius of light cone*/
     protected  float lightRadius = 15.0f;
     /*angle of light cone*/
-    protected float lightAngle = 30.0f;
+    protected float lightAngle = 45.0f;
     /*the path the ai takes around level*/
     protected Vector2[] path;
 

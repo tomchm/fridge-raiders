@@ -70,7 +70,7 @@ public class AIController implements RayCastCallback{
     /** the threshold before chase*/
     protected static float CHASE_LIM = 0.5f;
     /** the distance at which the ai catches the player*/
-    protected static float CATCH_DIST = 2.4f;
+    protected static float CATCH_DIST = 5.0f;
     /** the weighted time the player has been in the light*/
     private float lightTime;
     /** caches dt value for callback*/

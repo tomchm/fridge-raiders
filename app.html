@@ -1,19 +1,19 @@
 <html>
     <head>
         <script src="jquery-3.2.0.min.js"></script>
-        <script src="core/assets/levels/appLevel.json"></script>
-        <script src="core/assets/appAssets.json"></script>
+        <script src="core/assets/levels/appLevel.js"></script>
+        <script src="core/assets/appAssets.js"></script>
         <style type="text/css">
         canvas{
-            width: 60%;
-            height: 400px;
+            width: 70%;
+            height: 600px;
             float: left;
         }
         #panel{
             display: block;
             float: right;
-            width: 40%;
-            height: 400px;
+            width: 30%;
+            height: 600px;
             overflow: scroll;
             background: #eee;
         }
@@ -30,22 +30,38 @@
             camY = 0; // ie. the world point to draw at bottom-left.
 
             $(document).keydown(function(e) {
-                if (e.which == 189) { // -
+                if (e.which == 81) { // q
                     DRAW_SCALE -= 1;
                     draw(level);
                 }
-                else if (e.which == 187) { // +
+                else if (e.which == 69) { // e
                     DRAW_SCALE += 1;
                     draw(level);
                 }
-                else if (e.which == 46) {
+                else if (e.which == 82) { // r
+                    wallMode = !wallMode;
+                    if(wallMode) {
+                        selected = null;
+                        $("#wbutton").val('Switch to: OFF');
+                    } else {
+                        $("#wbutton").val('Switch to: ON');
+                    }
+                    draw(level);
+                }
+                else if (e.which == 46 || e.which == 88) {
                     deleteSelected();
                     draw(level);
                 }
-                else if (e.which == 39) { camX += 2; draw(level); }
-                else if (e.which == 37) { camX -= 2; draw(level); }
-                else if (e.which == 38) { camY += 2; draw(level); }
-                else if (e.which == 40) { camY -= 2; draw(level); }
+                else if (selected != null) {
+                    if (e.which == 68) { moveObject(selected, [selected.x + 0.5, selected.y]); draw(level);}
+                    else if (e.which == 65) { moveObject(selected, [selected.x - 0.5, selected.y]); draw(level);}
+                    else if (e.which == 87) { moveObject(selected, [selected.x , selected.y + 0.5]); draw(level);}
+                    else if (e.which == 83) { moveObject(selected, [selected.x , selected.y - 0.5]); draw(level);}
+                }
+                else if (e.which == 68) { camX += 2; draw(level); }
+                else if (e.which == 65) { camX -= 2; draw(level); }
+                else if (e.which == 87) { camY += 2; draw(level); }
+                else if (e.which == 83) { camY -= 2; draw(level); }
 
                 else if (e.which == 190) { if(selected != null) selected.theta += 5; draw(level); }
                 else if (e.which == 188) { if(selected != null) selected.theta -= 5; draw(level); }
@@ -57,9 +73,24 @@
                 } }
             });
 
+            $(window).bind('mousewheel DOMMouseScroll', function(event){
+                if (event.originalEvent.wheelDelta > 0 || event.originalEvent.detail < 0) {
+                    DRAW_SCALE += 1;
+                    draw(level);
+                }
+                else {
+                    DRAW_SCALE -= 1;
+                    draw(level);
+                }
+            });
+
             $('canvas').mousedown(function(e) {
                 var screenXY = [e.offsetX, e.offsetY];
                 var worldXY = screenToWorld(screenXY);
+                prevPos = worldXY;
+                if (wallMode) {
+                    return;
+                }
                 for (var i = 0; i < level.food.length; i++) {
                     if (inFood(level.food[i], worldXY)) { selected = level.food[i]; draw(level); return; }
                 }
@@ -77,6 +108,39 @@
                 //ctx.fill();
             });
 
+            $('canvas').mouseup(function(e) {
+                mouseUp = true;
+                var screenXY = [e.offsetX, e.offsetY];
+                var worldXY = screenToWorld(screenXY);
+                if (wallMode) {
+                    level.walls.push(createNewWall(prevPos, worldXY));
+                }
+                else if (selected == null) {
+                     var xDif = worldXY[0] - prevPos[0];
+                     var yDif = worldXY[1] - prevPos[1];
+                     camX -= xDif;
+                     camY -= yDif;
+                }
+                else {
+                     moveObject(selected, worldXY);
+                }
+                draw(level);
+
+                //ctx.fillStyle = '#000';
+                //ctx.beginPath(); ctx.arc(screenXY[0], screenXY[1], 1.0, 0, 2*Math.PI, false);
+                //ctx.fill();
+            });
+
+            $( "#wbutton" ).click(function() {
+                wallMode = !wallMode;
+                if(wallMode) {
+                    selected = null;
+                    $(this).val('Switch to: OFF');
+                } else {
+                    $(this).val('Switch to: ON');
+                }
+            });
+
             for (var a = 0; a < assets.data.length; a++) {
                 var asset = assets.data[a];
                 var directory = asset.filename.split('/')[0];
@@ -89,7 +153,19 @@
                 }
             }
 
+            for (var b = 0; b < level.walls.length; b++) {
+                var wall = level.walls[b];
+                var tempX = (wall.coords[0] + wall.coords[4]) / 2.0;
+                var tempY = (wall.coords[1] + wall.coords[5]) / 2.0;
+                wall.x = tempX;
+                wall.y = tempY;
+            }
+
             selected = level.furniture[0];
+            wallMode = false;
+            prevPos = null;
+            mouseUp = false;
+
             draw(level);
         });
         function worldToScreen(xyPair) {
@@ -124,6 +200,36 @@
         }
         function inFood(item, xyPair) { return inFurniture(item, xyPair); }
         function inWall(item, xyPair) { return inPolygon(item.coords, xyPair); }
+
+        function moveObject(selected, newPos) {
+            if (selected != null) {
+                if (selected.tags[0] == "wall") {
+                    var xDif = newPos[0] - selected.x;
+                    var yDif = newPos[1] - selected.y;
+                    selected.coords[0] += xDif;
+                    selected.coords[2] += xDif;
+                    selected.coords[4] += xDif;
+                    selected.coords[6] += xDif;
+                    selected.coords[1] += yDif;
+                    selected.coords[3] += yDif;
+                    selected.coords[5] += yDif;
+                    selected.coords[7] += yDif;
+                }
+                selected.x = newPos[0]
+                selected.y = newPos[1]
+            }
+        }
+
+        function createNewWall(xyPrev, xy) {
+            var x1 = xyPrev[0];
+            var y1 = xyPrev[1];
+            var x2 = xy[0];
+            var y2 = xy[1];
+            var x = (x1 + x2) / 2.0;
+            var y = (y1 + y2) / 2.0;
+            var wall = {"coords": [x1,y1,x1,y2,x2,y2,x2,y1], "tags": ["wall"], "x" : x, "y" : y};
+            return wall;
+        }
 
         function drawWall(wall, color) {
             ctx.fillStyle = '#555';
@@ -201,6 +307,9 @@
             for (var i = 0; i < level.food.length; i++) {
                 if (level.food[i] == selected) { selected = null; level.food.splice(i,1); }
             }
+            for (var i = 0; i < level.walls.length; i++) {
+                if (level.walls[i] == selected) { selected = null; level.walls.splice(i,1); }
+            }
         }
         function update(type, newtag) {
             if ((selected != null) &&
@@ -251,7 +360,11 @@
             <div id="food"></div>
             <h2>Furniture</h2>
             <div id="furniture"></div>
+            <h2>Walls</h2>
+            <div id="walls">
+                <input id="wbutton" type="button" value='Switch to: ON'>
+            </div>
         </div>
-        <p>Arrow keys to maneuver level. -/= to zoom in and out. ,/. to  rotate an object. / to mark dessert.</p>
+        <p>WASD to maneuver level or furniture if selected. q/e to zoom in and out. r to switch to wall mode. x or delete to delete object. ,/. to  rotate an object. / to mark dessert.</p>
     </body>
 </html>
