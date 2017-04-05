@@ -3,17 +3,14 @@
     "x": 10, "y": 10
   },
   "furniture": [
-    {"x": 10, "y": 20, "width": 6, "height": 4.7, "theta": -45, "tags": ["couch"]}
+    {"x": 10, "y": 20, "width": 6, "height": 4.7, "radius": 0, "theta": -45, "tags": ["couch"]}
   ],
   "doors": [
-    {"x": 20, "y": 20, "width": 4, "height": 1, "theta": 0, "tags": ["door"]}
   ],
   "food": [
     {"x": 20, "y": 10, "radius": 1.5, "theta": 0, "tags": ["turkey"], "dessert": true, "amount": 80}
   ],
   "ais": [
-    {"path": [10,15,15,25], "tags": ["ai"]},
-    {"path": [5,18,23,18], "tags": ["ai"]}
   ],
   "walls": [
     {"coords": [0,0, 1,0, 1,30, 0, 30], "tags": ["wall"]},
