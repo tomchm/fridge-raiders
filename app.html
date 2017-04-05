@@ -55,6 +55,8 @@
                     selected.dessert=true;
                     alert("Set dessert.");
                 } }
+                else if (e.which == 189 && level.food.includes(selected)) { selected.amount--; draw(level); }
+                else if (e.which == 187 && level.food.includes(selected)) { selected.amount++; draw(level); }
                 else if (selected != null) {
                     if (e.which == 68) { moveObject(selected, [selected.x + 0.51, selected.y]); draw(level);}
                     else if (e.which == 65) { moveObject(selected, [selected.x - 0.51, selected.y]); draw(level);}
@@ -261,8 +263,15 @@
             ctx.stroke();
         }
         function drawFood(item, color) {
-
             drawFurniture(item, color);
+            ctx.fillStyle = '#ccf';
+            ctx.font = '20px Arial';
+            var screenXY = worldToScreen([ item.x, item.y ]);
+            ctx.beginPath();
+            ctx.arc(screenXY[0] + 20, screenXY[1] - 10, 12, 0, 2*Math.PI, false);
+            ctx.fill();
+            ctx.fillStyle = '#000';
+            ctx.fillText(item.amount, screenXY[0] + 5, screenXY[1]);
         }
         function getAsset(tag) {
             for (var i = 0; i < assets.data.length; i++) {
@@ -350,8 +359,9 @@
             drawPlayer('#ff0');
             if (selected != null) {
                 if (selected == level.player) { drawPlayer('#00f'); }
-                else if (selected.coords == undefined) { drawFurniture(selected, '#00f'); }
-                else { drawWall(selected, '#00f'); }
+                else if (level.food.includes(selected)) { drawFood(selected, '#00f'); }
+                else if (level.furniture.includes(selected)) { drawFurniture(selected, '#00f'); }
+                else if (level.walls.includes(selected)) { drawWall(selected, '#00f'); }
             }
             drawGrid();
         }
@@ -880,7 +890,11 @@
             <div id="walls">
                 <input id="wbutton" type="button" value='Switch to: ON'>
             </div>
+            <h2>Decor</h2>
+            <div id="decor">
+            Coming soon.
+            </div>
         </div>
-        <p>WASD to maneuver level or furniture if selected. q/e to zoom in and out. r to switch to wall mode. x or delete to delete object. ,/. to  rotate an object. / to mark dessert.</p>
+        <p>WASD to maneuver level or furniture if selected. q/e to zoom in and out. r to switch to wall mode. x or delete to delete object. ,/. to  rotate an object. / to mark dessert. +/- to change food amount.</p>
     </body>
 </html>
