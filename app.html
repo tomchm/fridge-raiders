@@ -260,16 +260,19 @@
         function drawFood(item, color) {
             drawFurniture(item, color);
         }
-        function drawFurniture(item, color) {
-            tag = item.tags[0];
-            xy = worldToScreen([item.x, item.y]); // position of the item center
-            xytl = worldToScreen([item.x - item.radius, item.y + item.radius]); // position of item top-left
-            img = $('#btn'+tag).children('img')[0];
-            ctx.strokeStyle = color;
-            asset = null;
-            for (var i = 0; i < assets.data; i++) {
-                if (assets.data[i].tag == tag) {asset = assets.data[i];}
+        function getAsset(tag) {
+            for (var i = 0; i < assets.data.length; i++) {
+                if (assets.data[i].tag==tag) return assets.data[i];
             }
+            return null;
+        }
+        function drawFurniture(item, color) {
+            var tag = item.tags[0];
+            var xy = worldToScreen([item.x, item.y]); // position of the item center
+            var xytl = worldToScreen([item.x - item.radius, item.y + item.radius]); // position of item top-left
+            var img = $('#btn'+tag).children('img')[0];
+            ctx.strokeStyle = color;
+            var asset = getAsset(tag);
             ctx.beginPath();
             if (item.radius > 0) {
                 ctx.drawImage(img, xytl[0], xytl[1], item.radius*2*DRAW_SCALE, item.radius*2*DRAW_SCALE);
@@ -361,16 +364,32 @@
             }
         }
         function update(type, newtag) {
+            var asset = getAsset(newtag);
+
             if ((selected != null) &&
                 ((type=='furniture' && level.furniture.includes(selected)) ||
                 (type == 'food' && level.food.includes(selected)) ||
                 (type == 'wall' && level.walls.includes(selected)))) {
                 selected.tags[0] = newtag;
+                if (asset.shape == 'circle') { selected.radius = eval(asset.radius); selected.width = 0; selected.height = 0; }
+                if (asset.shape == 'rectangle') { selected.radius = 0; selected.width = eval(asset.width); selected.height = eval(asset.height); selected.theta = eval(asset.angle);}
             }
             else {
                 // add a new one!
-                if (type == 'furniture') { level.furniture.push({"x": 25, "y": 25, "width": 6, "height": 4.7, "radius": 0, "theta": 0, "tags": [newtag]}); selected = level.furniture[level.furniture.length-1]; }
-                if (type == 'food') { level.food.push({"x": 25, "y": 25, "radius": 1, "theta": 0, "tags": [newtag], "dessert": false, "amount": 10}); selected = level.food[level.food.length-1]; }
+                var newObj = { "tags": [newtag], "x": 25, "y": 25, "theta": 0, "width": 0, "height": 0, "radius": 0 };
+                if (type == 'furniture') {
+                    if (asset.shape == 'circle') {newObj.radius = eval(asset.radius);}
+                    else if (asset.shape == 'rectangle') { newObj.width = eval(asset.width); newObj.height = eval(asset.height); }
+                    level.furniture.push(newObj);
+                    selected = level.furniture[level.furniture.length-1];
+                }
+                else if (type == 'food') {
+                    newObj.isDessert = false;
+                    newObj.radius = eval(asset.radius);
+                    newObj.amount = 10;
+                    level.food.push(newObj);
+                    selected = level.food[level.food.length-1];
+                }
             }
             draw(level);
         }
