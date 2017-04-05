@@ -72,7 +72,6 @@ public class FileIOController {
 
             // array of food objects
             JsonValue food = level.get("food");
-            System.out.println(food);
             for (JsonValue f = food.child(); f != null; f = f.next()) {
                 float x = f.get("x").asFloat();
                 float y = f.get("y").asFloat();
