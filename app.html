@@ -1,8 +1,6 @@
 <html>
     <head>
         <script src="jquery-3.2.0.min.js"></script>
-        <script src="core/assets/levels/appLevel.js"></script>
-        <script src="core/assets/appAssets.js"></script>
         <style type="text/css">
         canvas{
             width: 70%;
@@ -53,10 +51,10 @@
                     draw(level);
                 }
                 else if (selected != null) {
-                    if (e.which == 68) { moveObject(selected, [selected.x + 0.5, selected.y]); draw(level);}
-                    else if (e.which == 65) { moveObject(selected, [selected.x - 0.5, selected.y]); draw(level);}
-                    else if (e.which == 87) { moveObject(selected, [selected.x , selected.y + 0.5]); draw(level);}
-                    else if (e.which == 83) { moveObject(selected, [selected.x , selected.y - 0.5]); draw(level);}
+                    if (e.which == 68) { moveObject(selected, [selected.x + 0.51, selected.y]); draw(level);}
+                    else if (e.which == 65) { moveObject(selected, [selected.x - 0.51, selected.y]); draw(level);}
+                    else if (e.which == 87) { moveObject(selected, [selected.x , selected.y + 0.51]); draw(level);}
+                    else if (e.which == 83) { moveObject(selected, [selected.x , selected.y - 0.51]); draw(level);}
                 }
                 else if (e.which == 68) { camX += 2; draw(level); }
                 else if (e.which == 65) { camX -= 2; draw(level); }
@@ -100,6 +98,7 @@
                 for (var i = 0; i < level.walls.length; i++) {
                     if (inWall(level.walls[i], worldXY)) { selected = level.walls[i]; draw(level); return; }
                 }
+                if (inPlayer(worldXY)) { selected = level.player; return; }
                 selected = null;
 
                 draw(level);
@@ -114,6 +113,7 @@
                 var worldXY = screenToWorld(screenXY);
                 if (wallMode) {
                     level.walls.push(createNewWall(prevPos, worldXY));
+                    snapWalls();
                 }
                 else if (selected == null) {
                      var xDif = worldXY[0] - prevPos[0];
@@ -141,6 +141,8 @@
                 }
             });
 
+            loadJSON();
+
             for (var a = 0; a < assets.data.length; a++) {
                 var asset = assets.data[a];
                 var directory = asset.filename.split('/')[0];
@@ -161,13 +163,19 @@
                 wall.y = tempY;
             }
 
-            selected = level.furniture[0];
+            selected = null;
             wallMode = false;
             prevPos = null;
             mouseUp = false;
 
             draw(level);
         });
+
+        function loadJSON() {
+            assets = JSON.parse($('#assetsJSON').text());
+            level = JSON.parse($('#levelJSON').text());
+        }
+        
         function worldToScreen(xyPair) {
             // note that the canvas draws from the top-left
             worldX = xyPair[0];
@@ -200,10 +208,11 @@
         }
         function inFood(item, xyPair) { return inFurniture(item, xyPair); }
         function inWall(item, xyPair) { return inPolygon(item.coords, xyPair); }
+        function inPlayer(xyPair) { return (level.player.x - xyPair[0])**2 + (level.player.y - xyPair[1])**2 < 1.2**2; }
 
         function moveObject(selected, newPos) {
             if (selected != null) {
-                if (selected.tags[0] == "wall") {
+                if (selected != level.player && selected.tags[0] == "wall") {
                     var xDif = newPos[0] - selected.x;
                     var yDif = newPos[1] - selected.y;
                     selected.coords[0] += xDif;
@@ -218,6 +227,7 @@
                 selected.x = newPos[0]
                 selected.y = newPos[1]
             }
+            snapWalls();
         }
 
         function createNewWall(xyPrev, xy) {
@@ -277,6 +287,38 @@
             }
             ctx.stroke();
         }
+        function drawPlayer(color) {
+            // radius 1.2
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.fillStyle = '#909';
+            screenXY = worldToScreen([ level.player.x, level.player.y ]);
+            ctx.arc(screenXY[0], screenXY[1], 1.2*DRAW_SCALE, 0, 2*Math.PI, false);
+            ctx.fill();
+            ctx.stroke();
+        }
+        function drawGrid() {
+            var minX = Math.round(camX);
+            var minY = Math.round(camY);
+            ctx.fillStyle = '#030';
+            // vertical lines
+            for (var x = minX; x < minX + cnv.width/DRAW_SCALE; x += 1.0) {
+                for (var y = minY; y < minY + cnv.height/DRAW_SCALE; y += 1.0) {
+                    ctx.beginPath();
+                    var screenXY = worldToScreen([x, y]);
+                    ctx.arc(screenXY[0], screenXY[1], 0.5, 0, 2.0*Math.PI, false);
+                    ctx.fill();
+                }
+            }
+        }
+        function snapWalls() {
+            for (var w = 0; w < level.walls.length; w++) {
+                var wall = level.walls[w];
+                for (var i=0; i < 8; i++) {
+                    wall.coords[i] = Math.round(wall.coords[i]);
+                }
+            }
+        }
         function draw(levelObject) {
             cnv.width = $('canvas').width();
             cnv.height = $('canvas').height();
@@ -294,10 +336,13 @@
             for (var f = 0; f < furniture.length; f++) {
                 drawFurniture(furniture[f], '#ff0');
             }
+            drawPlayer('#ff0');
             if (selected != null) {
-                if (selected.coords == undefined) { drawFurniture(selected, '#00f'); }
+                if (selected == level.player) { drawPlayer('#00f'); }
+                else if (selected.coords == undefined) { drawFurniture(selected, '#00f'); }
                 else { drawWall(selected, '#00f'); }
             }
+            drawGrid();
         }
         function deleteSelected() {
             if (selected == null) return;
@@ -350,9 +395,450 @@
     </head>
     <body>
         <div id="topbar">
-            <input type="file" id="file"/>
-            <input type="button" value="Load" id="load"/>
-            <input type="button" value="Save" id="save"/>
+            Level JSON: <textarea rows="2" cols="50" id="levelJSON">
+            {"player":{"x":40,"y":5},"furniture":[{"x":44,"y":25,"width":6,"height":4.7,"radius":0,"theta":0,"tags":["couch"]},{"x":30,"y":40,"width":5,"height":6,"radius":0,"theta":0,"tags":["bed"]},{"x":30,"y":34,"width":0,"height":0,"radius":2.15,"theta":0,"tags":["table"]},{"x":72,"y":35,"width":0,"height":0,"radius":1.5,"theta":0,"tags":["chair1"]},{"x":55,"y":50,"width":0,"height":0,"radius":1.5,"theta":0,"tags":["chair2"]}],"doors":[],"food":[{"x":47,"y":45,"radius":2.5,"theta":0,"tags":["scamDessert"],"dessert":true,"amount":80},{"x":54,"y":43,"radius":1,"theta":0,"tags":["scam1"],"dessert":false,"amount":10},{"x":51,"y":41,"radius":1,"theta":0,"tags":["scam2"],"dessert":false,"amount":10},{"x":49,"y":50,"radius":1,"theta":0,"tags":["scam2"],"dessert":false,"amount":10},{"x":41,"y":47,"radius":1,"theta":0,"tags":["scam1"],"dessert":false,"amount":10},{"x":65,"y":33,"radius":1.1,"theta":0,"tags":["scam2"],"dessert":false,"amount":10},{"x":77,"y":26,"radius":1.1,"theta":0,"tags":["hotdog"],"dessert":false,"amount":10},{"x":77,"y":21,"radius":1.6,"theta":0,"tags":["pie1"],"dessert":false,"amount":20},{"x":56,"y":25,"radius":1,"theta":0,"tags":["tomato1"],"dessert":false,"amount":10},{"x":58,"y":27,"radius":1,"theta":0,"tags":["tomato2"],"dessert":false,"amount":10},{"x":50,"y":25,"radius":1,"theta":0,"tags":["scam1"],"dessert":false,"amount":10},{"x":27,"y":18,"radius":1.1,"theta":0,"tags":["burger"],"dessert":false,"amount":10},{"x":23,"y":18,"radius":1.1,"theta":0,"tags":["hotdog"],"dessert":false,"amount":10},{"x":10,"y":10,"radius":1.1,"theta":0,"tags":["burger"],"dessert":false,"amount":10},{"x":8,"y":12,"radius":1.1,"theta":0,"tags":["hotdog"],"dessert":false,"amount":10},{"x":12,"y":12,"radius":1.6,"theta":0,"tags":["pie2"],"dessert":false,"amount":20},{"x":5,"y":20,"radius":1,"theta":0,"tags":["tomato1"],"dessert":false,"amount":10},{"x":3,"y":22,"radius":1,"theta":0,"tags":["tomato2"],"dessert":false,"amount":10},{"x":4,"y":30,"radius":1.6,"theta":0,"tags":["pie1"],"dessert":false,"amount":10}],"ais":[{"path":[29,23,9,22,10,13,10,34,25,37],"tags":["ai"]}],"walls":[{"coords":[0,0,81,0,81,1.5,0,1.5],"tags":["wall"]},{"coords":[45,1.5,81,1.5,81,9,45,9],"tags":["wall"]},{"coords":[61.5,9,63,9,63,19.5,61.5,19.5],"tags":["wall"]},{"coords":[63,9,81,9,81,18,63,18],"tags":["wall"]},{"coords":[79.5,18,81,18,81,55.5,79.5,55.5],"tags":["wall"]},{"coords":[72,28.5,79.5,28.5,79.5,31.5,72,31.5],"tags":["wall"]},{"coords":[75,31.5,79.5,31.5,79.5,55.5,75,55.5],"tags":["wall"]},{"coords":[63,43.5,75,43.5,75,55.5,63,55.5],"tags":["wall"]},{"coords":[61.5,42,63,42,63,55.5,61.5,55.5],"tags":["wall"]},{"coords":[58.5,45,58.5,55.5,61.5,55.5,61.5,45],"tags":["wall"]},{"coords":[37.5,54,58.5,54,58.5,55.5,37.5,55.5],"tags":["wall"]},{"coords":[34.5,45,37.5,45,37.5,55.5,34.5,55.5],"tags":["wall"]},{"coords":[33,42,34.5,42,34.5,55.5,33,55.5],"tags":["wall"]},{"coords":[18,43.5,33,43.5,33,55.5,18,55.5],"tags":["wall"]},{"coords":[6,39,18,39,18,55.5,6,55.5],"tags":["wall"]},{"coords":[1.5,34.5,1.5,55.5,6,55.5,6,39],"tags":["wall"]},{"coords":[0,0,1.5,0,1.5,55.5,0,55.5],"tags":["wall"]},{"coords":[1.5,16.5,7.5,16.5,7.5,18,1.5,18],"tags":["wall"]},{"coords":[1.5,0,6,0,6,16.5,1.5,16.5],"tags":["wall"]},{"coords":[6,1.5,37.5,1.5,37.5,9,6,9],"tags":["wall"]},{"coords":[13.5,9,34.5,9,34.5,15,13.5,15],"tags":["wall"]},{"coords":[13.5,15,18,15,18,16.5,13.5,16.5],"tags":["wall"]},{"coords":[12,16.5,18,16.5,18,18,12,18],"tags":["wall"]},{"coords":[33,15,34.5,15,34.5,19.5,33,19.5],"tags":["wall"]},{"coords":[30,28.5,66,28.5,66,31.5,30,31.5],"tags":["wall"]},{"coords":[61.5,27,63,27,63,33,61.5,33],"tags":["wall"]},{"coords":[33,27,34.5,27,34.5,33,33,33],"tags":["wall"]},{"coords":[52.5,18,54,18,54,28.5,52.5,28.5],"tags":["wall"]}]}
+</textarea>
+            Assets JSON: <textarea rows="2" cols="50" id="assetsJSON">
+            {
+  "data": [
+    {
+      "type": "image",
+      "tag": "detective",
+      "filename": "player/man.png",
+      "origin_x": "64",
+      "origin_y": "64",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "hand",
+      "filename": "player/hand.png",
+      "origin_x": "26",
+      "origin_y": "29",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "foot",
+      "filename": "player/foot.png",
+      "origin_x": "17",
+      "origin_y": "38",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "hat",
+      "filename": "player/hat.png",
+      "origin_x": "54",
+      "origin_y": "50",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "buckle",
+      "filename": "player/buckle.png",
+      "origin_x": "21",
+      "origin_y": "20",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "loop",
+      "filename": "player/loop.png",
+      "origin_x": "6",
+      "origin_y": "13",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "tie",
+      "filename": "player/tie.png",
+      "origin_x": "21",
+      "origin_y": "53",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "mask",
+      "filename": "player/mask.png",
+      "origin_x": "140",
+      "origin_y": "140",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "coat",
+      "filename": "player/coat.png",
+      "origin_x": "140",
+      "origin_y": "140",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "backpocket",
+      "filename": "player/backpocket.png",
+      "origin_x": "23",
+      "origin_y": "24",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "ai",
+      "filename": "ai/homeowner.png",
+      "origin_x": "64",
+      "origin_y": "64",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "circle",
+      "radius": "1.2"
+    },
+    {
+      "type": "image",
+      "tag": "turkey",
+      "filename": "food/turkey.png",
+      "origin_x": "68",
+      "origin_y": "42",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "circle",
+      "radius": "1.50"
+    },
+    {
+      "type": "image",
+      "tag": "couch",
+      "filename": "furniture/couch.png",
+      "origin_x": "430",
+      "origin_y": "274",
+      "scale_x": "0.3",
+      "scale_y": "0.3",
+      "shape": "rectangle",
+      "width": "6.17",
+      "height": "4.29",
+      "angle": "0"
+    },
+    {
+      "type": "image",
+      "tag": "wall",
+      "filename": "furniture/wall_black.png",
+      "origin_x": "0",
+      "origin_y": "0",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_down",
+      "filename": "player/man_down.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "frames": "16",
+      "speed": "3",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_left",
+      "filename": "player/man_left.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "frames": "16",
+      "speed": "3",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_right",
+      "filename": "player/man_right.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "frames": "16",
+      "speed": "3",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_up",
+      "filename": "player/man_up.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "frames": "16",
+      "speed": "3",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_up_idle",
+      "filename": "player/idle_up.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "frames": "8",
+      "speed": "6",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_down_idle",
+      "filename": "player/idle_down.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "frames": "8",
+      "speed": "6",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_left_idle",
+      "filename": "player/idle_left.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "frames": "8",
+      "speed": "6",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_right_idle",
+      "filename": "player/idle_right.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "frames": "8",
+      "speed": "6",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "ball",
+      "filename": "gui/circle2.png",
+      "origin_x": "64",
+      "origin_y": "64",
+      "scale_x": "0.6",
+      "scale_y": "0.6",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "burger",
+      "filename": "food/burger.png",
+      "origin_x": "138",
+      "origin_y": "122",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "1"
+    },
+    {
+      "type": "image",
+      "tag": "hotdog",
+      "filename": "food/hotdog.png",
+      "origin_x": "190",
+      "origin_y": "136",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "1.5"
+    },
+    {
+      "type": "image",
+      "tag": "pie1",
+      "filename": "food/pie1.png",
+      "origin_x": "210",
+      "origin_y": "162",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "1.6"
+    },
+    {
+      "type": "image",
+      "tag": "pie2",
+      "filename": "food/pie2.png",
+      "origin_x": "210",
+      "origin_y": "162",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "1.6"
+    },
+    {
+      "type": "image",
+      "tag": "scam1",
+      "filename": "food/scam1.png",
+      "origin_x": "167",
+      "origin_y": "185",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "1.5"
+    },
+    {
+      "type": "image",
+      "tag": "scam2",
+      "filename": "food/scam2.png",
+      "origin_x": "180",
+      "origin_y": "189",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "1.5"
+    },
+    {
+      "type": "image",
+      "tag": "scamDessert",
+      "filename": "food/scamDessert.png",
+      "origin_x": "381",
+      "origin_y": "200",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "rectangle",
+      "width": "5.16",
+      "height": "2.81",
+      "angle": "0"
+    },
+    {
+      "type": "image",
+      "tag": "tomato1",
+      "filename": "food/tomato1.png",
+      "origin_x": "108",
+      "origin_y": "118",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "1"
+    },
+    {
+      "type": "image",
+      "tag": "tomato2",
+      "filename": "food/tomato2.png",
+      "origin_x": "116",
+      "origin_y": "118",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "1"
+    },
+    {
+      "type": "image",
+      "tag": "bed",
+      "filename": "furniture/bed.png",
+      "origin_x": "601",
+      "origin_y": "590",
+      "scale_x": "0.16",
+      "scale_y": "0.16",
+      "shape": "rectangle",
+      "width": "5.32",
+      "height": "5.51",
+      "angle": "0"
+    },
+    {
+      "type": "image",
+      "tag": "chair1",
+      "filename": "furniture/chair1.png",
+      "origin_x": "326",
+      "origin_y": "326",
+      "scale_x": "0.16",
+      "scale_y": "0.16",
+      "shape": "circle",
+      "radius": "1.56"
+    },
+    {
+      "type": "image",
+      "tag": "chair2",
+      "filename": "furniture/chair2.png",
+      "origin_x": "354",
+      "origin_y": "326",
+      "scale_x": "0.16",
+      "scale_y": "0.16",
+      "shape": "circle",
+      "radius": "1.56"
+    },
+    {
+      "type": "image",
+      "tag": "table",
+      "filename": "furniture/table.png",
+      "origin_x": "323",
+      "origin_y": "308",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "2.14"
+    },
+    {
+      "type": "image",
+      "tag": "floor",
+      "filename": "furniture/floor.png",
+      "origin_x": "43",
+      "origin_y": "194",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "foodbar",
+      "filename": "gui/foodbar.png",
+      "origin_x": "0",
+      "origin_y": "0",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "fat",
+      "filename": "player/fat.png",
+      "origin_x": "247",
+      "origin_y": "250",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "2.14"
+    },
+    {
+      "type": "sound",
+      "tag": "nom",
+      "filename": "sound/nom.wav"
+    }
+  ]
+}
+            </textarea>
+            <input type="button" onclick="loadJSON()" value="Load JSON"></input>
         </div>
         <canvas></canvas>
         <div id="panel">
