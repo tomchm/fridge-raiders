@@ -282,22 +282,27 @@
         function drawFurniture(item, color) {
             var tag = item.tags[0];
             var xy = worldToScreen([item.x, item.y]); // position of the item center
-            var xytl = worldToScreen([item.x - item.radius, item.y + item.radius]); // position of item top-left
             var img = $('#btn'+tag).children('img')[0];
-            ctx.strokeStyle = color;
             var asset = getAsset(tag);
+            var pxWidth = img.naturalWidth*asset.scale_x*DRAW_SCALE/32.0;
+            var pxHeight = img.naturalHeight*asset.scale_y*DRAW_SCALE/32.0;
+
+            ctx.drawImage(img, xy[0] - pxWidth*asset.origin_x/img.naturalWidth, xy[1] - pxHeight*(1.0-asset.origin_y/img.naturalHeight), pxWidth, pxHeight);
+
+            ctx.strokeStyle = color;
             ctx.beginPath();
             if (item.radius > 0) {
-                ctx.drawImage(img, xytl[0], xytl[1], item.radius*2*DRAW_SCALE, item.radius*2*DRAW_SCALE);
                 ctx.arc(xy[0], xy[1], item.radius*DRAW_SCALE, 0, 2*Math.PI, false);
             }
             else {
                 // rect function is top-left-x, top-left-y, width, height.
-                xytl = worldToScreen([item.x-item.width/2, item.y+item.height/2]);
-                //ctx.translate(DRAW_SCALE*xytl[0], DRAW_SCALE*xytl[1]);
-                //ctx.rotate(-item.theta*Math.PI/180.0);
-                ctx.drawImage(img, xytl[0], xytl[1], item.width*DRAW_SCALE, item.height*DRAW_SCALE);
-                ctx.rect(xytl[0], xytl[1], item.width*DRAW_SCALE, item.height*DRAW_SCALE);
+                var xytl = worldToScreen([item.x - item.width/2, item.y + item.height/2]);
+                ctx.save();
+                ctx.translate(xy[0], xy[1]);
+                ctx.rotate(-item.theta);
+                ctx.rect(-0.5*item.width*DRAW_SCALE, -0.5*item.height*DRAW_SCALE, item.width*DRAW_SCALE, item.height*DRAW_SCALE);
+                ctx.stroke();
+                ctx.restore();
                 //ctx.rotate(item.theta*Math.PI/180.0);
                 //ctx.translate(-DRAW_SCALE*xytl[0],-DRAW_SCALE*xytl[1]);
             }
