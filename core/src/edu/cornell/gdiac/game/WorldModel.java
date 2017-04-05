@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
+import edu.cornell.gdiac.game.asset.AssetLoader;
 import edu.cornell.gdiac.game.model.*;
 import edu.cornell.gdiac.util.PooledList;
 import box2dLight.*;
@@ -134,7 +135,7 @@ public class WorldModel {
 
         rayhandler = new RayHandler(world, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
         rayhandler.setCombinedMatrix(raycamera);
-        rayhandler.setAmbientLight(0,0,0,0.7f);
+        rayhandler.setAmbientLight(0,0,0,1f);
     }
 
     public DetectiveModel getPlayer() { return detective; }
@@ -185,7 +186,12 @@ public class WorldModel {
     public void addGameObjects(){
         while(!addGameObjectQueue.isEmpty()){
             GameObject go = addGameObjectQueue.pop();
+            String[] tags = go.getTags();
+            for(String tag : tags){
+                go.addAsset(tag, AssetLoader.getInstance().getAsset(tag));
+            }
             addGameObject(go);
+
         }
     }
 

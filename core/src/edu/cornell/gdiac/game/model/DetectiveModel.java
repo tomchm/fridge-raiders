@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import edu.cornell.gdiac.game.GameCanvas;
@@ -57,14 +58,14 @@ public class DetectiveModel extends GameObject{
 
     private float amountEaten = 0f;
     /** Amount required to enter second stage. */
-    private float threshold = 150f;
+    private float threshold = 50f;
     private boolean hasEatenDessert = false;
     private boolean isSecondStage = false;
     public float eatDelay = 0.0f;
 
 
     public enum Animation {
-        LEFT_MOVE, RIGHT_MOVE, UP_MOVE, DOWN_MOVE, LEFT_STOP, RIGHT_STOP, UP_STOP, DOWN_STOP
+        LEFT_MOVE, RIGHT_MOVE, UP_MOVE, DOWN_MOVE, LEFT_STOP, RIGHT_STOP, UP_STOP, DOWN_STOP, ROLL_MOVE, ROLL_STOP
     }
 
     public DetectiveModel(float x, float y){
@@ -77,6 +78,10 @@ public class DetectiveModel extends GameObject{
         bodyDef.allowSleep = true;
         bodyDef.position.set(x,y);
 
+        filter = new Filter();
+        filter.categoryBits = 0x0004;
+        filter.maskBits = 0x0002;
+
         Shape shape = new CircleShape();
         shape.setRadius(1.2f);
         radius = 2.2f;
@@ -88,7 +93,7 @@ public class DetectiveModel extends GameObject{
         animation = Animation.DOWN_MOVE;
 
         tags = new String[] {"player_down", "player_up", "player_left", "player_right",
-                "player_down_idle", "player_up_idle", "player_left_idle", "player_right_idle",
+                "player_down_idle", "player_up_idle", "player_left_idle", "player_right_idle", "glow",
                 "fat", "coat", "hat", "mask", "hand", "foot", "buckle", "loop", "tie", "backpocket"};
 
         stickers = new PooledList<Sticker>();
@@ -195,6 +200,15 @@ public class DetectiveModel extends GameObject{
             }
         }
         else{
+            if(animation == Animation.ROLL_STOP){
+                ImageAsset glow = (ImageAsset)assetMap.get("glow");
+                if(glow != null){
+                    TextureRegion texture = glow.getTexture();
+                    float alpha = 0.4f* MathUtils.sinDeg(counter*3%360) + 0.6f;
+                    canvas.draw(texture, new Color(1,1,1,alpha),glow.getOrigin().x,glow.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,glow.getImageScale().x,glow.getImageScale().y);
+                }
+
+            }
             drawFat(canvas);
         }
     }

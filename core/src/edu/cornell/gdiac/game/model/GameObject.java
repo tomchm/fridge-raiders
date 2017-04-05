@@ -23,9 +23,11 @@ public abstract class GameObject implements Comparable{
     protected Body body;
     protected BodyDef bodyDef;
     protected FixtureDef fixtureDef;
+    protected Filter filter = null;
     protected boolean isRemoved;
     protected String[] tags;
     protected ObjectMap<String, Asset> assetMap = new ObjectMap<String, Asset>();
+    protected static int counter;
 
     public boolean isRemoved() {
         return isRemoved;
@@ -60,6 +62,12 @@ public abstract class GameObject implements Comparable{
     public void activate(World world){
         body = world.createBody(bodyDef);
         Fixture fix = body.createFixture(fixtureDef);
+        if(filter == null){
+            filter = new Filter();
+            filter.categoryBits = 0x0002;
+            filter.maskBits = 0x0006;
+        }
+        fix.setFilterData(filter);
         fix.setUserData(this);
     }
 
@@ -113,5 +121,12 @@ public abstract class GameObject implements Comparable{
             return (int) (other.getZ() - this.getZ());
         }
         return 0;
+    }
+
+    public static void incCounter(){
+        counter++;
+        if(counter < 0){
+            counter=0;
+        }
     }
 }

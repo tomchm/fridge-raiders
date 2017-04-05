@@ -44,8 +44,16 @@ public class AssetLoader
     private static int FONT_SIZE = 64;
     /** The font for giving messages to the player */
     protected BitmapFont displayFont;
+    private static AssetLoader instance;
 
-    public AssetLoader(){
+    public static AssetLoader getInstance(){
+        if(instance == null){
+            instance = new AssetLoader();
+        }
+        return instance;
+    }
+
+    private AssetLoader(){
         assetMap = new ObjectMap<String, Asset>();
 
         JsonReader parser = new JsonReader();
@@ -162,6 +170,10 @@ public class AssetLoader
                 }
             }
         }
+    }
+
+    public Asset getAsset(String tag){
+        return assetMap.get(tag);
     }
 
     protected TextureRegion createTexture(AssetManager manager, String file, boolean repeat) {

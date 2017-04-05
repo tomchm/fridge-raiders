@@ -1,9 +1,11 @@
 package edu.cornell.gdiac.game.gui;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import edu.cornell.gdiac.game.GameCanvas;
+import edu.cornell.gdiac.game.WorldModel;
 import edu.cornell.gdiac.game.asset.Asset;
 
 /**
@@ -13,13 +15,19 @@ public class GUIController {
 
     private ObjectMap<String, GUIModel> guiMap = new ObjectMap<String, GUIModel>();
 
-    public GUIController(){
-        GUIModel aimGUI = new AimGUIModel();
+    public GUIController(WorldModel worldModel){
+        GUIModel aimGUI = new AimGUIModel(worldModel);
         guiMap.put(aimGUI.guiTag, aimGUI);
     }
 
     public Array<GUIModel> getGUIs(){
         return guiMap.values().toArray();
+    }
+
+    public void update(float dt){
+        for(GUIModel gui : guiMap.values()){
+            gui.update(dt);
+        }
     }
 
     public void draw(GameCanvas canvas){

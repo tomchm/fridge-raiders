@@ -65,13 +65,13 @@ public class WorldController implements Screen {
 	public WorldController() {
 		setDebug(false);
 		WorldModel worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
-		assetLoader = new AssetLoader();
+		assetLoader = AssetLoader.getInstance();
 		GameObject.setDrawScale(worldModel.getScale());
 		setDebug(false);
 		spacebarController = new SpacebarController(worldModel);
 		aiControllers = new PooledList <AIController>();
 		fileIOController = new FileIOController(worldModel);
-		guiController = new GUIController();
+		guiController = new GUIController(worldModel);
 	}
 
 	public void reset() {
@@ -79,6 +79,7 @@ public class WorldController implements Screen {
 		spacebarController = new SpacebarController(worldModel);
 		aiControllers.clear();
 		fileIOController = new FileIOController(worldModel);
+		guiController = new GUIController(worldModel);
 		populateLevel();
 	}
 
@@ -183,6 +184,7 @@ public class WorldController implements Screen {
 		worldModel.updateGameObjects(dt);
         worldModel.removeEatenFood();
 		SoundController.getInstance().update();
+		guiController.update(dt);
 		//System.out.println(1/dt);f
 	}
 
@@ -214,6 +216,7 @@ public class WorldController implements Screen {
 
 	public void draw(float delta) {
 		canvas.clear();
+		GameObject.incCounter();
 		worldModel.draw(canvas);
 		guiController.draw(canvas);
 	}

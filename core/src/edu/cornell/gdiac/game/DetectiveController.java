@@ -1,11 +1,13 @@
 package edu.cornell.gdiac.game;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import edu.cornell.gdiac.game.gui.AimGUIModel;
 import edu.cornell.gdiac.game.model.DetectiveModel;
 import edu.cornell.gdiac.game.model.GameObject;
+import edu.cornell.gdiac.game.model.TrajectoryModel;
 
 import javax.annotation.processing.SupportedSourceVersion;
 //import edu.cornell.gdiac.game.model.ShotModel;
@@ -70,9 +72,11 @@ public class DetectiveController {
             aimGUI.setAim(false);
             myProcessor.shouldRecordClick = false;
             player.consumeShot();
+            player.setAnimation(DetectiveModel.Animation.ROLL_MOVE);
         }
         else {
-            aimGUI.setAimVector(myProcessor.magnitude, player.getBody().getPosition());
+            Vector2 position = player.getBody().getPosition();
+            aimGUI.setAimVector(myProcessor.magnitude, position);
             aimGUI.setAim(true);
         }
     }
@@ -173,7 +177,6 @@ public class DetectiveController {
 
         // If we are in stage two, no walking mechanics allowed
         if(isSecondStage){
-            player.setAnimation(DetectiveModel.Animation.DOWN_STOP);
             // Need the special input processor to do mouse commands from the input controller.
             MyInputProcessor processor = input.getMyProcessor();
             float speed = player.getSpeed();
@@ -190,7 +193,11 @@ public class DetectiveController {
                 player.getBody().setLinearDamping(0.9f);
             }
             if (speed < 5) {
+                player.setAnimation(DetectiveModel.Animation.ROLL_STOP);
                 player.getBody().setLinearVelocity(0,0);
+            }
+            else {
+                player.setAnimation(DetectiveModel.Animation.ROLL_MOVE);
             }
 
 
