@@ -76,11 +76,18 @@ public class FileIOController {
                 float x = f.get("x").asFloat();
                 float y = f.get("y").asFloat();
                 float radius = f.get("radius").asFloat();
+                float width = f.get("width").asFloat();
+                float height = f.get("height").asFloat();
                 float theta = f.get("theta").asFloat() * (float)Math.PI / 180f;
                 boolean dessert = f.get("dessert").asBoolean();
                 float amount = f.get("amount").asFloat();
                 String[] tags = f.get("tags").asStringArray();
-                worldModel.addGameObject(new FoodModel(x, y, radius, theta, dessert, amount, tags));
+                if (radius > 0) {
+                    worldModel.addGameObject(new FoodModel(x, y, radius, theta, dessert, amount, tags));
+                }
+                else {
+                    worldModel.addGameObject(new FoodModel(x, y, width, theta, dessert, amount, tags));
+                }
             }
 
             // array of AI objects

@@ -377,15 +377,15 @@
             else {
                 // add a new one!
                 var newObj = { "tags": [newtag], "x": 25, "y": 25, "theta": 0, "width": 0, "height": 0, "radius": 0 };
+                if (asset.shape == 'circle') {newObj.radius = eval(asset.radius);}
+                else if (asset.shape == 'rectangle') { newObj.width = eval(asset.width); newObj.height = eval(asset.height); }
+                
                 if (type == 'furniture') {
-                    if (asset.shape == 'circle') {newObj.radius = eval(asset.radius);}
-                    else if (asset.shape == 'rectangle') { newObj.width = eval(asset.width); newObj.height = eval(asset.height); }
                     level.furniture.push(newObj);
                     selected = level.furniture[level.furniture.length-1];
                 }
                 else if (type == 'food') {
                     newObj.isDessert = false;
-                    newObj.radius = eval(asset.radius);
                     newObj.amount = 10;
                     level.food.push(newObj);
                     selected = level.food[level.food.length-1];
