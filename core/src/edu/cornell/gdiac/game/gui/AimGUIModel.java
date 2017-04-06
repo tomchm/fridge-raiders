@@ -52,7 +52,6 @@ public class AimGUIModel extends GUIModel{
     public void update(float dt){
         if(isAiming && aimVector != null && aimPosition != null) {
             if(aimVector != prevAimVector){
-                System.out.println("PREV not equal. "+tsize);
                 if (tsize > 0) {
                     tsize--;
                     TrajectoryModel tr = tqueue.removeLast();
@@ -89,7 +88,6 @@ public class AimGUIModel extends GUIModel{
 
         }
         else {
-            System.out.println("Not aiming "+tsize);
             while (tsize > 0) {
                 tsize--;
                 TrajectoryModel tr = tqueue.removeLast();
@@ -119,12 +117,10 @@ public class AimGUIModel extends GUIModel{
 
             float x = origin.x*GameObject.getDrawScale().x - asset.getTexture().getRegionWidth()/2f;
             float y = origin.y*GameObject.getDrawScale().y + 310;
-            //System.out.println(origin.x +" "+ origin.y);
             TextureRegion bar = asset.getTexture();
             bar.setRegion(0,0,400, 35);
             canvas.draw(bar, Color.WHITE, asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
             int width = (int)(foodAmount*400f/maxAmount);
-            //System.out.println(foodAmount);
             bar.setRegion(0, 35, width ,35);
             canvas.draw(bar, Color.WHITE, asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
             bar.setRegion(0, 70, 400, 35);
