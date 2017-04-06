@@ -27,7 +27,7 @@ public class TrajectoryModel extends GameObject{
         bodyDef.awake  = true;
         bodyDef.allowSleep = true;
         bodyDef.position.set(x,y);
-        velocity = velocity.scl(350);
+        velocity = velocity.scl(200);
         bodyDef.linearVelocity.set(velocity);
 
         filter = new Filter();

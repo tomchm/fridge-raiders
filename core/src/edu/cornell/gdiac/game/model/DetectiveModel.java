@@ -56,9 +56,9 @@ public class DetectiveModel extends GameObject{
     private int frame = 0;
     private Animation animation;
 
-    private float amountEaten = 0f;
+    private int amountEaten = 0;
     /** Amount required to enter second stage. */
-    private float threshold = 50f;
+    private int threshold = 50;
     private boolean hasEatenDessert = false;
     private boolean isSecondStage = false;
     public float eatDelay = 0.0f;
@@ -133,12 +133,12 @@ public class DetectiveModel extends GameObject{
         if (chewing != null) {
             float tryToEat = CHEWING_RATE * dt;
             boolean isDessert = chewing.isDessert();
-            if(!isDessert || amountEaten >= 0.999f*threshold){
-                float actuallyAte = chewing.eat(tryToEat);
+            if(!isDessert || amountEaten >= threshold){
+                int actuallyAte = chewing.eat(tryToEat);
                 if(!isDessert){
                     amountEaten += actuallyAte;
                 }
-                if (chewing.getAmount() == 0f) {
+                if (chewing.getAmount() == 0) {
                     if (isDessert){
                         hasEatenDessert = true;
                     }
@@ -147,7 +147,7 @@ public class DetectiveModel extends GameObject{
 
 
 
-                if (amountEaten >= 0.999f*threshold && hasEatenDessert) {
+                if (amountEaten >= threshold && hasEatenDessert) {
                     setStage(true);
                     getBody().getFixtureList().get(0).setRestitution(1f);
                 }
@@ -285,9 +285,9 @@ public class DetectiveModel extends GameObject{
     }
 
     public void consumeShot(){
-        amountEaten -= 10f;
-        if(amountEaten < 0f){
-            amountEaten = 0f;
+        amountEaten -= 10;
+        if(amountEaten < 0){
+            amountEaten = 0;
         }
     }
 

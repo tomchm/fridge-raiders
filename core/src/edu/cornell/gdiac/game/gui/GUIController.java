@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import edu.cornell.gdiac.game.GameCanvas;
+import edu.cornell.gdiac.game.SpacebarController;
 import edu.cornell.gdiac.game.WorldModel;
 import edu.cornell.gdiac.game.asset.Asset;
 
@@ -15,9 +16,12 @@ public class GUIController {
 
     private ObjectMap<String, GUIModel> guiMap = new ObjectMap<String, GUIModel>();
 
-    public GUIController(WorldModel worldModel){
+    public GUIController(WorldModel worldModel, SpacebarController controller){
+        GUIModel spacebarGUI = new SpacebarGUIModel(controller, worldModel);
+        guiMap.put(spacebarGUI.guiTag, spacebarGUI);
         GUIModel aimGUI = new AimGUIModel(worldModel);
         guiMap.put(aimGUI.guiTag, aimGUI);
+
     }
 
     public Array<GUIModel> getGUIs(){

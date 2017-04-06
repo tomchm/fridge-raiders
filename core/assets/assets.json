@@ -438,11 +438,23 @@
       "type": "image",
       "tag": "glow",
       "filename": "gui/glow.png",
-      "scale_x": "0.5",
-      "scale_y": "0.5",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
       "origin_x": "240",
       "origin_y": "240",
       "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "foodtick",
+      "filename": "gui/foodtick.png",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "origin_x": "120",
+      "origin_y": "120",
+      "shape": "none",
+      "frames": "10",
+      "speed": "0"
     }
   ]
 }

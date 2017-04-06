@@ -51,6 +51,7 @@ public class AimGUIModel extends GUIModel{
 
     public void update(float dt){
         if(isAiming && aimVector != null && aimPosition != null) {
+            /*
             if(aimVector != prevAimVector){
                 if (tsize > 0) {
                     tsize--;
@@ -59,6 +60,7 @@ public class AimGUIModel extends GUIModel{
                 }
                 prevAimVector = aimVector;
             }
+            */
             Vector2 velocity = aimVector.cpy().nor();
             TrajectoryModel tm = new TrajectoryModel(aimPosition.x, aimPosition.y, 1.2f, new Vector2(velocity.x, -velocity.y));
             worldModel.addGameObjectQueue(tm);

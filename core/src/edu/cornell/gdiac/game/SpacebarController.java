@@ -45,7 +45,7 @@ public class SpacebarController implements RayCastCallback {
 
     /** Find an object close enough to the player to interact with.
      *  null if no such object. */
-    private GameObject getInteractible() {
+    public GameObject getInteractible() {
         float bestdist2 = Float.POSITIVE_INFINITY;
         GameObject closest = null;
         DetectiveModel player = worldModel.getPlayer();
