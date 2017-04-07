@@ -155,7 +155,7 @@ public class WorldController implements Screen {
 			}
 		}
 		else {
-			if(worldModel.getPlayer().getAmountEaten() == 0){
+			if(!worldModel.getPlayer().hasShots()){
 				reset();
 			}
 		}

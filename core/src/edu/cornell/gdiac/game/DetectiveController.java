@@ -184,21 +184,24 @@ public class DetectiveController {
             // Only want the player shooting when they've come to a stop
             // Slow them down otherwise.
             if(speed == 0) {
+                player.setAnimation(DetectiveModel.Animation.ROLL_STOP);
                 processor.shouldRecordClick = true;
                 if (didClickOnPlayer(processor)) {
                     handleShots(processor);
                 }
             }
+            else {
+                player.setAnimation(DetectiveModel.Animation.ROLL_MOVE);
+            }
+
             if (speed < 20) {
                 player.getBody().setLinearDamping(0.9f);
             }
             if (speed < 5) {
-                player.setAnimation(DetectiveModel.Animation.ROLL_STOP);
                 player.getBody().setLinearVelocity(0,0);
             }
-            else {
-                player.setAnimation(DetectiveModel.Animation.ROLL_MOVE);
-            }
+
+
 
 
         }

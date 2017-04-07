@@ -27,6 +27,7 @@ public class TrajectoryModel extends GameObject{
         bodyDef.awake  = true;
         bodyDef.allowSleep = true;
         bodyDef.position.set(x,y);
+        bodyDef.bullet = true;
         velocity = velocity.scl(200);
         bodyDef.linearVelocity.set(velocity);
 
@@ -42,7 +43,7 @@ public class TrajectoryModel extends GameObject{
         fixtureDef.friction = 0f;
         fixtureDef.restitution = 0.0f;
 
-        this.tags = new String[]{"ball"};
+        this.tags = new String[]{"solidBall"};
         time = MAX_TIME;
     }
 
@@ -52,7 +53,7 @@ public class TrajectoryModel extends GameObject{
 
     public void draw(GameCanvas canvas){
         time++;
-        ImageAsset coat = (ImageAsset) assetMap.get("ball");
+        ImageAsset coat = (ImageAsset) assetMap.get("solidBall");
         if(coat != null){
             //canvas.setBlendState(GameCanvas.BlendState.ADDITIVE);
             canvas.draw(coat.getTexture(), tint, coat.getOrigin().x,coat.getOrigin().y,

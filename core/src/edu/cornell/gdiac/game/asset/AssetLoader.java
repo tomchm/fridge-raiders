@@ -39,11 +39,6 @@ public class AssetLoader
 
     protected ObjectMap<String, Asset> assetMap;
 
-    // Pathnames to shared assets
-    private static String FONT_FILE = "shared/RetroGame.ttf";
-    private static int FONT_SIZE = 64;
-    /** The font for giving messages to the player */
-    protected BitmapFont displayFont;
     private static AssetLoader instance;
 
     public static AssetLoader getInstance(){
@@ -96,6 +91,8 @@ public class AssetLoader
         catch(Exception e){
             System.out.println("assets.json not found.");
         }
+        assetMap.put("gothic32", new FontAsset("shared/gothic32.ttf", "gothic32", 32));
+        assetMap.put("gothic72", new FontAsset("shared/gothic72.ttf", "gothic72", 72));
     }
 
     public void preLoadContent(AssetManager manager) {
@@ -111,12 +108,13 @@ public class AssetLoader
             else if (asset instanceof SoundAsset){
                 manager.load(asset.getFileName(), Sound.class);
             }
+            else if(asset instanceof FontAsset){
+                FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+                size2Params.fontFileName = asset.getFileName();
+                size2Params.fontParameters.size = ((FontAsset) asset).getSize();
+                manager.load(asset.getFileName(), BitmapFont.class, size2Params);
+            }
         }
-
-        FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        size2Params.fontFileName = FONT_FILE;
-        size2Params.fontParameters.size = FONT_SIZE;
-        manager.load(FONT_FILE, BitmapFont.class, size2Params);
     }
 
     public void loadContent(AssetManager manager) {
@@ -135,15 +133,13 @@ public class AssetLoader
                 ((SoundAsset) asset).setSound(createSound(manager, asset.getFileName()));
                 SoundController.getInstance().addSound((SoundAsset) asset);
             }
+            else if(asset instanceof FontAsset){
+                ((FontAsset) asset).setFont(manager.get(asset.getFileName(),BitmapFont.class));
+            }
         }
 
         //SoundController sounds = SoundController.getInstance();
 
-        if (manager.isLoaded(FONT_FILE)) {
-            displayFont = manager.get(FONT_FILE,BitmapFont.class);
-        } else {
-            displayFont = null;
-        }
 
         worldAssetState = AssetState.COMPLETE;
     }

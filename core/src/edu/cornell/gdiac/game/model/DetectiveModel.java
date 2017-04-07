@@ -56,12 +56,21 @@ public class DetectiveModel extends GameObject{
     private int frame = 0;
     private Animation animation;
 
-    private int amountEaten = 0;
+
     /** Amount required to enter second stage. */
     private int threshold = 50;
+    /** Maximum amount of food in level */
+    private int maximumFood = 200;
+    /** Par shots for the level*/
+    private int par = 5;
+
+    private int amountEaten = 0;
     private boolean hasEatenDessert = false;
     private boolean isSecondStage = false;
     public float eatDelay = 0.0f;
+
+    private int shotsTaken;
+    private int shotsRemaining;
 
 
     public enum Animation {
@@ -109,6 +118,9 @@ public class DetectiveModel extends GameObject{
 
         force = new Vector2();
         velocity = new Vector2();
+
+        shotsRemaining = -1;
+        shotsTaken = 0;
     }
 
     public void startEating(FoodModel f) {
@@ -122,6 +134,12 @@ public class DetectiveModel extends GameObject{
 
         /** Rotate all of the body parts in 3D on the balled-up character. */
         if (isSecondStage) {
+            if(shotsRemaining == -1){
+                int extra = (int)(5*(amountEaten - threshold) / (maximumFood - threshold));
+                shotsRemaining = par + extra;
+                System.out.println(shotsRemaining);
+            }
+
             Vector2 vel = body.getLinearVelocity();
             float omega = vel.len() / getRadius();
             float phi = (float)Math.atan2(vel.y, vel.x) - 0.5f*(float)Math.PI;
@@ -273,8 +291,12 @@ public class DetectiveModel extends GameObject{
         return amountEaten;
     }
 
-    public  float getThreshold(){
+    public float getThreshold(){
         return threshold;
+    }
+
+    public float getMaximumFood(){
+        return maximumFood;
     }
 
     public void setStage(boolean b){
@@ -285,10 +307,25 @@ public class DetectiveModel extends GameObject{
     }
 
     public void consumeShot(){
-        amountEaten -= 10;
-        if(amountEaten < 0){
-            amountEaten = 0;
-        }
+        shotsRemaining--;
+        shotsTaken++;
+        animation = Animation.ROLL_MOVE;
+    }
+
+    public boolean hasShots(){
+        return !((shotsRemaining == 0) && (animation == Animation.ROLL_STOP));
+    }
+
+    public int getShotsRemaining(){
+        return shotsRemaining;
+    }
+
+    public int getShotsTaken(){
+        return shotsTaken;
+    }
+
+    public int getPar(){
+        return par;
     }
 
     private class Sticker {
