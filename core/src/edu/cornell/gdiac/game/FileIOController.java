@@ -108,6 +108,10 @@ public class FileIOController {
             JsonValue walls = level.get("walls");
             for (JsonValue w = walls.child(); w != null; w = w.next()) {
                 float[] coords = w.get("coords").asFloatArray();
+                //TODO delete
+//                for (int i=0; i<coords.length; i++) {
+//                    coords[i] *= 1.5f;
+//                }
                 String[] tags = w.get("tags").asStringArray();
                 worldModel.addGameObject(new WallModel(coords, tags));
 

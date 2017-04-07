@@ -5,14 +5,11 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
-import com.sun.corba.se.spi.orbutil.fsm.FSM;
 import edu.cornell.gdiac.game.model.AIModel;
 import edu.cornell.gdiac.game.model.DetectiveModel;
-import edu.cornell.gdiac.game.model.FurnitureModel;
 
-import java.util.ArrayList;
+
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
