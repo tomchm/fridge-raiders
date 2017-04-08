@@ -85,6 +85,9 @@ public class WorldModel {
         initContactListener();
     }
 
+    public void setPar(int par) {}
+    public void setThreshold(int threshold) {}
+
     /**
      * Creates new contact listener to allow for dynamic interactions between ai and furniture
      */

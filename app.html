@@ -184,11 +184,11 @@
             });
 
             $('#par').change(function() {
-                level.par = eval( $('#par').val() );
+                level.par = Math.round(eval( $('#par').val() ));
                 $('#levelJSON').val(JSON.stringify(level));
             });
             $('#threshold').change(function() {
-                level.par = eval( $('#threshold').val() );
+                level.threshold = Math.round(eval( $('#threshold').val() ));
                 $('#levelJSON').val(JSON.stringify(level));
             });
 

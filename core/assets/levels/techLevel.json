@@ -1,4 +1,6 @@
 {
+  "par": 5,
+  "threshold": 100,
   "player": {
     "x": 40, "y": 5
   },

@@ -39,6 +39,9 @@ public class FileIOController {
             worldModel.setPlayer(new DetectiveModel(player.get("x").asFloat(), player.get("y").asFloat()));
             worldModel.addGameObject(worldModel.getPlayer());
 
+            worldModel.setPar(level.get("par").asInt());
+            worldModel.setThreshold(level.get("threshold").asInt());
+
             // array of furniture objects
             JsonValue furniture = level.get("furniture");
             for (JsonValue f = furniture.child(); f != null; f = f.next() ) {
@@ -108,8 +111,10 @@ public class FileIOController {
             for (JsonValue w = walls.child(); w != null; w = w.next()) {
                 float[] coords = w.get("coords").asFloatArray();
                 //TODO delete
-                for (int i=0; i<coords.length; i++) {
-                    coords[i] *= 1.5f;
+                if (filename.equals("levels/techLevel.json")) {
+                    for (int i=0; i<coords.length; i++) {
+                        coords[i] *= 1.5f;
+                    }
                 }
                 String[] tags = w.get("tags").asStringArray();
                 worldModel.addGameObject(new WallModel(coords, tags));
