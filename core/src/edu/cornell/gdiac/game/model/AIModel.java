@@ -25,7 +25,7 @@ public class AIModel extends GameObject{
     protected static final float ANG_VEL = 3.0f;
     // Variable Fields
     /*speed of the ai movement*/
-    protected float speed = 4.0f;
+    protected float speed = 3.0f;
     /*scaling factor of speed after ai finds player*/
     protected float speedUpScale = 1.5f;
     /*cone Light of the ai*/
@@ -94,7 +94,7 @@ public class AIModel extends GameObject{
         Shape shape = new CircleShape();
         shape.setRadius(1.2f);
         fixtureDef = new FixtureDef();
-        fixtureDef.density = 1.0f;
+        fixtureDef.density = 2.0f;
         fixtureDef.shape = shape;
 
         this.path = path;
@@ -107,6 +107,7 @@ public class AIModel extends GameObject{
     public void createConeLight(RayHandler rayHandler) {
         Vector2 pos = getBody().getPosition();
         coneLight = new ConeLight(rayHandler, NUM_RAYS, Color.WHITE, lightRadius, pos.x, pos.y, getBody().getAngle(), lightAngle);
+        coneLight.setContactFilter((short)1, (short)-1, (short)1);
     }
 
     /**
@@ -122,23 +123,21 @@ public class AIModel extends GameObject{
      */
     public void updateAngle(Vector2 angleVector) {
         Vector2 vel = angleVector;
-        if((vel.x != 0 || vel.y != 0)) {
-            //regularizes angles to be between 0 and 2pi
-            float angle = (float)((getBody().getAngle() + Math.PI * 4) % (Math.PI * 2));
-            float nextangle = (float)((Math.atan2(vel.y, vel.x) + Math.PI * 4) % (Math.PI * 2));
-            float altangle = (float)((nextangle > angle) ? nextangle - Math.PI * 2 : nextangle + Math.PI *2);
+        //regularizes angles to be between 0 and 2pi
+        float angle = (float)((getBody().getAngle() + Math.PI * 4) % (Math.PI * 2));
+        float nextangle = (float)((Math.atan2(vel.y, vel.x) + Math.PI * 4) % (Math.PI * 2));
+        float altangle = (float)((nextangle > angle) ? nextangle - Math.PI * 2 : nextangle + Math.PI *2);
 
-            //checks which direction to turn angle
-            float dist1 = Math.abs(nextangle - angle);
-            float dist2 = Math.abs(altangle - angle);
+        //checks which direction to turn angle
+        float dist1 = Math.abs(nextangle - angle);
+        float dist2 = Math.abs(altangle - angle);
 
-            //sets direction appropriately
-            int direction = (nextangle > angle) ? 1 : -1;;
-            if (dist2 < dist1) {
-                direction = direction * -1;
-            }
-            getBody().setAngularVelocity(ANG_VEL * direction * Math.min(dist1, dist2));
+        //sets direction appropriately
+        int direction = (nextangle > angle) ? 1 : -1;;
+        if (dist2 < dist1) {
+            direction = direction * -1;
         }
+        getBody().setAngularVelocity(ANG_VEL * direction * Math.min(dist1, dist2));
     }
 
     /** Overwrite GameObject draw method so the sprite does not turn akwardly*/

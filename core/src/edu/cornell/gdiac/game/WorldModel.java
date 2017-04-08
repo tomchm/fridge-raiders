@@ -1,18 +1,15 @@
 package edu.cornell.gdiac.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Pool;
 import edu.cornell.gdiac.game.model.*;
 import edu.cornell.gdiac.util.PooledList;
 import box2dLight.*;
 import com.badlogic.gdx.graphics.*;
 
 
-import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -26,13 +23,20 @@ public class WorldModel {
     protected int width;
     protected int height;
     protected PooledList<GameObject> addGameObjectQueue;
-    protected PooledList<GameObject> solidGameObjects;
-    protected PooledList<GameObject> gameObjects;
     protected PooledList<GameObject> removeGameObjectQueue;
+
+    protected PooledList<GameObject> gameObjects;
+    protected PooledList<GameObject> solidGameObjects;
+
     protected PooledList<AIModel> aiList;
+    protected PooledList<FurnitureModel> furnitureList;
+    protected PooledList<FoodModel> foodList;
+    protected PooledList<WallModel> wallList;
+
     protected PooledList<JointDef> jointQueue;
     protected PooledList<Body> staticQueue;
     protected PooledList<Body> dynamicQueue;
+
     protected int[] sensors;
     protected boolean clearJoints;
     protected boolean addJoints;
@@ -50,15 +54,6 @@ public class WorldModel {
      * @return a list of all AI models currently populating the level
      */
     public PooledList<AIModel> getAIList() {return aiList;}
-
-    /** Adds ai to list of AIModels populating the level. Initializes sensors
-     * if the first ai
-     *
-     * @param ai a new ai model to add to list of ai models in the current level
-     */
-    public void addAI(AIModel ai){
-        aiList.add(ai);
-    }
 
     /**
      * clears aiList
@@ -85,25 +80,84 @@ public class WorldModel {
         initLighting();
 
         // sensor info
-        //TODO
-        height = 120;
-        width = 120;
+        height = -1;
+        width = -1;
+        initContactListener();
+    }
+
+    /**
+     * Creates new contact listener to allow for dynamic interactions between ai and furniture
+     */
+    private void initContactListener(){
+        world.setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                GameObject objectA = (GameObject)contact.getFixtureA().getUserData();
+                GameObject objectB = (GameObject)contact.getFixtureB().getUserData();
+                boolean temp1 = objectA.getClass() == AIModel.class && objectB.getClass() == FurnitureModel.class;
+                boolean temp2 = objectB.getClass() == AIModel.class && objectA.getClass() == FurnitureModel.class;
+                if(temp1 || temp2){
+                    GameObject furniture = ((temp1) ? objectB : objectA);
+                    turnOnOffObjSensors(furniture, 0);
+                    setDynamic(furniture.getBody());
+                }
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+                GameObject objectA = (GameObject)contact.getFixtureA().getUserData();
+                GameObject objectB = (GameObject)contact.getFixtureB().getUserData();
+                boolean temp1 = objectA.getClass() == AIModel.class && objectB.getClass() == FurnitureModel.class;
+                boolean temp2 = objectB.getClass() == AIModel.class && objectA.getClass() == FurnitureModel.class;
+                if(temp1 || temp2){
+                    GameObject furniture = ((temp1) ? objectB : objectA);
+                    turnOnOffObjSensors(furniture, 1);
+                    setStatic(furniture.getBody());
+                }
+            }
+
+            @Override
+            public void postSolve(Contact arg0, ContactImpulse arg1) {}
+
+            @Override
+            public void preSolve(Contact arg0, Manifold arg1) {}
+        });
+    }
+
+    /**
+     * Finds the total dimensions of the level (the height and width) and sets the appropriate
+     * attributes
+     */
+    private void findAndSetDimensions(){
+        float max = Float.MIN_VALUE;
+        float f;
+        float [] coords;
+        for(GameObject g : gameObjects) {
+            if (g.getClass() == WallModel.class) {
+                coords =  ((WallModel)g).getCoords();
+                for(int i = 0; i < coords.length; i++) {
+                    f = coords[i];
+                    if (f > max) max  = f;
+                }
+            }
+        }
+        width = (int)max;
+        height = (int)max;
         sensors = new int[height*width];
     }
+
 
     /**
      * Updates all sensors with static objects on them over the course of several ticks
      */
     public void updateAllSensors(){
+        if(height == -1) {
+            findAndSetDimensions();
+        }
         for(int i = 0; i < width ;i ++){
             for(int j = 0; j < height; j++){
                 // CHANGE magic number
-                if (isAccessibleWithRadius(i,j,1.2f)) {
-                    sensors[i*width + j] = 0;
-                }
-                else {
-                    sensors[i*width + j] = 1;
-                }
+                sensors[i*width + j] = isAccessibleWithRadius(i,j,1.2f);
             }
         }
     }
@@ -156,6 +210,9 @@ public class WorldModel {
         gameObject.activate(world);
         if (gameObject.getClass() == FurnitureModel.class || gameObject.getClass() == WallModel.class || gameObject.getClass() == DoorModel.class) {
             solidGameObjects.add(gameObject);
+        }
+        if (gameObject.getClass() == AIModel.class) {
+            aiList.add((AIModel)gameObject);
         }
     }
 
@@ -337,22 +394,33 @@ public class WorldModel {
         return scale;
     }
 
-    /** returns true sensor at position x y is overlapping with some object */
-    public boolean isAccessibleByAI(int x, int y) {
+    /** returns true sensor at position x y is not overlapping with some object */
+    public boolean isAccessibleByAI(int x, int y, boolean noFurniture) {
         if (x < 0 || y < 0 || x > width - 1 || y > width -1) {
             return false;
         }
-        return sensors[x*width + y] <= 0;
+        return sensors[x*width + y] <= 0 + ((noFurniture) ? 1 : 0);
     }
 
-    /** returns true if any of 8 cardinal points radius away from x y
+    /** returns 0 if any of 8 cardinal points radius away from x y
      *  are not in some solid object
+     *
+     *  returns 1 if contained in a wall
+     *
+     *  returns 2 if contained in any other object
      */
-    public boolean isAccessibleWithRadius(float x, float y, float radius) {
+    public int isAccessibleWithRadius(float x, float y, float radius) {
         for(GameObject obj: solidGameObjects) {
-            if (!isAccessibleWithRadiusSingleObject(x,y,radius,obj)) return false;
+            if (!isAccessibleWithRadiusSingleObject(x, y, radius, obj)) {
+                if (obj.getClass() == WallModel.class) {
+                    return 2;
+                }
+                else {
+                    return 1;
+                }
+            }
         }
-        return true;
+        return 0;
     }
 
     /** returns true if any of 8 cardinal points radius away from x y

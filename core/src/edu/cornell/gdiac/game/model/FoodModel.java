@@ -34,6 +34,9 @@ public class FoodModel extends GameObject {
         CircleShape shape = new CircleShape();
         shape.setRadius(radius);
         fixtureDef = new FixtureDef();
+        fixtureDef.filter.categoryBits = 1;
+        fixtureDef.filter.maskBits = 1;
+        fixtureDef.filter.groupIndex = -1;
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
         fixtureDef.isSensor = true;

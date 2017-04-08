@@ -58,16 +58,24 @@ public class AIController implements RayCastCallback{
     private int pathIndex;
     /** The direction the ai is traversing the path*/
     private int direction;
+    /** The previous position of the Ai*/
+    private Vector2 prevPos;
+    /** If the AI is stuck*/
+    private boolean isStuck;
+    /** Amount of time in seconds for user to be stuck */
+    protected static float STUCK_TIME = 0.5f;
+    /** How much longer (by number of occurances) should the pushing phase be to the checking if stuck phase*/
+    protected static float STUCK_TIME_MULT = 5.0f;
 
     // Chase attributes
     /** the weight to apply to light time*/
     protected static float DIST_SCL = 8.0f;
     /** the limit of light time*/
-    protected static float LIGHT_LIM = 4.0f;
+    protected static float LIGHT_LIM = 5.0f;
     /** the threshold before chase*/
     protected static float CHASE_LIM = 0.5f;
     /** the distance at which the ai catches the player*/
-    protected static float CATCH_DIST = 5.0f;
+    protected static float CATCH_DIST = 3.0f;
     /** the weighted time the player has been in the light*/
     private float lightTime;
     /** caches dt value for callback*/
@@ -111,6 +119,8 @@ public class AIController implements RayCastCallback{
         next = new Vector2(ai.getBody().getPosition());
         pathIndex = 0;
         direction = 1;
+        prevPos = ai.getBody().getPosition();
+        isStuck = false;
     }
 
     /**
@@ -118,6 +128,22 @@ public class AIController implements RayCastCallback{
      */
     public void update(float dt) {
         dtCache = dt;
+        ticks ++;
+        System.out.println(isStuck);
+
+        // check if AI is stuck
+        double interval = Math.round(STUCK_TIME * 60);
+        if (ticks % interval == 0) {
+            if (prevPos.equals(ai.getBody().getPosition())) {
+                isStuck = true;
+            }
+            else {
+                if (ticks % (interval * STUCK_TIME_MULT) == 0) {
+                    isStuck = false;
+                }
+            }
+            prevPos = new Vector2(ai.getBody().getPosition());
+        }
 
         // calculate all attributes
         checkSight();
@@ -222,8 +248,6 @@ public class AIController implements RayCastCallback{
      * Sets the aimodel parameters appropriately for AI to do next action
      */
     private void setNextAction(float dt) {
-        // Increment the number of ticks.
-        ticks++;
 
         // Do not need to rework ourselves every frame. Just every 10 ticks.
         if (ticks % 1 == 0) {
@@ -232,6 +256,7 @@ public class AIController implements RayCastCallback{
 
             // Pathfinding
             next = selectNextStep();
+            System.out.println(next);
         }
         Vector2 aiVel = getVelocityToNext(dt);
         ai.getBody().setLinearVelocity(aiVel);
@@ -356,10 +381,10 @@ public class AIController implements RayCastCallback{
             }
             visited.add(loc.position);
             for (int i = -1; i < 2; i = i +2) {
-                if (worldModel.isAccessibleByAI((int)x+i, (int)y) && !visited.contains(new Vector2(x+i,y))) {
+                if (worldModel.isAccessibleByAI((int)x+i, (int)y, isStuck) && !visited.contains(new Vector2(x+i,y))) {
                     queue.add(new searchPairs(x + i, y, loc));
                 }
-                if (worldModel.isAccessibleByAI((int)x, (int)y+i) && !visited.contains(new Vector2(x,y+i))) {
+                if (worldModel.isAccessibleByAI((int)x, (int)y+i, isStuck) && !visited.contains(new Vector2(x,y+i))) {
                     queue.add(new searchPairs(x, y + i, loc));
                 }
             }
@@ -384,7 +409,7 @@ public class AIController implements RayCastCallback{
             Vector2 loc = queue.poll();
             x = loc.x;
             y = loc.y;
-            if (worldModel.isAccessibleByAI((int)loc.x, (int)loc.y)) {
+            if (worldModel.isAccessibleByAI((int)loc.x, (int)loc.y, isStuck)) {
                 return loc;
             }
             if (visited.contains(loc)) {
