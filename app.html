@@ -26,6 +26,7 @@
             DRAW_SCALE = 12; // pixels per world unit
             PLAYER_RADIUS = 1.2;
             AI_RADIUS = 1.2;
+            HANDLE_RADIUS = 0.5;
             camX = 0; // camera position.
             camY = 0; // ie. the world point to draw at bottom-left.
             selected = null;
@@ -93,6 +94,9 @@
                 if (wallMode) {
                     return;
                 }
+                // want already-selected walls to get precedence when picking corner handles
+                if (level.walls.includes(selected)) { if (inWall(selected, worldXY)) {draw(level); return;} }
+
                 for (var i = 0; i < level.food.length; i++) {
                     if (inFood(level.food[i], worldXY)) { selected = level.food[i]; draw(level); return; }
                 }
@@ -258,7 +262,13 @@
             return false;
         }
         function inFood(item, xyPair) { return inFurniture(item, xyPair); }
-        function inWall(item, xyPair) { return inPolygon(item.coords, xyPair); }
+        function inWall(item, xyPair) {
+            for (var i = 0; i < item.coords.length; i += 2) {
+                if ((xyPair[0]-item.coords[i])**2 + (xyPair[1]-item.coords[i+1])**2 < HANDLE_RADIUS**2) { seli = i/2; return true; }
+            }
+            if (inPolygon(item.coords, xyPair)) {seli = -1; return true; }
+            return false;
+        }
         function inPlayer(xyPair) { return (level.player.x - xyPair[0])**2 + (level.player.y - xyPair[1])**2 < 1.2**2; }
 
         function moveObject(selected, xDif, yDif) {
@@ -269,14 +279,20 @@
                     return;
                 }
                 if (level.walls.includes(selected)) {
-                    selected.coords[0] += xDif;
-                    selected.coords[2] += xDif;
-                    selected.coords[4] += xDif;
-                    selected.coords[6] += xDif;
-                    selected.coords[1] += yDif;
-                    selected.coords[3] += yDif;
-                    selected.coords[5] += yDif;
-                    selected.coords[7] += yDif;
+                    if (seli < 0) {
+                        selected.coords[0] += xDif;
+                        selected.coords[2] += xDif;
+                        selected.coords[4] += xDif;
+                        selected.coords[6] += xDif;
+                        selected.coords[1] += yDif;
+                        selected.coords[3] += yDif;
+                        selected.coords[5] += yDif;
+                        selected.coords[7] += yDif;
+                    }
+                    else { // just move the selected coordinate
+                        selected.coords[2*seli] += xDif;
+                        selected.coords[2*seli+1] += yDif;
+                    }
                 }
                 selected.x += xDif;
                 selected.y += yDif;
@@ -310,6 +326,15 @@
             ctx.closePath();
             ctx.fill();
             ctx.stroke();
+            // now draw corner handles
+            ctx.fillStyle = color;
+            for (var i = 0; i < wall.coords.length; i+=2) {
+                ctx.beginPath();
+                var worldXY = worldToScreen([ wall.coords[i], wall.coords[i+1] ]);
+                ctx.arc(worldXY[0], worldXY[1], HANDLE_RADIUS*DRAW_SCALE, 0, 2*Math.PI, false);
+                ctx.stroke();
+                if (wall==selected && 2*seli == i) { ctx.fill(); }
+            }
         }
         function drawFood(item, color) {
             drawFurniture(item, color);
