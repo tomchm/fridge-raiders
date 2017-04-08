@@ -129,7 +129,6 @@ public class AIController implements RayCastCallback{
     public void update(float dt) {
         dtCache = dt;
         ticks ++;
-        System.out.println(isStuck);
 
         // check if AI is stuck
         double interval = Math.round(STUCK_TIME * 60);
@@ -256,7 +255,6 @@ public class AIController implements RayCastCallback{
 
             // Pathfinding
             next = selectNextStep();
-            System.out.println(next);
         }
         Vector2 aiVel = getVelocityToNext(dt);
         ai.getBody().setLinearVelocity(aiVel);
