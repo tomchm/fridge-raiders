@@ -20,8 +20,8 @@ public class DetectiveController {
     private AimGUIModel aimGUI;
     private boolean isSecondStage;
     private int lastMove = -1;
-    private final static float SHOOT_FORCE = 30f;
-    private final static float MAX_FORCE = 300*SHOOT_FORCE;
+    private final static float SHOOT_FORCE = 35f;
+    private final static float MAX_FORCE = 350*SHOOT_FORCE;
 
 
     public  DetectiveController( DetectiveModel playerModel, WorldModel world, AimGUIModel aimGUI){
@@ -69,7 +69,8 @@ public class DetectiveController {
             myProcessor.lastX = 0;
             aimGUI.setAim(false);
             myProcessor.shouldRecordClick = false;
-            player.consumeShot();
+            float val = (fx < fy) ? fy : fx;
+            player.consumeShot(val);
         }
         else {
             aimGUI.setAimVector(myProcessor.magnitude, player.getBody().getPosition());

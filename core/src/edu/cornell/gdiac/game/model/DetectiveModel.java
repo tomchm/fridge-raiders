@@ -270,8 +270,9 @@ public class DetectiveModel extends GameObject{
         return this.isSecondStage;
     }
 
-    public void consumeShot(){
-        amountEaten -= 10f;
+    public void consumeShot(float value){
+        float finval = (float) Math.abs(value/1000 * 2.5);
+        amountEaten -= finval;
         if(amountEaten < 0f){
             amountEaten = 0f;
         }
