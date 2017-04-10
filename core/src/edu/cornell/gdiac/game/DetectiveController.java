@@ -1,11 +1,13 @@
 package edu.cornell.gdiac.game;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import edu.cornell.gdiac.game.gui.AimGUIModel;
 import edu.cornell.gdiac.game.model.DetectiveModel;
 import edu.cornell.gdiac.game.model.GameObject;
+import edu.cornell.gdiac.game.model.TrajectoryModel;
 
 import javax.annotation.processing.SupportedSourceVersion;
 //import edu.cornell.gdiac.game.model.ShotModel;
@@ -69,11 +71,12 @@ public class DetectiveController {
             myProcessor.lastX = 0;
             aimGUI.setAim(false);
             myProcessor.shouldRecordClick = false;
-            float val = (fx < fy) ? fy : fx;
-            player.consumeShot(val);
+            player.consumeShot();
+            player.setAnimation(DetectiveModel.Animation.ROLL_MOVE);
         }
         else {
-            aimGUI.setAimVector(myProcessor.magnitude, player.getBody().getPosition());
+            Vector2 position = player.getBody().getPosition();
+            aimGUI.setAimVector(myProcessor.magnitude, position);
             aimGUI.setAim(true);
         }
     }
@@ -182,11 +185,16 @@ public class DetectiveController {
             // Only want the player shooting when they've come to a stop
             // Slow them down otherwise.
             if(speed == 0) {
+                player.setAnimation(DetectiveModel.Animation.ROLL_STOP);
                 processor.shouldRecordClick = true;
                 if (didClickOnPlayer(processor)) {
                     handleShots(processor);
                 }
             }
+            else {
+                player.setAnimation(DetectiveModel.Animation.ROLL_MOVE);
+            }
+
             if (speed < 20) {
                 player.getBody().setLinearDamping(0.9f);
             }

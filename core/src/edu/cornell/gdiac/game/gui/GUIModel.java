@@ -28,6 +28,8 @@ public abstract class GUIModel {
         return tags;
     }
 
+    public void update(float dt){};
+
     public String getGUITag() { return guiTag; }
 
     public abstract void draw(GameCanvas canvas);

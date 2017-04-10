@@ -295,17 +295,9 @@ public class SoundController {
 	 */
 	public boolean play(String key, boolean loop, float volume) {
 		// Get the sound for the file
-		System.out.println("ONE"+key);
-		for(String s : soundbank.keys()){
-			System.out.println("key: "+s);
-		}
-		if(soundbank.containsKey(key)){
-			System.out.println("HELLO");
-		}
 		if (!soundbank.containsKey(key) || current >= frameLimit) {
 			return false;
 		}
-		System.out.println("TWO");
 
 		// If there is a sound for this key, stop it
 		Sound sound = soundbank.get(key);
@@ -319,7 +311,6 @@ public class SoundController {
 				return true;
 			}
 		}
-		System.out.println("THREE");
 		
 		// Play the new sound and add it
 		long id = sound.play(volume);

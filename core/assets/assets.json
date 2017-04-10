@@ -315,7 +315,7 @@
       "scale_x": "0.25",
       "scale_y": "0.25",
       "shape": "circle",
-      "radius": "1.5"
+      "radius": "1"
     },
     {
       "type": "image",
@@ -361,9 +361,9 @@
       "scale_x": "0.16",
       "scale_y": "0.16",
       "shape": "rectangle",
-      "width": "5.32",
-      "height": "5.51",
-      "angle": "0"
+      "width": "5",
+      "height": "5",
+      "angle": "90"
     },
     {
       "type": "image",
@@ -433,6 +433,48 @@
       "type": "sound",
       "tag": "nom",
       "filename": "sound/nom.wav"
+    },
+    {
+      "type": "image",
+      "tag": "glow",
+      "filename": "gui/glow.png",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
+      "origin_x": "240",
+      "origin_y": "240",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "foodtick",
+      "filename": "gui/foodtick.png",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "origin_x": "120",
+      "origin_y": "120",
+      "shape": "none",
+      "frames": "10",
+      "speed": "0"
+    },
+    {
+      "type": "image",
+      "tag": "modernFoodbar",
+      "filename": "gui/modernfoodbar.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "solidBall",
+      "filename": "gui/circle3.png",
+      "scale_x": "0.6",
+      "scale_y": "0.6",
+      "origin_x": "32",
+      "origin_y": "32",
+      "shape": "none"
     }
   ]
 }

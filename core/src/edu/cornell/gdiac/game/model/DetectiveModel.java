@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import edu.cornell.gdiac.game.GameCanvas;
@@ -55,16 +56,25 @@ public class DetectiveModel extends GameObject{
     private int frame = 0;
     private Animation animation;
 
-    private float amountEaten = 0f;
+
     /** Amount required to enter second stage. */
-    private float threshold = 150f;
+    private int threshold = 50;
+    /** Maximum amount of food in level */
+    private int maximumFood = 200;
+    /** Par shots for the level*/
+    private int par = 5;
+
+    private int amountEaten = 0;
     private boolean hasEatenDessert = false;
     private boolean isSecondStage = false;
     public float eatDelay = 0.0f;
 
+    private int shotsTaken;
+    private int shotsRemaining;
+
 
     public enum Animation {
-        LEFT_MOVE, RIGHT_MOVE, UP_MOVE, DOWN_MOVE, LEFT_STOP, RIGHT_STOP, UP_STOP, DOWN_STOP
+        LEFT_MOVE, RIGHT_MOVE, UP_MOVE, DOWN_MOVE, LEFT_STOP, RIGHT_STOP, UP_STOP, DOWN_STOP, ROLL_MOVE, ROLL_STOP
     }
 
     public DetectiveModel(float x, float y){
@@ -77,6 +87,10 @@ public class DetectiveModel extends GameObject{
         bodyDef.allowSleep = true;
         bodyDef.position.set(x,y);
 
+        filter = new Filter();
+        filter.categoryBits = 0x0004;
+        filter.maskBits = 0x0002;
+
         Shape shape = new CircleShape();
         shape.setRadius(1.2f);
         radius = 2.2f;
@@ -88,7 +102,7 @@ public class DetectiveModel extends GameObject{
         animation = Animation.DOWN_MOVE;
 
         tags = new String[] {"player_down", "player_up", "player_left", "player_right",
-                "player_down_idle", "player_up_idle", "player_left_idle", "player_right_idle",
+                "player_down_idle", "player_up_idle", "player_left_idle", "player_right_idle", "glow",
                 "fat", "coat", "hat", "mask", "hand", "foot", "buckle", "loop", "tie", "backpocket"};
 
         stickers = new PooledList<Sticker>();
@@ -104,6 +118,9 @@ public class DetectiveModel extends GameObject{
 
         force = new Vector2();
         velocity = new Vector2();
+
+        shotsRemaining = -1;
+        shotsTaken = 0;
     }
 
     public void startEating(FoodModel f) {
@@ -117,6 +134,12 @@ public class DetectiveModel extends GameObject{
 
         /** Rotate all of the body parts in 3D on the balled-up character. */
         if (isSecondStage) {
+            if(shotsRemaining == -1){
+                int extra = (int)(5*(amountEaten - threshold) / (maximumFood - threshold));
+                shotsRemaining = par + extra;
+                System.out.println(shotsRemaining);
+            }
+
             Vector2 vel = body.getLinearVelocity();
             float omega = vel.len() / getRadius();
             float phi = (float)Math.atan2(vel.y, vel.x) - 0.5f*(float)Math.PI;
@@ -128,12 +151,12 @@ public class DetectiveModel extends GameObject{
         if (chewing != null) {
             float tryToEat = CHEWING_RATE * dt;
             boolean isDessert = chewing.isDessert();
-            if(!isDessert || amountEaten >= 0.999f*threshold){
-                float actuallyAte = chewing.eat(tryToEat);
+            if(!isDessert || amountEaten >= threshold){
+                int actuallyAte = chewing.eat(tryToEat);
                 if(!isDessert){
                     amountEaten += actuallyAte;
                 }
-                if (chewing.getAmount() == 0f) {
+                if (chewing.getAmount() == 0) {
                     if (isDessert){
                         hasEatenDessert = true;
                     }
@@ -142,7 +165,7 @@ public class DetectiveModel extends GameObject{
 
 
 
-                if (amountEaten >= 0.999f*threshold && hasEatenDessert) {
+                if (amountEaten >= threshold && hasEatenDessert) {
                     setStage(true);
                     getBody().getFixtureList().get(0).setRestitution(1f);
                 }
@@ -195,6 +218,15 @@ public class DetectiveModel extends GameObject{
             }
         }
         else{
+            if(animation == Animation.ROLL_STOP){
+                ImageAsset glow = (ImageAsset)assetMap.get("glow");
+                if(glow != null){
+                    TextureRegion texture = glow.getTexture();
+                    float alpha = 0.4f* MathUtils.sinDeg(counter*3%360) + 0.6f;
+                    canvas.draw(texture, new Color(1,1,1,alpha),glow.getOrigin().x,glow.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,glow.getImageScale().x,glow.getImageScale().y);
+                }
+
+            }
             drawFat(canvas);
         }
     }
@@ -259,8 +291,12 @@ public class DetectiveModel extends GameObject{
         return amountEaten;
     }
 
-    public  float getThreshold(){
+    public float getThreshold(){
         return threshold;
+    }
+
+    public float getMaximumFood(){
+        return maximumFood;
     }
 
     public void setStage(boolean b){
@@ -270,12 +306,26 @@ public class DetectiveModel extends GameObject{
         return this.isSecondStage;
     }
 
-    public void consumeShot(float value){
-        float finval = (float) Math.abs(value/1000 * 2.5);
-        amountEaten -= finval;
-        if(amountEaten < 0f){
-            amountEaten = 0f;
-        }
+    public void consumeShot(){
+        shotsRemaining--;
+        shotsTaken++;
+        animation = Animation.ROLL_MOVE;
+    }
+
+    public boolean hasShots(){
+        return !((shotsRemaining == 0) && (animation == Animation.ROLL_STOP));
+    }
+
+    public int getShotsRemaining(){
+        return shotsRemaining;
+    }
+
+    public int getShotsTaken(){
+        return shotsTaken;
+    }
+
+    public int getPar(){
+        return par;
     }
 
     private class Sticker {
