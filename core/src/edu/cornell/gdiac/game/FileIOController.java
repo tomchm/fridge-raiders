@@ -96,7 +96,7 @@ public class FileIOController {
             // array of AI objects
             JsonValue ais = level.get("ais");
             for (JsonValue a = ais.child(); a != null; a = a.next()) {
-                float[] path = a.get("path").asFloatArray();
+                float[] path = a.get("coords").asFloatArray();
                 String[] tags = a.get("tags").asStringArray();
                 Vector2[] pathv = new Vector2[path.length/2];
                 for (int i = 0; i < path.length; i += 2) {
@@ -108,14 +108,9 @@ public class FileIOController {
 
             // array of wall objects
             JsonValue walls = level.get("walls");
+            System.out.println(walls);
             for (JsonValue w = walls.child(); w != null; w = w.next()) {
                 float[] coords = w.get("coords").asFloatArray();
-                //TODO delete
-                if (filename.equals("levels/techLevel.json")) {
-                    for (int i=0; i<coords.length; i++) {
-                        coords[i] *= 1.5f;
-                    }
-                }
                 String[] tags = w.get("tags").asStringArray();
                 worldModel.addGameObject(new WallModel(coords, tags));
 
