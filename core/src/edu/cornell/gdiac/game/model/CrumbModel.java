@@ -15,13 +15,41 @@ import java.util.Random;
 public class CrumbModel extends GameObject{
 
     private static final int MAX_AGE = 360;
+    private static final int GRAVITY_AGE = 60;
     Color tint;
     float ZZ;
     int age;
+    DetectiveModel.Animation animation;
 
-    public CrumbModel(Vector2 pos, Color tint, float z){
+    public CrumbModel(Vector2 pos, Color tint, float z, DetectiveModel.Animation animation){
         this.tint = tint;
-        ZZ = z-1;
+        this.animation = animation;
+
+        ZZ = z;
+        Vector2 position = pos.cpy();
+
+        switch(animation){
+            case DOWN_MOVE:
+            case DOWN_STOP:
+                position.add((91.0f - 128.0f)*0.25f/GameObject.getDrawScale().x, (395.0f - 144.0f)*0.25f/GameObject.getDrawScale().y);
+                ZZ = z-1;
+                break;
+            case UP_MOVE:
+            case UP_STOP:
+                position.add((91.0f - 128.0f)*0.25f/GameObject.getDrawScale().x, (395.0f - 144.0f)*0.25f/GameObject.getDrawScale().y);
+                ZZ = z+1;
+                break;
+            case LEFT_MOVE:
+            case LEFT_STOP:
+                position.add((56.0f - 128.0f)*0.25f/GameObject.getDrawScale().x, (399.0f - 144.0f)*0.25f/GameObject.getDrawScale().y);
+                ZZ = z-1;
+                break;
+            case RIGHT_MOVE:
+            case RIGHT_STOP:
+                position.add((181.0f - 128.0f)*0.25f/GameObject.getDrawScale().x, (399.0f - 144.0f)*0.25f/GameObject.getDrawScale().y);
+                ZZ = z-1;
+                break;
+        }
 
         bodyDef = new BodyDef();
         bodyDef.active = true;
@@ -30,12 +58,12 @@ public class CrumbModel extends GameObject{
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.awake  = true;
         bodyDef.allowSleep = true;
-        bodyDef.position.set(pos);
+        bodyDef.position.set(position);
         bodyDef.bullet = true;
 
         Random random = new Random();
         float vx = random.nextFloat()*16f - 8f;
-        float vy = random.nextFloat()*16f - 8f;
+        float vy = random.nextFloat()*8f + 4f;
 
         bodyDef.linearVelocity.set(new Vector2(vx ,vy));
 
@@ -57,6 +85,9 @@ public class CrumbModel extends GameObject{
 
     public void update(float dt){
         age++;
+        if(body != null && age < GRAVITY_AGE){
+            body.applyForceToCenter(0f, -0.4f, true);
+        }
     }
 
     public boolean isOld(){

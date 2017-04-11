@@ -133,6 +133,10 @@ public class DetectiveModel extends GameObject{
         return chewing;
     }
 
+    public Animation getAnimation(){
+        return animation;
+    }
+
     public void update(float dt) {
         //System.out.println(body.getPosition().x + " : "+body.getPosition().y);
 

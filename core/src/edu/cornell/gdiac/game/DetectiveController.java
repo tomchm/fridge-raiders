@@ -11,6 +11,7 @@ import edu.cornell.gdiac.game.model.GameObject;
 import edu.cornell.gdiac.game.model.TrajectoryModel;
 
 import javax.annotation.processing.SupportedSourceVersion;
+import java.util.Random;
 //import edu.cornell.gdiac.game.model.ShotModel;
 
 /**
@@ -209,8 +210,10 @@ public class DetectiveController {
         aimGUI.setFoodAmount(player.getAmountEaten());
 
         if(player.getChewing() != null){
-            worldModel.addGameObjectQueue(new CrumbModel(player.getChewing().getBody().getPosition(), player.getChewing().getCrumbColor(), player.getChewing().getZ()));
-
+            Random random = new Random();
+            if(random.nextFloat() > 0.7f){
+                worldModel.addGameObjectQueue(new CrumbModel(player.getBody().getPosition(), player.getChewing().getCrumbColor(), player.getZ(), player.getAnimation()));
+            }
         }
 
     }

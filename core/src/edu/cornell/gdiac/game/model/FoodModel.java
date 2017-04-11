@@ -99,7 +99,13 @@ public class FoodModel extends GameObject {
             Random random = new Random();
             int x = random.nextInt(pixmap.getWidth());
             int y = random.nextInt(pixmap.getHeight());
-            return new Color(pixmap.getPixel(x,y));
+            Color col = new Color(pixmap.getPixel(x,y));
+            while(col.a != 1.0f){
+                x = random.nextInt(pixmap.getWidth());
+                y = random.nextInt(pixmap.getHeight());
+                col = new Color(pixmap.getPixel(x,y));
+            }
+            return col;
         }
         return null;
     }
