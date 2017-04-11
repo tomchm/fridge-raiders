@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import edu.cornell.gdiac.game.gui.AimGUIModel;
+import edu.cornell.gdiac.game.model.CrumbModel;
 import edu.cornell.gdiac.game.model.DetectiveModel;
 import edu.cornell.gdiac.game.model.GameObject;
 import edu.cornell.gdiac.game.model.TrajectoryModel;
@@ -206,6 +207,11 @@ public class DetectiveController {
         }
 
         aimGUI.setFoodAmount(player.getAmountEaten());
+
+        if(player.getChewing() != null){
+            worldModel.addGameObjectQueue(new CrumbModel(player.getChewing().getBody().getPosition(), player.getChewing().getCrumbColor(), player.getChewing().getZ()));
+
+        }
 
     }
 

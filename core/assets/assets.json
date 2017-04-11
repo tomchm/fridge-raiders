@@ -475,6 +475,16 @@
       "origin_x": "32",
       "origin_y": "32",
       "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "crumb",
+      "filename": "gui/crumb.png",
+      "scale_x": "0.15",
+      "scale_y": "0.15",
+      "origin_x": "32",
+      "origin_y": "32",
+      "shape": "none"
     }
   ]
 }

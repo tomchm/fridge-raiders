@@ -240,6 +240,17 @@ public class WorldModel {
         }
     }
 
+    public void removeCrumbs(){
+        for(GameObject gm : gameObjects){
+            if(gm instanceof CrumbModel){
+                CrumbModel cm = (CrumbModel) gm;
+                if(cm.isOld()){
+                    removeGameObject(gm);
+                }
+            }
+        }
+    }
+
     public void removeGameObject(GameObject gameObject){
         assert gameObject != null : "Tried to remove null GameObject";
         removeGameObjectQueue.add(gameObject);

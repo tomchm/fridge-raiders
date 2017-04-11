@@ -1,6 +1,7 @@
 package edu.cornell.gdiac.game.model;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -9,6 +10,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import edu.cornell.gdiac.game.GameCanvas;
 import edu.cornell.gdiac.game.asset.Asset;
 import edu.cornell.gdiac.game.asset.ImageAsset;
+
+import java.util.Random;
 
 /**
  * Created by Sal on 3/12/2017.
@@ -83,6 +86,22 @@ public class FoodModel extends GameObject {
         if(isDessert){
             isUnlocked = true;
         }
+    }
+
+    public Color getCrumbColor(){
+        Asset asset = assetMap.get(tags[0]);
+        if(asset != null){
+            ImageAsset ia = (ImageAsset) asset;
+            if (!ia.getTexture().getTexture().getTextureData().isPrepared()) {
+                ia.getTexture().getTexture().getTextureData().prepare();
+            }
+            Pixmap pixmap = ia.getTexture().getTexture().getTextureData().consumePixmap();
+            Random random = new Random();
+            int x = random.nextInt(pixmap.getWidth());
+            int y = random.nextInt(pixmap.getHeight());
+            return new Color(pixmap.getPixel(x,y));
+        }
+        return null;
     }
 
     public void draw(GameCanvas canvas){

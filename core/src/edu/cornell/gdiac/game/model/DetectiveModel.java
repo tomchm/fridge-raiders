@@ -129,6 +129,10 @@ public class DetectiveModel extends GameObject{
     }
     public void stopEating() { chewing = null; }
 
+    public FoodModel getChewing(){
+        return chewing;
+    }
+
     public void update(float dt) {
         //System.out.println(body.getPosition().x + " : "+body.getPosition().y);
 
@@ -151,6 +155,7 @@ public class DetectiveModel extends GameObject{
         if (chewing != null) {
             float tryToEat = CHEWING_RATE * dt;
             boolean isDessert = chewing.isDessert();
+
             if(!isDessert || amountEaten >= threshold){
                 int actuallyAte = chewing.eat(tryToEat);
                 if(!isDessert){
