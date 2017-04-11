@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.utils.ObjectSet;
 import edu.cornell.gdiac.game.model.AIModel;
 import edu.cornell.gdiac.game.model.DetectiveModel;
+import edu.cornell.gdiac.game.model.FurnitureModel;
 
 
 import java.util.LinkedList;
@@ -48,8 +49,6 @@ public class AIController implements RayCastCallback{
     private Vector2 next;
     /** The number of ticks since we started this controller */
     private long ticks;
-    /** Count amount of objects before player in raycast path*/
-    private int rayCastCount;
     /** store distance from raycast collision*/
     private float distCache;
 
@@ -71,9 +70,9 @@ public class AIController implements RayCastCallback{
     /** the weight to apply to light time*/
     protected static float DIST_SCL = 8.0f;
     /** the limit of light time*/
-    protected static float LIGHT_LIM = 5.0f;
+    protected static float LIGHT_LIM = 10.0f;
     /** the threshold before chase*/
-    protected static float CHASE_LIM = 0.5f;
+    protected static float CHASE_LIM = 2.5f;
     /** the distance at which the ai catches the player*/
     protected static float CATCH_DIST = 3.0f;
     /** the weighted time the player has been in the light*/
@@ -101,11 +100,9 @@ public class AIController implements RayCastCallback{
         this.ai = ai;
         this.worldModel = worldModel;
         this.player = worldModel.getPlayer();
-        rayCastCount = 0;
 
         //lights
         ai.createConeLight(worldModel.rayhandler);
-        worldModel.addLight(ai.getConeLight());
         lightTime = 0;
         seen = false;
         blocked = false;
@@ -119,7 +116,7 @@ public class AIController implements RayCastCallback{
         next = new Vector2(ai.getBody().getPosition());
         pathIndex = 0;
         direction = 1;
-        prevPos = ai.getBody().getPosition();
+        prevPos = new Vector2(ai.getBody().getPosition());
         isStuck = false;
     }
 
@@ -129,6 +126,7 @@ public class AIController implements RayCastCallback{
     public void update(float dt) {
         dtCache = dt;
         ticks ++;
+
 
         // check if AI is stuck
         double interval = Math.round(STUCK_TIME * 60);
@@ -165,10 +163,17 @@ public class AIController implements RayCastCallback{
      * Checks and updates lightTime appropriately given a player is standing in the light
      */
     private void checkSight() {
-        // Callback to figure out when player can see ai
+        // Callback to figure out when ai can see player
         Vector2 aiPos = ai.getBody().getPosition();
         Vector2 playerPos = player.getBody().getPosition();
         worldModel.world.rayCast(this, aiPos.x, aiPos.y, playerPos.x, playerPos.y);
+
+        //Callback to figure out when ai can see moving furniture
+        FurnitureModel grappledFurniture =  player.getGrappledFurniture();
+        if (grappledFurniture != null) {
+            Vector2 furniturePos = grappledFurniture.getBody().getPosition();
+            worldModel.world.rayCast(this, aiPos.x, aiPos.y, furniturePos.x, furniturePos.y);
+        }
         updateLightTime();
         if (ai.getBody().getPosition().dst(player.getBody().getPosition()) - ai.getRadius() - player.getRadius() < CATCH_DIST && !blocked) {
             lightTime = (CHASE_LIM > lightTime) ? CHASE_LIM : lightTime;
@@ -181,7 +186,7 @@ public class AIController implements RayCastCallback{
      * Updates the lightTime value based on the rayCastCount
      */
     private void updateLightTime() {
-        if (seen && (!blocked || player.isGrappled())) {
+        if (seen && (!blocked)) {
             lightTime = lightTime + dtCache * ((1-distCache/ai.getLightRadius()) * DIST_SCL);
             lightTime = (lightTime > LIGHT_LIM) ? LIGHT_LIM : lightTime;
         }
@@ -204,12 +209,13 @@ public class AIController implements RayCastCallback{
         double angledif = (ai.getBody().getAngle() - angle + Math.PI * 2) % (Math.PI * 2);
         double angledifDeg = angledif * 180 / Math.PI;
         float dist = ai.getBody().getPosition().dst(point);
+        boolean fixtureTest = (fixture.getBody() == player.getBody() || fixture.getUserData() == player.getGrappledFurniture());
 
-        if (fixture.getBody() == player.getBody() && (angledifDeg < (ai.getLightAngle()) || angledifDeg > (360 - ai.getLightAngle())) && dist < ai.getLightRadius()) {
+        if ( fixtureTest && (angledifDeg < (ai.getLightAngle()) || angledifDeg > (360 - ai.getLightAngle())) && dist < ai.getLightRadius()) {
             seen = true;
             distCache = dist;
         }
-        else if (fixture.getBody() != player.getBody()){
+        else if (!fixtureTest){
             blocked = true;
         }
         return -1;
@@ -255,6 +261,7 @@ public class AIController implements RayCastCallback{
 
             // Pathfinding
             next = selectNextStep();
+            
         }
         Vector2 aiVel = getVelocityToNext(dt);
         ai.getBody().setLinearVelocity(aiVel);

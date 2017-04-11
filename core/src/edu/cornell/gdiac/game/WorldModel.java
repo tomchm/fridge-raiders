@@ -53,7 +53,7 @@ public class WorldModel {
     /** The rayhandler for storing lights, and drawing them (SIGH) */
     protected RayHandler rayhandler;
     /** Active lights*/
-    private Array<Light> lights = new Array<Light>();
+    private Light[] debugLights;
 
     /**
      * @return a list of all AI models currently populating the level
@@ -173,6 +173,7 @@ public class WorldModel {
         width = (int)max;
         height = (int)max;
         sensors = new int[height*width];
+//        debugLights = new Light[height*width];
     }
 
 
@@ -187,6 +188,8 @@ public class WorldModel {
             for(int j = 0; j < height; j++){
                 // CHANGE magic number
                 sensors[i*width + j] = isAccessibleWithRadius(i,j,1.2f);
+//                debugLights[i*width + j] = new PointLight(rayhandler, 10, Color.RED, 1.2f, i, j);
+//                debugLights[i*width +j].setActive(sensors[i*width +j] != 0);
             }
         }
     }
@@ -200,6 +203,7 @@ public class WorldModel {
                 // CHANGE magic number
                 if (!(isAccessibleWithRadiusSingleObject(i,j,1.2f, object))) {
                     sensors[i*width + j] = onoff;
+//                    debugLights[i*width + j].setActive(sensors[i*width+j]!= 0);
                 }
             }
         }
@@ -207,11 +211,6 @@ public class WorldModel {
 
     public DetectiveModel getPlayer() { return detective; }
     public void setPlayer(DetectiveModel dm) {detective=dm;}
-
-    /*Adds new light source to all lights in level*/
-    public void addLight(Light light) {
-        lights.add(light);
-    }
 
     public void addGameObjectQueue(GameObject gameObject){
         assert gameObject != null : "Tried to add null GameObject";
