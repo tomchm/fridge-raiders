@@ -173,7 +173,7 @@ public class WorldModel {
         width = (int)max;
         height = (int)max;
         sensors = new int[height*width];
-//        debugLights = new Light[height*width];
+        debugLights = new Light[height*width];
     }
 
 
@@ -188,8 +188,8 @@ public class WorldModel {
             for(int j = 0; j < height; j++){
                 // CHANGE magic number
                 sensors[i*width + j] = isAccessibleWithRadius(i,j,1.2f);
-//                debugLights[i*width + j] = new PointLight(rayhandler, 10, Color.RED, 1.2f, i, j);
-//                debugLights[i*width +j].setActive(sensors[i*width +j] != 0);
+                debugLights[i*width + j] = new PointLight(rayhandler, 10, Color.RED, 1.2f, i, j);
+                debugLights[i*width +j].setActive(sensors[i*width +j] != 0);
             }
         }
     }
@@ -203,7 +203,7 @@ public class WorldModel {
                 // CHANGE magic number
                 if (!(isAccessibleWithRadiusSingleObject(i,j,1.2f, object))) {
                     sensors[i*width + j] = onoff;
-//                    debugLights[i*width + j].setActive(sensors[i*width+j]!= 0);
+                    debugLights[i*width + j].setActive(sensors[i*width+j]!= 0);
                 }
             }
         }
