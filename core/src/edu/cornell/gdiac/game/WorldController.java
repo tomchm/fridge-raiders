@@ -172,7 +172,6 @@ public class WorldController implements Screen {
 		else if (InputController.getInstance().releasedSecondary()) spacebarController.keyUp();
 
 		for (AIController aic : aiControllers) {
-
 			if(worldModel.getPlayer().isSecondStage()){
 				aic.update2(dt);
 			}

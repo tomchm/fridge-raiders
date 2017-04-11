@@ -27,7 +27,7 @@ public class WallModel extends GameObject {
         fixtureDef = new FixtureDef();
         fixtureDef.density = 1.0f;
         fixtureDef.friction = 0f;
-        fixtureDef.restitution=1f;
+        fixtureDef.restitution = 1f;
         fixtureDef.shape = shape;
         this.coords = coords;
 
