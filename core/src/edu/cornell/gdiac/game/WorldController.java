@@ -181,6 +181,10 @@ public class WorldController implements Screen {
 			}
 		}
 
+		if(worldModel.getPlayer().getAmountEaten() >= worldModel.getPlayer().getThreshold()){
+			worldModel.unlockDessert();
+		}
+
 		worldModel.updateGameObjects(dt);
         worldModel.removeEatenFood();
 		SoundController.getInstance().update();

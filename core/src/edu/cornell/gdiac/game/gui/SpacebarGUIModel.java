@@ -74,12 +74,14 @@ public class SpacebarGUIModel extends GUIModel{
                 FilmstripAsset asset = (FilmstripAsset) assetMap.get("foodtick");
                 if(asset != null){
                     FoodModel food = (FoodModel) nearest;
-                    int frame = 10 - MathUtils.ceil((float)food.getAmount() / food.getMaxAmount() * 10f);
-                    if(frame < 10){
-                        TextureRegion texture = asset.getTexture(frame);
-                        float x = food.getBody().getPosition().x*GameObject.getDrawScale().x;
-                        float y = food.getBody().getPosition().y*GameObject.getDrawScale().y;
-                        canvas.draw(texture, Color.WHITE, asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
+                    if(!food.isDessert() || food.isUnlocked()){
+                        int frame = 10 - MathUtils.ceil((float)food.getAmount() / food.getMaxAmount() * 10f);
+                        if(frame < 10){
+                            TextureRegion texture = asset.getTexture(frame);
+                            float x = food.getBody().getPosition().x*GameObject.getDrawScale().x;
+                            float y = food.getBody().getPosition().y*GameObject.getDrawScale().y;
+                            canvas.draw(texture, Color.WHITE, asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
+                        }
                     }
                 }
             }

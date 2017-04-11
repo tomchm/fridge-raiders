@@ -20,13 +20,14 @@ public class FoodModel extends GameObject {
     private int intAmount;
     private float maxAmount;
     private boolean isHighlight;
+    private boolean isUnlocked;
 
     public FoodModel(float x, float y, float radius, float theta, boolean dessert, float amount, String[] tags){
         bodyDef = new BodyDef();
         bodyDef.active = true;
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.5f;
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.awake  = true;
         bodyDef.allowSleep = true;
         bodyDef.position.set(x,y);
@@ -40,7 +41,7 @@ public class FoodModel extends GameObject {
         fixtureDef.filter.groupIndex = -1;
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
-        fixtureDef.isSensor = true;
+        fixtureDef.isSensor = !dessert;
 
         isDessert = dessert;
         this.radius = radius;
@@ -50,9 +51,11 @@ public class FoodModel extends GameObject {
         this.maxAmount = amount;
         this.intAmount = (int) amount;
         isHighlight = false;
+        isUnlocked = false;
     }
 
     public boolean isDessert() {return isDessert;}
+    public boolean isUnlocked() {return isUnlocked;}
     public float getRadius() {return radius;}
 
     public int getAmount(){return intAmount;}
@@ -76,13 +79,19 @@ public class FoodModel extends GameObject {
         isHighlight = true;
     }
 
+    public void unlock(){
+        if(isDessert){
+            isUnlocked = true;
+        }
+    }
+
     public void draw(GameCanvas canvas){
         if(tags.length > 0 && body != null){
             Asset asset = assetMap.get(tags[0]);
             if(asset instanceof ImageAsset){
                 ImageAsset ia = (ImageAsset) asset;
 
-                if(isHighlight){
+                if(isHighlight && (!isDessert || isUnlocked)){
                     isHighlight = false;
                     float alpha = 0.3f* MathUtils.sinDeg(counter*1%360) + 0.5f;
                     float hscale_x = (ia.getTexture().getRegionWidth()*ia.getImageScale().x + 20f) / (ia.getTexture().getRegionWidth()*ia.getImageScale().x);
@@ -92,20 +101,18 @@ public class FoodModel extends GameObject {
                     canvas.setBlendState(GameCanvas.BlendState.NO_PREMULT);
                 }
 
-
-                float alpha = (amount/maxAmount)*0.7f + 0.3f;
-                if(amount == 0){
-                    alpha = 0;
+                Color color = new Color(1,1,1, 1);
+                if(isDessert && !isUnlocked){
+                    color = new Color(0.4f,0.4f,0.4f,1);
                 }
-                float col = 1;
-                if(isDessert){
-                    counter+=3;
-                    float step = MathUtils.cosDeg(counter);
-                    col = step*0.15f + 0.85f;
-                }
-                Color color = new Color(col,col,col, alpha);
-
                 canvas.draw(ia.getTexture(), color,ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),ia.getImageScale().x,ia.getImageScale().y);
+
+                if(isDessert && isUnlocked){
+                    float alpha = 0.15f* MathUtils.sinDeg(counter*2%360) + 0.15f;
+                    canvas.setBlendState(GameCanvas.BlendState.ADDITIVE);
+                    canvas.draw(ia.getTexture(), new Color(alpha, alpha, alpha, 1),ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),ia.getImageScale().x,ia.getImageScale().y);
+                    canvas.setBlendState(GameCanvas.BlendState.NO_PREMULT);
+                }
             }
         }
     }

@@ -232,6 +232,14 @@ public class WorldModel {
         }
     }
 
+    public void unlockDessert(){
+        for(GameObject gm : gameObjects){
+            if(gm instanceof FoodModel){
+                ((FoodModel)gm).unlock();
+            }
+        }
+    }
+
     public void removeGameObject(GameObject gameObject){
         assert gameObject != null : "Tried to remove null GameObject";
         removeGameObjectQueue.add(gameObject);
