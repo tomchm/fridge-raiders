@@ -123,6 +123,11 @@ public class DetectiveModel extends GameObject{
         shotsTaken = 0;
     }
 
+    public FurnitureModel getGrappledFurniture() {
+        if ( getBody().getJointList().size < 1) return null;
+        return (FurnitureModel) getBody().getJointList().get(0).other.getFixtureList().get(0).getUserData();
+    }
+
     public void startEating(FoodModel f) {
         chewing = f;
         eatDelay += 30.0f;
