@@ -1,5 +1,7 @@
 package edu.cornell.gdiac.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.*;
@@ -34,7 +36,8 @@ public class FileIOController {
     /** Load the specified level into the WorldModel. */
     public void load(String filename) {
         try {
-            JsonValue level = parser.parse(new FileReader(filename));
+            FileHandle file = Gdx.files.local(filename);
+            JsonValue level = parser.parse(file.readString());
             JsonValue player = level.get("player");
             worldModel.setPlayer(new DetectiveModel(player.get("x").asFloat(), player.get("y").asFloat()));
             worldModel.addGameObject(worldModel.getPlayer());
