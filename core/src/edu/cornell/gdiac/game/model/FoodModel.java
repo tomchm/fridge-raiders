@@ -3,10 +3,7 @@ package edu.cornell.gdiac.game.model;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.*;
 import edu.cornell.gdiac.game.GameCanvas;
 import edu.cornell.gdiac.game.asset.Asset;
 import edu.cornell.gdiac.game.asset.ImageAsset;
@@ -39,12 +36,13 @@ public class FoodModel extends GameObject {
         CircleShape shape = new CircleShape();
         shape.setRadius(radius);
         fixtureDef = new FixtureDef();
-        fixtureDef.filter.categoryBits = 1;
-        fixtureDef.filter.maskBits = 1;
-        fixtureDef.filter.groupIndex = -1;
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
         fixtureDef.isSensor = !dessert;
+
+        filter = new Filter();
+        filter.groupIndex = -1;
+
 
         isDessert = dessert;
         this.radius = radius;
