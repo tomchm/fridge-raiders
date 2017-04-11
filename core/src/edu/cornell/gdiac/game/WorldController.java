@@ -187,10 +187,9 @@ public class WorldController implements Screen {
 
 		worldModel.updateGameObjects(dt);
         worldModel.removeEatenFood();
-        worldModel.removeCrumbs();
+
 		SoundController.getInstance().update();
 		guiController.update(dt);
-		//System.out.println(1/dt);f
 	}
 
 	public void postUpdate(float dt) {
