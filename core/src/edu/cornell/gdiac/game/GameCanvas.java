@@ -70,6 +70,7 @@ public class GameCanvas {
 	
 	/** Rendering context for the debug outlines */
 	private ShapeRenderer debugRender;
+	private ShapeRenderer shapeRender;
 	
 	/** Track whether or not we are active (for error checking) */
 	private DrawPass active;
@@ -105,18 +106,41 @@ public class GameCanvas {
 		active = DrawPass.INACTIVE;
 		spriteBatch = new PolygonSpriteBatch();
 		debugRender = new ShapeRenderer();
+		shapeRender = new ShapeRenderer();
 		
 		// Set the projection matrix (for proper scaling)
 		camera = new OrthographicCamera(getWidth(),getHeight());
 		camera.setToOrtho(false);
 		spriteBatch.setProjectionMatrix(camera.combined);
 		debugRender.setProjectionMatrix(camera.combined);
+		shapeRender.setProjectionMatrix(camera.combined);
 
 		// Initialize the cache objects
 		holder = new TextureRegion();
 		local  = new Affine2();
 		global = new Matrix4();
 		vertex = new Vector2();
+	}
+
+	private void endShape() {shapeRender.end(); begin(); }
+	private void beginShape() {end(); shapeRender.setProjectionMatrix(camera.combined); shapeRender.begin(ShapeRenderer.ShapeType.Filled);}
+
+	public void drawRect(float x, float y, float width, float height, float r, float g, float b) {
+		beginShape();
+		shapeRender.setColor(r, g, b, 1.0f);
+		float sx = GameObject.getDrawScale().x;
+		float sy = GameObject.getDrawScale().y;
+		shapeRender.rect(x*sx, y*sy, width*sx, height*sy);
+		endShape();
+	}
+	public void drawPolygon(float[] coords, float r, float g, float b) {
+		beginShape();
+		shapeRender.setColor(r,g,b,1.0f);
+		float sx = GameObject.getDrawScale().x;
+		float sy = GameObject.getDrawScale().y;
+		shapeRender.triangle(sx*coords[0], sy*coords[1], sx*coords[2], sy*coords[3], sx*coords[4], sy*coords[5]);
+		shapeRender.triangle(sx*coords[4], sy*coords[5], sx*coords[6], sy*coords[7], sx*coords[0], sy*coords[1]);
+		endShape();
 	}
 		
     /**
@@ -339,7 +363,7 @@ public class GameCanvas {
 		global.setAsAffine(affine);
     	global.mulLeft(camera.combined);
 		spriteBatch.setProjectionMatrix(global);
-		
+
 		setBlendState(BlendState.NO_PREMULT);
 		spriteBatch.begin();
     	active = DrawPass.STANDARD;
