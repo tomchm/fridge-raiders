@@ -99,7 +99,7 @@ public class CrumbModel extends GameObject{
         if(asset != null){
             float alpha = 1f;
             if(age > (2 * MAX_AGE / 3)){
-                alpha = 1- ((float)age / MAX_AGE);
+                //alpha = 1- ((float)age / MAX_AGE);
             }
             Color c = new Color(tint.r, tint.g, tint.b, alpha);
             canvas.draw(asset.getTexture(), c, asset.getOrigin().x,asset.getOrigin().y,
