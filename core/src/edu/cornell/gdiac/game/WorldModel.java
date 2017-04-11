@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
+import com.sun.xml.internal.bind.v2.TODO;
 import edu.cornell.gdiac.game.asset.AssetLoader;
 import edu.cornell.gdiac.game.model.*;
 import edu.cornell.gdiac.util.PooledList;
@@ -107,6 +108,14 @@ public class WorldModel {
                 }
             }
         }
+    }
+
+    /**
+     * Checks if the player has won
+     * */
+    public boolean hasExited(){
+
+        return false;
     }
 
     /**

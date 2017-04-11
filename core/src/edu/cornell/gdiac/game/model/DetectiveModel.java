@@ -306,6 +306,8 @@ public class DetectiveModel extends GameObject{
         return this.isSecondStage;
     }
 
+    public boolean canEatDesser(){return this.amountEaten >= this.threshold;}
+
     public void consumeShot(){
         shotsRemaining--;
         shotsTaken++;

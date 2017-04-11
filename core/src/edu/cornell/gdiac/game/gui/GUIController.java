@@ -21,6 +21,8 @@ public class GUIController {
         guiMap.put(spacebarGUI.guiTag, spacebarGUI);
         GUIModel aimGUI = new AimGUIModel(worldModel);
         guiMap.put(aimGUI.guiTag, aimGUI);
+        GUIModel textGUI = new TextGUIModel(worldModel);
+        guiMap.put(textGUI.guiTag, textGUI);
 
     }
 
