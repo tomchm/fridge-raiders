@@ -1,12 +1,14 @@
 package edu.cornell.gdiac.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import edu.cornell.gdiac.game.asset.AssetLoader;
 import edu.cornell.gdiac.game.model.*;
+import edu.cornell.gdiac.game.shaders.CustomShader;
 import edu.cornell.gdiac.util.PooledList;
 import box2dLight.*;
 import com.badlogic.gdx.graphics.*;
@@ -91,6 +93,23 @@ public class WorldModel {
     public void setPar(int par) {}
     public void setThreshold(int threshold) {}
 
+
+    /**
+     * Creates the ambient lighting for the level
+     *
+     * This is the amount of lighting that the level has without any light sources.
+     */
+    private void initLighting() {
+        raycamera = new OrthographicCamera(bounds.x,bounds.y);
+        raycamera.position.set(bounds.x/2.0f, bounds.y/2.0f, 0);
+        raycamera.update();
+
+        rayhandler = new RayHandler(world, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
+        rayhandler.setCombinedMatrix(raycamera);
+        rayhandler.setAmbientLight(0,0,0,1f);
+        rayhandler.setLightShader(CustomShader.createCustomShader());
+    }
+
     /**
      * Creates new contact listener to allow for dynamic interactions between ai and furniture
      */
@@ -104,8 +123,10 @@ public class WorldModel {
                 boolean temp2 = objectB.getClass() == AIModel.class && objectA.getClass() == FurnitureModel.class;
                 if(temp1 || temp2){
                     GameObject furniture = ((temp1) ? objectB : objectA);
-                    turnOnOffObjSensors(furniture, 0);
-                    setDynamic(furniture.getBody());
+                    if (!detective.isGrappled()) {
+                        turnOnOffObjSensors(furniture, 0);
+                        setDynamic(furniture.getBody());
+                    }
                 }
             }
 
@@ -117,8 +138,10 @@ public class WorldModel {
                 boolean temp2 = objectB.getClass() == AIModel.class && objectA.getClass() == FurnitureModel.class;
                 if(temp1 || temp2){
                     GameObject furniture = ((temp1) ? objectB : objectA);
-                    turnOnOffObjSensors(furniture, 1);
-                    setStatic(furniture.getBody());
+                    if (!detective.isGrappled()) {
+                        turnOnOffObjSensors(furniture, 1);
+                        setStatic(furniture.getBody());
+                    }
                 }
             }
 
@@ -180,21 +203,6 @@ public class WorldModel {
                 }
             }
         }
-    }
-
-    /**
-     * Creates the ambient lighting for the level
-     *
-     * This is the amount of lighting that the level has without any light sources.
-     */
-    private void initLighting() {
-        raycamera = new OrthographicCamera(bounds.x,bounds.y);
-        raycamera.position.set(bounds.x/2.0f, bounds.y/2.0f, 0);
-        raycamera.update();
-
-        rayhandler = new RayHandler(world, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
-        rayhandler.setCombinedMatrix(raycamera);
-        rayhandler.setAmbientLight(0,0,0,1f);
     }
 
     public DetectiveModel getPlayer() { return detective; }

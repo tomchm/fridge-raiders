@@ -1,6 +1,7 @@
 package edu.cornell.gdiac.game;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import edu.cornell.gdiac.game.model.FurnitureModel;
@@ -25,9 +26,16 @@ public class GrabController {
         if (current != null) return;
         current = furniture;
 
+        // set filter
+        Filter filter = current.getBody().getFixtureList().get(0).getFilterData();
+        filter.groupIndex = -1;
+        current.getBody().getFixtureList().get(0).setFilterData(filter);
+
+
         WeldJointDef jointDef = new WeldJointDef();
         jointDef.initialize(worldModel.getPlayer().getBody(), furniture.getBody(), new Vector2());
         jointDef.collideConnected = false;
+
         worldModel.getPlayer().setGrappled(true);
         worldModel.addJoint(jointDef);
         worldModel.setDynamic(current.getBody());
@@ -39,6 +47,10 @@ public class GrabController {
     public void release() {
         // this check IS needed! Otherwise you'll get null pointer exceptions
         if (current == null) return;
+
+        Filter filter = current.getBody().getFixtureList().get(0).getFilterData();
+        filter.groupIndex = 0;
+        current.getBody().getFixtureList().get(0).setFilterData(filter);
 
         worldModel.getPlayer().setGrappled(false);
         worldModel.setStatic(current.getBody());

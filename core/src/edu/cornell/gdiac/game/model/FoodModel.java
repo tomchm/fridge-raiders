@@ -41,7 +41,9 @@ public class FoodModel extends GameObject {
         fixtureDef.isSensor = !dessert;
 
         filter = new Filter();
-        filter.groupIndex = -1;
+        filter.groupIndex = (short) ((dessert) ? 0 : -1);
+        filter.categoryBits = 0x0002;
+        filter.maskBits = 0x0006;
 
 
         isDessert = dessert;

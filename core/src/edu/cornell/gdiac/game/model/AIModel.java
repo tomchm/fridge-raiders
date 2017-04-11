@@ -108,6 +108,8 @@ public class AIModel extends GameObject{
         Vector2 pos = getBody().getPosition();
         coneLight = new ConeLight(rayHandler, NUM_RAYS, Color.WHITE, lightRadius, pos.x, pos.y, getBody().getAngle(), lightAngle);
         coneLight.setContactFilter((short)0x0005, (short)-1, (short) 0xFFFF);
+        coneLight.setSoft(false);
+
     }
 
     /**
