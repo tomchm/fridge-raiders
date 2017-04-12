@@ -25,7 +25,7 @@ public class FloorModel extends GameObject{
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.awake  = true;
         bodyDef.allowSleep = true;
-        bodyDef.position.set(0,0);
+        bodyDef.position.set(-50,-50);
         bodyDef.angle = 0;
 
         CircleShape shape = new CircleShape();
@@ -46,7 +46,7 @@ public class FloorModel extends GameObject{
         //TextureRegion region = new TextureRegion(ia.getTexture().getTexture());
         float width = floorTex.getWidth();
         float height = floorTex.getHeight();
-        ia.getTexture().setRegion(-150*width,-150*height,150*width, 150*height);
+        ia.getTexture().setRegion(-250*width,-250*height,250*width, 250*height);
         canvas.draw(ia.getTexture(), Color.WHITE, ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),ia.getImageScale().x,ia.getImageScale().y);
     }
 
