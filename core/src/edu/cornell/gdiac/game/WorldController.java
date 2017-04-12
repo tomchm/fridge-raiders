@@ -52,6 +52,7 @@ public class WorldController implements Screen {
 
 	/** Reference to the game canvas */
 	protected GameCanvas canvas;
+	protected GameCanvas guicanvas;
 	/** Listener that will update the player mode when we are done */
 	private ScreenListener listener;
 
@@ -78,6 +79,7 @@ public class WorldController implements Screen {
 		fileIOController = new FileIOController(worldModel);
 		guiController = new GUIController(worldModel, spacebarController, input);
 		resetCounter = 0;
+		guicanvas = new GameCanvas();
 	}
 
 	public void reset() {
@@ -87,6 +89,8 @@ public class WorldController implements Screen {
 		fileIOController = new FileIOController(worldModel);
 		guiController = new GUIController(worldModel, spacebarController, input);
 		populateLevel();
+		canvas.resetZoom();
+		worldModel.resetZoomRaycamera();
 		resetCounter = 0;
 	}
 
@@ -105,6 +109,12 @@ public class WorldController implements Screen {
 		}
 		worldModel.updateAllSensors();
 		worldModel.setMaximumFood();
+
+		GoalModel goal = new GoalModel(null);
+		worldModel.addGameObjectQueue(goal);
+		worldModel.setGoal(goal);
+		worldModel.getWorld().setContactListener(goal);
+
 		fileIOController.save("levels/testOutput.json");
 	}
 
@@ -118,6 +128,10 @@ public class WorldController implements Screen {
 
 	public GameCanvas getCanvas() {
 		return canvas;
+	}
+
+	public GameCanvas getGUICanvas() {
+		return guicanvas;
 	}
 
 	public void setCanvas(GameCanvas canvas) {
@@ -161,14 +175,20 @@ public class WorldController implements Screen {
 					break;
 				}
 			}
+
+
+
 		}
 		else {
-			if(!worldModel.getPlayer().hasShots()){
+			if(worldModel.getGoal().hasPlayerCollided()){
+				worldModel.setWon();
+			}
+			else if(!worldModel.getPlayer().hasShots()){
 				worldModel.setLost();
 			}
 		}
 
-		if(worldModel.hasLost()){
+		if(worldModel.hasLost() || worldModel.hasWon()){
 		    resetCounter++;
 		    if(resetCounter == 300){
 		        reset();
@@ -236,14 +256,22 @@ public class WorldController implements Screen {
 		}
 		Vector2 position = worldModel.getPlayer().getBody().getPosition();
 		canvas.moveCamera(position.x, position.y);
+		guicanvas.moveCamera(position.x, position.y);
+		if(worldModel.getPlayer().isSecondStage()){
+			//canvas.zoomOut();
+			worldModel.zoomOutRaycamera();
+		}
+
+
 		guiController.setOrigin(position);
 	}
 
 	public void draw(float delta) {
 		canvas.clear();
+		guicanvas.clear();
 		GameObject.incCounter();
 		worldModel.draw(canvas);
-		guiController.draw(canvas);
+		guiController.draw(guicanvas);
 	}
 
 	public void drawDebug(float delta){

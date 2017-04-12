@@ -45,6 +45,39 @@ public class FoodModel extends GameObject {
         filter.categoryBits = 0x0002;
         filter.maskBits = 0x0006;
 
+        isDessert = dessert;
+        this.radius = radius;
+
+        this.tags = tags;
+        this.amount = amount;
+        this.maxAmount = amount;
+        this.intAmount = (int) amount;
+        isHighlight = false;
+        isUnlocked = false;
+    }
+
+    public FoodModel(float x, float y, float width, float height, float theta, boolean dessert, float amount, String[] tags){
+        bodyDef = new BodyDef();
+        bodyDef.active = true;
+        bodyDef.fixedRotation = true;
+        bodyDef.linearDamping = 0.5f;
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.awake  = true;
+        bodyDef.allowSleep = true;
+        bodyDef.position.set(x,y);
+        bodyDef.angle = theta;
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(0.5f*width, 0.5f*height);
+        fixtureDef = new FixtureDef();
+        fixtureDef.density = 1.0f;
+        fixtureDef.shape = shape;
+        fixtureDef.isSensor = !dessert;
+
+        filter = new Filter();
+        filter.groupIndex = (short) ((dessert) ? 0 : -1);
+        filter.categoryBits = 0x0002;
+        filter.maskBits = 0x0006;
 
         isDessert = dessert;
         this.radius = radius;

@@ -48,6 +48,7 @@ public class WorldModel {
     protected boolean clearJoints;
     protected boolean addJoints;
     protected DetectiveModel detective;
+    protected GoalModel goal;
 
     // Box2D lights
     /** The camera defining the RayHandler view; scale is in physics coordinates */
@@ -151,6 +152,14 @@ public class WorldModel {
         rayhandler.setCombinedMatrix(raycamera);
         rayhandler.setAmbientLight(0,0,0,1f);
         rayhandler.setLightShader(CustomShader.createCustomShader());
+    }
+
+    public void zoomOutRaycamera(){
+        raycamera.zoom = 1.5f;
+    }
+
+    public void resetZoomRaycamera(){
+        raycamera.zoom = 1.0f;
     }
 
     /**
@@ -258,6 +267,9 @@ public class WorldModel {
 
     public DetectiveModel getPlayer() { return detective; }
     public void setPlayer(DetectiveModel dm) {detective=dm;}
+
+    public GoalModel getGoal() { return goal; }
+    public void setGoal(GoalModel gm) {goal =gm;}
 
     public void addGameObjectQueue(GameObject gameObject){
         assert gameObject != null : "Tried to add null GameObject";

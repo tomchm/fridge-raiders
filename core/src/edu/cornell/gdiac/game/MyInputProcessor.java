@@ -41,8 +41,10 @@ public class MyInputProcessor implements InputProcessor {
     }
 
     public boolean touchUp (int x, int y, int pointer, int button) {
-        released = true;
-        magnitude = new Vector2(lastX - dragX,lastY-dragY);
+        if(magnitude.x != 0 && magnitude.y != 0) {
+            released = true;
+        }
+//        magnitude = new Vector2(lastX - dragX,lastY-dragY);
         return true;
     }
 
