@@ -92,7 +92,7 @@ public class FileIOController {
                     worldModel.addGameObject(new FoodModel(x, y, radius, theta, dessert, amount, tags));
                 }
                 else {
-                    worldModel.addGameObject(new FoodModel(x, y, width, theta, dessert, amount, tags));
+                    worldModel.addGameObject(new FoodModel(x, y, width, height, theta, dessert, amount, tags));
                 }
             }
 

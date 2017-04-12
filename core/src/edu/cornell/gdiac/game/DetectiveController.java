@@ -210,9 +210,11 @@ public class DetectiveController {
         aimGUI.setFoodAmount(player.getAmountEaten());
 
         if(player.getChewing() != null){
-            Random random = new Random();
-            if(random.nextFloat() > 0.7f){
-                worldModel.addGameObjectQueue(new CrumbModel(player.getBody().getPosition(), player.getChewing().getCrumbColor(), player.getZ(), player.getAnimation()));
+            if(!player.getChewing().isDessert() || player.getAmountEaten() >= player.getThreshold()){
+                Random random = new Random();
+                if(random.nextFloat() > 0.7f){
+                    worldModel.addGameObjectQueue(new CrumbModel(player.getBody().getPosition(), player.getChewing().getCrumbColor(), player.getZ(), player.getAnimation()));
+                }
             }
         }
 
