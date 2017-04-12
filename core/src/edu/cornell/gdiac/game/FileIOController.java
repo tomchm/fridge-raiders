@@ -115,9 +115,14 @@ public class FileIOController {
             for (JsonValue w = walls.child(); w != null; w = w.next()) {
                 float[] coords = w.get("coords").asFloatArray();
                 String[] tags = w.get("tags").asStringArray();
-                float red = w.get("r").asFloat()/255f;
-                float green = w.get("g").asFloat()/255f;
-                float blue = w.get("b").asFloat()/255f;
+                float red =0f;
+                float green =0f;
+                float blue = 0f;
+                if (w.hasChild("r")) {
+                    red = w.get("r").asFloat()/255f;
+                    green = w.get("g").asFloat()/255f;
+                    blue = w.get("b").asFloat()/255f;
+                }
                 worldModel.addGameObject(new WallModel(coords, red, green, blue, tags));
 
             }
