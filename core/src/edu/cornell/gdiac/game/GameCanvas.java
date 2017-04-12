@@ -1212,7 +1212,10 @@ public class GameCanvas {
 	}
 
 	public void zoomOut(){
-		System.out.println(camera.zoom + "CCC");
 		camera.zoom = 1.5f;
+	}
+
+	public void resetZoom(){
+		camera.zoom = 1.0f;
 	}
 }

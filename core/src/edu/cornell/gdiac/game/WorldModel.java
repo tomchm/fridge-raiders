@@ -154,6 +154,14 @@ public class WorldModel {
         rayhandler.setLightShader(CustomShader.createCustomShader());
     }
 
+    public void zoomOutRaycamera(){
+        raycamera.zoom = 1.5f;
+    }
+
+    public void resetZoomRaycamera(){
+        raycamera.zoom = 1.0f;
+    }
+
     /**
      * Creates new contact listener to allow for dynamic interactions between ai and furniture
      */
