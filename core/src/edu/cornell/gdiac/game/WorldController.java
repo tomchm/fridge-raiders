@@ -90,6 +90,7 @@ public class WorldController implements Screen {
 		guiController = new GUIController(worldModel, spacebarController, input);
 		populateLevel();
 		canvas.resetZoom();
+		worldModel.resetZoomRaycamera();
 		resetCounter = 0;
 	}
 
@@ -258,6 +259,7 @@ public class WorldController implements Screen {
 		guicanvas.moveCamera(position.x, position.y);
 		if(worldModel.getPlayer().isSecondStage()){
 			//canvas.zoomOut();
+			worldModel.zoomOutRaycamera();
 		}
 
 
