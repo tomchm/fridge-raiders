@@ -202,7 +202,9 @@ public class WorldModel {
             for(int j = 0; j < height; j++){
                 // CHANGE magic number
                 if (!(isAccessibleWithRadiusSingleObject(i,j,1.2f, object))) {
-                    sensors[i*width + j] = onoff;
+                    if (sensors [i*width +j] != 2) {
+                        sensors[i*width + j] = onoff;
+                    }
                     debugLights[i*width + j].setActive(sensors[i*width+j]!= 0);
                 }
             }
@@ -447,17 +449,18 @@ public class WorldModel {
      *  returns 2 if contained in any other object
      */
     public int isAccessibleWithRadius(float x, float y, float radius) {
+        boolean inFurniture = false;
         for(GameObject obj: solidGameObjects) {
             if (!isAccessibleWithRadiusSingleObject(x, y, radius, obj)) {
                 if (obj.getClass() == WallModel.class) {
                     return 2;
                 }
                 else {
-                    return 1;
+                    inFurniture = true;
                 }
             }
         }
-        return 0;
+        return (inFurniture) ? 1 : 0;
     }
 
     /** returns true if any of 8 cardinal points radius away from x y
