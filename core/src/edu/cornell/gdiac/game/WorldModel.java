@@ -22,6 +22,8 @@ import java.util.Collections;
  */
 public class WorldModel {
 
+    protected boolean hasLost;
+    protected boolean hasWon;
     protected World world;
     protected Vector2 scale;
     protected Vector2 bounds;
@@ -78,6 +80,8 @@ public class WorldModel {
         dynamicQueue = new PooledList<Body>();
         clearJoints = false;
         addJoints = false;
+        hasLost = false;
+        hasWon = false;
 
         // ai info
         aiList = new PooledList <AIModel>();
@@ -88,6 +92,22 @@ public class WorldModel {
         height = -1;
         width = -1;
         initContactListener();
+    }
+
+    public boolean hasLost(){
+        return hasLost;
+    }
+
+    public boolean hasWon(){
+        return hasWon;
+    }
+
+    public void setLost(){
+        hasLost = true;
+    }
+
+    public void setWon(){
+        hasWon = true;
     }
 
     public void setPar(int par) {
@@ -280,11 +300,6 @@ public class WorldModel {
                 }
             }
         }
-    }
-
-    public boolean hasExited(){
-        //TODO
-        return false;
     }
 
     public void removeGameObject(GameObject gameObject){

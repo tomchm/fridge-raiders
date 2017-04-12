@@ -58,6 +58,8 @@ public class WorldController implements Screen {
 	private DetectiveController detectiveController;
 	private InputController input;
 
+	private int resetCounter;
+
 	public AssetLoader getAssetLoader() {
 		return assetLoader;
 	}
@@ -72,6 +74,7 @@ public class WorldController implements Screen {
 		aiControllers = new PooledList <AIController>();
 		fileIOController = new FileIOController(worldModel);
 		guiController = new GUIController(worldModel, spacebarController, input);
+		resetCounter = 0;
 	}
 
 	public void reset() {
@@ -81,6 +84,7 @@ public class WorldController implements Screen {
 		fileIOController = new FileIOController(worldModel);
 		guiController = new GUIController(worldModel, spacebarController, input);
 		populateLevel();
+		resetCounter = 0;
 	}
 
 	/**
@@ -150,16 +154,23 @@ public class WorldController implements Screen {
 		if(!worldModel.getPlayer().isSecondStage()){
 			for(AIController ai : aiControllers){
 				if(ai.hasBeenCaught()){
-					reset();
+					worldModel.setLost();
 					break;
 				}
 			}
 		}
 		else {
 			if(!worldModel.getPlayer().hasShots()){
-				reset();
+				worldModel.setLost();
 			}
 		}
+
+		if(worldModel.hasLost()){
+		    resetCounter++;
+		    if(resetCounter == 300){
+		        reset();
+            }
+        }
 
 
 
@@ -200,7 +211,9 @@ public class WorldController implements Screen {
 		worldModel.applyDynamic();
 		worldModel.applyStatic();
 
-		worldModel.getWorld().step(WORLD_STEP,WORLD_VELOC,WORLD_POSIT);
+		if(!worldModel.hasLost()){
+            worldModel.getWorld().step(WORLD_STEP,WORLD_VELOC,WORLD_POSIT);
+        }
 
 		Iterator<PooledList<GameObject>.Entry> iterator = worldModel.getGameObjects().entryIterator();
 		while (iterator.hasNext()) {

@@ -58,15 +58,15 @@ public class TextGUIModel extends GUIModel{
             this.countdown += 300;
         }
         else{
-            if((!isFirstStage) && worldModel.hasExited()){
+            if(worldModel.hasWon()){
                 this.message = "LEVEL COMPLETE!";
                 this.messageStep = 2;
-                this.countdown += 6000;
+                this.countdown += 3000;
             }
-            else if( (!isFirstStage) && worldModel.getPlayer().getShotsRemaining() == 0){
+            else if( worldModel.hasLost()){
                 this.message = "   GAME OVER! \nCLICK TO RESTART";
                 this.messageStep = 3;
-                this.countdown += 6000;
+                this.countdown += 3000;
             }
         }
 
