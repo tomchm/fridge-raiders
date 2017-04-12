@@ -34,12 +34,15 @@ public class WorldController implements Screen {
 	private SpacebarController spacebarController;
 	private GUIController guiController;
 
+	private boolean playedScene = false;
+
 	/** List of ai controllers (one for each ai)*/
 	private PooledList<AIController> aiControllers;
 
 	/** Exit code for quitting the game */
 	public static final int EXIT_QUIT = 0;
 	public static final int CUTSCENE = 1;
+	public static final int GAMEVIEW = 2;
 	/** The amount of time for a game engine step. */
 	public static final float WORLD_STEP = 1/60.0f;
 	/** Number of velocity iterations for the constrain solvers */
@@ -192,6 +195,11 @@ public class WorldController implements Screen {
 
 	public void update(float dt) {
 		detectiveController.update(input);
+
+		if (worldModel.getPlayer().isSecondStage() && !playedScene) {
+			playedScene = true;
+			listener.exitScreen(this, CUTSCENE);
+		}
 
 		if (InputController.getInstance().didSecondary()) spacebarController.keyDown();
 		else if (InputController.getInstance().releasedSecondary()) spacebarController.keyUp();

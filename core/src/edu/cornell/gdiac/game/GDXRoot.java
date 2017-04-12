@@ -67,6 +67,7 @@ public class GDXRoot extends Game implements ScreenListener {
 		canvas  = new GameCanvas();
 		loading = new LoadingMode(canvas,manager,1);
 		cutscene = new Cutscene(canvas);
+		cutscene.setScreenListener(this);
 
 		// Initialize the three game worlds
 		controller = new WorldController();
@@ -135,6 +136,9 @@ public class GDXRoot extends Game implements ScreenListener {
 		else if (exitCode == WorldController.CUTSCENE) {
 			setScreen(cutscene);
 		}
+		else if (exitCode == WorldController.GAMEVIEW) {
+			setScreen(controller);
+		};
 	}
 
 }

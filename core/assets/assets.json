@@ -435,6 +435,21 @@
       "filename": "sound/nom.wav"
     },
     {
+      "type": "sound",
+      "tag": "titlemusic",
+      "filename": "sound/title.wav"
+    },
+    {
+      "type": "sound",
+      "tag": "levelmusic",
+      "filename": "sound/level.wav"
+    },
+    {
+      "type": "sound",
+      "tag": "pop",
+      "filename": "sound/pop.wav"
+    },
+    {
       "type": "image",
       "tag": "glow",
       "filename": "gui/glow.png",
