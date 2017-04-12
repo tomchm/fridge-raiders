@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.utils.ObjectSet;
 import edu.cornell.gdiac.game.model.AIModel;
+import edu.cornell.gdiac.game.model.CrumbModel;
 import edu.cornell.gdiac.game.model.DetectiveModel;
 import edu.cornell.gdiac.game.model.FurnitureModel;
 
@@ -71,11 +72,11 @@ public class AIController implements RayCastCallback{
 
     // Chase attributes
     /** the weight to apply to light time*/
-    protected static float DIST_SCL = 8.0f;
+    protected static float DIST_SCL = 6.0f;
     /** the limit of light time*/
-    protected static float LIGHT_LIM = 10.0f;
+    protected static float LIGHT_LIM = 5.0f;
     /** the threshold before chase*/
-    protected static float CHASE_LIM = 1.0f;
+    protected static float CHASE_LIM = 0.5f;
     /** the distance at which the ai catches the player*/
     protected static float CATCH_DIST = 2.0f;
     /** the weighted time the player has been in the light*/
@@ -196,7 +197,7 @@ public class AIController implements RayCastCallback{
      */
     private void updateLightTime() {
         if (seen && (!blocked)) {
-            lightTime = lightTime + dtCache * ((1-distCache/ai.getLightRadius()) * DIST_SCL);
+            lightTime = lightTime + dtCache * ((2-distCache/ai.getLightRadius()) * DIST_SCL);
             lightTime = (lightTime > LIGHT_LIM) ? LIGHT_LIM : lightTime;
         }
         else {
@@ -224,7 +225,7 @@ public class AIController implements RayCastCallback{
             seen = true;
             distCache = dist;
         }
-        else if (!fixtureTest){
+        else if (!fixtureTest && fixture.getUserData().getClass() != CrumbModel.class){
             blocked = true;
         }
         return -1;
@@ -235,7 +236,7 @@ public class AIController implements RayCastCallback{
      */
     private void updateLightColor() {
         float lightscl = lightTime/LIGHT_LIM;
-        ai.getConeLight().setColor(1, 1-lightscl,1-lightscl, 1);
+        ai.getConeLight().setColor(1, 0.8f-lightscl,0.8f-lightscl, 1);
     }
 
     /** Given the position of the next step, calculates appropriate velocity

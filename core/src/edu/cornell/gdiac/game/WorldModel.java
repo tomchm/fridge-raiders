@@ -8,10 +8,12 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import edu.cornell.gdiac.game.asset.AssetLoader;
 import edu.cornell.gdiac.game.model.*;
+import edu.cornell.gdiac.game.shaders.CustomDetectiveShader;
 import edu.cornell.gdiac.game.shaders.CustomShader;
 import edu.cornell.gdiac.util.PooledList;
 import box2dLight.*;
 import com.badlogic.gdx.graphics.*;
+import shaders.LightShader;
 
 
 import java.util.Arrays;
@@ -36,10 +38,6 @@ public class WorldModel {
     protected PooledList<GameObject> solidGameObjects;
 
     protected PooledList<AIModel> aiList;
-    protected PooledList<FurnitureModel> furnitureList;
-    protected PooledList<FoodModel> foodList;
-    protected PooledList<WallModel> wallList;
-
     protected PooledList<JointDef> jointQueue;
     protected PooledList<Body> staticQueue;
     protected PooledList<Body> dynamicQueue;
@@ -55,7 +53,11 @@ public class WorldModel {
     protected OrthographicCamera raycamera;
     /** The rayhandler for storing lights, and drawing them (SIGH) */
     protected RayHandler rayhandler;
-    /** Active lights*/
+    /** The rayhandler for the detective's lights*/
+    protected RayHandler rayhandlerD;
+    /** simulated sun*/
+    protected DirectionalLight dLight;
+    /** debug lights*/
     private Light[] debugLights;
 
     /**
@@ -150,8 +152,14 @@ public class WorldModel {
 
         rayhandler = new RayHandler(world, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
         rayhandler.setCombinedMatrix(raycamera);
-        rayhandler.setAmbientLight(0,0,0,1f);
+        rayhandler.setAmbientLight(0,0,0,0.7f);
         rayhandler.setLightShader(CustomShader.createCustomShader());
+
+        rayhandlerD = new RayHandler(world, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
+        rayhandlerD.setCombinedMatrix(raycamera);
+        rayhandlerD.setAmbientLight(0,0,0,0.7f);
+        rayhandlerD.setLightShader(CustomDetectiveShader.createCustomShader());
+
     }
 
     public void zoomOutRaycamera(){
@@ -440,9 +448,22 @@ public class WorldModel {
         updateRayCamera();
 
         // draw lights
-        if (rayhandler != null) {
-            rayhandler.render();
+        if (rayhandlerD != null) {
+            rayhandlerD.updateAndRender();
         }
+
+//        canvas.begin();
+//        for (GameObject go: gameObjects) {
+//            if (go.getClass() == FurnitureModel.class) {
+//                go.draw(canvas);
+//            }
+//        }
+//        canvas.end();
+
+        if (rayhandler != null) {
+            rayhandler.updateAndRender();
+        }
+
 
         // draw AI again to cover light point source
         //canvas.begin();
@@ -458,8 +479,7 @@ public class WorldModel {
         raycamera.position.set(detective.getBody().getPosition(), 0);
         raycamera.update();
         rayhandler.setCombinedMatrix(raycamera);
-        rayhandler.update();
-
+        rayhandlerD.setCombinedMatrix(raycamera);
     }
 
     public World getWorld() {

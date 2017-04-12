@@ -27,7 +27,7 @@ public class AIModel extends GameObject{
     /*speed of the ai movement*/
     protected float speed = 3.0f;
     /*scaling factor of speed after ai finds player*/
-    protected float speedUpScale = 1.5f;
+    protected float speedUpScale = 2.0f;
     /*cone Light of the ai*/
     protected ConeLight coneLight;
     /*radius of light cone*/
@@ -91,6 +91,11 @@ public class AIModel extends GameObject{
         bodyDef.allowSleep = true;
         bodyDef.position.set(path[0]);
 
+        filter = new Filter();
+        filter.groupIndex = -1;
+        filter.categoryBits = 0x0002;
+        filter.maskBits = 0x0006;
+
         Shape shape = new CircleShape();
         shape.setRadius(1.2f);
         fixtureDef = new FixtureDef();
@@ -108,6 +113,7 @@ public class AIModel extends GameObject{
         Vector2 pos = getBody().getPosition();
         coneLight = new ConeLight(rayHandler, NUM_RAYS, Color.WHITE, lightRadius, pos.x, pos.y, getBody().getAngle(), lightAngle);
         coneLight.setContactFilter((short)0x0005, (short)-1, (short) 0xFFFF);
+        coneLight.attachToBody(getBody());
         coneLight.setSoft(false);
 
     }
@@ -116,7 +122,6 @@ public class AIModel extends GameObject{
      * updates the cone light position based on the position of the AI
      */
     public void updateConeLight() {
-        coneLight.setPosition(getBody().getPosition());
         coneLight.setDirection((float)(getBody().getAngle()*180 / Math.PI));
     }
 

@@ -33,6 +33,7 @@ public class DetectiveController {
         worldModel = world;
         this.aimGUI = aimGUI;
         isSecondStage = player.isSecondStage();
+        player.createPointLight(world.rayhandlerD);
     }
 
     private boolean didClickOnPlayer(MyInputProcessor myProcessor){

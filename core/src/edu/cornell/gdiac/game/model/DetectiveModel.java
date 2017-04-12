@@ -1,5 +1,9 @@
 package edu.cornell.gdiac.game.model;
 
+import box2dLight.ConeLight;
+import box2dLight.Light;
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.graphics.Color;
@@ -72,6 +76,12 @@ public class DetectiveModel extends GameObject{
     private int shotsTaken;
     private int shotsRemaining;
 
+    // lighting
+    /** the players radius of light*/
+    private PointLight pointLight;
+    /** the players radius of light*/
+    private float lightRadius = 10;
+
 
     public enum Animation {
         LEFT_MOVE, RIGHT_MOVE, UP_MOVE, DOWN_MOVE, LEFT_STOP, RIGHT_STOP, UP_STOP, DOWN_STOP, ROLL_MOVE, ROLL_STOP
@@ -121,6 +131,24 @@ public class DetectiveModel extends GameObject{
 
         shotsRemaining = -1;
         shotsTaken = 0;
+    }
+
+    /**
+     * creates and sets a new Point Light
+     */
+    public void createPointLight(RayHandler rayHandler) {
+        Vector2 pos = getBody().getPosition();
+        pointLight = new PointLight(rayHandler, 128, Color.WHITE, lightRadius, pos.x, pos.y);
+        pointLight.attachToBody(getBody());
+        pointLight.setContactFilter((short)0x0005, (short)0, (short) 0x0008);
+        pointLight.setSoft(false);
+    }
+
+    /**
+     * @return the point light associated with this player
+     */
+    public PointLight getPointLight() {
+        return pointLight;
     }
 
     public FurnitureModel getGrappledFurniture() {
