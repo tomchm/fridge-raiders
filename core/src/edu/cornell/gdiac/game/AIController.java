@@ -1,6 +1,9 @@
 package edu.cornell.gdiac.game;
 
+import box2dLight.ConeLight;
+import box2dLight.PointLight;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -72,9 +75,9 @@ public class AIController implements RayCastCallback{
     /** the limit of light time*/
     protected static float LIGHT_LIM = 10.0f;
     /** the threshold before chase*/
-    protected static float CHASE_LIM = 2.5f;
+    protected static float CHASE_LIM = 1.0f;
     /** the distance at which the ai catches the player*/
-    protected static float CATCH_DIST = 3.0f;
+    protected static float CATCH_DIST = 2.0f;
     /** the weighted time the player has been in the light*/
     private float lightTime;
     /** caches dt value for callback*/
@@ -102,6 +105,10 @@ public class AIController implements RayCastCallback{
         this.player = worldModel.getPlayer();
 
         //lights
+        //DEBUG
+//        for(Vector2 step: ai.getPath()) {
+//            new PointLight(worldModel.rayhandler, 10, Color.GREEN, 1, step.x, step.y );
+//        }
         ai.createConeLight(worldModel.rayhandler);
         lightTime = 0;
         seen = false;
@@ -126,7 +133,9 @@ public class AIController implements RayCastCallback{
     public void update(float dt) {
         dtCache = dt;
         ticks ++;
-
+//        System.out.println(target);
+//        System.out.println(next);
+//        System.out.println(isStuck);
 
         // check if AI is stuck
         double interval = Math.round(STUCK_TIME * 60);
