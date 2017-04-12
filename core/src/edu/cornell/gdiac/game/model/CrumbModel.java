@@ -109,7 +109,11 @@ public class CrumbModel extends GameObject{
     }
 
     public float getZ(){
-        return ZZ;
+        int add = 0;
+        if(age > GRAVITY_AGE){
+            add = 300;
+        }
+        return ZZ+add;
     }
 
 

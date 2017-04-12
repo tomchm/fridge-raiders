@@ -22,6 +22,8 @@ import java.util.Collections;
  */
 public class WorldModel {
 
+    protected boolean hasLost;
+    protected boolean hasWon;
     protected World world;
     protected Vector2 scale;
     protected Vector2 bounds;
@@ -78,6 +80,8 @@ public class WorldModel {
         dynamicQueue = new PooledList<Body>();
         clearJoints = false;
         addJoints = false;
+        hasLost = false;
+        hasWon = false;
 
         // ai info
         aiList = new PooledList <AIModel>();
@@ -90,8 +94,44 @@ public class WorldModel {
         initContactListener();
     }
 
-    public void setPar(int par) {}
-    public void setThreshold(int threshold) {}
+    public boolean hasLost(){
+        return hasLost;
+    }
+
+    public boolean hasWon(){
+        return hasWon;
+    }
+
+    public void setLost(){
+        hasLost = true;
+    }
+
+    public void setWon(){
+        hasWon = true;
+    }
+
+    public void setPar(int par) {
+        if(detective != null){
+            detective.setPar(par);
+        }
+    }
+    public void setThreshold(int threshold) {
+        if(detective != null){
+            detective.setThreshold(threshold);
+        }
+    }
+    public void setMaximumFood() {
+        int food = 0;
+        for (GameObject go : gameObjects) {
+            if (go instanceof FoodModel) {
+                food += ((FoodModel) go).getAmount();
+            }
+        }
+        System.out.println(food);
+        if (detective != null) {
+            detective.setMaximumFood(food);
+        }
+    }
 
 
     /**
@@ -260,11 +300,6 @@ public class WorldModel {
                 }
             }
         }
-    }
-
-    public boolean hasExited(){
-        //TODO
-        return false;
     }
 
     public void removeGameObject(GameObject gameObject){

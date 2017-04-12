@@ -50,7 +50,10 @@ public class SpacebarGUIModel extends GUIModel{
             counter = 0;
             if(isFirstStage){
                 if(!worldModel.getPlayer().isSecondStage()){
-                    nearest = controller.getInteractible();
+                    if(worldModel.getPlayer().getChewing() == null){
+                        nearest = controller.getInteractible();
+                    }
+
                 }
                 else {
                     isFirstStage = false;
