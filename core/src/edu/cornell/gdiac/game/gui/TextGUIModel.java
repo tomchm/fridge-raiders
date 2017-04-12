@@ -40,7 +40,6 @@ public class TextGUIModel extends GUIModel{
     }
 
     public void update(float dt){
-        System.out.println(countdown);
         if(countdown > 0){
             countdown -= 1;
             didCountdown = true;

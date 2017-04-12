@@ -198,7 +198,8 @@ public class InputController {
 	 * @return true if the player wants to go to the previous level.
 	 */
 	public boolean didRetreat() {
-		return prevPressed ;
+		System.out.println(prevPressed + " "+prevPrevious);
+		return prevPressed && !prevPrevious;
 	}
 	
 	/**
@@ -252,7 +253,7 @@ public class InputController {
 		exitPrevious = exitPressed;
 		nextPrevious = nextPressed;
 		cutscenePrevious = cutscenePressed;
-//		prevPrevious = prevPressed;
+		prevPrevious = prevPressed;
 
 		readKeyboard();
 
@@ -275,16 +276,8 @@ public class InputController {
 		debugPressed = (secondary && debugPressed) || (Gdx.input.isKeyPressed(Input.Keys.D));
 		primePressed = (secondary && primePressed) || (Gdx.input.isKeyPressed(Input.Keys.UP));
 		secondPressed = (secondary && secondPressed) || (Gdx.input.isKeyPressed(Input.Keys.SPACE));
-		if(Gdx.input.isKeyPressed(Input.Keys.P)){
-			if(prevPrevious){
-				prevPressed = false;
-				prevPrevious = false;
-			}
-			else{
-				prevPressed = true;
-				prevPrevious = true;
-			}
-		}
+		prevPressed = (Gdx.input.isKeyPressed(Input.Keys.P));
+
 		nextPressed = (secondary && nextPressed) || (Gdx.input.isKeyPressed(Input.Keys.N));
 		exitPressed  = (secondary && exitPressed) || (Gdx.input.isKeyPressed(Input.Keys.ESCAPE));
 		cutscenePressed = (Gdx.input.isKeyPressed(Input.Keys.C));

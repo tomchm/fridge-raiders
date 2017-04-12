@@ -41,10 +41,7 @@ public class PauseGUI extends GUIModel {
         }
         public void update(float dt){
             if(inputController.getInstance().didRetreat()){
-                paused = true;
-            }
-            else{
-                paused = false;
+                paused = !paused;
             }
         }
         public void draw(GameCanvas canvas){
