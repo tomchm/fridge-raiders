@@ -258,6 +258,11 @@ public class WorldModel {
         }
     }
 
+    public boolean hasExited(){
+        //TODO
+        return false;
+    }
+
     public void removeGameObject(GameObject gameObject){
         assert gameObject != null : "Tried to remove null GameObject";
         removeGameObjectQueue.add(gameObject);

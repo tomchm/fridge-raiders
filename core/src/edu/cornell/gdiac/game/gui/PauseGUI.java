@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import edu.cornell.gdiac.game.GameCanvas;
+import edu.cornell.gdiac.game.InputController;
 import edu.cornell.gdiac.game.WorldModel;
 import edu.cornell.gdiac.game.asset.FontAsset;
 import edu.cornell.gdiac.game.model.GameObject;
@@ -21,40 +22,37 @@ import edu.cornell.gdiac.game.model.GameObject;
 public class PauseGUI extends GUIModel {
 
 
-        private boolean isFirstStage;
+        private boolean paused;
         private WorldModel worldModel;
         private String message;
         private int messageStep;
         private int countdown;
         private boolean didCountdown = false;
-        public PauseGUI(WorldModel worldModel){
+        private InputController inputController;
+        public PauseGUI(WorldModel worldModel, InputController input){
             tags = new String[] {"gothic72"};
-            guiTag = "TextGUI";
-            isFirstStage = false;
+            guiTag = "PauseGUI";
+            paused = false;
             this.worldModel = worldModel;
             this.messageStep = -1;
             this.message = "";
+            this.inputController = input;
             countdown = 100;
         }
         public void update(float dt){
-            if (countdown == 0 ){
-                countdown += 1000;
-                isFirstStage = true;
-
-            }
-            if (countdown == 500){
-                isFirstStage = false;
+            if(inputController.getInstance().didRetreat()){
+                paused = true;
             }
             else{
-                countdown -= 1;
+                paused = false;
             }
         }
         public void draw(GameCanvas canvas){
             float x = origin.x* GameObject.getDrawScale().x;
             float y = origin.y*GameObject.getDrawScale().y;
             FontAsset font = (FontAsset) assetMap.get("gothic72");
-            if(isFirstStage) {
-                canvas.drawRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 0, 0, 0);
+            if(paused) {
+                canvas.drawRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 1, 0, 0);
                 BitmapFont bf = font.getFont();
                 bf.setColor(Color.BLACK);
                 canvas.drawText("RESUME", font.getFont(), x - 100 + 2, y + 230 - 2);

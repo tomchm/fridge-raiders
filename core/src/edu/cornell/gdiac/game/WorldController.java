@@ -71,7 +71,7 @@ public class WorldController implements Screen {
 		spacebarController = new SpacebarController(worldModel);
 		aiControllers = new PooledList <AIController>();
 		fileIOController = new FileIOController(worldModel);
-		guiController = new GUIController(worldModel, spacebarController);
+		guiController = new GUIController(worldModel, spacebarController, input);
 	}
 
 	public void reset() {
@@ -79,7 +79,7 @@ public class WorldController implements Screen {
 		spacebarController = new SpacebarController(worldModel);
 		aiControllers.clear();
 		fileIOController = new FileIOController(worldModel);
-		guiController = new GUIController(worldModel, spacebarController);
+		guiController = new GUIController(worldModel, spacebarController, input);
 		populateLevel();
 	}
 
