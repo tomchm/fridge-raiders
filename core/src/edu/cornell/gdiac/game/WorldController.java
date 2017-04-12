@@ -249,6 +249,11 @@ public class WorldController implements Screen {
 		}
 		Vector2 position = worldModel.getPlayer().getBody().getPosition();
 		canvas.moveCamera(position.x, position.y);
+		if(worldModel.getPlayer().isSecondStage()){
+			//canvas.zoomOut();
+		}
+
+
 		guiController.setOrigin(position);
 	}
 

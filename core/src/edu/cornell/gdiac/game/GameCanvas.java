@@ -1210,4 +1210,9 @@ public class GameCanvas {
 		camera.position.set(x*scale.x,y*scale.y,0);
 		camera.update();
 	}
+
+	public void zoomOut(){
+		System.out.println(camera.zoom + "CCC");
+		camera.zoom = 1.5f;
+	}
 }
