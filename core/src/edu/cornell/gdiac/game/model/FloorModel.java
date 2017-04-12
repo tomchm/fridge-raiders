@@ -1,6 +1,8 @@
 package edu.cornell.gdiac.game.model;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -36,8 +38,20 @@ public class FloorModel extends GameObject{
         this.tags = new String[]{"floor"};
     }
 
+    public void draw(GameCanvas canvas) {
+        Asset ass = assetMap.get(tags[0]);
+        ImageAsset ia = (ImageAsset)ass;
+        Texture floorTex = ia.getTexture().getTexture();
+        floorTex.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        //TextureRegion region = new TextureRegion(ia.getTexture().getTexture());
+        float width = floorTex.getWidth();
+        float height = floorTex.getHeight();
+        ia.getTexture().setRegion(-150*width,-150*height,150*width, 150*height);
+        canvas.draw(ia.getTexture(), Color.WHITE, ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),ia.getImageScale().x,ia.getImageScale().y);
+    }
+
     public float getZ(){
-        return 10000;
+        return 1000000;
     }
 
 

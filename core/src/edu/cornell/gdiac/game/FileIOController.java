@@ -117,7 +117,7 @@ public class FileIOController {
                 float red =0f;
                 float green =0f;
                 float blue = 0f;
-                if (w.hasChild("r")) {
+                if (w.has("r")) {
                     red = w.get("r").asFloat()/255f;
                     green = w.get("g").asFloat()/255f;
                     blue = w.get("b").asFloat()/255f;

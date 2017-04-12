@@ -44,6 +44,10 @@ public class WallModel extends GameObject {
 
     public float[] getCoords() {return coords;}
 
+    public float getZ() {
+        return 10000f + GameObject.getDrawScale().y*0.25f*(coords[1] + coords[3] + coords[5] + coords[7]);
+    }
+
     public void draw(GameCanvas canvas){
         // draw the black part
         canvas.drawPolygon(coords, 0f, 0f, 0f);
