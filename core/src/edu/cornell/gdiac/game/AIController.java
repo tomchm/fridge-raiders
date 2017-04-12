@@ -133,9 +133,9 @@ public class AIController implements RayCastCallback{
     public void update(float dt) {
         dtCache = dt;
         ticks ++;
-        System.out.println(target);
-        System.out.println(next);
-        System.out.println(isStuck);
+//        System.out.println(target);
+//        System.out.println(next);
+//        System.out.println(isStuck);
 
         // check if AI is stuck
         double interval = Math.round(STUCK_TIME * 60);
