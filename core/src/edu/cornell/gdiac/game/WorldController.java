@@ -84,6 +84,7 @@ public class WorldController implements Screen {
 		fileIOController = new FileIOController(worldModel);
 		guiController = new GUIController(worldModel, spacebarController, input);
 		populateLevel();
+
 		resetCounter = 0;
 	}
 
@@ -102,6 +103,12 @@ public class WorldController implements Screen {
 		}
 		worldModel.updateAllSensors();
 		worldModel.setMaximumFood();
+
+		GoalModel goal = new GoalModel(null);
+		worldModel.addGameObjectQueue(goal);
+		worldModel.setGoal(goal);
+		worldModel.getWorld().setContactListener(goal);
+
 		fileIOController.save("levels/testOutput.json");
 	}
 
@@ -158,14 +165,20 @@ public class WorldController implements Screen {
 					break;
 				}
 			}
+
+
+
 		}
 		else {
-			if(!worldModel.getPlayer().hasShots()){
+			if(worldModel.getGoal().hasPlayerCollided()){
+				worldModel.setWon();
+			}
+			else if(!worldModel.getPlayer().hasShots()){
 				worldModel.setLost();
 			}
 		}
 
-		if(worldModel.hasLost()){
+		if(worldModel.hasLost() || worldModel.hasWon()){
 		    resetCounter++;
 		    if(resetCounter == 300){
 		        reset();

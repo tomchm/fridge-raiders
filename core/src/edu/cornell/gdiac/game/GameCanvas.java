@@ -122,8 +122,8 @@ public class GameCanvas {
 		vertex = new Vector2();
 	}
 
-	private void endShape() {shapeRender.end(); begin(); }
-	private void beginShape() {end(); shapeRender.setProjectionMatrix(camera.combined); shapeRender.begin(ShapeRenderer.ShapeType.Filled);}
+	private void endShape() {shapeRender.end(); Gdx.gl.glDisable(Gdx.gl.GL_BLEND); begin(); }
+	private void beginShape() {end(); Gdx.gl.glEnable(Gdx.gl.GL_BLEND); shapeRender.setProjectionMatrix(camera.combined); shapeRender.begin(ShapeRenderer.ShapeType.Filled); }
 
 	public void drawRect(float x, float y, float width, float height, float r, float g, float b) {
 		beginShape();
@@ -136,6 +136,16 @@ public class GameCanvas {
 	public void drawPolygon(float[] coords, float r, float g, float b) {
 		beginShape();
 		shapeRender.setColor(r,g,b,1.0f);
+		float sx = GameObject.getDrawScale().x;
+		float sy = GameObject.getDrawScale().y;
+		shapeRender.triangle(sx*coords[0], sy*coords[1], sx*coords[2], sy*coords[3], sx*coords[4], sy*coords[5]);
+		shapeRender.triangle(sx*coords[4], sy*coords[5], sx*coords[6], sy*coords[7], sx*coords[0], sy*coords[1]);
+		endShape();
+	}
+
+	public void drawPolygon(float[] coords, float r, float g, float b, float a) {
+		beginShape();
+		shapeRender.setColor(r,g,b,a);
 		float sx = GameObject.getDrawScale().x;
 		float sy = GameObject.getDrawScale().y;
 		shapeRender.triangle(sx*coords[0], sy*coords[1], sx*coords[2], sy*coords[3], sx*coords[4], sy*coords[5]);
