@@ -23,6 +23,8 @@ public class GUIController {
         guiMap.put(aimGUI.guiTag, aimGUI);
         GUIModel pauseGUI = new PauseGUI(worldModel);
         guiMap.put(pauseGUI.guiTag, pauseGUI);
+        GUIModel textGUI = new TextGUIModel(worldModel);
+        guiMap.put(textGUI.guiTag, textGUI);
 
     }
 
