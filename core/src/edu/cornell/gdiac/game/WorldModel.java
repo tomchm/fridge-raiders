@@ -90,8 +90,28 @@ public class WorldModel {
         initContactListener();
     }
 
-    public void setPar(int par) {}
-    public void setThreshold(int threshold) {}
+    public void setPar(int par) {
+        if(detective != null){
+            detective.setPar(par);
+        }
+    }
+    public void setThreshold(int threshold) {
+        if(detective != null){
+            detective.setThreshold(threshold);
+        }
+    }
+    public void setMaximumFood() {
+        int food = 0;
+        for (GameObject go : gameObjects) {
+            if (go instanceof FoodModel) {
+                food += ((FoodModel) go).getAmount();
+            }
+        }
+        System.out.println(food);
+        if (detective != null) {
+            detective.setMaximumFood(food);
+        }
+    }
 
 
     /**

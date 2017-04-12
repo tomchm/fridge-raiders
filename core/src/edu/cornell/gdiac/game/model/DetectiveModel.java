@@ -308,10 +308,17 @@ public class DetectiveModel extends GameObject{
     public float getThreshold(){
         return threshold;
     }
+    public void setThreshold(int threshold){
+        this.threshold = threshold;
+    }
 
     public float getMaximumFood(){
         return maximumFood;
     }
+    public void setMaximumFood(int maximumFood){
+        this.maximumFood = maximumFood;
+    }
+
 
     public void setStage(boolean b){
         this.isSecondStage = b;
@@ -340,6 +347,9 @@ public class DetectiveModel extends GameObject{
 
     public int getPar(){
         return par;
+    }
+    public void setPar(int par){
+        this.par = par;
     }
 
     private class Sticker {

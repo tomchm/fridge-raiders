@@ -97,6 +97,7 @@ public class WorldController implements Screen {
 			aiControllers.add(new AIController(ai, worldModel));
 		}
 		worldModel.updateAllSensors();
+		worldModel.setMaximumFood();
 		fileIOController.save("levels/testOutput.json");
 	}
 

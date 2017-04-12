@@ -198,7 +198,6 @@ public class InputController {
 	 * @return true if the player wants to go to the previous level.
 	 */
 	public boolean didRetreat() {
-		System.out.println(prevPressed + " "+prevPrevious);
 		return prevPressed && !prevPrevious;
 	}
 	
