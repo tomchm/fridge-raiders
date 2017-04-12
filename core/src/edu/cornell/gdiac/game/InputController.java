@@ -58,7 +58,7 @@ public class InputController {
 	private boolean nextPressed;
 	private boolean nextPrevious;
 	/** Whether the button to step back worlds was pressed. */
-	private boolean prevPressed;
+	private boolean prevPressed =  false;
 	private boolean prevPrevious;
 	/** Whether the primary action button was pressed. */
 	private boolean primePressed;
@@ -198,7 +198,7 @@ public class InputController {
 	 * @return true if the player wants to go to the previous level.
 	 */
 	public boolean didRetreat() {
-		return prevPressed && !prevPrevious;
+		return prevPressed ;
 	}
 	
 	/**
@@ -251,8 +251,8 @@ public class InputController {
 		debugPrevious  = debugPressed;
 		exitPrevious = exitPressed;
 		nextPrevious = nextPressed;
-		prevPrevious = prevPressed;
 		cutscenePrevious = cutscenePressed;
+//		prevPrevious = prevPressed;
 
 		readKeyboard();
 
@@ -275,7 +275,16 @@ public class InputController {
 		debugPressed = (secondary && debugPressed) || (Gdx.input.isKeyPressed(Input.Keys.D));
 		primePressed = (secondary && primePressed) || (Gdx.input.isKeyPressed(Input.Keys.UP));
 		secondPressed = (secondary && secondPressed) || (Gdx.input.isKeyPressed(Input.Keys.SPACE));
-		prevPressed = (secondary && prevPressed) || (Gdx.input.isKeyPressed(Input.Keys.P));
+		if(Gdx.input.isKeyPressed(Input.Keys.P)){
+			if(prevPrevious){
+				prevPressed = false;
+				prevPrevious = false;
+			}
+			else{
+				prevPressed = true;
+				prevPrevious = true;
+			}
+		}
 		nextPressed = (secondary && nextPressed) || (Gdx.input.isKeyPressed(Input.Keys.N));
 		exitPressed  = (secondary && exitPressed) || (Gdx.input.isKeyPressed(Input.Keys.ESCAPE));
 		cutscenePressed = (Gdx.input.isKeyPressed(Input.Keys.C));
