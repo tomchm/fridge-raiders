@@ -1,5 +1,7 @@
 package edu.cornell.gdiac.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.*;
@@ -34,7 +36,8 @@ public class FileIOController {
     /** Load the specified level into the WorldModel. */
     public void load(String filename) {
         try {
-            JsonValue level = parser.parse(new FileReader(filename));
+            FileHandle file = Gdx.files.local(filename);
+            JsonValue level = parser.parse(file.readString());
             JsonValue player = level.get("player");
             worldModel.setPlayer(new DetectiveModel(player.get("x").asFloat(), player.get("y").asFloat()));
             worldModel.addGameObject(worldModel.getPlayer());
@@ -112,7 +115,15 @@ public class FileIOController {
             for (JsonValue w = walls.child(); w != null; w = w.next()) {
                 float[] coords = w.get("coords").asFloatArray();
                 String[] tags = w.get("tags").asStringArray();
-                worldModel.addGameObject(new WallModel(coords, tags));
+                float red =0f;
+                float green =0f;
+                float blue = 0f;
+                if (w.hasChild("r")) {
+                    red = w.get("r").asFloat()/255f;
+                    green = w.get("g").asFloat()/255f;
+                    blue = w.get("b").asFloat()/255f;
+                }
+                worldModel.addGameObject(new WallModel(coords, red, green, blue, tags));
 
             }
         } catch (Exception e) {}
