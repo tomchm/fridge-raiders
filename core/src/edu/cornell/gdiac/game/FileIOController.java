@@ -111,7 +111,6 @@ public class FileIOController {
 
             // array of wall objects
             JsonValue walls = level.get("walls");
-            System.out.println(walls);
             for (JsonValue w = walls.child(); w != null; w = w.next()) {
                 float[] coords = w.get("coords").asFloatArray();
                 String[] tags = w.get("tags").asStringArray();
