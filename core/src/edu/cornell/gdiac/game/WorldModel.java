@@ -124,7 +124,10 @@ public class WorldModel {
         int food = 0;
         for (GameObject go : gameObjects) {
             if (go instanceof FoodModel) {
-                food += ((FoodModel) go).getAmount();
+                FoodModel fm = (FoodModel) go;
+                if(!fm.isDessert()){
+                    food += fm.getAmount();
+                }
             }
         }
         System.out.println(food);
