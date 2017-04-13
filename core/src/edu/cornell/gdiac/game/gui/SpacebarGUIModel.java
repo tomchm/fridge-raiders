@@ -27,7 +27,7 @@ public class SpacebarGUIModel extends GUIModel{
     private boolean isFirstStage;
     private WorldModel worldModel;
 
-    private static final int MAX_COUNT = 5;
+    private static final int MAX_COUNT = 1;
 
     private static final Color AIM_GREEN = new Color(0x00CC00FF);
     private static final Color AIM_YELLOW = new Color(0xFFFF00FF);

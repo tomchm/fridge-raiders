@@ -55,6 +55,10 @@ public class WorldModel {
     protected RayHandler rayhandler;
     /** The rayhandler for the detective's lights*/
     protected RayHandler rayhandlerD;
+    /** The rayhandler for the ambient lights*/
+    protected RayHandler rayhandlerA;
+    /** A list of light intensity*/
+    protected float[] LIGHT_SCALE = new float[] {0.7f, 0.7f, 0.7f};
     /** simulated sun*/
     protected DirectionalLight dLight;
     /** debug lights*/
@@ -152,13 +156,19 @@ public class WorldModel {
 
         rayhandler = new RayHandler(world, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
         rayhandler.setCombinedMatrix(raycamera);
-        rayhandler.setAmbientLight(0,0,0,0.7f);
         rayhandler.setLightShader(CustomShader.createCustomShader());
+        rayhandler.setAmbientLight(0,0,0,LIGHT_SCALE[0]);
+
 
         rayhandlerD = new RayHandler(world, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
         rayhandlerD.setCombinedMatrix(raycamera);
-        rayhandlerD.setAmbientLight(0,0,0,0.7f);
         rayhandlerD.setLightShader(CustomDetectiveShader.createCustomShader());
+        rayhandlerD.setAmbientLight(0,0,0,LIGHT_SCALE[1]);
+
+
+        rayhandlerA = new RayHandler(world, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
+        rayhandlerA.setCombinedMatrix(raycamera);
+        rayhandlerA.setAmbientLight(0,0,0,LIGHT_SCALE[2]);
 
     }
 
@@ -442,15 +452,18 @@ public class WorldModel {
     public void draw(GameCanvas canvas){
         // draw objects
         canvas.begin();
-        drawGameObjects(canvas);
+        Collections.sort(gameObjects);
+        for(GameObject gm : gameObjects){
+            if(gm instanceof FloorModel || gm instanceof FoodModel || gm instanceof WallModel || gm instanceof CrumbModel){
+                gm.draw(canvas);
+            }
+        }
         canvas.end();
 
         updateRayCamera();
 
         // draw lights
-        if (rayhandlerD != null) {
-            rayhandlerD.updateAndRender();
-        }
+
 
 //        canvas.begin();
 //        for (GameObject go: gameObjects) {
@@ -470,6 +483,25 @@ public class WorldModel {
         //drawAIModels(canvas);
         //canvas.end();
 
+
+        if (rayhandlerD != null) {
+            rayhandlerD.updateAndRender();
+        }
+
+
+        canvas.begin();
+        Collections.sort(gameObjects);
+        for(GameObject gm : gameObjects){
+            if(!(gm instanceof FloorModel || gm instanceof FoodModel || gm instanceof WallModel || gm instanceof CrumbModel)){
+                gm.draw(canvas);
+            }
+        }
+        canvas.end();
+
+        if (rayhandlerA != null){
+            rayhandlerA.updateAndRender();
+        }
+
     }
 
     /**
@@ -480,6 +512,7 @@ public class WorldModel {
         raycamera.update();
         rayhandler.setCombinedMatrix(raycamera);
         rayhandlerD.setCombinedMatrix(raycamera);
+        rayhandlerA.setCombinedMatrix(raycamera);
     }
 
     public World getWorld() {

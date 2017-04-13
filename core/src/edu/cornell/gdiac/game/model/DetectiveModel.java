@@ -140,7 +140,7 @@ public class DetectiveModel extends GameObject{
         Vector2 pos = getBody().getPosition();
         pointLight = new PointLight(rayHandler, 128, Color.WHITE, lightRadius, pos.x, pos.y);
         pointLight.attachToBody(getBody());
-        pointLight.setContactFilter((short)0x0005, (short)0, (short) 0x0008);
+        pointLight.setContactFilter((short)0x0005, (short)-1, (short) 0xFFFF);
         pointLight.setSoft(false);
     }
 
