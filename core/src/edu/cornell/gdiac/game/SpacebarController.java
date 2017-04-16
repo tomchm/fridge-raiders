@@ -69,7 +69,7 @@ public class SpacebarController implements RayCastCallback {
             if (gob == null) continue;
             // otherwise we have found an interactible gameobject!
             // close enough, and a proper class!
-            float dist2 = player.getBody().getPosition().sub(candidateIntersections[k]).len2();
+            float dist2 = new Vector2(player.getBody().getPosition()).sub(candidateIntersections[k]).len2();
             if (dist2 < bestdist2 && dist2 < MAX_DIST*MAX_DIST) {
                 bestdist2 = dist2;
                 closest = gob;
@@ -86,7 +86,7 @@ public class SpacebarController implements RayCastCallback {
             if (gob.getClass() != FoodModel.class
                     && gob.getClass() != FurnitureModel.class
                     && gob.getClass() != DoorModel.class) continue;
-            float dist2 = player.getBody().getPosition().sub(gob.getBody().getPosition()).len2();
+            float dist2 = new Vector2(player.getBody().getPosition()).sub(gob.getBody().getPosition()).len2();
             if (dist2 < bestdist2 && dist2 < MAX_DIST*MAX_DIST) {
                 bestdist2 = dist2;
                 closest = gob;

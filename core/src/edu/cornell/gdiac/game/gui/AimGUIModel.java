@@ -7,10 +7,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.*;
 import edu.cornell.gdiac.game.GameCanvas;
+import edu.cornell.gdiac.game.SpacebarController;
 import edu.cornell.gdiac.game.WorldModel;
 import edu.cornell.gdiac.game.asset.Asset;
 import edu.cornell.gdiac.game.asset.FontAsset;
 import edu.cornell.gdiac.game.asset.ImageAsset;
+import edu.cornell.gdiac.game.model.FoodModel;
 import edu.cornell.gdiac.game.model.GameObject;
 import edu.cornell.gdiac.game.model.TrajectoryModel;
 
@@ -24,6 +26,7 @@ public class AimGUIModel extends GUIModel{
     private final static int PAR_PLUS = 5;
     private final static float MAX_FORCE = 500f;
     private final static int MAX_BALLS = 10;
+    private SpacebarController controller;
     private Vector2 aimVector, aimPosition, prevAimVector;
     private boolean isAiming;
     private float foodAmount;
@@ -36,7 +39,8 @@ public class AimGUIModel extends GUIModel{
     private static final Color AIM_ORANGE = new Color(0xFF8000FF);
     private static final Color AIM_RED = new Color(0xCC0000FF);
 
-    public AimGUIModel(WorldModel worldModel){
+    public AimGUIModel(SpacebarController controller, WorldModel worldModel){
+        this.controller = controller;
         isAiming = false;
         aimVector = null;
         prevAimVector = null;
@@ -100,9 +104,23 @@ public class AimGUIModel extends GUIModel{
                 bar.setRegion(0,80,480, 40);
                 canvas.draw(bar, Color.WHITE, asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
 
-                // DRAW GREEN BAR
+                // DRAW HIGHLIGHT
                 float threshold = worldModel.getPlayer().getThreshold();
                 int width = 480;
+                float tempFoodAmount = foodAmount;
+                GameObject interactible = controller.getInteractible();
+                if (interactible != null && interactible.getClass() == FoodModel.class) {
+                    tempFoodAmount = tempFoodAmount + ((FoodModel)interactible).getAmount();
+                }
+                if(tempFoodAmount < threshold){
+                    width = (int)(tempFoodAmount*480f / threshold);
+                }
+                bar.setRegion(0,0,width, 40);
+                canvas.draw(bar, new Color(1,1,1,0.5f), asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
+
+                // DRAW GREEN BAR
+                threshold = worldModel.getPlayer().getThreshold();
+                width = 480;
                 if(foodAmount < threshold){
                     width = (int)(foodAmount*480f / threshold);
                 }
@@ -120,9 +138,21 @@ public class AimGUIModel extends GUIModel{
                 }
 
                 if(foodAmount >= threshold){
+                    // DRAW HIGHLIGHT
+                    float maximum = worldModel.getPlayer().getMaximumFood();
+                    width = 480;
+                    tempFoodAmount = foodAmount;
+                    if (controller.getInteractible() != null && controller.getInteractible().getClass() == FoodModel.class) {
+                        tempFoodAmount = tempFoodAmount + ((FoodModel)controller.getInteractible()).getAmount();
+                    }
+                    if(tempFoodAmount < maximum){
+                        width = (int)((tempFoodAmount - threshold)*480f / (maximum - threshold));
+                    }
+                    bar.setRegion(0,40,width, 40);
+                    canvas.draw(bar, new Color(1,1,1,0.6f), asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
 
                     // DRAW YELLOW BAR
-                    float maximum = worldModel.getPlayer().getMaximumFood();
+                    maximum = worldModel.getPlayer().getMaximumFood();
                     width = 480;
                     if(foodAmount < maximum){
                         width = (int)((foodAmount - threshold)*480f / (maximum - threshold));

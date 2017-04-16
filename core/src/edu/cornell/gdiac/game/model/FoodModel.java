@@ -80,7 +80,7 @@ public class FoodModel extends GameObject {
         filter.maskBits = 0x0006;
 
         isDessert = dessert;
-        this.radius = radius;
+        this.radius = Math.max(width, height)/2;
 
         this.tags = tags;
         this.amount = amount;

@@ -84,7 +84,8 @@ public class SpacebarGUIModel extends GUIModel{
                             TextureRegion texture = asset.getTexture(frame);
                             float x = food.getBody().getPosition().x*GameObject.getDrawScale().x;
                             float y = food.getBody().getPosition().y*GameObject.getDrawScale().y;
-                            canvas.draw(texture, Color.WHITE, asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
+                            float scle = food.getRadius() * 0.6f;
+                            canvas.draw(texture, Color.WHITE, asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x * scle, asset.getImageScale().y * scle);
                         }
                     }
                 }

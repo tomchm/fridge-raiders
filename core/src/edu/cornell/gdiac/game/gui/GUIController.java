@@ -20,7 +20,7 @@ public class GUIController {
     public GUIController(WorldModel worldModel, SpacebarController controller, InputController inputControlla){
         GUIModel spacebarGUI = new SpacebarGUIModel(controller, worldModel);
         guiMap.put(spacebarGUI.guiTag, spacebarGUI);
-        GUIModel aimGUI = new AimGUIModel(worldModel);
+        GUIModel aimGUI = new AimGUIModel(controller, worldModel);
         guiMap.put(aimGUI.guiTag, aimGUI);
         GUIModel pauseGUI = new PauseGUI(worldModel, inputControlla);
         guiMap.put(pauseGUI.guiTag, pauseGUI);
