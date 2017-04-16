@@ -1,22 +1,20 @@
 {
-  "player": {
-    "x": 10, "y": 10
-  },
-  "furniture": [
-    {"x": 10, "y": 20, "width": 6, "height": 4.7, "radius": 0, "theta": -45, "tags": ["couch"]}
+  "par":5,
+  "threshold":100,
+  "exit": [0,0,5,0,5,2,0,2],
+  "player":{"x":27.25,"y":24.25},
+  "walls":[
+    {"r":85,"g":136,"b":119,"coords":[16,35,16,19,18,19,18,35],"tags":["wall"],"x":17,"y":27}],
+  "furniture":[{"tags":["chair1"],"x":21.4,"y":28.8,"theta":0,"width":0,"height":0,"radius":1.56}],
+  "food":[
+    {"tags":["turkey"],"x":32.5,"y":28.5,"theta":0,"width":0,"height":0,"radius":1.5,"dessert":false,"amount":10}
+    {"tags":["scamDessert"],"x":41.9,"y":29.4,"theta":0,"width":5.16,"height":2.81,"radius":0,"dessert":true,"amount":10}
   ],
-  "doors": [
+  "ais":[{"tags":["ai"],"coords":[10,20,10,35,5,35,5,20]}],
+  "decor":[
+    {"tags":["clock"], "x": 15, "y": 8}
   ],
-  "food": [
-    {"x": 20, "y": 10, "radius": 1.5, "theta": 0, "tags": ["turkey"], "dessert": true, "amount": 80}
-  ],
-  "ais": [
-  ],
-  "walls": [
-    {"coords": [0,0, 1,0, 1,30, 0, 30], "tags": ["wall"]},
-    {"coords": [0,30, 50,30, 50,31,0,31], "tags": ["wall"]},
-    {"coords": [50,0, 50,30, 51,30,51,0], "tags": ["wall"]},
-    {"coords": [50,0,0,0,0,1,50,1], "tags": ["wall"]},
-    {"coords": [25,0,25,15,26,0,26,15], "tags": ["wall"]}
+  "floors": [
+    {"tags": ["linoleum"], "coords": [-100,-100,100,-100,100,100,-100,100]}
   ]
 }
