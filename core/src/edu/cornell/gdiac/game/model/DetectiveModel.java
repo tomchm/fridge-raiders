@@ -39,7 +39,7 @@ public class DetectiveModel extends GameObject{
     /** The force to apply to this rocket */
     private Vector2 force;
     private Vector2 velocity;
-    private float radius;
+    private float radius = 1.2f;
 
     /** The food the player is currently eating. */
     private FoodModel chewing = null;
@@ -101,9 +101,8 @@ public class DetectiveModel extends GameObject{
         filter.categoryBits = 0x0004;
         filter.maskBits = 0x0002;
 
-        Shape shape = new CircleShape();
-        shape.setRadius(1.2f);
-        radius = 2.2f;
+        PolygonShape shape = new PolygonShape();
+        shape.set(getCoords());
         fixtureDef = new FixtureDef();
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
@@ -131,6 +130,18 @@ public class DetectiveModel extends GameObject{
 
         shotsRemaining = -1;
         shotsTaken = 0;
+    }
+
+    public float[] getCoords() {
+        float[] coords = new float[16];
+        for(int i = 0; i < 8; i ++) {
+            double angle = i*Math.PI/4 + Math.PI/8;
+            float tempx = (float)(Math.cos(angle)) * radius;
+            float tempy = (float)(Math.sin(angle)) * radius;
+            coords[2*i] = tempx;
+            coords[2*i+1] = tempy;
+        }
+        return  coords;
     }
 
     /**
@@ -209,6 +220,7 @@ public class DetectiveModel extends GameObject{
 
                 if (amountEaten >= threshold && hasEatenDessert) {
                     setStage(true);
+                    setRadius(radius * 1.8f);
                     getBody().getFixtureList().get(0).setRestitution(1f);
                 }
             }
@@ -313,6 +325,11 @@ public class DetectiveModel extends GameObject{
         this.getBody().setLinearVelocity(0,0);
     }
 
+    public void setRadius(float radius) {
+        this.radius = radius;
+        PolygonShape shape = ((PolygonShape)getBody().getFixtureList().get(0).getShape());
+        shape.set(getCoords());
+    }
     public float getRadius() {
         return radius;
     }

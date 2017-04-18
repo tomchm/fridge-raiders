@@ -35,8 +35,16 @@ public class TrajectoryModel extends GameObject{
         filter.categoryBits = 0x0004;
         filter.maskBits = 0x0002;
 
-        Shape shape = new CircleShape();
-        shape.setRadius(radius);
+        PolygonShape shape = new PolygonShape();
+        float[] coords = new float[16];
+        for(int i = 0; i < 8; i ++) {
+            double angle = i*Math.PI/4 + Math.PI/8;
+            float tempx = (float)(Math.cos(angle)) * radius;
+            float tempy = (float)(Math.sin(angle)) * radius;
+            coords[2*i] = tempx;
+            coords[2*i+1] = tempy;
+        }
+        shape.set(coords);
         fixtureDef = new FixtureDef();
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;

@@ -92,10 +92,10 @@ public abstract class GameObject implements Comparable{
     public void drawDebug(GameCanvas canvas){
         if(fixtureDef != null){
             if(fixtureDef.shape.getType() == Shape.Type.Circle){
-                canvas.drawPhysics((CircleShape)fixtureDef.shape, Color.YELLOW, body.getPosition().x, body.getPosition().y);
+                canvas.drawPhysics((CircleShape)getBody().getFixtureList().get(0).getShape(), Color.YELLOW, body.getPosition().x, body.getPosition().y);
             }
             else if(fixtureDef.shape.getType() == Shape.Type.Polygon){
-                canvas.drawPhysics((PolygonShape)fixtureDef.shape, Color.YELLOW, body.getPosition().x, body.getPosition().y, body.getAngle(), drawScale.x, drawScale.y);
+                canvas.drawPhysics((PolygonShape)getBody().getFixtureList().get(0).getShape(), Color.YELLOW, body.getPosition().x, body.getPosition().y, body.getAngle(), drawScale.x, drawScale.y);
             }
         }
     }

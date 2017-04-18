@@ -22,7 +22,7 @@ public class AIModel extends GameObject{
     /* number of rays in a cone light*/
     protected static final int NUM_RAYS = 128;
     /* angular velocity */
-    protected static final float ANG_VEL = 3.0f;
+    protected static final float ANG_VEL = 2.0f;
     // Variable Fields
     /*speed of the ai movement*/
     protected float speed = 3.0f;
