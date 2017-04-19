@@ -493,7 +493,7 @@
                 if (seli == i && item == selected) { ctx.fill(); }
             }
         }
-        function drawFloor(item, color) { drawRect(item, '#ccc', color); }
+        function drawFloor(item, color) { drawRect(item, '#eee', color); }
         function drawExit(item, color) { drawRect(item, '#fbb', color); }
         function drawAI(item, color) {
             // draw line connecting the disks
@@ -563,6 +563,7 @@
             ctx.clearRect(0,0,cnv.width,cnv.height);
             for (var i = 0; i < level.floors.length; i++) {
                 drawFloor(level.floors[i], "#ff0");
+                if (level.floors[i] == selected) { drawFloor(level.floors[i], '#00f'); }
             }
             drawExit(level.exit, "#ff0");
             walls = levelObject.walls;
@@ -593,7 +594,6 @@
                 else if (level.furniture.includes(selected)) { drawFurniture(selected, '#00f'); }
                 else if (level.walls.includes(selected)) { drawWall(selected, '#00f'); }
                 else if (level.exit == selected) {drawExit(selected, '#00f');}
-                else if (level.floors.includes(selected)) { drawFloor(selected, '#00f'); }
                 else if (level.decor.includes(selected)) { drawDecor(selected, '#00f'); }
                 else if (level.ais.includes(selected)) { drawAI(selected, '#00f'); }
             }
