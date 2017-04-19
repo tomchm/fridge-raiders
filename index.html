@@ -425,6 +425,7 @@
             ctx.fillStyle = '#000';
             ctx.fillText(item.amount, screenXY[0] + 5, screenXY[1]);
         }
+        function drawDecor(item, color) { drawFurniture(item, color); }
         function getAsset(tag) {
             for (var i = 0; i < assets.data.length; i++) {
                 if (assets.data[i].tag==tag) return assets.data[i];
@@ -643,6 +644,7 @@
                 selected.tags[0] = newtag;
                 if (asset.shape == 'circle') { selected.radius = eval(asset.radius); selected.width = 0; selected.height = 0; }
                 if (asset.shape == 'rectangle') { selected.radius = 0; selected.width = eval(asset.width); selected.height = eval(asset.height); selected.theta = eval(asset.angle);}
+                if (type == 'furniture') { selected.moveable = asset.moveable; }
             }
             else {
                 // add a new one!
@@ -651,6 +653,7 @@
                 else if (asset.shape == 'rectangle') { newObj.width = eval(asset.width); newObj.height = eval(asset.height); }
                 
                 if (type == 'furniture') {
+                    newObj.moveable = asset.moveable;
                     level.furniture.push(newObj);
                     selected = level.furniture[level.furniture.length-1];
                 }
