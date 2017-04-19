@@ -1,0 +1,1178 @@
+<html>
+    <head>
+        <script src="jquery-3.2.0.min.js"></script>
+        <style type="text/css">
+        canvas{
+            width: 70%;
+            height: 600px;
+            float: left;
+            cursor: crosshair;
+        }
+        #panel{
+            display: block;
+            float: right;
+            width: 30%;
+            height: 600px;
+            overflow: scroll;
+            background: #eee;
+        }
+        #topbar{
+            width: 100%;
+        }
+        </style>
+        <script type="text/javascript">
+        window.onbeforeunload = function() {return confirm('Are you sure?')};
+        $(document).ready(function() {
+            cnv = $('canvas')[0];
+            ctx = cnv.getContext('2d');
+            DRAW_SCALE = 12; // pixels per world unit
+            PLAYER_RADIUS = 1.2;
+            AI_RADIUS = 1.2;
+            HANDLE_RADIUS = 0.5;
+            WALL_HEIGHT = 6;
+            camX = 0; // camera position.
+            camY = 0; // ie. the world point to draw at bottom-left.
+            selected = null;
+            // for selected objects which have coordinates, the index of
+            // the coordinate pair.
+            seli = 0;
+
+            $('canvas').keydown(function(e) {
+                if (e.which == 81) { // q
+                    DRAW_SCALE -= 1;
+                    draw(level);
+                }
+                else if (e.which == 69) { // e
+                    DRAW_SCALE += 1;
+                    draw(level);
+                }
+                else if (e.which == 82) { // r
+                    wallMode = !wallMode;
+                    if(wallMode) {
+                        selected = null;
+                        $("#wbutton").val('Switch to: OFF');
+                    } else {
+                        $("#wbutton").val('Switch to: ON');
+                    }
+                    draw(level);
+                }
+                else if (e.which == 46 || e.which == 88) {
+                    deleteSelected();
+                    draw(level);
+                }
+                else if (e.which == 191) { if(selected != null && level.food.includes(selected)) {
+                    for(var i=0; i < level.food.length; i++) { level.food[i].dessert=false; }
+                    selected.dessert=true;
+                    alert("Set dessert.");
+                } }
+                else if (e.which == 189 && level.food.includes(selected)) { selected.amount--; draw(level); }
+                else if (e.which == 187 && level.food.includes(selected)) { selected.amount++; draw(level); }
+                else if (selected != null) {
+                    if (e.which == 68) { moveObject(selected, 0.51, 0); draw(level);}
+                    else if (e.which == 65) { moveObject(selected, -0.51, 0); draw(level);}
+                    else if (e.which == 87) { moveObject(selected, 0, 0.51); draw(level);}
+                    else if (e.which == 83) { moveObject(selected, 0, -0.51); draw(level);}
+                }
+                else if (e.which == 68) { camX += 2; draw(level); }
+                else if (e.which == 65) { camX -= 2; draw(level); }
+                else if (e.which == 87) { camY += 2; draw(level); }
+                else if (e.which == 83) { camY -= 2; draw(level); }
+            });
+
+            $('canvas').bind('mousewheel DOMMouseScroll', function(event){
+                if (event.originalEvent.wheelDelta > 0 || event.originalEvent.detail < 0) {
+                    DRAW_SCALE += 1;
+                    draw(level);
+                }
+                else {
+                    DRAW_SCALE -= 1;
+                    draw(level);
+                }
+            });
+
+            $('canvas').mousedown(function(e) {
+                var screenXY = [e.offsetX, e.offsetY];
+                var worldXY = screenToWorld(screenXY);
+                prevPos = worldXY;
+                if (wallMode) {
+                    return;
+                }
+                // want already-selected walls to get precedence when picking corner handles
+                if (level.walls.includes(selected) || level.floors.includes(selected)) { if (inWall(selected, worldXY)) {draw(level); return;} }
+
+                for (var i = 0; i < level.food.length; i++) {
+                    if (inFood(level.food[i], worldXY)) { selected = level.food[i]; draw(level); return; }
+                }
+                for (var i = 0; i < level.furniture.length; i++) {
+                    if (inFurniture(level.furniture[i], worldXY)) { selected = level.furniture[i]; draw(level); return; }
+                }
+                for (var d = 0; i < level.decor.length; d++) {
+                    if (inFurniture(level.decor[d], worldXY)) { selected = level.decor[d]; draw(level); return; }
+                }
+                for (var i = 0; i < level.walls.length; i++) {
+                    if (inWall(level.walls[i], worldXY)) { selected = level.walls[i]; draw(level); return; }
+                }
+                for (var i = 0; i < level.floors.length; i++) {
+                    if (inWall(level.floors[i], worldXY)) { selected = level.floors[i]; draw(level); return; }
+                }
+                if (inWall(level.exit, worldXY)) { selected = level.exit; draw(level); return; }
+                for (var i = 0; i < level.ais.length; i++) {
+                    if (inAI(level.ais[i], worldXY)) { selected = level.ais[i]; draw(level); return; }
+                }
+                if (inPlayer(worldXY)) { selected = level.player; return; }
+                selected = null;
+
+                draw(level);
+                //ctx.fillStyle = '#000';
+                //ctx.beginPath(); ctx.arc(screenXY[0], screenXY[1], 1.0, 0, 2*Math.PI, false);
+                //ctx.fill();
+            });
+
+            $('canvas').mousemove(function(e) {
+                var screenXY = [e.offsetX, e.offsetY];
+                var worldXY = screenToWorld(screenXY);
+                if (e.which == 1 && wallMode) {
+                    // draw a preview rectangle.
+                    draw(level);
+                    ctx.strokeStyle = '#000';
+                    var topleft = worldToScreen([Math.round(prevPos[0]), Math.round(prevPos[1])]);
+                    var botright = worldToScreen([Math.round(worldXY[0]), Math.round(worldXY[1])]);
+                    ctx.beginPath();
+                    ctx.rect(topleft[0], topleft[1], botright[0]-topleft[0], botright[1]-topleft[1]);
+                    ctx.stroke();
+                }
+            });
+
+            $('canvas').mouseup(function(e) {
+                mouseUp = true;
+                var screenXY = [e.offsetX, e.offsetY];
+                var worldXY = screenToWorld(screenXY);
+                var xDif = worldXY[0] - prevPos[0];
+                var yDif = worldXY[1] - prevPos[1];
+
+                if (wallMode) {
+                    level.walls.push(createNewWall(prevPos, worldXY));
+                }
+                else if (selected == null) {
+                     camX -= xDif;
+                     camY -= yDif;
+                }
+                else {
+                     moveObject(selected, xDif, yDif);
+                }
+                draw(level);
+
+                //ctx.fillStyle = '#000';
+                //ctx.beginPath(); ctx.arc(screenXY[0], screenXY[1], 1.0, 0, 2*Math.PI, false);
+                //ctx.fill();
+            });
+
+            $( "#wbutton" ).click(function() {
+                wallMode = !wallMode;
+                if(wallMode) {
+                    selected = null;
+                    $(this).val('Switch to: OFF');
+                } else {
+                    $(this).val('Switch to: ON');
+                }
+            });
+
+            $('#aibutton').click(function() {
+                if (level.ais.includes(selected)) {
+                    // add a new coordinate
+                    selected.coords.push(camX+5);
+                    selected.coords.push(camY+5);
+                }
+                else {
+                    // make a new AI!
+                    var newAI = {"tags":["ai"], "coords":[camX+5, camY+5]};
+                    level.ais.push(newAI);
+                }
+                draw(level);
+            });
+
+            $('#par').change(function() {
+                level.par = Math.round(eval( $('#par').val() ));
+                $('#levelJSON').val(JSON.stringify(level));
+            });
+            $('#threshold').change(function() {
+                level.threshold = Math.round(eval( $('#threshold').val() ));
+                $('#levelJSON').val(JSON.stringify(level));
+            });
+            function updateWallColor() {
+                wallR = $('#red').val();
+                wallG = $('#green').val();
+                wallB = $('#blue').val();
+                $('#swatch').css('background-color', 'rgb(' + wallR+ ','+wallG+','+wallB+ ')');
+                if (level.walls.includes(selected)) { selected.r = wallR; selected.g = wallG; selected.b = wallB; draw(level); }
+            }
+            $('#red').change(updateWallColor);
+            $('#green').change(updateWallColor);
+            $('#blue').change(updateWallColor);
+
+            selected = null;
+            wallMode = false;
+            prevPos = null;
+            mouseUp = false;
+
+            loadJSON();
+            updateWallColor();
+        });
+
+        function loadJSON() {
+            assets = JSON.parse($('#assetsJSON').val());
+            level = JSON.parse($('#levelJSON').val());
+
+            $('#food').empty();
+            $('#furniture').empty();
+            $('#decor').empty();
+            $('#ais').empty();
+            $('#floors').empty();
+
+            for (var a = 0; a < assets.data.length; a++) {
+                var asset = assets.data[a];
+                var directory = asset.filename.split('/')[0];
+                var imgtag = "<img height='50' src='core/assets/" + asset.filename + "' />";
+                var btntag = "<button onclick='update(\"" + directory + "\", \"" + asset.tag + "\")' id='btn" + asset.tag + "'>" + imgtag + "</button>";
+                if (directory == 'food') {
+                    $('#food').append(btntag);
+                } else if (directory == 'furniture') {
+                    $('#furniture').append(btntag);
+                } else if (directory == 'ais') {
+                    $('#ais').append(btntag);
+                } else if (directory == 'decor') {
+                    $('#decor').append(btntag);
+                } else if (directory == 'floors') {
+                    $('#floors').append(btntag);
+                }
+            }
+
+            for (var b = 0; b < level.walls.length; b++) {
+                var wall = level.walls[b];
+                var tempX = (wall.coords[0] + wall.coords[4]) / 2.0;
+                var tempY = (wall.coords[1] + wall.coords[5]) / 2.0;
+                wall.x = tempX;
+                wall.y = tempY;
+            }
+
+            // update parameters for things already placed
+            for (var f = 0; f < level.food.length; f++) {
+                selected = level.food[f];
+                update('food', selected.tags[0]);
+            }
+            for (var f = 0; f < level.furniture.length; f++) {
+                selected = level.furniture[f];
+                update('furniture', selected.tags[0]);
+            }
+            for (var d = 0; f < level.decor.length; d++) {
+                selected = level.decor[d];
+                update('decor', selected.tags[0]);
+            }
+            for (var a = 0; a < level.ais.length; a++) {
+                selected = level.ais[a];
+                update('ais', selected.tags[0]);
+            }
+            for (var f = 0; f < level.floors.length; f++) {
+                selected = level.floors[f];
+                update('floors', selected.tags[0]);
+            }
+
+            draw(level);
+        }
+        function copyLevelJSON() {
+            $('#levelJSON').select();
+            if(document.execCommand('copy')) { alert("Copied level JSON to clipboard! Please paste into Notepad and save as levelName.json") };
+        }
+        
+        function worldToScreen(xyPair) {
+            // note that the canvas draws from the top-left
+            worldX = xyPair[0];
+            worldY = xyPair[1];
+            screenX = (worldX-camX) * DRAW_SCALE;
+            screenY = cnv.height - (worldY-camY) * DRAW_SCALE;
+            return [screenX, screenY];
+        }
+        function screenToWorld(xyPair) {
+            screenX = xyPair[0];
+            screenY = xyPair[1];
+            worldX = camX + screenX / DRAW_SCALE;
+            worldY = camY - (screenY - cnv.height) / DRAW_SCALE;
+            return [worldX, worldY];
+        }
+        function inFurniture(item, xyPair) {
+            // in world coordinates
+            if (item.radius > 0) {
+                return (item.x - xyPair[0])**2 + (item.y - xyPair[1])**2 < item.radius**2;
+            }
+            else {
+                var dx = xyPair[0] - item.x; var dy = xyPair[1] - item.y;
+                // switch to local coordinates relative to center of rotated rectangle
+                var du = Math.cos(item.theta)*dx + Math.sin(item.theta)*dy;
+                var dv = -Math.sin(item.theta)*dx + Math.cos(item.theta)*dy;
+
+                return (du > -0.5*item.width) && (du < 0.5*item.width)
+                    && (dv > - 0.5*item.height) && (dv < 0.5*item.height);
+            }
+        }
+        // has the side-effect of setting seli as appropriate
+        function inAI(item, xyPair) {
+            for (var i = 0; i < item.coords.length; i += 2) {
+                if ((xyPair[0]-item.coords[i])**2 + (xyPair[1]-item.coords[i+1])**2 < AI_RADIUS**2) { seli = i/2; return true; }
+            }
+            return false;
+        }
+        function inFood(item, xyPair) { return inFurniture(item, xyPair); }
+        function inWall(item, xyPair) {
+            for (var i = 0; i < item.coords.length; i += 2) {
+                if ((xyPair[0]-item.coords[i])**2 + (xyPair[1]-item.coords[i+1])**2 < HANDLE_RADIUS**2) { seli = i/2; return true; }
+            }
+            if (inPolygon(item.coords, xyPair)) {seli = -1; return true; }
+            return false;
+        }
+        function inPlayer(xyPair) { return (level.player.x - xyPair[0])**2 + (level.player.y - xyPair[1])**2 < 1.2**2; }
+
+        function moveObject(selected, xDif, yDif) {
+            if (selected != null) {
+                if (level.ais.includes(selected)) {
+                    selected.coords[2*seli] += xDif;
+                    selected.coords[2*seli+1] += yDif;
+                    return;
+                }
+                if (level.walls.includes(selected) || level.exit == selected || level.floors.includes(selected)) {
+                    if (seli < 0) {
+                        selected.coords[0] += xDif;
+                        selected.coords[2] += xDif;
+                        selected.coords[4] += xDif;
+                        selected.coords[6] += xDif;
+                        selected.coords[1] += yDif;
+                        selected.coords[3] += yDif;
+                        selected.coords[5] += yDif;
+                        selected.coords[7] += yDif;
+                    }
+                    else { // just move the selected coordinate
+                        selected.coords[2*seli] += xDif;
+                        selected.coords[2*seli+1] += yDif;
+                        selected.x += xDif/4;
+                        selected.y += yDif/4;
+                        return;
+                    }
+                }
+                selected.x += xDif;
+                selected.y += yDif;
+            }
+        }
+
+        function createNewWall(xyPrev, xy) {
+            var x1 = xyPrev[0];
+            var y1 = xyPrev[1];
+            var x2 = xy[0];
+            var y2 = xy[1];
+            var x = (x1 + x2) / 2.0;
+            var y = (y1 + y2) / 2.0;
+            var wall = {"r": wallR, "g":wallG, "b":wallB, "coords": [x1,y1,x1,y2,x2,y2,x2,y1], "tags": ["wall"], "x" : x, "y" : y};
+            return wall;
+        }
+
+        function drawWall(wall, color) {
+            // first draw the black background and outline.
+            ctx.fillStyle = '#000';
+            ctx.strokeStyle = color;
+            ctx.beginPath();
+            var first = worldToScreen([wall.coords[0], wall.coords[1]]);
+            var second = worldToScreen([wall.coords[2], wall.coords[3]]);
+            var third = worldToScreen([wall.coords[4], wall.coords[5]]);
+            var fourth = worldToScreen([wall.coords[6], wall.coords[7]]);
+            ctx.moveTo(first[0], first[1]);
+            ctx.lineTo(second[0], second[1]);
+            ctx.lineTo(third[0], third[1]);
+            ctx.lineTo(fourth[0], fourth[1]);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            // now draw the colorful part
+            ctx.fillStyle = 'rgb(' +wall.r+ ',' +wall.g+ ',' +wall.b+ ')';
+            ctx.beginPath();
+            var a1=0; var b1=1; var a2=2; var b2=3;
+            // pair them correctly. a,b should be vertically apart
+            if (wall.coords[2*a1] != wall.coords[2*b1]) { var temp=b2; b2=b1; b1=temp; }
+            // make b's BELOW the a's, not above.
+            if (wall.coords[2*b1+1] > wall.coords[2*a1+1]) {var temp=b1; b1=a1; a1=temp;}
+            if (wall.coords[2*b2+1] > wall.coords[2*a2+1]) {var temp=b2; b2=a2; a2=temp;}
+            first = worldToScreen([wall.coords[2*b1], wall.coords[2*b1+1]]); ctx.moveTo(first[0], first[1]);
+            second = worldToScreen([wall.coords[2*b1], wall.coords[2*b1+1] + WALL_HEIGHT]); ctx.lineTo(second[0], second[1]);
+            third = worldToScreen([wall.coords[2*b2], wall.coords[2*b2+1] + WALL_HEIGHT]); ctx.lineTo(third[0], third[1]);
+            fourth = worldToScreen([wall.coords[2*b2], wall.coords[2*b2+1]]); ctx.lineTo(fourth[0], fourth[1]);
+            ctx.fill();
+
+            // now draw corner handles
+            ctx.fillStyle = color;
+            for (var i = 0; i < wall.coords.length; i+=2) {
+                ctx.beginPath();
+                var worldXY = worldToScreen([ wall.coords[i], wall.coords[i+1] ]);
+                ctx.arc(worldXY[0], worldXY[1], HANDLE_RADIUS*DRAW_SCALE, 0, 2*Math.PI, false);
+                ctx.stroke();
+                if (wall==selected && 2*seli == i) { ctx.fill(); }
+            }
+        }
+        function drawFood(item, color) {
+            drawFurniture(item, color);
+            ctx.fillStyle = '#ccf';
+            ctx.font = '20px Arial';
+            var screenXY = worldToScreen([ item.x, item.y ]);
+            ctx.beginPath();
+            ctx.arc(screenXY[0] + 20, screenXY[1] - 10, 12, 0, 2*Math.PI, false);
+            ctx.fill();
+            ctx.fillStyle = '#000';
+            ctx.fillText(item.amount, screenXY[0] + 5, screenXY[1]);
+        }
+        function getAsset(tag) {
+            for (var i = 0; i < assets.data.length; i++) {
+                if (assets.data[i].tag==tag) return assets.data[i];
+            }
+            return null;
+        }
+        function drawFurniture(item, color) {
+            var tag = item.tags[0];
+            var xy = worldToScreen([item.x, item.y]); // position of the item center
+            var img = $('#btn'+tag).children('img')[0];
+            var asset = getAsset(tag);
+            var pxWidth = img.naturalWidth*asset.scale_x*DRAW_SCALE/32.0;
+            var pxHeight = img.naturalHeight*asset.scale_y*DRAW_SCALE/32.0;
+
+            ctx.drawImage(img, xy[0] - pxWidth*asset.origin_x/img.naturalWidth, xy[1] - pxHeight*(1.0-asset.origin_y/img.naturalHeight), pxWidth, pxHeight);
+
+            ctx.strokeStyle = color;
+            ctx.beginPath();
+            if (item.radius > 0) {
+                ctx.arc(xy[0], xy[1], item.radius*DRAW_SCALE, 0, 2*Math.PI, false);
+            }
+            else {
+                // rect function is top-left-x, top-left-y, width, height.
+                var xytl = worldToScreen([item.x - item.width/2, item.y + item.height/2]);
+                ctx.save();
+                ctx.translate(xy[0], xy[1]);
+                ctx.rotate(-item.theta);
+                ctx.rect(-0.5*item.width*DRAW_SCALE, -0.5*item.height*DRAW_SCALE, item.width*DRAW_SCALE, item.height*DRAW_SCALE);
+                ctx.stroke();
+                ctx.restore();
+                //ctx.rotate(item.theta*Math.PI/180.0);
+                //ctx.translate(-DRAW_SCALE*xytl[0],-DRAW_SCALE*xytl[1]);
+            }
+            ctx.stroke();
+        }
+        function drawPlayer(color) {
+            // radius 1.2
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.fillStyle = '#909';
+            screenXY = worldToScreen([ level.player.x, level.player.y ]);
+            ctx.arc(screenXY[0], screenXY[1], PLAYER_RADIUS*DRAW_SCALE, 0, 2*Math.PI, false);
+            ctx.fill();
+            ctx.stroke();
+        }
+        function drawRect(item, fill, stroke) {
+            var coords = item.coords;
+            ctx.beginPath();
+            ctx.fillStyle = fill;
+            ctx.strokeStyle = stroke;
+            for (var i = 0; i < 4; i++) {
+                var screenXY = worldToScreen([coords[2*i], coords[2*i+1]]);
+                if (i==0) { ctx.moveTo(screenXY[0], screenXY[1]); }
+                else { ctx.lineTo(screenXY[0], screenXY[1]); }
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            ctx.fillStyle = stroke;
+            // now do corner pins
+            for (var i = 0; i < 4; i++) {
+                var screenXY = worldToScreen([coords[2*i], coords[2*i+1]]);
+                ctx.beginPath();
+                ctx.arc(screenXY[0], screenXY[1], HANDLE_RADIUS*DRAW_SCALE, 0, 2*Math.PI, false);
+                ctx.stroke();
+                if (seli == i && item == selected) { ctx.fill(); }
+            }
+        }
+        function drawFloor(item, color) { drawRect(item, '#ccc', color); }
+        function drawExit(item, color) { drawRect(item, '#fbb', color); }
+        function drawAI(item, color) {
+            // draw line connecting the disks
+            ctx.beginPath();
+            ctx.strokeStyle = '#000';
+            for (var i=0; i < item.coords.length; i+=2) {
+                var screenXY = worldToScreen([ item.coords[i], item.coords[i+1] ]);
+                if (i==0) { ctx.moveTo(screenXY[0], screenXY[1]); }
+                else { ctx.lineTo(screenXY[0], screenXY[1]); }
+            }
+            ctx.stroke();
+            // draw disks
+            for (var i=0; i < item.coords.length; i+=2) {
+                ctx.beginPath();
+                ctx.strokeStyle = color;
+                ctx.fillStyle = '#c9c';
+                if (selected==item && i==seli*2) { ctx.fillStyle = color; }
+                var screenXY = worldToScreen([ item.coords[i], item.coords[i+1] ]);
+                ctx.arc(screenXY[0], screenXY[1], AI_RADIUS*DRAW_SCALE, 0, 2*Math.PI, false);
+                ctx.fill();
+                ctx.stroke();
+                ctx.fillStyle = '#000';
+                ctx.fillText(i/2, screenXY[0], screenXY[1]);
+            }
+        }
+        function drawGrid() {
+            var minX = Math.round(camX);
+            var minY = Math.round(camY);
+            ctx.fillStyle = '#030';
+            // vertical lines
+            for (var x = minX; x < minX + cnv.width/DRAW_SCALE; x += 1.0) {
+                for (var y = minY; y < minY + cnv.height/DRAW_SCALE; y += 1.0) {
+                    ctx.beginPath();
+                    var screenXY = worldToScreen([x, y]);
+                    ctx.arc(screenXY[0], screenXY[1], 0.5, 0, 2.0*Math.PI, false);
+                    ctx.fill();
+                }
+            }
+        }
+        function snapWalls() {
+            for (var w = 0; w < level.walls.length; w++) { snapRect(level.walls[w]); }
+            for (var f = 0; f < level.floors.length; f++) { snapRect(level.floors[f]); }
+            snapRect(level.exit);
+        }
+        function snapRect(item) {
+            for (var i=0; i < 8; i++) {
+                item.coords[i] = Math.round(item.coords[i]);
+            }
+        }
+        function snapAI() {
+            for (var a = 0; a < level.ais.length; a++) {
+                var ai = level.ais[a];
+                for (var i=0; i < ai.coords.length; i++) {
+                    ai.coords[i] = Math.round(ai.coords[i]);
+                }
+            }
+        }
+        function draw(levelObject) {
+            // update the levelJSON text area!
+            snapWalls();
+            snapAI();
+            $('#levelJSON').val(JSON.stringify(level));
+
+            cnv.width = $('canvas').width();
+            cnv.height = $('canvas').height();
+            ctx.fillStyle = '#fff';
+            ctx.clearRect(0,0,cnv.width,cnv.height);
+            for (var i = 0; i < level.floors.length; i++) {
+                drawFloor(level.floors[i], "#ff0");
+            }
+            drawExit(level.exit, "#ff0");
+            walls = levelObject.walls;
+            walls.sort(function(w1,w2) {return w2.y - w1.y;});
+            for(var w = 0; w < walls.length; w++) {
+                drawWall(walls[w], '#ff0');
+            }
+            for (var d = 0; d < decor.length; d++) {
+                drawDecor(level.decor[d], '#ff0');
+            }
+            food = levelObject.food;
+            for (var f = 0; f < food.length; f++) {
+                if (food[f].dessert) drawFood(food[f], '#f00');
+                else drawFood(food[f], '#ff0');
+            }
+            furniture = levelObject.furniture;
+            for (var f = 0; f < furniture.length; f++) {
+                drawFurniture(furniture[f], '#ff0');
+            }
+            ais = levelObject.ais;
+            for (var a = 0; a < ais.length; a++) {
+                drawAI(ais[a], '#ff0');
+            }
+            drawPlayer('#ff0');
+            if (selected != null) {
+                if (selected == level.player) { drawPlayer('#00f'); }
+                else if (level.food.includes(selected)) { drawFood(selected, '#00f'); }
+                else if (level.furniture.includes(selected)) { drawFurniture(selected, '#00f'); }
+                else if (level.walls.includes(selected)) { drawWall(selected, '#00f'); }
+                else if (level.exit == selected) {drawExit(selected, '#00f');}
+                else if (level.floors.includes(selected)) { drawFloor(selected, '#00f'); }
+                else if (level.decor.includes(selected)) { drawDecor(selected, '#00f'); }
+                else if (level.ais.includes(selected)) { drawAI(selected, '#00f'); }
+            }
+            drawGrid();
+        }
+        function deleteSelected() {
+            if (selected == null) return;
+            for (var i = 0; i < level.furniture.length; i++) {
+                if (level.furniture[i] == selected) { selected = null; level.furniture.splice(i,1); }
+            }
+            for (var i = 0; i < level.food.length; i++) {
+                if (level.food[i] == selected) { selected = null; level.food.splice(i,1); }
+            }
+            for (var i = 0; i < level.walls.length; i++) {
+                if (level.walls[i] == selected) { selected = null; level.walls.splice(i,1); }
+            }
+            for (var i = 0; i < level.decor.length; i++) {
+                if (level.decor[i] == selected) { selected = null; level.decor.splice(i,1); }
+            }
+            for (var i = 0; i < level.floors.length; i++) {
+                if (level.floors[i] == selected) { selected = null; level.floors.splice(i,1); }
+            }
+            for (var i = 0; i < level.ais.length; i++) {
+                if (level.ais[i] == selected) {
+                    if (selected.coords.length == 2) {
+                        // delete this entire ai
+                        selected = null;
+                        level.ais.splice(i,1);
+                    }
+                    else {
+                        // just remove the selected node
+                        selected.coords.splice(seli*2, 2);
+                    }
+                }
+            }
+        }
+        function update(type, newtag) {
+            var asset = getAsset(newtag);
+
+            if ((selected != null) &&
+                ((type=='furniture' && level.furniture.includes(selected)) ||
+                (type == 'food' && level.food.includes(selected)) ||
+                (type == 'decor' && level.decor.includes(selected)) ||
+                (type == 'floors' && level.floors.includes(selected)) ||
+                (type == 'ais' && level.ais.includes(selected)) ||
+                (type == 'wall' && level.walls.includes(selected)))) {
+                selected.tags[0] = newtag;
+                if (asset.shape == 'circle') { selected.radius = eval(asset.radius); selected.width = 0; selected.height = 0; }
+                if (asset.shape == 'rectangle') { selected.radius = 0; selected.width = eval(asset.width); selected.height = eval(asset.height); selected.theta = eval(asset.angle);}
+            }
+            else {
+                // add a new one!
+                var newObj = { "tags": [newtag], "x": 25, "y": 25, "theta": 0, "width": 0, "height": 0, "radius": 0 };
+                if (asset.shape == 'circle') {newObj.radius = eval(asset.radius);}
+                else if (asset.shape == 'rectangle') { newObj.width = eval(asset.width); newObj.height = eval(asset.height); }
+                
+                if (type == 'furniture') {
+                    level.furniture.push(newObj);
+                    selected = level.furniture[level.furniture.length-1];
+                }
+                else if (type == 'decor') {
+                    level.decor.push(newObj);
+                    selected = level.decor[level.decor.length-1];
+                }
+                else if (type == 'floors') {
+                    newObj = {"tags": [newtag], "coords": [30,30,35,30,35,35,30,35]};
+                    level.floors.push( newObj );
+                    selected = level.floors[level.floors.length-1];
+                    seli = 0;
+                }
+                else if (type == 'food') {
+                    newObj.dessert = false;
+                    newObj.amount = 10;
+                    level.food.push(newObj);
+                    selected = level.food[level.food.length-1];
+                }
+            }
+            draw(level);
+        }
+        function inPolygon(coords, xyPair) {
+            var windingangle = 0;
+            windingangle += subtended(xyPair[0], xyPair[1], coords[0], coords[1], coords[2], coords[3]);
+            windingangle += subtended(xyPair[0], xyPair[1], coords[2], coords[3], coords[4], coords[5]);
+            windingangle += subtended(xyPair[0], xyPair[1], coords[4], coords[5], coords[6], coords[7]);
+            windingangle += subtended(xyPair[0], xyPair[1], coords[6], coords[7], coords[0], coords[1]);
+            if (Math.abs(windingangle) > 0.1) {return true;} else {return false;}
+        }
+        function subtended(x, y, ax, ay, cx, cy) {
+            ax -= x; ay -= y; cx -= x; cy -= y;
+            var bx = cx-ax; var by = cy-ay;
+            var alen = Math.sqrt(ax**2+ay**2);
+            var bdota = ax*bx+ay*by;
+            var Dx = alen + bdota / alen;
+            var Dyx = bx - bdota*ax/(alen*alen);
+            var Dyy = by - bdota*ay/(alen*alen);
+            var Dy = Math.sqrt(Dyx**2 + Dyy**2);
+            var th =  Math.atan2(Dy, Dx);
+            var sign = Math.sign(ax*by - ay*bx);
+            return th*sign;
+        }
+        </script>
+    </head>
+    <body>
+        <div id="topbar">
+            Level JSON: <textarea rows="2" cols="50" id="levelJSON">
+{"par": 5, "threshold": 100, "exit":{"coords":[20,20,25,20,25,25,20,25]}, "player":{"x":27.25,"y":24.25},"walls":[{"r":85,"g":136,"b":119,"coords":[16,35,16,19,18,19,18,35],"tags":["wall"],"x":17.166666666666664,"y":27.166666666666664}],"furniture":[{"tags":["chair1"],"x":21.416666666666668,"y":28.833333333333332,"theta":0,"width":0,"height":0,"radius":1.56}],"food":[{"tags":["turkey"],"x":32.5,"y":28.583333333333332,"theta":0,"width":0,"height":0,"radius":1.5,"dessert":false,"amount":10}],"ais":[{"tags":["ai"], "coords":[10,20,10,35,5,35,5,20]}],"floors":[{"tags":["linoleum"], "coords":[40,40,45,40,45,45,40,45]}], "decor":[], "doors":[]}
+</textarea>
+<input type="button" value="COPY" onclick="copyLevelJSON()"></input>
+            Assets JSON: <textarea rows="2" cols="50" id="assetsJSON">
+            {
+  "data": [
+    {
+      "type": "image",
+      "tag": "detective",
+      "filename": "player/man.png",
+      "origin_x": "64",
+      "origin_y": "64",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "hand",
+      "filename": "player/hand.png",
+      "origin_x": "26",
+      "origin_y": "29",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "foot",
+      "filename": "player/foot.png",
+      "origin_x": "17",
+      "origin_y": "38",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "hat",
+      "filename": "player/hat.png",
+      "origin_x": "54",
+      "origin_y": "50",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "buckle",
+      "filename": "player/buckle.png",
+      "origin_x": "21",
+      "origin_y": "20",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "loop",
+      "filename": "player/loop.png",
+      "origin_x": "6",
+      "origin_y": "13",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "tie",
+      "filename": "player/tie.png",
+      "origin_x": "21",
+      "origin_y": "53",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "mask",
+      "filename": "player/mask.png",
+      "origin_x": "140",
+      "origin_y": "140",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "coat",
+      "filename": "player/coat.png",
+      "origin_x": "140",
+      "origin_y": "140",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "backpocket",
+      "filename": "player/backpocket.png",
+      "origin_x": "23",
+      "origin_y": "24",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "ai",
+      "filename": "ai/homeowner.png",
+      "origin_x": "64",
+      "origin_y": "64",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "shape": "circle",
+      "radius": "1.2"
+    },
+    {
+      "type": "image",
+      "tag": "turkey",
+      "filename": "food/turkey.png",
+      "origin_x": "68",
+      "origin_y": "42",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "circle",
+      "radius": "1.50"
+    },
+    {
+      "type": "image",
+      "tag": "couch",
+      "filename": "furniture/couch.png",
+      "origin_x": "430",
+      "origin_y": "274",
+      "scale_x": "0.3",
+      "scale_y": "0.3",
+      "shape": "rectangle",
+      "width": "6.17",
+      "height": "4.29",
+      "angle": "0"
+    },
+    {
+      "type": "image",
+      "tag": "wall",
+      "filename": "furniture/wall_black.png",
+      "origin_x": "0",
+      "origin_y": "0",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_down",
+      "filename": "player/man_down.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "frames": "16",
+      "speed": "3",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_left",
+      "filename": "player/man_left.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "frames": "16",
+      "speed": "3",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_right",
+      "filename": "player/man_right.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "frames": "16",
+      "speed": "3",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_up",
+      "filename": "player/man_up.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "frames": "16",
+      "speed": "3",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_up_idle",
+      "filename": "player/idle_up.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "frames": "8",
+      "speed": "6",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_down_idle",
+      "filename": "player/idle_down.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "frames": "8",
+      "speed": "6",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_left_idle",
+      "filename": "player/idle_left.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "frames": "8",
+      "speed": "6",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_right_idle",
+      "filename": "player/idle_right.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "frames": "8",
+      "speed": "6",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "ball",
+      "filename": "gui/circle2.png",
+      "origin_x": "64",
+      "origin_y": "64",
+      "scale_x": "0.6",
+      "scale_y": "0.6",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "burger",
+      "filename": "food/burger.png",
+      "origin_x": "138",
+      "origin_y": "122",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "1"
+    },
+    {
+      "type": "image",
+      "tag": "hotdog",
+      "filename": "food/hotdog.png",
+      "origin_x": "190",
+      "origin_y": "136",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "1.5"
+    },
+    {
+      "type": "image",
+      "tag": "pie1",
+      "filename": "food/pie1.png",
+      "origin_x": "210",
+      "origin_y": "162",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "1.6"
+    },
+    {
+      "type": "image",
+      "tag": "pie2",
+      "filename": "food/pie2.png",
+      "origin_x": "210",
+      "origin_y": "162",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "1.6"
+    },
+    {
+      "type": "image",
+      "tag": "scam1",
+      "filename": "food/scam1.png",
+      "origin_x": "167",
+      "origin_y": "185",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "1.5"
+    },
+    {
+      "type": "image",
+      "tag": "scam2",
+      "filename": "food/scam2.png",
+      "origin_x": "180",
+      "origin_y": "189",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "1.5"
+    },
+    {
+      "type": "image",
+      "tag": "scamDessert",
+      "filename": "food/scamDessert.png",
+      "origin_x": "381",
+      "origin_y": "200",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "rectangle",
+      "width": "5.16",
+      "height": "2.81",
+      "angle": "0"
+    },
+    {
+      "type": "image",
+      "tag": "tomato1",
+      "filename": "food/tomato1.png",
+      "origin_x": "108",
+      "origin_y": "118",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "1"
+    },
+    {
+      "type": "image",
+      "tag": "tomato2",
+      "filename": "food/tomato2.png",
+      "origin_x": "116",
+      "origin_y": "118",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "1"
+    },
+    {
+      "type": "image",
+      "tag": "bed",
+      "filename": "furniture/bed.png",
+      "origin_x": "601",
+      "origin_y": "590",
+      "scale_x": "0.16",
+      "scale_y": "0.16",
+      "shape": "rectangle",
+      "width": "5.32",
+      "height": "5.51",
+      "angle": "0"
+    },
+    {
+      "type": "image",
+      "tag": "chair1",
+      "filename": "furniture/chair1.png",
+      "origin_x": "326",
+      "origin_y": "326",
+      "scale_x": "0.16",
+      "scale_y": "0.16",
+      "shape": "circle",
+      "radius": "1.56"
+    },
+    {
+      "type": "image",
+      "tag": "chair2",
+      "filename": "furniture/chair2.png",
+      "origin_x": "354",
+      "origin_y": "326",
+      "scale_x": "0.16",
+      "scale_y": "0.16",
+      "shape": "circle",
+      "radius": "1.56"
+    },
+    {
+      "type": "image",
+      "tag": "table",
+      "filename": "furniture/table.png",
+      "origin_x": "323",
+      "origin_y": "308",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "2.14"
+    },
+    {
+      "type": "image",
+      "tag": "floor",
+      "filename": "furniture/floor.png",
+      "origin_x": "43",
+      "origin_y": "194",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "foodbar",
+      "filename": "gui/foodbar.png",
+      "origin_x": "0",
+      "origin_y": "0",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "fat",
+      "filename": "player/fat.png",
+      "origin_x": "247",
+      "origin_y": "250",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "shape": "circle",
+      "radius": "2.14"
+    },
+    {
+      "type": "sound",
+      "tag": "nom",
+      "filename": "sound/nom.wav"
+    }
+  ]
+}
+            </textarea>
+            <input type="button" onclick="loadJSON()" value="Load JSON"></input>
+        </div>
+        <div id="canvasWrapper">
+            <canvas tabindex="1"></canvas>
+        </div>
+        <div id="panel">
+            <label for="par">Par: </label><input type="number" id="par" value="5"></input><br />
+            <label for="threshold">Threshold: </label><input type="number" id="threshold" value="100"></input>
+            <h2>Food</h2>
+            <div id="food"></div>
+            <h2>Furniture</h2>
+            <div id="furniture"></div>
+            <h2>Walls</h2>
+            <div id="walls">
+                <input id="wbutton" type="button" value='Switch to: ON' />
+                <input id="red" name="red" type="range" value="85" min="0" max="255" step="17">
+                <input id="green" name="green" type="range" value="136" min="0" max="255" step="17">
+                <input id="blue" name="blue" type="range" value="119" min="0" max="255" step="17">
+                <div id="swatch">wall</div>
+            </div>
+            <h2>AI</h2>
+                <input id="aibutton" type="button" value="Add coordinate" />
+            <div id="ais">
+            </div>
+            <h2>Decor</h2>
+            <div id="decor">
+            Coming soon.
+            </div>
+            <h2>Floors</h2>
+            <div id="floors"></div>
+        </div>
+        <p>WASD to maneuver level or furniture if selected. q/e to zoom in and out. r to toggle wall mode. x or delete to delete object. / to mark dessert. +/- to change food amount.</p>
+    </body>
+</html>
