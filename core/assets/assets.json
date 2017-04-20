@@ -127,12 +127,12 @@
       "tag": "couch",
       "filename": "furniture/couch.png",
       "origin_x": "430",
-      "origin_y": "274",
+      "origin_y": "177",
       "scale_x": "0.3",
       "scale_y": "0.3",
       "shape": "rectangle",
-      "width": "6.17",
-      "height": "4.29",
+      "width": "4.24",
+      "height": "2.35",
       "angle": "0"
     },
     {
@@ -256,78 +256,90 @@
       "tag": "burger",
       "filename": "food/burger.png",
       "origin_x": "138",
-      "origin_y": "122",
+      "origin_y": "91",
       "scale_x": "0.25",
       "scale_y": "0.25",
-      "shape": "circle",
-      "radius": "1"
+      "shape": "rectangle",
+      "width": "1.65",
+      "height": "0.95",
+      "angle": "0"
     },
     {
       "type": "image",
       "tag": "hotdog",
       "filename": "food/hotdog.png",
-      "origin_x": "190",
-      "origin_y": "136",
+      "origin_x": "177",
+      "origin_y": "107",
       "scale_x": "0.25",
       "scale_y": "0.25",
-      "shape": "circle",
-      "radius": "1.5"
+      "shape": "rectangle",
+      "width": "2.35",
+      "height": "0.95",
+      "angle": "163"
     },
     {
       "type": "image",
       "tag": "pie1",
       "filename": "food/pie1.png",
       "origin_x": "210",
-      "origin_y": "162",
+      "origin_y": "119",
       "scale_x": "0.25",
       "scale_y": "0.25",
-      "shape": "circle",
-      "radius": "1.6"
+      "shape": "rectangle",
+      "width": "2.62",
+      "height": "1.27",
+      "angle": "0"
     },
     {
       "type": "image",
       "tag": "pie2",
       "filename": "food/pie2.png",
       "origin_x": "210",
-      "origin_y": "162",
+      "origin_y": "130",
       "scale_x": "0.25",
       "scale_y": "0.25",
-      "shape": "circle",
-      "radius": "1.6"
+      "shape": "rectangle",
+      "width": "2.62",
+      "height": "1.27",
+      "angle": "0"
     },
     {
       "type": "image",
       "tag": "scam1",
       "filename": "food/scam1.png",
       "origin_x": "167",
-      "origin_y": "185",
+      "origin_y": "146",
       "scale_x": "0.25",
       "scale_y": "0.25",
-      "shape": "circle",
-      "radius": "1.5"
+      "shape": "rectangle",
+      "width": "2.08",
+      "height": "1.27",
+      "angle": "131"
     },
     {
       "type": "image",
       "tag": "scam2",
       "filename": "food/scam2.png",
-      "origin_x": "180",
-      "origin_y": "189",
+      "origin_x": "181",
+      "origin_y": "162",
       "scale_x": "0.25",
       "scale_y": "0.25",
-      "shape": "circle",
-      "radius": "1"
+      "shape": "rectangle",
+      "width": "2.08",
+      "height": "1.27",
+      "angle": "45"
     },
     {
       "type": "image",
       "tag": "scamDessert",
       "filename": "food/scamDessert.png",
       "origin_x": "381",
-      "origin_y": "200",
+      "origin_y": "150",
       "scale_x": "0.25",
       "scale_y": "0.25",
       "shape": "rectangle",
-      "width": "5.16",
-      "height": "2.81",
+      "width": "4.78",
+      "height": "1.92",
       "angle": "0"
     },
     {
@@ -339,7 +351,7 @@
       "scale_x": "0.25",
       "scale_y": "0.25",
       "shape": "circle",
-      "radius": "1"
+      "radius": "0.69"
     },
     {
       "type": "image",
@@ -350,53 +362,59 @@
       "scale_x": "0.25",
       "scale_y": "0.25",
       "shape": "circle",
-      "radius": "1"
+      "radius": "0.69"
     },
     {
       "type": "image",
       "tag": "bed",
       "filename": "furniture/bed.png",
-      "origin_x": "601",
-      "origin_y": "590",
+      "origin_x": "652",
+      "origin_y": "512",
       "scale_x": "0.16",
       "scale_y": "0.16",
       "shape": "rectangle",
-      "width": "5",
-      "height": "5",
-      "angle": "90"
+      "width": "4.41",
+      "height": "4.62",
+      "angle": "0"
     },
     {
       "type": "image",
       "tag": "chair1",
       "filename": "furniture/chair1.png",
-      "origin_x": "326",
-      "origin_y": "326",
+      "origin_x": "313",
+      "origin_y": "263",
       "scale_x": "0.16",
       "scale_y": "0.16",
-      "shape": "circle",
-      "radius": "1.56"
+      "shape": "rectangle",
+      "width": "1.92",
+      "height": "1.81",
+      "angle": "45"
     },
     {
       "type": "image",
       "tag": "chair2",
       "filename": "furniture/chair2.png",
-      "origin_x": "354",
-      "origin_y": "326",
+      "origin_x": "352",
+      "origin_y": "274",
       "scale_x": "0.16",
       "scale_y": "0.16",
-      "shape": "circle",
-      "radius": "1.56"
+      "shape": "rectangle",
+      "width": "1.92",
+      "height": "1.81",
+      "angle": "135"
     },
     {
       "type": "image",
       "tag": "table",
       "filename": "furniture/table.png",
       "origin_x": "323",
-      "origin_y": "308",
+      "origin_y": "267",
       "scale_x": "0.25",
       "scale_y": "0.25",
-      "shape": "circle",
-      "radius": "2.14"
+      "shape": "rectangle",
+      "width": "2.73",
+      "height": "2.68",
+      "angle": "133"
     },
     {
       "type": "image",
@@ -499,6 +517,114 @@
       "scale_y": "0.15",
       "origin_x": "32",
       "origin_y": "32",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "avocado",
+      "filename": "food/avocado.png",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "origin_x": "110",
+      "origin_y": "79",
+      "shape": "circle",
+      "radius": "0.69"
+    },
+    {
+      "type": "image",
+      "tag": "banana",
+      "filename": "food/banana.png",
+      "scale_x": "0.2",
+      "scale_y": "0.2",
+      "origin_x": "178",
+      "origin_y": "106",
+      "shape": "rectangle",
+      "width": "1.99",
+      "height": "1.17",
+      "angle": "0"
+    },
+    {
+      "type": "image",
+      "tag": "orange",
+      "filename": "food/orange.png",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "origin_x": "98",
+      "origin_y": "106",
+      "shape": "circle",
+      "radius": "0.77"
+    },
+    {
+      "type": "image",
+      "tag": "sandwich",
+      "filename": "food/sandwich.png",
+      "scale_x": "0.2",
+      "scale_y": "0.2",
+      "origin_x": "163",
+      "origin_y": "148",
+      "shape": "rectangle",
+      "width": "1.99",
+      "height": "1.17",
+      "angle": "19"
+    },
+    {
+      "type": "image",
+      "tag": "clock",
+      "filename": "decor/clock.png",
+      "scale_x": "0.3",
+      "scale_y": "0.3",
+      "origin_x": "117",
+      "origin_y": "102",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "inlaidShelves",
+      "filename": "decor/InlayedShelves.png",
+      "scale_x": "0.3",
+      "scale_y": "0.25",
+      "origin_x": "182",
+      "origin_y": "110",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "kitchenSink",
+      "filename": "decor/KitchenSink.png",
+      "scale_x": "0.2",
+      "scale_y": "0.2",
+      "origin_x": "281",
+      "origin_y": "205",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "window1",
+      "filename": "decor/Window1.png",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "origin_x": "190",
+      "origin_y": "270",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "window2",
+      "filename": "decor/Window2.png",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "origin_x": "197",
+      "origin_y": "258",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "woodenDrawers",
+      "filename": "decor/WoodenDrawers.png",
+      "scale_x": "0.2",
+      "scale_y": "0.2",
+      "origin_x": "281",
+      "origin_y": "216",
       "shape": "none"
     }
   ]
