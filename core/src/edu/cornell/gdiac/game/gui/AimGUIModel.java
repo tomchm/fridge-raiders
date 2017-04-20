@@ -30,6 +30,8 @@ public class AimGUIModel extends GUIModel{
     private Vector2 aimVector, aimPosition, prevAimVector;
     private boolean isAiming;
     private float foodAmount;
+    private float highlightAmount;
+    private GameObject interactible;
     private WorldModel worldModel;
     private Queue<TrajectoryModel> tqueue;
     private int tsize;
@@ -46,6 +48,7 @@ public class AimGUIModel extends GUIModel{
         prevAimVector = null;
         aimPosition = null;
         foodAmount = 0;
+        highlightAmount = 0;
         tags = new String[] {"ball", "foodbar", "modernFoodbar", "gothic32", "gothic72"};
         guiTag = "AimGUI";
         this.worldModel = worldModel;
@@ -90,6 +93,18 @@ public class AimGUIModel extends GUIModel{
                 worldModel.removeGameObject(tr);
             }
         }
+        GameObject tempInteractible = controller.getInteractible();
+        if (tempInteractible != null && tempInteractible.getClass() == FoodModel.class && tempInteractible != interactible) {
+            highlightAmount = foodAmount + ((FoodModel)tempInteractible).getAmount();
+        }
+        else if (tempInteractible != null && tempInteractible.getClass() == FoodModel.class && tempInteractible == interactible) {
+            highlightAmount = highlightAmount;
+        }
+        else {
+            highlightAmount = 0;
+        }
+        interactible = tempInteractible;
+
     }
 
     public void draw(GameCanvas canvas){
@@ -107,13 +122,8 @@ public class AimGUIModel extends GUIModel{
                 // DRAW HIGHLIGHT
                 float threshold = worldModel.getPlayer().getThreshold();
                 int width = 480;
-                float tempFoodAmount = foodAmount;
-                GameObject interactible = controller.getInteractible();
-                if (interactible != null && interactible.getClass() == FoodModel.class) {
-                    tempFoodAmount = tempFoodAmount + ((FoodModel)interactible).getAmount();
-                }
-                if(tempFoodAmount < threshold){
-                    width = (int)(tempFoodAmount*480f / threshold);
+                if(highlightAmount < threshold){
+                    width = (int)(highlightAmount*480f / threshold);
                 }
                 bar.setRegion(0,0,width, 40);
                 canvas.draw(bar, new Color(1,1,1,0.5f), asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
@@ -141,12 +151,8 @@ public class AimGUIModel extends GUIModel{
                     // DRAW HIGHLIGHT
                     float maximum = worldModel.getPlayer().getMaximumFood();
                     width = 480;
-                    tempFoodAmount = foodAmount;
-                    if (controller.getInteractible() != null && controller.getInteractible().getClass() == FoodModel.class) {
-                        tempFoodAmount = tempFoodAmount + ((FoodModel)controller.getInteractible()).getAmount();
-                    }
-                    if(tempFoodAmount < maximum){
-                        width = (int)((tempFoodAmount - threshold)*480f / (maximum - threshold));
+                    if(highlightAmount < maximum){
+                        width = (int)((highlightAmount - threshold)*480f / (maximum - threshold));
                     }
                     bar.setRegion(0,40,width, 40);
                     canvas.draw(bar, new Color(1,1,1,0.6f), asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);

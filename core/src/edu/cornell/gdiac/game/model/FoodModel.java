@@ -99,16 +99,17 @@ public class FoodModel extends GameObject {
     public float getMaxAmount(){ return maxAmount; }
 
     public int eat(float biteSize) {
+        int eaten = 0;
         if (biteSize > amount) {
             amount = 0f;
-            return intAmount;
+            eaten = intAmount;
         }
         else {
             amount -= biteSize;
-            int eaten = intAmount - ((int) amount);
-            intAmount -= eaten;
-            return eaten;
+            eaten = intAmount - ((int) amount);
         }
+        intAmount -= eaten;
+        return eaten;
     }
 
     public void highlight(){
