@@ -67,7 +67,6 @@ public class GoalModel extends GameObject implements ContactListener{
     public void draw(GameCanvas canvas){
         // draw the black part
         if(active){
-            System.out.println(coords[0] + " "+coords[1]);
             float alpha = 0.3f* MathUtils.sinDeg(counter*1%360) + 0.5f;
 
             canvas.drawPolygon(coords, 1f, 1f, 1f, alpha);

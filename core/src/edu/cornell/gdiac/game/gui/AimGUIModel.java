@@ -4,13 +4,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.*;
+import edu.cornell.gdiac.game.DetectiveController;
 import edu.cornell.gdiac.game.GameCanvas;
 import edu.cornell.gdiac.game.WorldModel;
 import edu.cornell.gdiac.game.asset.Asset;
 import edu.cornell.gdiac.game.asset.FontAsset;
 import edu.cornell.gdiac.game.asset.ImageAsset;
+import edu.cornell.gdiac.game.model.DetectiveModel;
 import edu.cornell.gdiac.game.model.GameObject;
 import edu.cornell.gdiac.game.model.TrajectoryModel;
 
@@ -22,8 +25,10 @@ import java.awt.*;
 public class AimGUIModel extends GUIModel{
 
     private final static int PAR_PLUS = 5;
-    private final static float MAX_FORCE = 500f;
-    private final static int MAX_BALLS = 10;
+    private final static float MAX_FORCE = DetectiveController.MAX_FORCE;
+    private final static float SHOOT_FORCE = DetectiveController.SHOOT_FORCE;
+    private final static int MAX_BALLS = 15;
+    private int ballCount;
     private Vector2 aimVector, aimPosition, prevAimVector;
     private boolean isAiming;
     private float foodAmount;
@@ -47,6 +52,7 @@ public class AimGUIModel extends GUIModel{
         this.worldModel = worldModel;
         tqueue = new Queue<TrajectoryModel>();
         tsize = 0;
+        ballCount = 1;
     }
 
     public void update(float dt){
@@ -57,24 +63,61 @@ public class AimGUIModel extends GUIModel{
             tqueue.addFirst(tm);
             tsize++;
             if (tsize > MAX_BALLS) {
-
-                tsize--;
-                TrajectoryModel tr = tqueue.removeLast();
-                worldModel.removeGameObject(tr);
+                if(tsize > 0){
+                    tsize--;
+                    TrajectoryModel tr = tqueue.removeLast();
+                    worldModel.removeGameObject(tr);
+                }
             }
-            float frac = aimVector.len()/MAX_FORCE;
+            if(tsize > ballCount){
+                if(tsize > 0){
+                    if(tsize - ballCount >= 2){
+                        tsize--;
+                        TrajectoryModel tr = tqueue.removeLast();
+                        worldModel.removeGameObject(tr);
+                    }
+                }
+
+                if(tsize > 0){
+                    tsize--;
+                    TrajectoryModel tr = tqueue.removeLast();
+                    worldModel.removeGameObject(tr);
+                }
+            }
+
+            float fx = aimVector.x * SHOOT_FORCE;
+            if(fx > MAX_FORCE){
+                fx = MAX_FORCE;
+            }
+            else if(fx < -MAX_FORCE){
+                fx = -MAX_FORCE;
+            }
+            float fy = (-aimVector.y) * SHOOT_FORCE;
+            if(fy > MAX_FORCE){
+                fy = MAX_FORCE;
+            }
+            else if(fy < -MAX_FORCE){
+                fy = -MAX_FORCE;
+            }
+
+            float frac = (float)Math.sqrt((fx / MAX_FORCE)*(fx / MAX_FORCE) + (fy / MAX_FORCE)*(fy / MAX_FORCE));
+
             Color tint = Color.WHITE;
             if(frac <= 0.5f){
-                tint = AIM_GREEN.cpy().lerp(AIM_YELLOW, frac/0.5f);
-            }
-            else if(frac <= 0.75f){
-                tint = AIM_YELLOW.cpy().lerp(AIM_ORANGE, (frac-0.5f)/0.25f);
+                tint = AIM_YELLOW.cpy().lerp(AIM_ORANGE, (frac)/0.5f);
             }
             else {
-                tint = AIM_ORANGE.cpy().lerp(AIM_RED, (frac-0.75f)/0.25f);
+                tint = AIM_ORANGE.cpy().lerp(AIM_RED, (frac-0.5f)/0.5f);
             }
             for(TrajectoryModel tt : tqueue){
                 tt.setTint(tint);
+            }
+
+            if(frac < 0.8f){
+                ballCount = (int)(frac * 1.25f * MAX_BALLS);
+            }
+            else{
+                ballCount = MAX_BALLS;
             }
 
 
