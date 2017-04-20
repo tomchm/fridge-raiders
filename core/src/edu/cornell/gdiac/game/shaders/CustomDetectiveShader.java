@@ -22,7 +22,7 @@ public final class CustomDetectiveShader {
                         + "varying vec4 v_color;\n" //
                         + "void main()\n" //
                         + "{\n" //
-                        + "   v_color =  s * quad_colors * 0.75;\n" //
+                        + "   v_color =  s * quad_colors * 0.8;\n" //
                         + "   gl_Position =  u_projTrans * vertex_positions;\n" //
                         + "}\n";
         final String fragmentShader = "#ifdef GL_ES\n" //

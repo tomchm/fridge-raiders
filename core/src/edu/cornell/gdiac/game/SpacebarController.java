@@ -24,7 +24,7 @@ public class SpacebarController implements RayCastCallback {
     /** Will shoot out 8 rays to look for objects the player can grab.
     * Put those 8 physics bodies in this array before checking if
     * any is an interactible type */
-    private Body[] interactionCandidates;
+    private GameObject[] interactionCandidates;
     private Vector2[] candidateIntersections;
     private int k = 0; // to loop over interactionCandidates
 
@@ -33,14 +33,18 @@ public class SpacebarController implements RayCastCallback {
         grabController = new GrabController(wm);
         eatController = new EatController(wm);
         worldModel = wm;
-        interactionCandidates = new Body[8];
+        interactionCandidates = new GameObject[8];
         candidateIntersections = new Vector2[8];
     }
 
     public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
-        interactionCandidates[k] = fixture.getBody();
-        candidateIntersections[k] = point.cpy();
-        return 0f;
+        GameObject go = (GameObject) fixture.getUserData();
+        if (go instanceof FurnitureModel || go instanceof DoorModel || go instanceof FoodModel) {
+            interactionCandidates[k] = go;
+            candidateIntersections[k] = point.cpy();
+            return 0;
+        }
+        return 1;
     }
 
     /** Find an object close enough to the player to interact with.
@@ -65,7 +69,7 @@ public class SpacebarController implements RayCastCallback {
 
         // now check if any is the body of an interactible gameobject type
         for (k = 0; k < 8; ++k) {
-            GameObject gob = getInteractibleGameObject(interactionCandidates[k]);
+            GameObject gob = interactionCandidates[k];
             if (gob == null) continue;
             // otherwise we have found an interactible gameobject!
             // close enough, and a proper class!
@@ -94,22 +98,6 @@ public class SpacebarController implements RayCastCallback {
         }
 
         return closest;
-    }
-
-    /** Get the GameObject corresponding to the Body. Only return a GameObject
-     * if it is also an interactible type, ie FoodModel, FurnitureModel, or DoorModel.
-     * null otherwise. */
-    public GameObject getInteractibleGameObject(Body b) {
-        PooledList<GameObject> gobjs = worldModel.getGameObjects();
-        if (b == null) return null;
-        for (GameObject gob : gobjs) {
-            if (gob.getBody() == b) {
-                if (gob.getClass() == FoodModel.class
-                        || gob.getClass() == FurnitureModel.class
-                        || gob.getClass() == DoorModel.class) return gob;
-            }
-        }
-        return null;
     }
 
     /** Called once per secondary action button keydown. */

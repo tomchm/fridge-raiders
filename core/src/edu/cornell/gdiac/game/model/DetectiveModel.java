@@ -80,7 +80,7 @@ public class DetectiveModel extends GameObject{
     /** the players radius of light*/
     private PointLight pointLight;
     /** the players radius of light*/
-    private float lightRadius = 10;
+    private float lightRadius = 13;
 
 
     public enum Animation {
