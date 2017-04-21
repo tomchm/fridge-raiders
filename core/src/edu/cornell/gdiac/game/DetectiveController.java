@@ -26,7 +26,7 @@ public class DetectiveController {
     private boolean isSecondStage;
     private int lastMove = -1;
     public final static float SHOOT_FORCE = 45f;
-    public final static float MAX_FORCE = 350*SHOOT_FORCE;
+    public final static float MAX_FORCE = 240*SHOOT_FORCE;
 
 
     public  DetectiveController( DetectiveModel playerModel, WorldModel world, AimGUIModel aimGUI){
@@ -55,21 +55,13 @@ public class DetectiveController {
         if(myProcessor.released){
             // Applying forces on the player based on their shot.
             float fx = myProcessor.magnitude.x * SHOOT_FORCE;
-            if(fx > MAX_FORCE){
-                fx = MAX_FORCE;
-            }
-            else if(fx < -MAX_FORCE){
-                fx = -MAX_FORCE;
-            }
             float fy = (-myProcessor.magnitude.y) * SHOOT_FORCE;
-            if(fy > MAX_FORCE){
-                fy = MAX_FORCE;
+            Vector2 force = new Vector2(fx,fy);
+            if(force.len() > MAX_FORCE){
+                force.scl(MAX_FORCE/force.len());
             }
-            else if(fy < -MAX_FORCE){
-                fy = -MAX_FORCE;
-            }
-            player.setFX(fx);
-            player.setFY(fy);
+            player.setFX(force.x);
+            player.setFY(force.y);
             player.applyForce();
             myProcessor.lastY = 0;
             myProcessor.lastX = 0;

@@ -19,6 +19,7 @@ import edu.cornell.gdiac.game.model.DetectiveModel;
 import edu.cornell.gdiac.game.model.GameObject;
 import edu.cornell.gdiac.game.model.TrajectoryModel;
 
+import javax.xml.soap.Text;
 import java.awt.*;
 
 /**
@@ -54,7 +55,7 @@ public class AimGUIModel extends GUIModel{
         aimPosition = null;
         foodAmount = 0;
         highlightAmount = 0;
-        tags = new String[] {"ball", "foodbar", "modernFoodbar", "gothic32", "gothic72"};
+        tags = new String[] {"ball", "foodbar", "modernFoodbar", "gothic32", "gothic72", "maxCircle", "aimBar", "aimTriangle"};
         guiTag = "AimGUI";
         this.worldModel = worldModel;
         tqueue = new Queue<TrajectoryModel>();
@@ -93,21 +94,13 @@ public class AimGUIModel extends GUIModel{
             }
 
             float fx = aimVector.x * SHOOT_FORCE;
-            if(fx > MAX_FORCE){
-                fx = MAX_FORCE;
-            }
-            else if(fx < -MAX_FORCE){
-                fx = -MAX_FORCE;
-            }
             float fy = (-aimVector.y) * SHOOT_FORCE;
-            if(fy > MAX_FORCE){
-                fy = MAX_FORCE;
-            }
-            else if(fy < -MAX_FORCE){
-                fy = -MAX_FORCE;
+            Vector2 force = new Vector2(fx,fy);
+            if(force.len() > MAX_FORCE){
+                force.scl(MAX_FORCE/force.len());
             }
 
-            float frac = (float)Math.sqrt((fx / MAX_FORCE)*(fx / MAX_FORCE) + (fy / MAX_FORCE)*(fy / MAX_FORCE));
+            float frac = force.len()/MAX_FORCE;
 
             Color tint = Color.WHITE;
             if(frac <= 0.5f){
@@ -234,6 +227,54 @@ public class AimGUIModel extends GUIModel{
             }
         }
         else{
+            ImageAsset aimCircle = (ImageAsset)assetMap.get("maxCircle");
+            ImageAsset aimBar = (ImageAsset)assetMap.get("aimBar");
+            ImageAsset aimTriangle = (ImageAsset)assetMap.get("aimTriangle");
+            if(aimCircle != null && aimBar != null && aimTriangle != null){
+                if(worldModel.getPlayer().getAnimation() == DetectiveModel.Animation.ROLL_STOP){
+                    canvas.draw(aimCircle.getTexture(), new Color(0.7f, 0.7f, 0.7f, 0.7f), aimCircle.getOrigin().x, aimCircle.getOrigin().y, origin.x*GameObject.getDrawScale().x, origin.y*GameObject.getDrawScale().y, 0, aimCircle.getImageScale().x, aimCircle.getImageScale().y);
+
+                    if(isAiming && aimVector != null && aimPosition != null){
+                        float fx = aimVector.x * SHOOT_FORCE;
+                        float fy = (-aimVector.y) * SHOOT_FORCE;
+                        Vector2 force = new Vector2(fx,fy);
+                        if(force.len() > MAX_FORCE){
+                            force.scl(MAX_FORCE/force.len());
+                        }
+
+                        float frac = force.len()/MAX_FORCE;
+
+                        Color tint = Color.WHITE;
+                        if(frac <= 0.5f){
+                            tint = AIM_YELLOW.cpy().lerp(AIM_ORANGE, (frac)/0.5f);
+                        }
+                        else {
+                            tint = AIM_ORANGE.cpy().lerp(AIM_RED, (frac-0.5f)/0.5f);
+                        }
+
+                        float angle = (new Vector2(fx,fy).angle()+90f)*MathUtils.degreesToRadians;
+                        float barHeight = aimBar.getTexture().getTexture().getHeight()*frac;
+                        System.out.println(barHeight);
+                        float triFrac = 1f;
+                        if(frac < 0.28){
+                            triFrac = frac / 0.28f;
+                        }
+                        aimBar.getTexture().setRegion(0,480-(int)barHeight,aimBar.getTexture().getTexture().getWidth(),(int)barHeight);
+                        canvas.draw(aimBar.getTexture(), tint, aimBar.getOrigin().x, aimBar.getOrigin().y, aimPosition.x*GameObject.getDrawScale().x, aimPosition.y*GameObject.getDrawScale().y, angle, aimBar.getImageScale().x, aimBar.getImageScale().y);
+                        canvas.draw(aimTriangle.getTexture(), tint, aimTriangle.getOrigin().x, aimTriangle.getOrigin().y, aimPosition.x*GameObject.getDrawScale().x, aimPosition.y*GameObject.getDrawScale().y, angle, aimTriangle.getImageScale().x*triFrac, aimTriangle.getImageScale().y*triFrac);
+
+                    }
+                }
+
+            }
+
+
+
+
+
+
+
+
             FontAsset font32 = (FontAsset)assetMap.get("gothic32");
             BitmapFont bf32 = font32.getFont();
             FontAsset font72 = (FontAsset)assetMap.get("gothic72");

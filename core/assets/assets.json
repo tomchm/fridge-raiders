@@ -136,16 +136,6 @@
       "angle": "0"
     },
     {
-      "type": "image",
-      "tag": "wall",
-      "filename": "furniture/wall_black.png",
-      "origin_x": "0",
-      "origin_y": "0",
-      "scale_x": "1",
-      "scale_y": "1",
-      "shape": "none"
-    },
-    {
       "type": "filmstrip",
       "tag": "player_down",
       "filename": "player/man_down.png",
@@ -437,17 +427,6 @@
       "shape": "none"
     },
     {
-      "type": "image",
-      "tag": "fat",
-      "filename": "player/fat.png",
-      "origin_x": "247",
-      "origin_y": "250",
-      "scale_x": "0.25",
-      "scale_y": "0.25",
-      "shape": "circle",
-      "radius": "2.14"
-    },
-    {
       "type": "sound",
       "tag": "nom",
       "filename": "sound/nom.wav"
@@ -503,8 +482,8 @@
       "type": "image",
       "tag": "solidBall",
       "filename": "gui/circle3.png",
-      "scale_x": "0.6",
-      "scale_y": "0.6",
+      "scale_x": "1",
+      "scale_y": "1",
       "origin_x": "32",
       "origin_y": "32",
       "shape": "none"
@@ -625,6 +604,36 @@
       "scale_y": "0.2",
       "origin_x": "281",
       "origin_y": "216",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "maxCircle",
+      "filename": "gui/max_circle.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "245",
+      "origin_y": "245",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "aimTriangle",
+      "filename": "gui/aimTriangle.png",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "origin_x": "240",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "aimBar",
+      "filename": "gui/aimBar.png",
+      "scale_x": "0.4",
+      "scale_y": "0.5",
+      "origin_x": "60",
+      "origin_y": "0",
       "shape": "none"
     }
   ]

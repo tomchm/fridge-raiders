@@ -12,7 +12,7 @@ import edu.cornell.gdiac.game.asset.ImageAsset;
  */
 public class TrajectoryModel extends GameObject{
 
-    private static final int MAX_TIME = 120;
+    private static final int MAX_TIME = 25;
     private int time;
     private Color tint;
 
@@ -60,15 +60,20 @@ public class TrajectoryModel extends GameObject{
     }
 
     public void draw(GameCanvas canvas){
-        time++;
+        time--;
         ImageAsset coat = (ImageAsset) assetMap.get("solidBall");
         if(coat != null){
+            Color dColor = new Color(tint.r, tint.g, tint.b, (float)time/(float)MAX_TIME);
             //canvas.setBlendState(GameCanvas.BlendState.ADDITIVE);
-            canvas.draw(coat.getTexture(), tint, coat.getOrigin().x,coat.getOrigin().y,
+            canvas.draw(coat.getTexture(), dColor, coat.getOrigin().x,coat.getOrigin().y,
                     body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,
                     coat.getImageScale().x,coat.getImageScale().y);
             //canvas.setBlendState(GameCanvas.BlendState.NO_PREMULT);
         }
+    }
+
+    public float getZ(){
+        return -10000;
     }
 
 
