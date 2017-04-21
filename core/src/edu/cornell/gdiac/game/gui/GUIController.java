@@ -26,6 +26,8 @@ public class GUIController {
         guiMap.put(pauseGUI.guiTag, pauseGUI);
         GUIModel textGUI = new TextGUIModel(worldModel);
         guiMap.put(textGUI.guiTag, textGUI);
+        GUIModel minimapGUI = new MinimapGUIModel(worldModel);
+        guiMap.put(minimapGUI.guiTag, minimapGUI);
 
     }
 

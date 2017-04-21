@@ -254,7 +254,6 @@ public class AimGUIModel extends GUIModel{
 
                         float angle = (new Vector2(fx,fy).angle()+90f)*MathUtils.degreesToRadians;
                         float barHeight = aimBar.getTexture().getTexture().getHeight()*frac;
-                        System.out.println(barHeight);
                         float triFrac = 1f;
                         if(frac < 0.28){
                             triFrac = frac / 0.28f;

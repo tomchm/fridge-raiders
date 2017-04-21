@@ -87,8 +87,10 @@ public class WorldController implements Screen {
 		spacebarController = new SpacebarController(worldModel);
 		aiControllers.clear();
 		fileIOController = new FileIOController(worldModel);
-		guiController = new GUIController(worldModel, spacebarController, input);
 		populateLevel();
+		guiController = new GUIController(worldModel, spacebarController, input);
+		detectiveController = new DetectiveController(worldModel.getPlayer(), worldModel, (AimGUIModel) guiController.getGUI("AimGUI"));
+		assetLoader.assignContent(guiController);
 		canvas.resetZoom();
 		worldModel.resetZoomRaycamera();
 		resetCounter = 0;
@@ -101,9 +103,7 @@ public class WorldController implements Screen {
 		fileIOController.load("levels/alphaLevel.json");
 		FloorModel floor = new FloorModel();
 		worldModel.addGameObject(floor);
-		detectiveController = new DetectiveController(worldModel.getPlayer(), worldModel, (AimGUIModel) guiController.getGUI("AimGUI"));
 		assetLoader.assignContent(worldModel);
-		assetLoader.assignContent(guiController);
 		for (AIModel ai: worldModel.getAIList()) {
 			aiControllers.add(new AIController(ai, worldModel));
 		}
