@@ -95,6 +95,13 @@ public class FileIOController {
                 worldModel.addGameObject(new DoorModel(x, y, width, height, theta, tags));
             }
 
+            // goal area
+            float[] goalCoords = level.get("exit").get("coords").asFloatArray();
+            GoalModel goal = new GoalModel(goalCoords);
+            worldModel.addGameObjectQueue(goal);
+            worldModel.setGoal(goal);
+            worldModel.getWorld().setContactListener(goal);
+
             // array of food objects
             JsonValue food = level.get("food");
             for (JsonValue f = food.child(); f != null; f = f.next()) {

@@ -108,11 +108,6 @@ public class WorldController implements Screen {
 		worldModel.updateAllSensors();
 		worldModel.setMaximumFood();
 
-		GoalModel goal = new GoalModel(null);
-		worldModel.addGameObjectQueue(goal);
-		worldModel.setGoal(goal);
-		worldModel.getWorld().setContactListener(goal);
-
 		fileIOController.save("levels/testOutput.json");
 	}
 
