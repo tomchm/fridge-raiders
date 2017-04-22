@@ -36,7 +36,7 @@ public class InputController {
 
 	/** Processor for handling clicking and such.*/
 	private static MyInputProcessor myProcessor  = new MyInputProcessor();
-	/** 
+	/**
 	 * Return the singleton instance of the input controller
 	 *
 	 * @return the singleton instance of the input controller
@@ -58,7 +58,7 @@ public class InputController {
 	private boolean nextPressed;
 	private boolean nextPrevious;
 	/** Whether the button to step back worlds was pressed. */
-	private boolean prevPressed =  false;
+	public boolean prevPressed =  false;
 	private boolean prevPrevious;
 	/** Whether the primary action button was pressed. */
 	private boolean primePressed;
@@ -77,7 +77,7 @@ public class InputController {
 
 	private boolean cutscenePressed;
 	private boolean cutscenePrevious;
-
+	private boolean didDismissPause;
 	/** How much did we move horizontally? */
 	private float horizontal;
 	/** How much did we move vertically? */
@@ -104,7 +104,13 @@ public class InputController {
 	}
 
 	public MyInputProcessor getMyProcessor() { return myProcessor ; }
-	
+	public void dismissPause() {
+		this.prevPressed = false;
+		didDismissPause = true;
+	}
+
+	public boolean didDismiss() {return didDismissPause;}
+
 	/**
 	 * Returns the amount of vertical movement. 
 	 *
@@ -280,7 +286,7 @@ public class InputController {
 		nextPressed = (secondary && nextPressed) || (Gdx.input.isKeyPressed(Input.Keys.N));
 		exitPressed  = (secondary && exitPressed) || (Gdx.input.isKeyPressed(Input.Keys.ESCAPE));
 		cutscenePressed = (Gdx.input.isKeyPressed(Input.Keys.C));
-		
+
 		// Directional controls
 		horizontal = (secondary ? horizontal : 0.0f);
 		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {

@@ -68,7 +68,7 @@ public class DetectiveModel extends GameObject{
     /** Par shots for the level*/
     private int par = 5;
 
-    private int amountEaten = 0;
+    private int amountEaten = 60;
     private boolean hasEatenDessert = false;
     private boolean isSecondStage = false;
     public float eatDelay = 0.0f;
@@ -367,6 +367,7 @@ public class DetectiveModel extends GameObject{
 
     public void setStage(boolean b){
         this.isSecondStage = b;
+
     }
     public boolean isSecondStage(){
         return this.isSecondStage;
@@ -386,8 +387,25 @@ public class DetectiveModel extends GameObject{
         return shotsRemaining;
     }
 
-    public int getShotsTaken(){
-        return shotsTaken;
+    public int getShotsTaken(){ return shotsTaken; }
+
+    public void resetShots() {
+        this.shotsRemaining += this.shotsTaken;
+        this.shotsTaken = 0;
+    }
+
+
+    public void resetStickers(){
+        stickers = new PooledList<Sticker>();
+        stickers.add(new Sticker("hat", 0f, 0f, 0f));
+        stickers.add(new Sticker("tie", 0f, 50f, 0f));
+        stickers.add(new Sticker("hand", 75f, 65f, 180f));
+        stickers.add(new Sticker("hand", -75f, 65f, 180f));
+        stickers.add(new Sticker("buckle", 0f, 90f, 0f));
+        //stickers.add(new Sticker("backpocket", 155f, 120f, 0f));
+        //stickers.add(new Sticker("backpocket", -155f, 120f, 0f));
+        stickers.add(new Sticker("foot", 45f, 145f, 0f));
+        stickers.add(new Sticker("foot", -45f, 145f, 0f));
     }
 
     public int getPar(){

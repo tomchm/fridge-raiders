@@ -12,6 +12,10 @@ public class MyInputProcessor implements InputProcessor {
     public int lastY = 0;
     public int dragX = 0;
     public int dragY = 0;
+    public int menuX = 0;
+    public int menuY = 0;
+    public int pauseX = 0;
+    public int pauseY = 0;
     public boolean released = false;
     public boolean shouldRecordClick = true;
 
@@ -44,6 +48,10 @@ public class MyInputProcessor implements InputProcessor {
         if(magnitude.x != 0 && magnitude.y != 0) {
             released = true;
         }
+        menuX = x;
+        menuY = y;
+        pauseX = x;
+        pauseY = y;
 //        magnitude = new Vector2(lastX - dragX,lastY-dragY);
         return true;
     }
