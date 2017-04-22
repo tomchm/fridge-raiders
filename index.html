@@ -106,8 +106,8 @@
                 for (var i = 0; i < level.furniture.length; i++) {
                     if (inFurniture(level.furniture[i], worldXY)) { selected = level.furniture[i]; draw(level); return; }
                 }
-                for (var d = 0; i < level.decor.length; d++) {
-                    if (inFurniture(level.decor[d], worldXY)) { selected = level.decor[d]; draw(level); return; }
+                for (var d = 0; d < level.decor.length; d++) {
+                    if (inDecor(level.decor[d], worldXY)) { selected = level.decor[d]; draw(level); return; }
                 }
                 for (var i = 0; i < level.walls.length; i++) {
                     if (inWall(level.walls[i], worldXY)) { selected = level.walls[i]; draw(level); return; }
@@ -242,7 +242,7 @@
                     $('#ais').append(btntag);
                 } else if (directory == 'decor') {
                     $('#decor').append(btntag);
-                } else if (directory == 'floors') {
+                } else if (directory == 'floor') {
                     $('#floors').append(btntag);
                 }
             }
@@ -274,7 +274,7 @@
             }
             for (var f = 0; f < level.floors.length; f++) {
                 selected = level.floors[f];
-                update('floors', selected.tags[0]);
+                update('floor', selected.tags[0]);
             }
 
             draw(level);
@@ -299,6 +299,7 @@
             worldY = camY - (screenY - cnv.height) / DRAW_SCALE;
             return [worldX, worldY];
         }
+        function inDecor(item, xyPair) { return inFurniture(item, xyPair); }
         function inFurniture(item, xyPair) {
             // in world coordinates
             if (item.radius > 0) {
@@ -571,8 +572,9 @@
             walls.sort(function(w1,w2) {return w2.y - w1.y;});
             for(var w = 0; w < walls.length; w++) {
                 drawWall(walls[w], '#ff0');
+                if (level.walls[w] == selected) {drawWall(level.walls[w], '#00f');}
             }
-            for (var d = 0; d < decor.length; d++) {
+            for (var d = 0; d < level.decor.length; d++) {
                 drawDecor(level.decor[d], '#ff0');
             }
             food = levelObject.food;
@@ -593,7 +595,6 @@
                 if (selected == level.player) { drawPlayer('#00f'); }
                 else if (level.food.includes(selected)) { drawFood(selected, '#00f'); }
                 else if (level.furniture.includes(selected)) { drawFurniture(selected, '#00f'); }
-                else if (level.walls.includes(selected)) { drawWall(selected, '#00f'); }
                 else if (level.exit == selected) {drawExit(selected, '#00f');}
                 else if (level.decor.includes(selected)) { drawDecor(selected, '#00f'); }
                 else if (level.ais.includes(selected)) { drawAI(selected, '#00f'); }
@@ -633,12 +634,20 @@
         }
         function update(type, newtag) {
             var asset = getAsset(newtag);
+            if (type == 'decor' && asset.shape == 'none') {
+                asset.shape = 'rectangle';
+                asset.radius = 0;
+                asset.angle = 0;
+                var img = $('#btn'+newtag).children('img')[0]
+                asset.width = img.naturalWidth*asset.scale_x/32.0;
+                asset.height = img.naturalHeight*asset.scale_y/32.0;
+            }
 
             if ((selected != null) &&
                 ((type=='furniture' && level.furniture.includes(selected)) ||
                 (type == 'food' && level.food.includes(selected)) ||
                 (type == 'decor' && level.decor.includes(selected)) ||
-                (type == 'floors' && level.floors.includes(selected)) ||
+                (type == 'floor' && level.floors.includes(selected)) ||
                 (type == 'ais' && level.ais.includes(selected)) ||
                 (type == 'wall' && level.walls.includes(selected)))) {
                 selected.tags[0] = newtag;
@@ -661,7 +670,7 @@
                     level.decor.push(newObj);
                     selected = level.decor[level.decor.length-1];
                 }
-                else if (type == 'floors') {
+                else if (type == 'floor') {
                     newObj = {"tags": [newtag], "coords": [30,30,35,30,35,35,30,35]};
                     level.floors.push( newObj );
                     selected = level.floors[level.floors.length-1];
@@ -702,11 +711,11 @@
     <body>
         <div id="topbar">
             Level JSON: <textarea rows="2" cols="50" id="levelJSON">
-{"par": 5, "threshold": 100, "exit":{"coords":[20,20,25,20,25,25,20,25]}, "player":{"x":27.25,"y":24.25},"walls":[{"r":85,"g":136,"b":119,"coords":[16,35,16,19,18,19,18,35],"tags":["wall"],"x":17.166666666666664,"y":27.166666666666664}],"furniture":[{"tags":["chair1"],"x":21.416666666666668,"y":28.833333333333332,"theta":0,"width":0,"height":0,"radius":1.56}],"food":[{"tags":["turkey"],"x":32.5,"y":28.583333333333332,"theta":0,"width":0,"height":0,"radius":1.5,"dessert":false,"amount":10}],"ais":[{"tags":["ai"], "coords":[10,20,10,35,5,35,5,20]}],"floors":[{"tags":["linoleum"], "coords":[40,40,45,40,45,45,40,45]}], "decor":[], "doors":[]}
+{"par": 5, "threshold": 100, "exit":{"coords":[20,20,25,20,25,25,20,25]}, "player":{"x":27.25,"y":24.25},"walls":[{"r":85,"g":136,"b":119,"coords":[16,35,16,19,18,19,18,35],"tags":["wall"],"x":17.166666666666664,"y":27.166666666666664}],"furniture":[{"tags":["chair1"],"x":21.416666666666668,"y":28.833333333333332,"theta":0,"width":0,"height":0,"radius":1.56}],"food":[{"tags":["turkey"],"x":32.5,"y":28.583333333333332,"theta":0,"width":0,"height":0,"radius":1.5,"dessert":false,"amount":10}],"ais":[{"tags":["ai"], "coords":[10,20,10,35,5,35,5,20]}],"floors":[{"tags":["floor"], "coords":[40,40,45,40,45,45,40,45]}], "decor":[], "doors":[]}
 </textarea>
 <input type="button" value="COPY" onclick="copyLevelJSON()"></input>
             Assets JSON: <textarea rows="2" cols="50" id="assetsJSON">
-            {
+ {
   "data": [
     {
       "type": "image",
@@ -835,12 +844,12 @@
       "tag": "couch",
       "filename": "furniture/couch.png",
       "origin_x": "430",
-      "origin_y": "274",
+      "origin_y": "177",
       "scale_x": "0.3",
       "scale_y": "0.3",
       "shape": "rectangle",
-      "width": "6.17",
-      "height": "4.29",
+      "width": "4.24",
+      "height": "2.35",
       "angle": "0"
     },
     {
@@ -964,78 +973,90 @@
       "tag": "burger",
       "filename": "food/burger.png",
       "origin_x": "138",
-      "origin_y": "122",
+      "origin_y": "91",
       "scale_x": "0.25",
       "scale_y": "0.25",
-      "shape": "circle",
-      "radius": "1"
+      "shape": "rectangle",
+      "width": "1.65",
+      "height": "0.95",
+      "angle": "0"
     },
     {
       "type": "image",
       "tag": "hotdog",
       "filename": "food/hotdog.png",
-      "origin_x": "190",
-      "origin_y": "136",
+      "origin_x": "177",
+      "origin_y": "107",
       "scale_x": "0.25",
       "scale_y": "0.25",
-      "shape": "circle",
-      "radius": "1.5"
+      "shape": "rectangle",
+      "width": "2.35",
+      "height": "0.95",
+      "angle": "163"
     },
     {
       "type": "image",
       "tag": "pie1",
       "filename": "food/pie1.png",
       "origin_x": "210",
-      "origin_y": "162",
+      "origin_y": "119",
       "scale_x": "0.25",
       "scale_y": "0.25",
-      "shape": "circle",
-      "radius": "1.6"
+      "shape": "rectangle",
+      "width": "2.62",
+      "height": "1.27",
+      "angle": "0"
     },
     {
       "type": "image",
       "tag": "pie2",
       "filename": "food/pie2.png",
       "origin_x": "210",
-      "origin_y": "162",
+      "origin_y": "130",
       "scale_x": "0.25",
       "scale_y": "0.25",
-      "shape": "circle",
-      "radius": "1.6"
+      "shape": "rectangle",
+      "width": "2.62",
+      "height": "1.27",
+      "angle": "0"
     },
     {
       "type": "image",
       "tag": "scam1",
       "filename": "food/scam1.png",
       "origin_x": "167",
-      "origin_y": "185",
+      "origin_y": "146",
       "scale_x": "0.25",
       "scale_y": "0.25",
-      "shape": "circle",
-      "radius": "1.5"
+      "shape": "rectangle",
+      "width": "2.08",
+      "height": "1.27",
+      "angle": "131"
     },
     {
       "type": "image",
       "tag": "scam2",
       "filename": "food/scam2.png",
-      "origin_x": "180",
-      "origin_y": "189",
+      "origin_x": "181",
+      "origin_y": "162",
       "scale_x": "0.25",
       "scale_y": "0.25",
-      "shape": "circle",
-      "radius": "1.5"
+      "shape": "rectangle",
+      "width": "2.08",
+      "height": "1.27",
+      "angle": "45"
     },
     {
       "type": "image",
       "tag": "scamDessert",
       "filename": "food/scamDessert.png",
       "origin_x": "381",
-      "origin_y": "200",
+      "origin_y": "150",
       "scale_x": "0.25",
       "scale_y": "0.25",
       "shape": "rectangle",
-      "width": "5.16",
-      "height": "2.81",
+      "width": "4.78",
+      "height": "1.92",
       "angle": "0"
     },
     {
@@ -1047,7 +1068,7 @@
       "scale_x": "0.25",
       "scale_y": "0.25",
       "shape": "circle",
-      "radius": "1"
+      "radius": "0.69"
     },
     {
       "type": "image",
@@ -1058,62 +1079,68 @@
       "scale_x": "0.25",
       "scale_y": "0.25",
       "shape": "circle",
-      "radius": "1"
+      "radius": "0.69"
     },
     {
       "type": "image",
       "tag": "bed",
       "filename": "furniture/bed.png",
-      "origin_x": "601",
-      "origin_y": "590",
+      "origin_x": "652",
+      "origin_y": "512",
       "scale_x": "0.16",
       "scale_y": "0.16",
       "shape": "rectangle",
-      "width": "5.32",
-      "height": "5.51",
+      "width": "4.41",
+      "height": "4.62",
       "angle": "0"
     },
     {
       "type": "image",
       "tag": "chair1",
       "filename": "furniture/chair1.png",
-      "origin_x": "326",
-      "origin_y": "326",
+      "origin_x": "313",
+      "origin_y": "263",
       "scale_x": "0.16",
       "scale_y": "0.16",
-      "shape": "circle",
-      "radius": "1.56"
+      "shape": "rectangle",
+      "width": "1.92",
+      "height": "1.81",
+      "angle": "45"
     },
     {
       "type": "image",
       "tag": "chair2",
       "filename": "furniture/chair2.png",
-      "origin_x": "354",
-      "origin_y": "326",
+      "origin_x": "352",
+      "origin_y": "274",
       "scale_x": "0.16",
       "scale_y": "0.16",
-      "shape": "circle",
-      "radius": "1.56"
+      "shape": "rectangle",
+      "width": "1.92",
+      "height": "1.81",
+      "angle": "135"
     },
     {
       "type": "image",
       "tag": "table",
       "filename": "furniture/table.png",
       "origin_x": "323",
-      "origin_y": "308",
+      "origin_y": "267",
       "scale_x": "0.25",
       "scale_y": "0.25",
-      "shape": "circle",
-      "radius": "2.14"
+      "shape": "rectangle",
+      "width": "2.73",
+      "height": "2.68",
+      "angle": "133"
     },
     {
       "type": "image",
       "tag": "floor",
-      "filename": "furniture/floor.png",
-      "origin_x": "43",
-      "origin_y": "194",
-      "scale_x": "1",
-      "scale_y": "1",
+      "filename": "floor/linoleum.png",
+      "origin_x": "198",
+      "origin_y": "198",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
       "shape": "none"
     },
     {
@@ -1141,6 +1168,181 @@
       "type": "sound",
       "tag": "nom",
       "filename": "sound/nom.wav"
+    },
+    {
+      "type": "sound",
+      "tag": "titlemusic",
+      "filename": "sound/title.wav"
+    },
+    {
+      "type": "sound",
+      "tag": "levelmusic",
+      "filename": "sound/level.wav"
+    },
+    {
+      "type": "sound",
+      "tag": "pop",
+      "filename": "sound/pop.wav"
+    },
+    {
+      "type": "image",
+      "tag": "glow",
+      "filename": "gui/glow.png",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
+      "origin_x": "240",
+      "origin_y": "240",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "foodtick",
+      "filename": "gui/foodtick.png",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "origin_x": "120",
+      "origin_y": "120",
+      "shape": "none",
+      "frames": "10",
+      "speed": "0"
+    },
+    {
+      "type": "image",
+      "tag": "modernFoodbar",
+      "filename": "gui/modernfoodbar.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "solidBall",
+      "filename": "gui/circle3.png",
+      "scale_x": "0.6",
+      "scale_y": "0.6",
+      "origin_x": "32",
+      "origin_y": "32",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "crumb",
+      "filename": "gui/crumb.png",
+      "scale_x": "0.15",
+      "scale_y": "0.15",
+      "origin_x": "32",
+      "origin_y": "32",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "avocado",
+      "filename": "food/avocado.png",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "origin_x": "110",
+      "origin_y": "79",
+      "shape": "circle",
+      "radius": "0.69"
+    },
+    {
+      "type": "image",
+      "tag": "banana",
+      "filename": "food/banana.png",
+      "scale_x": "0.2",
+      "scale_y": "0.2",
+      "origin_x": "178",
+      "origin_y": "106",
+      "shape": "rectangle",
+      "width": "1.99",
+      "height": "1.17",
+      "angle": "0"
+    },
+    {
+      "type": "image",
+      "tag": "orange",
+      "filename": "food/orange.png",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "origin_x": "98",
+      "origin_y": "106",
+      "shape": "circle",
+      "radius": "0.77"
+    },
+    {
+      "type": "image",
+      "tag": "sandwich",
+      "filename": "food/sandwich.png",
+      "scale_x": "0.2",
+      "scale_y": "0.2",
+      "origin_x": "163",
+      "origin_y": "148",
+      "shape": "rectangle",
+      "width": "1.99",
+      "height": "1.17",
+      "angle": "19"
+    },
+    {
+      "type": "image",
+      "tag": "clock",
+      "filename": "decor/clock.png",
+      "scale_x": "0.3",
+      "scale_y": "0.3",
+      "origin_x": "117",
+      "origin_y": "102",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "inlaidShelves",
+      "filename": "decor/InlayedShelves.png",
+      "scale_x": "0.3",
+      "scale_y": "0.25",
+      "origin_x": "182",
+      "origin_y": "110",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "kitchenSink",
+      "filename": "decor/KitchenSink.png",
+      "scale_x": "0.2",
+      "scale_y": "0.2",
+      "origin_x": "281",
+      "origin_y": "205",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "window1",
+      "filename": "decor/Window1.png",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "origin_x": "190",
+      "origin_y": "270",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "window2",
+      "filename": "decor/Window2.png",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "origin_x": "197",
+      "origin_y": "258",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "woodenDrawers",
+      "filename": "decor/WoodenDrawers.png",
+      "scale_x": "0.2",
+      "scale_y": "0.2",
+      "origin_x": "281",
+      "origin_y": "216",
+      "shape": "none"
     }
   ]
 }

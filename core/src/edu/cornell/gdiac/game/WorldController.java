@@ -101,8 +101,6 @@ public class WorldController implements Screen {
 	 */
 	private void populateLevel() {
 		fileIOController.load("levels/alphaLevel.json");
-		FloorModel floor = new FloorModel();
-		worldModel.addGameObject(floor);
 		assetLoader.assignContent(worldModel);
 		for (AIModel ai: worldModel.getAIList()) {
 			aiControllers.add(new AIController(ai, worldModel));

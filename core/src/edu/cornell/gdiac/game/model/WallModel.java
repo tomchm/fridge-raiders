@@ -11,6 +11,7 @@ import edu.cornell.gdiac.game.GameCanvas;
  * Created by Sal on 3/14/2017.
  */
 public class WallModel extends GameObject {
+    public static float LARGE_Z = 100000f;
     private float[] coords;
     private float r, g, b;
     PolygonRegion black;
@@ -46,7 +47,7 @@ public class WallModel extends GameObject {
     public float[] getCoords() {return coords;}
 
     public float getZ() {
-        return 10000f + GameObject.getDrawScale().y*0.25f*(coords[1] + coords[3] + coords[5] + coords[7]);
+        return LARGE_Z + GameObject.getDrawScale().y*0.25f*(coords[1] + coords[3] + coords[5] + coords[7]);
     }
 
     public void draw(GameCanvas canvas){
