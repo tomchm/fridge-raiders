@@ -76,17 +76,20 @@ public class FloorModel extends GameObject{
         canvas.draw(region, drawScale.x*x, drawScale.y*y);
         */
 
+        canvas.drawPolygon(coords, 0.2f, 0.0f, 0.6f);
         if (region == null) {
             Asset ass = assetMap.get(tags[0]);
             ImageAsset ia = (ImageAsset) ass;
             float[] scaledCoords = new float[8];
             for (int i=0; i<8; i++) {scaledCoords[i] = (i%2==0 ? drawScale.x : drawScale.y)*coords[i];}
-            region = new PolygonRegion(ia.getTexture(), scaledCoords, new short[]{0,1,2,0,3,2});
+            ia.getTexture().getTexture().setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+            TextureRegion tr = new TextureRegion(ia.getTexture().getTexture());
+            region = new PolygonRegion(tr, scaledCoords, new short[]{0,2,1,0,2,3});
         }
         Asset ass = assetMap.get(tags[0]);
         ImageAsset ia = (ImageAsset) ass;
-        canvas.draw(ia.getTexture(), x*drawScale.x, y*drawScale.y);
-        //canvas.draw(region,Color.WHITE,0,0,x*drawScale.x,y*drawScale.y,0f,1,1);
+        //canvas.draw(ia.getTexture(), x*drawScale.x, y*drawScale.y);
+        canvas.draw(region,Color.WHITE,0f,0f,x*drawScale.x,y*drawScale.y,0f,ia.getImageScale().x,ia.getImageScale().y);
         //canvas.drawPolygon(coords, 0.5f, 0.5f, 0.5f);
         //canvas.draw(ia.getTexture(), Color.WHITE, ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),ia.getImageScale().x,ia.getImageScale().y);
     }
