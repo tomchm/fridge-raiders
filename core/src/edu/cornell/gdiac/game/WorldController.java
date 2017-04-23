@@ -261,7 +261,7 @@ public class WorldController implements Screen {
 			}
 		}
 
-		if(worldModel.hasLost()){
+		if(worldModel.hasLost() && worldModel.getPlayer().isSecondStage()){
 			int myX = input.getMyProcessor().menuX;
 			int myY = input.getMyProcessor().menuY;
 			System.out.println(myX + " " + myY);
@@ -284,6 +284,9 @@ public class WorldController implements Screen {
 				}
 			}
 
+		}
+		if(worldModel.hasLost() && (!this.worldModel.getPlayer().isSecondStage())){
+			reset();
 		}
 
 		if(worldModel.hasLost() || worldModel.hasWon()){

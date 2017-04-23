@@ -42,7 +42,7 @@ public class ResetGUIModel extends GUIModel{
         float y = origin.y*GameObject.getDrawScale().y;
         FontAsset font = (FontAsset) assetMap.get("gothic72");
         if(font != null) {
-            if(this.worldModel.hasLost()) {
+            if(this.worldModel.hasLost() && this.worldModel.getPlayer().isSecondStage()) {
                 canvas.drawRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 0.5f, 0.5f, 0.5f);
                 BitmapFont bf = font.getFont();
                 bf.setColor(Color.BLACK);
