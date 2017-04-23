@@ -64,6 +64,25 @@ public class FileIOController {
 
             }
 
+            // array of decor objects
+            JsonValue decor = level.get("decor");
+            for (JsonValue d = decor.child(); d != null; d = d.next()) {
+                float x = d.get("x").asFloat();
+                float y = d.get("y").asFloat();
+                float width = d.get("width").asFloat();
+                float height = d.get("height").asFloat();
+                String[] tags = d.get("tags").asStringArray();
+                worldModel.addGameObject(new DecorModel(x, y, width, height, tags));
+            }
+
+            // array of floors objects
+            JsonValue floors = level.get("floors");
+            for (JsonValue f = floors.child(); f != null; f = f.next()) {
+                float[] coords = f.get("coords").asFloatArray();
+                String[] tags = f.get("tags").asStringArray();
+                worldModel.addGameObject(new FloorModel(coords, tags));
+            }
+
             // array of door objects
             JsonValue doors = level.get("doors");
             for (JsonValue d = doors.child(); d != null; d = d.next() ) {
@@ -75,6 +94,13 @@ public class FileIOController {
                 String[] tags = d.get("tags").asStringArray();
                 worldModel.addGameObject(new DoorModel(x, y, width, height, theta, tags));
             }
+
+            // goal area
+            float[] goalCoords = level.get("exit").get("coords").asFloatArray();
+            GoalModel goal = new GoalModel(goalCoords);
+            worldModel.addGameObjectQueue(goal);
+            worldModel.setGoal(goal);
+            worldModel.getWorld().setContactListener(goal);
 
             // array of food objects
             JsonValue food = level.get("food");

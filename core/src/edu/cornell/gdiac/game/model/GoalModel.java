@@ -34,7 +34,7 @@ public class GoalModel extends GameObject implements ContactListener{
         filter.categoryBits = 0x0002;
         filter.maskBits = 0x0006;
 
-        this.coords = new float[]{48,26,54,13,68,19,62,31};
+        this.coords = coords; //new float[]{48,26,54,13,68,19,62,31};
 
         PolygonShape shape = new PolygonShape();
         shape.set(this.coords);

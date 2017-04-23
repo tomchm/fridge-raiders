@@ -48,6 +48,11 @@ public class FilmstripAsset extends Asset{
         height = texture.getRegionHeight();
     }
 
+    /** Width of just one frame. */
+    public int getWidth() {
+        return width;
+    }
+
     public int getNumFrames() {
         return numFrames;
     }

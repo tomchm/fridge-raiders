@@ -16,6 +16,7 @@
  */
 package edu.cornell.gdiac.game;
 
+import java.awt.*;
 import java.util.Iterator;
 
 import com.badlogic.gdx.*;
@@ -25,6 +26,7 @@ import edu.cornell.gdiac.game.gui.AimGUIModel;
 import edu.cornell.gdiac.game.gui.GUIController;
 import edu.cornell.gdiac.game.model.*;
 import edu.cornell.gdiac.util.*;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 public class WorldController implements Screen {
 
@@ -63,6 +65,17 @@ public class WorldController implements Screen {
 	private InputController input;
 
 	private int resetCounter;
+	private String worldModelSave;
+	private WorldModel wmSave;
+	private DetectiveController dcSave;
+	private DetectiveModel dmSave;
+	private Vector2 resetLevelTwoPosition;
+	private float resetLevelAngle;
+	private boolean hardReset = false;
+	private boolean didShowMenu = false;
+	private boolean shouldPlayScene = true;
+	private boolean isPaused = false;
+
 
 	public AssetLoader getAssetLoader() {
 		return assetLoader;
@@ -83,37 +96,64 @@ public class WorldController implements Screen {
 	}
 
 	public void reset() {
-		worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
-		spacebarController = new SpacebarController(worldModel);
-		aiControllers.clear();
-		fileIOController = new FileIOController(worldModel);
-		populateLevel();
-		guiController = new GUIController(worldModel, spacebarController, input);
-		detectiveController = new DetectiveController(worldModel.getPlayer(), worldModel, (AimGUIModel) guiController.getGUI("AimGUI"));
-		assetLoader.assignContent(guiController);
-		canvas.resetZoom();
-		worldModel.resetZoomRaycamera();
-		resetCounter = 0;
+		playedScene = false;
+		if(this.detectiveController == null || hardReset) {
+			shouldPlayScene = true;
+            worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
+            spacebarController = new SpacebarController(worldModel);
+            aiControllers.clear();
+            fileIOController = new FileIOController(worldModel);
+            populateLevel();
+            guiController = new GUIController(worldModel, spacebarController, input);
+            detectiveController = new DetectiveController(worldModel.getPlayer(), worldModel, (AimGUIModel) guiController.getGUI("AimGUI"));
+            assetLoader.assignContent(guiController);
+            canvas.resetZoom();
+            worldModel.resetZoomRaycamera();
+            resetCounter = 0;
+		}
+		else{
+			worldModel.hasLost = false;
+			if(this.detectiveController.inSecondStage()){
+			    worldModel = wmSave;
+			    detectiveController = dcSave;
+			    worldModel.getPlayer().setFX(0.0f);
+			    worldModel.getPlayer().setFY(0.0f);
+			    worldModel.getPlayer().applyForce();
+			    worldModel.getPlayer().getBody().setTransform(resetLevelTwoPosition,resetLevelAngle);
+			    worldModel.getPlayer().resetStickers();
+			    worldModel.getPlayer().resetShots();
+
+			}
+			else{
+				shouldPlayScene = true;
+                worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
+                spacebarController = new SpacebarController(worldModel);
+                aiControllers.clear();
+                fileIOController = new FileIOController(worldModel);
+                populateLevel();
+                guiController = new GUIController(worldModel, spacebarController, input);
+                detectiveController = new DetectiveController(worldModel.getPlayer(), worldModel, (AimGUIModel) guiController.getGUI("AimGUI"));
+                assetLoader.assignContent(guiController);
+                canvas.resetZoom();
+                worldModel.resetZoomRaycamera();
+                resetCounter = 0;
+			}
+		}
 	}
+
+
 
 	/**
 	 * Lays out the game geography.
 	 */
 	private void populateLevel() {
 		fileIOController.load("levels/alphaLevel.json");
-		FloorModel floor = new FloorModel();
-		worldModel.addGameObject(floor);
 		assetLoader.assignContent(worldModel);
 		for (AIModel ai: worldModel.getAIList()) {
 			aiControllers.add(new AIController(ai, worldModel));
 		}
 		worldModel.updateAllSensors();
 		worldModel.setMaximumFood();
-
-		GoalModel goal = new GoalModel(null);
-		worldModel.addGameObjectQueue(goal);
-		worldModel.setGoal(goal);
-		worldModel.getWorld().setContactListener(goal);
 
 		fileIOController.save("levels/testOutput.json");
 	}
@@ -160,6 +200,34 @@ public class WorldController implements Screen {
 			reset();
 		}
 
+		if(input.didRetreat()){
+			isPaused = !isPaused;
+			input.getMyProcessor().pauseX = 0;
+			input.getMyProcessor().pauseY = 0;
+		}
+
+		if(isPaused){
+			int myX = input.getMyProcessor().pauseX;
+			int myY = input.getMyProcessor().pauseY;
+			if(myX >= 530 && myX <= 820 && myY>=110 && myY <= 190){
+				// first option
+				input.prevPressed = !input.prevPressed;
+				isPaused = !isPaused;
+
+
+			}
+			else if (myX >= 530 && myX <= 750 && myY>=220 && myY <= 295){
+				//second option
+
+			}
+			else if (myX >= 530 && myX <= 720 && myY>=320 && myY <= 400){
+				//third option
+				listener.exitScreen(this, EXIT_QUIT);
+				return false;
+
+			}
+		}
+
 		if(input.didExit()){
 			listener.exitScreen(this, EXIT_QUIT);
 			return false;
@@ -185,13 +253,46 @@ public class WorldController implements Screen {
 			}
 			else if(!worldModel.getPlayer().hasShots()){
 				worldModel.setLost();
+				if(!didShowMenu) {
+					input.getMyProcessor().menuX = 0;
+					input.getMyProcessor().menuY = 0;
+					didShowMenu = true;
+				}
 			}
+		}
+
+		if(worldModel.hasLost() && worldModel.getPlayer().isSecondStage()){
+			int myX = input.getMyProcessor().menuX;
+			int myY = input.getMyProcessor().menuY;
+			System.out.println(myX + " " + myY);
+			if(myX >= 290 && myX <= 1080){
+				System.out.println("IN?????????");
+
+				if(myY >= 120 && myY <= 195){
+					//reset hard
+					hardReset = true;
+					reset();
+					hardReset = false;
+					didShowMenu = false;
+				}
+				else if(myY >= 300 && myY <= 375){
+					//reset softs
+
+					worldModel.hasLost = false;
+					reset();
+					didShowMenu = false;
+				}
+			}
+
+		}
+		if(worldModel.hasLost() && (!this.worldModel.getPlayer().isSecondStage())){
+			reset();
 		}
 
 		if(worldModel.hasLost() || worldModel.hasWon()){
 		    resetCounter++;
 		    if(resetCounter == 300){
-		        reset();
+//		        reset();
             }
         }
 
@@ -205,7 +306,15 @@ public class WorldController implements Screen {
 
 		if (worldModel.getPlayer().isSecondStage() && !playedScene) {
 			playedScene = true;
-			listener.exitScreen(this, CUTSCENE);
+			if(shouldPlayScene) {
+				listener.exitScreen(this, CUTSCENE);
+				shouldPlayScene = false;
+			}
+			this.wmSave = worldModel;
+			this.dcSave = detectiveController;
+			this.dmSave = new DetectiveModel(worldModel.getPlayer().getBody().getPosition().x, worldModel.getPlayer().getBody().getPosition().y);
+			resetLevelTwoPosition = new Vector2(worldModel.getPlayer().getBody().getPosition().x, worldModel.getPlayer().getBody().getPosition().y);
+			resetLevelAngle = worldModel.getPlayer().getBody().getAngle();
 		}
 
 		if (InputController.getInstance().didSecondary()) spacebarController.keyDown();
@@ -326,6 +435,7 @@ public class WorldController implements Screen {
 	 */
 	public void hide() {
 	}
+
 
 	/**
 	 * Sets the ScreenListener for this mode

@@ -119,24 +119,24 @@ public class MinimapGUIModel extends GUIModel {
         for(int x=0; x< MAX_SIZE; x++){
             for(int y=0; y<BORDER_WIDTH; y++){
                 map.drawPixel(x,y,Color.rgba8888(borderColor));
-                System.out.println(x+" "+y);
+                //System.out.println(x+" "+y);
             }
 
             for(int y=MAX_SIZE-BORDER_WIDTH; y<MAX_SIZE; y++){
                 map.drawPixel(x,y,Color.rgba8888(borderColor));
-                System.out.println(x+"/"+y);
+                //System.out.println(x+"/"+y);
             }
         }
 
         for(int y=0; y< MAX_SIZE; y++){
             for(int x=0; x<BORDER_WIDTH; x++){
                 map.drawPixel(x,y,Color.rgba8888(borderColor));
-                System.out.println(x+"-"+y);
+                //System.out.println(x+"-"+y);
             }
 
             for(int x=MAX_SIZE-BORDER_WIDTH; x<MAX_SIZE; x++){
                 map.drawPixel(x,y,Color.rgba8888(borderColor));
-                System.out.println(x+"+"+y);
+                //System.out.println(x+"+"+y);
             }
         }
     }

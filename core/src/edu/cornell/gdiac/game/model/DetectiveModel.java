@@ -5,6 +5,7 @@ import box2dLight.Light;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -41,6 +42,10 @@ public class DetectiveModel extends GameObject{
     private Vector2 velocity;
     private float radius = 1.2f;
 
+    private Pixmap normalMan;
+    private Pixmap fatMan;
+    private Texture fatTex;
+
     /** The food the player is currently eating. */
     private FoodModel chewing = null;
 
@@ -68,7 +73,7 @@ public class DetectiveModel extends GameObject{
     /** Par shots for the level*/
     private int par = 5;
 
-    private int amountEaten = 0;
+    private int amountEaten = 60;
     private boolean hasEatenDessert = false;
     private boolean isSecondStage = false;
     public float eatDelay = 0.0f;
@@ -268,6 +273,19 @@ public class DetectiveModel extends GameObject{
             if(fa != null){
                 int nFrame = (frame / fa.getSpeed()) % fa.getNumFrames();
                 TextureRegion texture = fa.getTexture(nFrame);
+                /*texture.getTexture().getTextureData().prepare();
+                normalMan = texture.getTexture().getTextureData().consumePixmap();
+                // new one should be square so we have plenty of room to grow!
+                int height = normalMan.getHeight();
+                fatMan = new Pixmap(normalMan.getWidth(), height, Pixmap.Format.RGBA4444);
+                bulge(normalMan, fatMan, frame*fa.getWidth(), fa.getWidth(),
+                        normalMan.getWidth()/2, height/2, height/2, height/2,
+                        normalMan.getHeight()/2, 1f);
+                fatTex = new Texture(fatMan);
+                TextureRegion fatTexReg = new TextureRegion(fatTex);
+                fatTexReg.setRegion(frame*fa.getWidth(), 0, fa.getWidth(), height);
+                canvas.draw(fatTexReg, Color.WHITE,fa.getOrigin().x,fa.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,fa.getImageScale().x,fa.getImageScale().y);
+            */
                 canvas.draw(texture, Color.WHITE,fa.getOrigin().x,fa.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,fa.getImageScale().x,fa.getImageScale().y);
             }
         }
@@ -283,6 +301,42 @@ public class DetectiveModel extends GameObject{
             }
             drawFat(canvas);
         }
+    }
+
+    /** The source is a pixmap which we would like to bulge. The bulged version is
+     * calculated and placed in dest. (source is not modified.) sx0, sy0 is the center of the bulge effect,
+     * in pixels, on the source. dx0, dy0 is the corresponding point, in pixels, on the source pixmap.
+     * R is the radius, on the source, from the center point within which the bulge will be applied.
+     * amount ranges from 0 (no bulge) to 1 (max bulge).
+     * In order to clip the filmstrip down to just one frame, we need to give some extra information as well.
+     * sx0, sy0 are given assuming the frame has already been clipped. */
+    private void bulge(Pixmap source, Pixmap dest, int startx, int swidth, float sx0, float sy0, float dx0, float dy0, float R, float amount) {
+        long start_time = System.currentTimeMillis();
+        float c = -amount/R;
+        int sheight = source.getHeight();
+        int dwidth = dest.getWidth();
+        int dheight = dest.getHeight();
+        for (int dx = 0; dx < dwidth; dx++) { for (int dy = 0; dy < dheight; dy++) {
+            // get distance from center of dest pixmap.
+            float dx_rel = dx - dx0; float dy_rel = dy - dy0;
+            double theta = Math.atan2(dy_rel, dx_rel);
+            float s = (float)Math.sqrt(dx_rel*dx_rel + dy_rel*dy_rel);
+            // s = (1-cR)r + cr^2. Want to invert.
+            // where to sample from on original image to draw at distance s.
+            float r = (c*R-1f-(float)Math.sqrt((1-c*R)*(1-c*R) + 4f*c*s)) / (2.0f*c);
+            if (r > R) { r = s; }
+            float sx = startx + sx0 + r * (float)Math.cos(theta);
+            float sy = sy0 + r * (float)Math.sin(theta);
+            if (sx >= 0 && sx < swidth && sy >= 0 && sy < sheight) {
+                int col = source.getPixel((int)sx, (int)sy);
+                dest.drawPixel(dx, dy, col);
+            } else { // we went off of the source pixmap
+                dest.setColor(0f, 1f, 0f, 1f); // transparent pixel
+                dest.drawPixel(dx, dy);
+            }
+        } }
+        long end_time = System.currentTimeMillis();
+        System.out.println("Time to bulge entire filmstrip (4 million pixels): " + (end_time - start_time)  + " ms.");
     }
 
     public void drawFat(GameCanvas canvas) {
@@ -367,6 +421,7 @@ public class DetectiveModel extends GameObject{
 
     public void setStage(boolean b){
         this.isSecondStage = b;
+
     }
     public boolean isSecondStage(){
         return this.isSecondStage;
@@ -386,8 +441,25 @@ public class DetectiveModel extends GameObject{
         return shotsRemaining;
     }
 
-    public int getShotsTaken(){
-        return shotsTaken;
+    public int getShotsTaken(){ return shotsTaken; }
+
+    public void resetShots() {
+        this.shotsRemaining += this.shotsTaken;
+        this.shotsTaken = 0;
+    }
+
+
+    public void resetStickers(){
+        stickers = new PooledList<Sticker>();
+        stickers.add(new Sticker("hat", 0f, 0f, 0f));
+        stickers.add(new Sticker("tie", 0f, 50f, 0f));
+        stickers.add(new Sticker("hand", 75f, 65f, 180f));
+        stickers.add(new Sticker("hand", -75f, 65f, 180f));
+        stickers.add(new Sticker("buckle", 0f, 90f, 0f));
+        //stickers.add(new Sticker("backpocket", 155f, 120f, 0f));
+        //stickers.add(new Sticker("backpocket", -155f, 120f, 0f));
+        stickers.add(new Sticker("foot", 45f, 145f, 0f));
+        stickers.add(new Sticker("foot", -45f, 145f, 0f));
     }
 
     public int getPar(){

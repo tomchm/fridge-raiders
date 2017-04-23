@@ -496,6 +496,12 @@ public class WorldModel {
                 gm.draw(canvas);
             }
         }
+
+        // do a final touch of wall-blacks on top of the rest
+        for(GameObject gm : gameObjects) {
+            if (gm instanceof WallModel) ((WallModel) gm).drawBlackTop(canvas);
+        }
+
         canvas.end();
 
         if (rayhandlerA != null){

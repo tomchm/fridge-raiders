@@ -155,63 +155,67 @@ public class DetectiveController {
 
     public void update(InputController input){
         isSecondStage = player.isSecondStage();
+        if(!this.worldModel.hasLost) {
 
-        // First we want to update walking mechanics if it's in stage one.
-        if(!isSecondStage) {
-            if(!player.isEating() && player.eatDelay == 0.0){
-                animatePlayer(input);
+            // First we want to update walking mechanics if it's in stage one.
+            if (!isSecondStage) {
+                if (!player.isEating() && player.eatDelay == 0.0) {
+                    animatePlayer(input);
+                } else {
+                    // player ate, need to decrement eatDelay
+
+                    if (player.eatDelay > 0.0) {
+                        stopAnimating();
+                        player.eatDelay -= 1.0f;
+                    }
+                }
             }
-            else{
-                // player ate, need to decrement eatDelay
 
-                if(player.eatDelay > 0.0) {
-                    stopAnimating();
-                    player.eatDelay -= 1.0f;
+            // If we are in stage two, no walking mechanics allowed
+            if (isSecondStage) {
+                player.setAnimation(DetectiveModel.Animation.DOWN_STOP);
+                // Need the special input processor to do mouse commands from the input controller.
+                MyInputProcessor processor = input.getMyProcessor();
+                float speed = player.getSpeed();
+
+                // Only want the player shooting when they've come to a stop
+                // Slow them down otherwise.
+                if (speed == 0) {
+                    player.setAnimation(DetectiveModel.Animation.ROLL_STOP);
+                    processor.shouldRecordClick = true;
+                    if (didClickOnPlayer(processor)) {
+                        handleShots(processor);
+                    }
+                } else {
+                    player.setAnimation(DetectiveModel.Animation.ROLL_MOVE);
+                }
+
+                if (speed < 20) {
+                    player.getBody().setLinearDamping(0.9f);
+                }
+                if (speed < 5) {
+                    player.getBody().setLinearVelocity(0, 0);
+                }
+
+
+            }
+
+            aimGUI.setFoodAmount(player.getAmountEaten());
+
+            if (player.getChewing() != null) {
+                if (!player.getChewing().isDessert() || player.getAmountEaten() >= player.getThreshold()) {
+                    Random random = new Random();
+                    if (random.nextFloat() > 0.7f) {
+                        worldModel.addGameObjectQueue(new CrumbModel(player.getBody().getPosition(), player.getChewing().getCrumbColor(), player.getZ(), player.getAnimation()));
+                    }
                 }
             }
         }
 
-        // If we are in stage two, no walking mechanics allowed
-        if(isSecondStage){
-            player.setAnimation(DetectiveModel.Animation.DOWN_STOP);
-            // Need the special input processor to do mouse commands from the input controller.
-            MyInputProcessor processor = input.getMyProcessor();
-            float speed = player.getSpeed();
+    }
 
-            // Only want the player shooting when they've come to a stop
-            // Slow them down otherwise.
-            if(speed == 0) {
-                player.setAnimation(DetectiveModel.Animation.ROLL_STOP);
-                processor.shouldRecordClick = true;
-                if (didClickOnPlayer(processor)) {
-                    handleShots(processor);
-                }
-            }
-            else {
-                player.setAnimation(DetectiveModel.Animation.ROLL_MOVE);
-            }
-
-            if (speed < 20) {
-                player.getBody().setLinearDamping(0.9f);
-            }
-            if (speed < 5) {
-                player.getBody().setLinearVelocity(0,0);
-            }
-
-
-        }
-
-        aimGUI.setFoodAmount(player.getAmountEaten());
-
-        if(player.getChewing() != null){
-            if(!player.getChewing().isDessert() || player.getAmountEaten() >= player.getThreshold()){
-                Random random = new Random();
-                if(random.nextFloat() > 0.7f){
-                    worldModel.addGameObjectQueue(new CrumbModel(player.getBody().getPosition(), player.getChewing().getCrumbColor(), player.getZ(), player.getAnimation()));
-                }
-            }
-        }
-
+    public boolean inSecondStage(){
+        return this.isSecondStage;
     }
 
 

@@ -56,7 +56,10 @@ public class Cutscene implements Screen {
         if (time > 1.67f) hand = hands[3]; if (time > 2f && time < 2.5f) {hand = hands[4]; pop();}
         if (time > 2.5f && time < 2.7f) {hand = hands[5]; pop();} if (time > 2.7f && time < 2.9f) {hand = hands[6]; pop();}
         if (time > 2.9 && time < 3.1f) {hand = hands[7]; pop();} if (time > 3.1f && time < 4f) {hand = hands[8];}
-        if (time > 4f) {listener.exitScreen(this, WorldController.GAMEVIEW);}
+        if (time > 4f) {
+            listener.exitScreen(this, WorldController.GAMEVIEW);
+            time = 0f;
+        }
 
         float x = 10f*(float)Math.random() - 5f;
         float y = 360f;
@@ -66,10 +69,12 @@ public class Cutscene implements Screen {
         canvas.draw(blackBar, -640f, 260f);
         canvas.draw(blackBar, -640f, -360f);
         canvas.end();
+
     }
     public void pause() {}
     public void resume() {}
     public void resize(int width, int height) {}
+    public void reset() {this.time = 0;}
 
 
 }
