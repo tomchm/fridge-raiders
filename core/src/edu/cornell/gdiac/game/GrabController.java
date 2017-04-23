@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
+import edu.cornell.gdiac.game.model.DetectiveModel;
 import edu.cornell.gdiac.game.model.FurnitureModel;
 
 /**
@@ -37,6 +38,24 @@ public class GrabController {
         jointDef.collideConnected = false;
 
         worldModel.getPlayer().setGrappled(true);
+        switch(worldModel.getPlayer().getAnimation()){
+            case DOWN_MOVE:
+            case DOWN_STOP:
+                worldModel.getPlayer().setAnimation(DetectiveModel.Animation.DOWN_GRAB);
+                break;
+            case UP_MOVE:
+            case UP_STOP:
+                worldModel.getPlayer().setAnimation(DetectiveModel.Animation.UP_GRAB);
+                break;
+            case RIGHT_MOVE:
+            case RIGHT_STOP:
+                worldModel.getPlayer().setAnimation(DetectiveModel.Animation.RIGHT_GRAB);
+                break;
+            case LEFT_MOVE:
+            case LEFT_STOP:
+                worldModel.getPlayer().setAnimation(DetectiveModel.Animation.LEFT_GRAB);
+                break;
+        }
         worldModel.addJoint(jointDef);
         worldModel.setDynamic(current.getBody());
         worldModel.turnOnOffObjSensors(current, 0);

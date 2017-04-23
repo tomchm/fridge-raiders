@@ -89,7 +89,8 @@ public class DetectiveModel extends GameObject{
 
 
     public enum Animation {
-        LEFT_MOVE, RIGHT_MOVE, UP_MOVE, DOWN_MOVE, LEFT_STOP, RIGHT_STOP, UP_STOP, DOWN_STOP, ROLL_MOVE, ROLL_STOP
+        LEFT_MOVE, RIGHT_MOVE, UP_MOVE, DOWN_MOVE, LEFT_STOP, RIGHT_STOP, UP_STOP, DOWN_STOP, ROLL_MOVE, ROLL_STOP,
+        LEFT_GRAB, RIGHT_GRAB, UP_GRAB, DOWN_GRAB
     }
 
     public DetectiveModel(float x, float y){
@@ -116,7 +117,8 @@ public class DetectiveModel extends GameObject{
         animation = Animation.DOWN_MOVE;
 
         tags = new String[] {"player_down", "player_up", "player_left", "player_right",
-                "player_down_idle", "player_up_idle", "player_left_idle", "player_right_idle", "glow",
+                "player_down_idle", "player_up_idle", "player_left_idle", "player_right_idle",
+                "player_down_grab", "player_up_grab", "player_right_grab", "player_left_grab", "glow",
                 "fat", "coat", "hat", "mask", "hand", "foot", "buckle", "loop", "tie", "backpocket"};
 
         stickers = new PooledList<Sticker>();
@@ -268,6 +270,18 @@ public class DetectiveModel extends GameObject{
                     break;
                 case RIGHT_STOP:
                     fa = (FilmstripAsset)assetMap.get("player_right_idle");
+                    break;
+                case DOWN_GRAB:
+                    fa = (FilmstripAsset)assetMap.get("player_down_grab");
+                    break;
+                case UP_GRAB:
+                    fa = (FilmstripAsset)assetMap.get("player_up_grab");
+                    break;
+                case LEFT_GRAB:
+                    fa = (FilmstripAsset)assetMap.get("player_left_grab");
+                    break;
+                case RIGHT_GRAB:
+                    fa = (FilmstripAsset)assetMap.get("player_right_grab");
                     break;
             }
             if(fa != null){

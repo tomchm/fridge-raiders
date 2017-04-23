@@ -105,25 +105,33 @@ public class DetectiveController {
         // Check which direction we are allowing the player to move
         if(input.getHorizontal() != 0.0){
             if(input.getHorizontal() == -1.0){
-                player.setAnimation(DetectiveModel.Animation.LEFT_MOVE);
+                if(!player.isGrappled()){
+                    player.setAnimation(DetectiveModel.Animation.LEFT_MOVE);
+                }
                 player.getBody().setLinearVelocity(player.getThrust() * input.getHorizontal() * multiplier, player.getThrust() * input.getVertical() * multiplier);
                 lastMove = 3;
 
             }
             else{
-                player.setAnimation(DetectiveModel.Animation.RIGHT_MOVE);
+                if(!player.isGrappled()){
+                    player.setAnimation(DetectiveModel.Animation.RIGHT_MOVE);
+                }
                 player.getBody().setLinearVelocity(player.getThrust() * input.getHorizontal()* multiplier, player.getThrust() * input.getVertical() * multiplier);
                 lastMove =1;
             }
         }
         else if(input.getVertical() != 0.0){
             if(input.getVertical() == -1.0){
-                player.setAnimation(DetectiveModel.Animation.DOWN_MOVE);
+                if(!player.isGrappled()){
+                    player.setAnimation(DetectiveModel.Animation.DOWN_MOVE);
+                }
                 player.getBody().setLinearVelocity(player.getThrust()*input.getHorizontal()*multiplier, player.getThrust() * input.getVertical()* multiplier);
                 lastMove =2;
             }
             else{
-                player.setAnimation(DetectiveModel.Animation.UP_MOVE);
+                if(!player.isGrappled()){
+                    player.setAnimation(DetectiveModel.Animation.UP_MOVE);
+                }
                 player.getBody().setLinearVelocity(player.getThrust()*input.getHorizontal()*multiplier, player.getThrust() * input.getVertical()* multiplier);
                 lastMove = 0;
             }
@@ -131,19 +139,29 @@ public class DetectiveController {
         else{
             switch (lastMove) {
                 case -1:
-                    player.setAnimation(DetectiveModel.Animation.DOWN_STOP);
+                    if(!player.isGrappled()){
+                        player.setAnimation(DetectiveModel.Animation.DOWN_STOP);
+                    }
                     break;
                 case 0:
-                    player.setAnimation(DetectiveModel.Animation.UP_STOP);
+                    if(!player.isGrappled()){
+                        player.setAnimation(DetectiveModel.Animation.UP_STOP);
+                    }
                     break;
                 case 1:
-                    player.setAnimation(DetectiveModel.Animation.RIGHT_STOP);
+                    if(!player.isGrappled()){
+                        player.setAnimation(DetectiveModel.Animation.RIGHT_STOP);
+                    }
                     break;
                 case 2:
-                    player.setAnimation(DetectiveModel.Animation.DOWN_STOP);
+                    if(!player.isGrappled()){
+                        player.setAnimation(DetectiveModel.Animation.DOWN_STOP);
+                    }
                     break;
                 case 3:
-                    player.setAnimation(DetectiveModel.Animation.LEFT_STOP);
+                    if(!player.isGrappled()){
+                        player.setAnimation(DetectiveModel.Animation.LEFT_STOP);
+                    }
                     break;
             }
 

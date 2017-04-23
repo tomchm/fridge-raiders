@@ -141,8 +141,8 @@
       "filename": "player/man_down.png",
       "origin_x": "128",
       "origin_y": "144",
-      "scale_x": "0.25",
-      "scale_y": "0.25",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
       "frames": "16",
       "speed": "3",
       "shape": "none"
@@ -153,8 +153,8 @@
       "filename": "player/man_left.png",
       "origin_x": "128",
       "origin_y": "144",
-      "scale_x": "0.25",
-      "scale_y": "0.25",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
       "frames": "16",
       "speed": "3",
       "shape": "none"
@@ -165,8 +165,8 @@
       "filename": "player/man_right.png",
       "origin_x": "128",
       "origin_y": "144",
-      "scale_x": "0.25",
-      "scale_y": "0.25",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
       "frames": "16",
       "speed": "3",
       "shape": "none"
@@ -177,8 +177,8 @@
       "filename": "player/man_up.png",
       "origin_x": "128",
       "origin_y": "144",
-      "scale_x": "0.25",
-      "scale_y": "0.25",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
       "frames": "16",
       "speed": "3",
       "shape": "none"
@@ -189,8 +189,8 @@
       "filename": "player/idle_up.png",
       "origin_x": "128",
       "origin_y": "144",
-      "scale_x": "0.25",
-      "scale_y": "0.25",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
       "frames": "8",
       "speed": "6",
       "shape": "none"
@@ -201,8 +201,8 @@
       "filename": "player/idle_down.png",
       "origin_x": "128",
       "origin_y": "144",
-      "scale_x": "0.25",
-      "scale_y": "0.25",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
       "frames": "8",
       "speed": "6",
       "shape": "none"
@@ -213,8 +213,8 @@
       "filename": "player/idle_left.png",
       "origin_x": "128",
       "origin_y": "144",
-      "scale_x": "0.25",
-      "scale_y": "0.25",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
       "frames": "8",
       "speed": "6",
       "shape": "none"
@@ -225,8 +225,8 @@
       "filename": "player/idle_right.png",
       "origin_x": "128",
       "origin_y": "144",
-      "scale_x": "0.25",
-      "scale_y": "0.25",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
       "frames": "8",
       "speed": "6",
       "shape": "none"
@@ -482,8 +482,8 @@
       "type": "image",
       "tag": "solidBall",
       "filename": "gui/circle3.png",
-      "scale_x": "1",
-      "scale_y": "1",
+      "scale_x": "0.6",
+      "scale_y": "0.6",
       "origin_x": "32",
       "origin_y": "32",
       "shape": "none"
@@ -634,6 +634,54 @@
       "scale_y": "0.5",
       "origin_x": "60",
       "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_right_grab",
+      "filename": "player/grab_right.png",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
+      "origin_x": "128",
+      "origin_y": "144",
+      "shape": "none",
+      "frames": "16",
+      "speed": "3"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_left_grab",
+      "filename": "player/grab_left.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
+      "frames": "16",
+      "speed": "3",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_up_grab",
+      "filename": "player/grab_up.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
+      "frames": "16",
+      "speed": "3",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_down_grab",
+      "filename": "player/grab_down.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
+      "frames": "16",
+      "speed": "3",
       "shape": "none"
     }
   ]
