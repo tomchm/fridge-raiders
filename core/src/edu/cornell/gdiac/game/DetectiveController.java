@@ -214,6 +214,10 @@ public class DetectiveController {
 
     }
 
+    public boolean inSecondStage(){
+        return this.isSecondStage;
+    }
+
 
 
 }
