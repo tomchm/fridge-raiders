@@ -174,7 +174,7 @@ public class DetectiveModel extends GameObject{
 
     public void startEating(FoodModel f) {
         chewing = f;
-        eatDelay += 30.0f;
+        eatDelay += 3.0f;
     }
     public void stopEating() { chewing = null; }
 
