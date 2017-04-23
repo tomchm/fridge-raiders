@@ -161,8 +161,11 @@ public class AimGUIModel extends GUIModel{
                 if(highlightAmount < threshold){
                     width = (int)(highlightAmount*480f / threshold);
                 }
-                bar.setRegion(0,0,width, 40);
-                canvas.draw(bar, new Color(1,1,1,0.5f), asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
+                if(width > 0){
+                    bar.setRegion(0,0,width, 40);
+                    canvas.draw(bar, new Color(1,1,1,0.5f), asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
+
+                }
 
                 // DRAW GREEN BAR
                 threshold = worldModel.getPlayer().getThreshold();
@@ -190,8 +193,11 @@ public class AimGUIModel extends GUIModel{
                     if(highlightAmount < maximum){
                         width = (int)((highlightAmount - threshold)*480f / (maximum - threshold));
                     }
-                    bar.setRegion(0,40,width, 40);
-                    canvas.draw(bar, new Color(1,1,1,0.6f), asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
+                    if(width > 0){
+                        bar.setRegion(0,40,width, 40);
+                        canvas.draw(bar, new Color(1,1,1,0.6f), asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
+
+                    }
 
                     // DRAW YELLOW BAR
                     maximum = worldModel.getPlayer().getMaximumFood();
