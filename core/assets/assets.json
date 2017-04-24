@@ -229,7 +229,7 @@
     },
     {
       "type": "image",
-      "tag": "Food - Burger",
+      "tag": "Food-Burger",
       "filename": "food/burger.png",
       "origin_x": "138",
       "origin_y": "91",
@@ -242,7 +242,7 @@
     },
     {
       "type": "image",
-      "tag": "Food - Avocado",
+      "tag": "Food-Avocado",
       "filename": "food/avocado.png",
       "scale_x": "0.25",
       "scale_y": "0.25",
@@ -257,7 +257,7 @@
     },
     {
       "type": "image",
-      "tag": "Food - Hotdog",
+      "tag": "Food-Hotdog",
       "filename": "food/hotdog.png",
       "origin_x": "177",
       "origin_y": "107",
@@ -270,7 +270,7 @@
     },
     {
       "type": "image",
-      "tag": "Food - Pie",
+      "tag": "Food-Pie",
       "filename": "food/pie1.png",
       "origin_x": "210",
       "origin_y": "119",
@@ -283,7 +283,7 @@
     },
     {
       "type": "image",
-      "tag": "Food - Pie 2",
+      "tag": "Food-Pie2",
       "filename": "food/pie2.png",
       "origin_x": "210",
       "origin_y": "130",
@@ -296,7 +296,7 @@
     },
     {
       "type": "image",
-      "tag": "Food - Scam",
+      "tag": "Food-Scam",
       "filename": "food/scam1.png",
       "origin_x": "167",
       "origin_y": "146",
@@ -309,7 +309,7 @@
     },
     {
       "type": "image",
-      "tag": "Food - Scam 2",
+      "tag": "Food-Scam2",
       "filename": "food/scam2.png",
       "origin_x": "181",
       "origin_y": "162",
@@ -321,8 +321,8 @@
       "angle": "45"
     },
     {
-      "type": "Food (DESSERT) - Big Scam",
-      "tag": "scamDessert",
+      "type": "image",
+      "tag": "Food-DESSERT-BigScam",
       "filename": "food/scamDessert.png",
       "origin_x": "381",
       "origin_y": "150",
@@ -335,7 +335,7 @@
     },
     {
       "type": "image",
-      "tag": "Food - Turkey",
+      "tag": "Food-Turkey",
       "filename": "food/turkey.png",
       "origin_x": "72",
       "origin_y": "25",
@@ -348,7 +348,7 @@
     },
     {
       "type": "image",
-      "tag": "Food - Tomato",
+      "tag": "Food-Tomato",
       "filename": "food/tomato1.png",
       "origin_x": "108",
       "origin_y": "80",
@@ -361,7 +361,7 @@
     },
     {
       "type": "image",
-      "tag": "Food - Tomato 2",
+      "tag": "Food-Tomato2",
       "filename": "food/tomato2.png",
       "origin_x": "116",
       "origin_y": "72",
@@ -374,7 +374,7 @@
     },
     {
       "type": "image",
-      "tag": "Food - Avocado",
+      "tag": "Food-Avocado",
       "filename": "food/avocado.png",
       "scale_x": "0.25",
       "scale_y": "0.25",
@@ -387,7 +387,7 @@
     },
     {
       "type": "image",
-      "tag": "Food - Banana",
+      "tag": "Food-Banana",
       "filename": "food/banana.png",
       "scale_x": "0.2",
       "scale_y": "0.2",
@@ -400,7 +400,7 @@
     },
     {
       "type": "image",
-      "tag": "Food - Orange",
+      "tag": "Food-Orange",
       "filename": "food/orange.png",
       "scale_x": "0.25",
       "scale_y": "0.25",
@@ -413,7 +413,7 @@
     },
     {
       "type": "image",
-      "tag": "Food - Sandwich",
+      "tag": "Food-Sandwich",
       "filename": "food/sandwich.png",
       "scale_x": "0.2",
       "scale_y": "0.2",
@@ -436,7 +436,7 @@
     },
     {
       "type": "image",
-      "tag": "Furniture - Apt Couch",
+      "tag": "Furniture-AptCouch",
       "filename": "furniture/Apartment Couch Front.png",
       "origin_x": "466",
       "origin_y": "204",
@@ -449,7 +449,7 @@
     },
     {
       "type": "image",
-      "tag": "Furniture - Apt Couch Back",
+      "tag": "Furniture-AptCouchBack",
       "filename": "furniture/Apartment Couch Back.png",
       "origin_x": "450",
       "origin_y": "200",
@@ -462,7 +462,7 @@
     },
     {
       "type": "image",
-      "tag": "Furniture - Msn Couch",
+      "tag": "Furniture-MsnCouch",
       "filename": "furniture/Mansion Couch.png",
       "origin_x": "456",
       "origin_y": "185",
@@ -475,7 +475,7 @@
     },
     {
       "type": "image",
-      "tag": "Furniture - Apt Bed",
+      "tag": "Furniture-AptBed",
       "filename": "furniture/Apartment Bed.png",
       "origin_x": "632",
       "origin_y": "520",
@@ -488,7 +488,7 @@
     },
     {
       "type": "image",
-      "tag": "Furniture - Apt Chair",
+      "tag": "Furniture-AptChair",
       "filename": "furniture/Apartment Chair Left.png",
       "origin_x": "298",
       "origin_y": "298",
@@ -501,7 +501,7 @@
     },
     {
       "type": "image",
-      "tag": "Furniture - Apt Chair 2",
+      "tag": "Furniture-AptChair2",
       "filename": "furniture/Apartment Chair Right.png",
       "origin_x": "352",
       "origin_y": "290",
@@ -514,7 +514,7 @@
     },
     {
       "type": "image",
-      "tag": "Furniture - Apt Coffee Table",
+      "tag": "Furniture-AptCoffeeTable",
       "filename": "furniture/Apartment Table Small.png",
       "origin_x": "325",
       "origin_y": "298",
@@ -525,7 +525,7 @@
     },
     {
       "type": "image",
-      "tag": "Furniture - Apt Large Table",
+      "tag": "Furniture-AptLargeTable",
       "filename": "furniture/Apartment Table Large.png",
       "origin_x": "596",
       "origin_y": "414",
@@ -538,7 +538,7 @@
     },
     {
       "type": "image",
-      "tag": "Furniture - Msn Table Large",
+      "tag": "Furniture-MsnTableLarge",
       "filename": "furniture/Mansion Table Large.png",
       "origin_x": "578",
       "origin_y": "414",
@@ -551,7 +551,7 @@
     },
     {
       "type": "image",
-      "tag": "Furniture - Msn Chair",
+      "tag": "Furniture-MsnChair",
       "filename": "furniture/Mansion Chair Front.png",
       "origin_x": "356",
       "origin_y": "224",
@@ -564,7 +564,7 @@
     },
     {
       "type": "image",
-      "tag": "Furniture - Msn Chair Large",
+      "tag": "Furniture-MsnChairLarge",
       "filename": "furniture/Fancy Chair Large.png",
       "origin_x": "492",
       "origin_y": "270",
@@ -587,7 +587,7 @@
     },
     {
       "type": "image",
-      "tag": "Floor - Linoleum",
+      "tag": "Floor-Linoleum",
       "filename": "floor/linoleum.png",
       "origin_x": "198",
       "origin_y": "198",
@@ -597,7 +597,7 @@
     },
     {
       "type": "image",
-      "tag": "Floor - Carpet",
+      "tag": "Floor-Carpet",
       "filename": "floor/carpet1.png",
       "origin_x": "198",
       "origin_y": "198",
@@ -607,7 +607,7 @@
     },
     {
       "type": "image",
-      "tag": "Floor - Carpet 2",
+      "tag": "Floor-Carpet2",
       "filename": "floor/carpet2.png",
       "origin_x": "198",
       "origin_y": "198",
@@ -617,7 +617,7 @@
     },
     {
       "type": "image",
-      "tag": "Floor - Carpet 3",
+      "tag": "Floor-Carpet3",
       "filename": "floor/grey.png",
       "origin_x": "248",
       "origin_y": "248",
@@ -627,7 +627,7 @@
     },
     {
       "type": "image",
-      "tag": "Floor - Fine Tile",
+      "tag": "Floor-FineTile",
       "filename": "floor/tile floor.png",
       "origin_x": "248",
       "origin_y": "248",
@@ -637,7 +637,7 @@
     },
     {
       "type": "image",
-      "tag": "Floor - Large Tile",
+      "tag": "Floor-LargeTile",
       "filename": "floor/tile floor.png",
       "origin_x": "248",
       "origin_y": "248",
@@ -657,7 +657,7 @@
     },
     {
       "type": "image",
-      "tag": "Decor - Clock",
+      "tag": "Decor-Clock",
       "filename": "decor/clock.png",
       "scale_x": "0.3",
       "scale_y": "0.3",
@@ -667,7 +667,7 @@
     },
     {
       "type": "image",
-      "tag": "Decor - Shelves",
+      "tag": "Decor-Shelves",
       "filename": "decor/InlayedShelves.png",
       "scale_x": "0.3",
       "scale_y": "0.25",
@@ -677,7 +677,7 @@
     },
     {
       "type": "image",
-      "tag": "Decor - Sink",
+      "tag": "Decor-Sink",
       "filename": "decor/KitchenSink.png",
       "scale_x": "0.2",
       "scale_y": "0.2",
@@ -687,7 +687,7 @@
     },
     {
       "type": "image",
-      "tag": "Decor - Window",
+      "tag": "Decor-Window",
       "filename": "decor/Window1.png",
       "scale_x": "0.25",
       "scale_y": "0.25",
@@ -697,7 +697,7 @@
     },
     {
       "type": "image",
-      "tag": "Decor - Window 2",
+      "tag": "Decor-Window2",
       "filename": "decor/Window2.png",
       "scale_x": "0.25",
       "scale_y": "0.25",
@@ -707,7 +707,7 @@
     },
     {
       "type": "image",
-      "tag": "Decor - Deer",
+      "tag": "Decor-Deer",
       "filename": "decor/mounted deer.png",
       "scale_x": "0.25",
       "scale_y": "0.25",
@@ -717,7 +717,7 @@
     },
     {
       "type": "image",
-      "tag": "Decor - Wooden Drawers",
+      "tag": "Decor-WoodenDrawers",
       "filename": "decor/WoodenDrawers.png",
       "scale_x": "0.2",
       "scale_y": "0.2",

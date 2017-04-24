@@ -149,7 +149,7 @@ public class WorldController implements Screen {
 	 * Lays out the game geography.
 	 */
 	private void populateLevel() {
-		fileIOController.load("levels/alphaLevel.json");
+		fileIOController.load("levels/simpleLevel.json");
 		assetLoader.assignContent(worldModel);
 		for (AIModel ai: worldModel.getAIList()) {
 			aiControllers.add(new AIController(ai, worldModel));
