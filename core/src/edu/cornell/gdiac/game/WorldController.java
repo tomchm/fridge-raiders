@@ -157,7 +157,8 @@ public class WorldController implements Screen {
 		worldModel.updateAllSensors();
 		worldModel.setMaximumFood();
 
-		fileIOController.save("levels/testOutput.json");
+		SoundController.getInstance().play("levelmusic", true);
+		//fileIOController.save("levels/testOutput.json");
 	}
 
 	public boolean isDebug( ) {

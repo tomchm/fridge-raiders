@@ -13,31 +13,31 @@
     {
       "type": "image",
       "tag": "hand",
-      "filename": "player/hand.png",
-      "origin_x": "26",
-      "origin_y": "29",
-      "scale_x": "0.5",
-      "scale_y": "0.5",
+      "filename": "player/HandRoll.png",
+      "origin_x": "50",
+      "origin_y": "50",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
       "shape": "none"
     },
     {
       "type": "image",
       "tag": "foot",
-      "filename": "player/foot.png",
-      "origin_x": "17",
-      "origin_y": "38",
-      "scale_x": "0.5",
-      "scale_y": "0.5",
+      "filename": "player/FootRoll.png",
+      "origin_x": "35",
+      "origin_y": "170",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
       "shape": "none"
     },
     {
       "type": "image",
       "tag": "hat",
-      "filename": "player/hat.png",
-      "origin_x": "54",
-      "origin_y": "50",
-      "scale_x": "0.5",
-      "scale_y": "0.5",
+      "filename": "player/HatRoll.png",
+      "origin_x": "140",
+      "origin_y": "125",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
       "shape": "none"
     },
     {
@@ -63,11 +63,11 @@
     {
       "type": "image",
       "tag": "tie",
-      "filename": "player/tie.png",
-      "origin_x": "21",
-      "origin_y": "53",
-      "scale_x": "0.5",
-      "scale_y": "0.5",
+      "filename": "player/TieRoll.png",
+      "origin_x": "40",
+      "origin_y": "135",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
       "shape": "none"
     },
     {
@@ -83,11 +83,11 @@
     {
       "type": "image",
       "tag": "coat",
-      "filename": "player/coat.png",
-      "origin_x": "140",
-      "origin_y": "140",
-      "scale_x": "0.5",
-      "scale_y": "0.5",
+      "filename": "player/BodyRoll.png",
+      "origin_x": "335",
+      "origin_y": "320",
+      "scale_x": "0.22",
+      "scale_y": "0.22",
       "shape": "none"
     },
     {
@@ -758,13 +758,18 @@
     {
       "type": "sound",
       "tag": "levelmusic",
-      "filename": "sound/level.wav"
+      "filename": "sound/level.ogg"
     },
     {
       "type": "sound",
       "tag": "pop",
       "filename": "sound/pop.wav"
     },
+    {
+      "type": "sound",
+      "tag": "lose",
+      "filename": "sound/lose.wav"
+    }
     {
       "type": "image",
       "tag": "glow",

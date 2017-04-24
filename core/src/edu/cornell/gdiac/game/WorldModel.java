@@ -13,6 +13,7 @@ import edu.cornell.gdiac.game.shaders.CustomShader;
 import edu.cornell.gdiac.util.PooledList;
 import box2dLight.*;
 import com.badlogic.gdx.graphics.*;
+import edu.cornell.gdiac.util.SoundController;
 import shaders.LightShader;
 
 
@@ -118,6 +119,7 @@ public class WorldModel {
 
     public void setLost(){
         hasLost = true;
+        SoundController.getInstance().play("lose", false);
     }
     public void setNotLost(){
         hasLost = false;

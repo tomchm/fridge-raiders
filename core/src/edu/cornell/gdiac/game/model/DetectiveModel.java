@@ -472,8 +472,8 @@ public class DetectiveModel extends GameObject{
         stickers.add(new Sticker("buckle", 0f, 90f, 0f));
         //stickers.add(new Sticker("backpocket", 155f, 120f, 0f));
         //stickers.add(new Sticker("backpocket", -155f, 120f, 0f));
-        stickers.add(new Sticker("foot", 45f, 145f, 0f));
-        stickers.add(new Sticker("foot", -45f, 145f, 0f));
+        stickers.add(new Sticker("foot", 65f, 145f, 0f));
+        stickers.add(new Sticker("foot", -65f, 145f, 0f));
     }
 
     public int getPar(){
