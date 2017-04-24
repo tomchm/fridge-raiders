@@ -129,41 +129,42 @@ public class AIController implements RayCastCallback{
      * updates AI
      */
     public void update(float dt) {
-        dtCache = dt;
-        ticks ++;
+        if (!this.worldModel.isPaused) {
+            dtCache = dt;
+            ticks++;
 //        System.out.println(target);
 //        System.out.println(next);
 //        System.out.println(isStuck);
 
-        // check if AI is stuck
-        double interval = Math.round(STUCK_TIME * 60);
-        if (ticks % interval == 0) {
-            if (prevPos.equals(ai.getBody().getPosition())) {
-                isStuck = true;
-            }
-            else {
-                if (ticks % (interval * STUCK_TIME_MULT) == 0) {
-                    isStuck = false;
+            // check if AI is stuck
+            double interval = Math.round(STUCK_TIME * 60);
+            if (ticks % interval == 0) {
+                if (prevPos.equals(ai.getBody().getPosition())) {
+                    isStuck = true;
+                } else {
+                    if (ticks % (interval * STUCK_TIME_MULT) == 0) {
+                        isStuck = false;
+                    }
                 }
+                prevPos = new Vector2(ai.getBody().getPosition());
             }
-            prevPos = new Vector2(ai.getBody().getPosition());
+
+            // calculate all attributes
+            checkSight();
+            setNextAction(dt);
+            updateLightColor();
+
+            // update ai model
+            if (state == FSMState.CHASE) {
+                ai.updateAngle(new Vector2(target).sub(ai.getBody().getPosition()));
+            } else {
+                ai.updateAngle(ai.getBody().getLinearVelocity());
+            }
+            ai.updateConeLight();
+
+            // update light handler
+            worldModel.rayhandler.update();
         }
-
-        // calculate all attributes
-        checkSight();
-        setNextAction(dt);
-        updateLightColor();
-
-        // update ai model
-        if (state == FSMState.CHASE){
-            ai.updateAngle(new Vector2(target).sub(ai.getBody().getPosition()));
-        } else {
-            ai.updateAngle(ai.getBody().getLinearVelocity());
-        }
-        ai.updateConeLight();
-
-        // update light handler
-        worldModel.rayhandler.update();
     }
 
     /**

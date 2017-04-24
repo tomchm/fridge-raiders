@@ -281,10 +281,9 @@ public class InputController {
 		debugPressed = (secondary && debugPressed) || (Gdx.input.isKeyPressed(Input.Keys.D));
 		primePressed = (secondary && primePressed) || (Gdx.input.isKeyPressed(Input.Keys.UP));
 		secondPressed = (secondary && secondPressed) || (Gdx.input.isKeyPressed(Input.Keys.SPACE));
-		prevPressed = (Gdx.input.isKeyPressed(Input.Keys.P));
+		prevPressed = (Gdx.input.isKeyPressed(Input.Keys.P)) || (Gdx.input.isKeyPressed(Input.Keys.ESCAPE));
 
 		nextPressed = (secondary && nextPressed) || (Gdx.input.isKeyPressed(Input.Keys.N));
-		exitPressed  = (secondary && exitPressed) || (Gdx.input.isKeyPressed(Input.Keys.ESCAPE));
 		cutscenePressed = (Gdx.input.isKeyPressed(Input.Keys.C));
 
 		// Directional controls
