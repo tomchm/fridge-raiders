@@ -23,7 +23,7 @@ import java.util.Collections;
  * Created by tomchm on 3/9/17.
  */
 public class WorldModel {
-
+    protected  boolean isPaused =  false;
     protected boolean hasLost;
     protected boolean hasWon;
     protected World world;
@@ -109,8 +109,18 @@ public class WorldModel {
         return hasWon;
     }
 
+    public boolean isPaused(){
+        return isPaused;
+    }
+
+    public void setPaused(boolean b ) {this.isPaused = b;}
+
+
     public void setLost(){
         hasLost = true;
+    }
+    public void setNotLost(){
+        hasLost = false;
     }
 
     public void setWon(){

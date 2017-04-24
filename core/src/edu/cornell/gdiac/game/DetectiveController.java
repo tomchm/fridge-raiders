@@ -173,7 +173,7 @@ public class DetectiveController {
 
     public void update(InputController input){
         isSecondStage = player.isSecondStage();
-        if(!this.worldModel.hasLost) {
+        if(!this.worldModel.hasLost && !this.worldModel.hasWon() && !this.worldModel.isPaused) {
 
             // First we want to update walking mechanics if it's in stage one.
             if (!isSecondStage) {
@@ -228,6 +228,10 @@ public class DetectiveController {
                     }
                 }
             }
+        }
+        else{
+            player.getBody().setLinearVelocity(0, 0);
+            this.stopAnimating();
         }
 
     }

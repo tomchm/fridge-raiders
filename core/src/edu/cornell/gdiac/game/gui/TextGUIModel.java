@@ -63,11 +63,7 @@ public class TextGUIModel extends GUIModel{
                 this.messageStep = 2;
                 this.countdown += 3000;
             }
-            else if( worldModel.hasLost()){
-                this.message = "   GAME OVER! \nCLICK TO RESTART";
-                this.messageStep = 3;
-                this.countdown += 3000;
-            }
+
         }
 
     }
@@ -90,13 +86,6 @@ public class TextGUIModel extends GUIModel{
                 canvas.drawText(this.message, font.getFont(), x - 285 + 2, y + 320 - 2);
                 bf.setColor(Color.YELLOW);
                 canvas.drawText(this.message, font.getFont(), x - 285, y + 320);
-            }
-            else if(this.messageStep == 3) {
-                BitmapFont bf = font.getFont();
-                bf.setColor(Color.BLACK);
-                canvas.drawText(this.message, font.getFont(), x - 280 + 2, y + 320 - 2);
-                bf.setColor(Color.YELLOW);
-                canvas.drawText(this.message, font.getFont(), x - 280, y + 320);
             }
             else {
                 BitmapFont bf = font.getFont();

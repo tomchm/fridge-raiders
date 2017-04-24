@@ -9,6 +9,7 @@ import edu.cornell.gdiac.game.InputController;
 import edu.cornell.gdiac.game.SpacebarController;
 import edu.cornell.gdiac.game.WorldModel;
 import edu.cornell.gdiac.game.asset.Asset;
+import edu.cornell.gdiac.util.ScreenListener;
 
 /**
  * Created by tomchm on 3/19/17.
@@ -26,10 +27,10 @@ public class GUIController {
         guiMap.put(pauseGUI.guiTag, pauseGUI);
         GUIModel textGUI = new TextGUIModel(worldModel);
         guiMap.put(textGUI.guiTag, textGUI);
-        GUIModel resetGUI = new ResetGUIModel(worldModel);
-        guiMap.put(resetGUI.guiTag, resetGUI);
         GUIModel minimapGUI = new MinimapGUIModel(worldModel);
         guiMap.put(minimapGUI.guiTag, minimapGUI);
+        GUIModel resetGUI = new ResetGUIModel(worldModel,inputControlla);
+        guiMap.put(resetGUI.guiTag, resetGUI);
 
     }
 

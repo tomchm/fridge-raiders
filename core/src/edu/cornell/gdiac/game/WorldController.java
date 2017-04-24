@@ -24,6 +24,8 @@ import com.badlogic.gdx.math.Vector2;
 import edu.cornell.gdiac.game.asset.AssetLoader;
 import edu.cornell.gdiac.game.gui.AimGUIModel;
 import edu.cornell.gdiac.game.gui.GUIController;
+import edu.cornell.gdiac.game.gui.PauseGUI;
+import edu.cornell.gdiac.game.gui.ResetGUIModel;
 import edu.cornell.gdiac.game.model.*;
 import edu.cornell.gdiac.util.*;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
@@ -200,33 +202,7 @@ public class WorldController implements Screen {
 			reset();
 		}
 
-		if(input.didRetreat()){
-			isPaused = !isPaused;
-			input.getMyProcessor().pauseX = 0;
-			input.getMyProcessor().pauseY = 0;
-		}
 
-		if(isPaused){
-			int myX = input.getMyProcessor().pauseX;
-			int myY = input.getMyProcessor().pauseY;
-			if(myX >= 530 && myX <= 820 && myY>=110 && myY <= 190){
-				// first option
-				input.prevPressed = !input.prevPressed;
-				isPaused = !isPaused;
-
-
-			}
-			else if (myX >= 530 && myX <= 750 && myY>=220 && myY <= 295){
-				//second option
-
-			}
-			else if (myX >= 530 && myX <= 720 && myY>=320 && myY <= 400){
-				//third option
-				listener.exitScreen(this, EXIT_QUIT);
-				return false;
-
-			}
-		}
 
 		if(input.didExit()){
 			listener.exitScreen(this, EXIT_QUIT);
@@ -244,9 +220,20 @@ public class WorldController implements Screen {
 				}
 			}
 
-
-
 		}
+
+		PauseGUI pauseGui = (PauseGUI) this.guiController.getGUI("PauseGUI");
+		if(pauseGui.paused){
+			this.worldModel.setPaused(true);
+		}
+		else{
+			this.worldModel.setPaused(false);
+		}
+		if(pauseGui.shouldQuit()){
+			listener.exitScreen(this, EXIT_QUIT);
+			return false;
+		}
+
 		else {
 			if(worldModel.getGoal().hasPlayerCollided()){
 				worldModel.setWon();
@@ -261,38 +248,54 @@ public class WorldController implements Screen {
 			}
 		}
 
-		if(worldModel.hasLost() && worldModel.getPlayer().isSecondStage()){
-			int myX = input.getMyProcessor().menuX;
-			int myY = input.getMyProcessor().menuY;
-			System.out.println(myX + " " + myY);
-			if(myX >= 290 && myX <= 1080){
-				System.out.println("IN?????????");
-
-				if(myY >= 120 && myY <= 195){
-					//reset hard
-					hardReset = true;
-					reset();
-					hardReset = false;
-					didShowMenu = false;
-				}
-				else if(myY >= 300 && myY <= 375){
-					//reset softs
-
-					worldModel.hasLost = false;
-					reset();
-					didShowMenu = false;
-				}
-			}
-
+		ResetGUIModel resetGUI = (ResetGUIModel) this.guiController.getGUI("ResetGUI");
+		if(resetGUI.hardReset){
+			hardReset = true;
+			reset();
+			hardReset = false;
+			didShowMenu = false;
+			resetGUI.hardReset = false;
 		}
+
+		else if(resetGUI.softReset){
+			worldModel.hasLost = false;
+			reset();
+			didShowMenu = false;
+			resetGUI.softReset = false;
+		}
+
+//		if(worldModel.hasLost() && worldModel.getPlayer().isSecondStage()){
+//			int myX = input.getMyProcessor().menuX;
+//			int myY = input.getMyProcessor().menuY;
+//			System.out.println(myX + " " + myY);
+//			if(myX >= 290 && myX <= 1080){
+//				System.out.println("IN?????????");
+//
+//				if(myY >= 120 && myY <= 195){
+//					//reset hard
+//					hardReset = true;
+//					reset();
+//					hardReset = false;
+//					didShowMenu = false;
+//				}
+//				else if(myY >= 300 && myY <= 375){
+//					//reset softs
+//
+//
+//				}
+//			}
+//
+//		}
 		if(worldModel.hasLost() && (!this.worldModel.getPlayer().isSecondStage())){
 			reset();
 		}
 
-		if(worldModel.hasLost() || worldModel.hasWon()){
+		if(worldModel.hasWon()){
 		    resetCounter++;
 		    if(resetCounter == 300){
-//		        reset();
+		    	hardReset = true;
+		        reset();
+		        hardReset = false;
             }
         }
 
