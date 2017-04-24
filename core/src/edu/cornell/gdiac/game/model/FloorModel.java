@@ -59,23 +59,22 @@ public class FloorModel extends GameObject{
     }
 
     public void draw(GameCanvas canvas) {
-        /*
         if (region == null) {
             Asset ass = assetMap.get(tags[0]);
             ImageAsset ia = (ImageAsset) ass;
             Texture floorTex = ia.getTexture().getTexture();
             floorTex.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
             //TextureRegion region = new TextureRegion(ia.getTexture().getTexture());
-            float width = floorTex.getWidth();
-            float height = floorTex.getHeight();
-            ia.getTexture().setRegion(-250*width,-250*height,250*width, 250*height);
-            float[] scaledCoords = new float[8];
-            for (int i=0; i<8; i++) {scaledCoords[i] = (i%2==0 ? drawScale.x : drawScale.y)*coords[i];}
-            region = new PolygonRegion(ia.getTexture(), scaledCoords, new short[] {0,1,2,0,3,2});
+            //float width = floorTex.getWidth();
+            //float height = floorTex.getHeight();
+            ia.getTexture().setRegion((int)0, (int)0, (int)((maxx-x)*drawScale.x/ia.getImageScale().x), (int)((maxy-y)*drawScale.y/ia.getImageScale().y));
+            //float[] scaledCoords = new float[8];
+            //for (int i=0; i<8; i++) {scaledCoords[i] = (i%2==0 ? drawScale.x : drawScale.y)*coords[i];}
+            //region = new PolygonRegion(ia.getTexture(), scaledCoords, new short[] {0,1,2,0,3,2});
+            canvas.draw(ia.getTexture(), Color.WHITE, 0f,0f,x*drawScale.x,y*drawScale.x,0f,ia.getImageScale().x,ia.getImageScale().y);
         }
-        canvas.draw(region, drawScale.x*x, drawScale.y*y);
-        */
-
+        //canvas.draw(region, drawScale.x*x, drawScale.y*y);
+/*
         canvas.drawPolygon(coords, 0.2f, 0.0f, 0.6f);
         if (region == null) {
             Asset ass = assetMap.get(tags[0]);
@@ -92,6 +91,7 @@ public class FloorModel extends GameObject{
         canvas.draw(region,Color.WHITE,0f,0f,x*drawScale.x,y*drawScale.y,0f,ia.getImageScale().x,ia.getImageScale().y);
         //canvas.drawPolygon(coords, 0.5f, 0.5f, 0.5f);
         //canvas.draw(ia.getTexture(), Color.WHITE, ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),ia.getImageScale().x,ia.getImageScale().y);
+    */
     }
 
     public float getZ(){
