@@ -64,7 +64,7 @@ public class ResetGUIModel extends GUIModel{
         FontAsset font = (FontAsset) assetMap.get("gothic72");
         if(font != null) {
             if(this.worldModel.hasLost() && this.worldModel.getPlayer().isSecondStage()) {
-                canvas.drawRect(-5000, -5000, Gdx.graphics.getWidth()*2, Gdx.graphics.getHeight()*2, 0.5f, 0.5f, 0.5f);
+                canvas.drawRect(-500, -500, Gdx.graphics.getWidth()*2, Gdx.graphics.getHeight()*2, 0.5f, 0.5f, 0.5f);
                 BitmapFont bf = font.getFont();
                 bf.setColor(Color.BLACK);
                 canvas.drawText("RESTART FROM STAGE 1", font.getFont(), x - 350 + 2, y + 230 - 2);
