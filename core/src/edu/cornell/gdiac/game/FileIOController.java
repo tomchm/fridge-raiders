@@ -82,7 +82,7 @@ public class FileIOController {
                 String[] tags = f.get("tags").asStringArray();
                 worldModel.addGameObject(new FloorModel(coords, tags));
             }
-
+/*
             // array of door objects
             JsonValue doors = level.get("doors");
             for (JsonValue d = doors.child(); d != null; d = d.next() ) {
@@ -93,7 +93,9 @@ public class FileIOController {
                 float theta = d.get("theta").asFloat() * (float)Math.PI / 180f;
                 String[] tags = d.get("tags").asStringArray();
                 worldModel.addGameObject(new DoorModel(x, y, width, height, theta, tags));
-            }
+            }*/
+
+            System.out.println("got here");
 
             // goal area
             float[] goalCoords = level.get("exit").get("coords").asFloatArray();

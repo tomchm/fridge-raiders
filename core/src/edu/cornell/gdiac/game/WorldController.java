@@ -149,7 +149,7 @@ public class WorldController implements Screen {
 	 * Lays out the game geography.
 	 */
 	private void populateLevel() {
-		fileIOController.load("levels/alphaLevel.json");
+		fileIOController.load("levels/simpleLevel.json");
 		assetLoader.assignContent(worldModel);
 		for (AIModel ai: worldModel.getAIList()) {
 			aiControllers.add(new AIController(ai, worldModel));
@@ -157,7 +157,8 @@ public class WorldController implements Screen {
 		worldModel.updateAllSensors();
 		worldModel.setMaximumFood();
 
-		fileIOController.save("levels/testOutput.json");
+		SoundController.getInstance().play("levelmusic", true, 0.75f);
+		//fileIOController.save("levels/testOutput.json");
 	}
 
 	public boolean isDebug( ) {

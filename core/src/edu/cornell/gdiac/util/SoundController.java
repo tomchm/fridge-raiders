@@ -89,7 +89,7 @@ public class SoundController {
 	/** The default sound cooldown */
 	private static final int DEFAULT_COOL = 20;
 	/** The default sound length limit */
-	private static final int DEFAULT_LIMIT = 120;
+	private static final int DEFAULT_LIMIT = 60*3;
 	/** The default limit on sounds per frame */
 	private static final int DEFAULT_FRAME = 2;
 	
@@ -372,7 +372,7 @@ public class SoundController {
 		for(String key : actives.keys()) {
 			ActiveSound snd = actives.get(key);
 			snd.lifespan++;
-			if (snd.lifespan > timeLimit) {
+			if (snd.lifespan > timeLimit && !snd.loop) {
 				collection.add(key);
 				snd.sound.setLooping(snd.id,false); // Will eventually garbage collect
 				snd.sound.setVolume(snd.id, 0.0f); 
