@@ -20,6 +20,8 @@ import com.badlogic.gdx.graphics.g2d.freetype.*;
 import com.badlogic.gdx.assets.loaders.*;
 import com.badlogic.gdx.assets.loaders.resolvers.*;
 
+import edu.cornell.gdiac.game.asset.*;
+import edu.cornell.gdiac.game.asset.AssetLoader;
 import edu.cornell.gdiac.util.*;
 
 /**
@@ -41,7 +43,7 @@ public class GDXRoot extends Game implements ScreenListener {
 	/** Player mode for the the game proper (CONTROLLER CLASS) */
 	private int current;
 	/** List of all WorldControllers */
-	private WorldController controller;
+	private WorldController[] controllers;
 	private Cutscene cutscene;
 	private LevelSelect levelSelect;
 
@@ -73,8 +75,11 @@ public class GDXRoot extends Game implements ScreenListener {
 		levelSelect.setScreenListener(this);
 
 		// Initialize the three game worlds
-		controller = new WorldController();
-		controller.getAssetLoader().preLoadContent(manager);
+		controllers = new WorldController[3];
+		controllers[0] = new WorldController("levels/betaHard.json");
+		controllers[1] = new WorldController("levels/alphaLevel.json");
+		controllers[2] = new WorldController("levels/simple.json");
+		AssetLoader.getInstance().preLoadContent(manager);
 		current = 0;
 		loading.setScreenListener(this);
 		setScreen(loading);
@@ -89,7 +94,10 @@ public class GDXRoot extends Game implements ScreenListener {
 		// Call dispose on our children
 		setScreen(null);
 		//controller.getAssetLoader().unloadContent(manager);
-		controller.dispose();
+		for(int i=0; i<controllers.length; i++){
+			controllers[i].dispose();
+		}
+
 
 		canvas.dispose();
 		canvas = null;
@@ -124,10 +132,9 @@ public class GDXRoot extends Game implements ScreenListener {
 	 */
 	public void exitScreen(Screen screen, int exitCode) {
 		if (screen == loading) {
-			controller.getAssetLoader().loadContent(manager);
-			controller.setScreenListener(this);
-			controller.setCanvas(canvas);
-			controller.reset();
+			AssetLoader.getInstance().loadContent(manager);
+
+			levelSelect.activate();
 			setScreen(levelSelect);
 
 			loading.dispose();
@@ -140,9 +147,32 @@ public class GDXRoot extends Game implements ScreenListener {
 			setScreen(cutscene);
 		}
 		else if (exitCode == WorldController.GAMEVIEW) {
-			setScreen(controller);
+			setScreen(controllers[current]);
 			canvas.zoomOut();
-		};
+		}
+		else if (exitCode == WorldController.LEVEL_SELECT) {
+			levelSelect.activate();
+			setScreen(levelSelect);
+		}
+		else if(exitCode == 100){
+			controllers[0].setScreenListener(this);
+			controllers[0].setCanvas(canvas);
+			controllers[0].reset();
+			setScreen(controllers[0]);
+		}
+		else if(exitCode == 101){
+			controllers[1].setScreenListener(this);
+			controllers[1].setCanvas(canvas);
+			controllers[1].reset();
+			setScreen(controllers[1]);
+		}
+		else if(exitCode == 102){
+			controllers[2].setScreenListener(this);
+			controllers[2].setCanvas(canvas);
+			controllers[2].reset();
+			setScreen(controllers[2]);
+		}
+
 	}
 
 }

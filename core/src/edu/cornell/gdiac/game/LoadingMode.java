@@ -51,6 +51,10 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private static final String PROGRESS_FILE = "shared/progressbar.png";
 	private static final String PLAY_BTN_FILE = "shared/play.png";
 	private static final String SPOTLIGHT_FILE = "shared/spotlight.png";
+
+	private static final String SYOMIC_FILE = "gui/syomic_bg.png";
+	private static final String FADER_FILE = "gui/fader.png";
+	private static final String PLAY_FILE = "gui/play.png";
 	
 	/** Background texture for start-up */
 	private Texture background;
@@ -59,7 +63,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	/** Texture atlas to support a progress bar */
 	private Texture statusBar;
 	private Texture spotlight;
-	
+	private Texture syomic, fader, play;
+
 	// statusBar is a "texture atlas." Break it up into parts.
 	/** Left cap to the status background (grey region) */
 	private TextureRegion statusBkgLeft;
@@ -199,6 +204,9 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		background = new Texture(BACKGROUND_FILE);
 		statusBar  = new Texture(PROGRESS_FILE);
 		spotlight = new Texture(SPOTLIGHT_FILE);
+		syomic = new Texture(SYOMIC_FILE);
+		fader = new Texture(FADER_FILE);
+		play = new Texture(PLAY_FILE);
 		
 		// No progress so far.		
 		progress   = 0;
@@ -239,6 +247,12 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		 background.dispose();
 		 statusBar.dispose();
 		 spotlight.dispose();
+
+		 syomic.dispose();
+		 fader.dispose();
+		 syomic = null;
+		 fader = null;
+
 		 background = null;
 		 statusBar  = null;
 		 spotlight = null;
@@ -279,15 +293,19 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 */
 	private void draw() {
 		canvas.begin();
+		/*
 		canvas.draw(background, 0, 0);
 		float theta = 0.5f*(float)Math.sin(1f*time + 0.2f);
 		canvas.draw(spotlight, Color.WHITE, spotlight.getWidth()*0.5f, 0f, 547f, 106f, theta, scale, scale);
+		*/
+		canvas.draw(syomic,0,0);
 		if (playButton == null) {
 			drawProgress(canvas);
 		} else {
 			Color tint = (pressState == 1 ? Color.GRAY: Color.WHITE);
-			canvas.draw(playButton, tint, playButton.getWidth()/2, playButton.getHeight()/2, 
-						centerX, centerY, 0, BUTTON_SCALE*scale, BUTTON_SCALE*scale);
+			//canvas.draw(playButton, tint, playButton.getWidth()/2, playButton.getHeight()/2,centerX, centerY, 0, BUTTON_SCALE*scale, BUTTON_SCALE*scale);
+			canvas.draw(play, tint, play.getWidth()/2, play.getHeight()/2, centerX+5f*MathUtils.sin(time*2), centerY, 0, 1f, 1f);
+
 		}
 		canvas.end();
 	}
@@ -301,7 +319,10 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 *
 	 * @param canvas The drawing context
 	 */	
-	private void drawProgress(GameCanvas canvas) {	
+	private void drawProgress(GameCanvas canvas) {
+		canvas.draw(fader, -1280+1280*progress,0);
+
+		/*
 		canvas.draw(statusBkgLeft,   Color.WHITE, centerX-width/2, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
 		canvas.draw(statusBkgRight,  Color.WHITE, centerX+width/2-scale*PROGRESS_CAP, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
 		canvas.draw(statusBkgMiddle, Color.WHITE, centerX-width/2+scale*PROGRESS_CAP, centerY, width-2*scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
@@ -314,6 +335,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		} else {
 			canvas.draw(statusFrgRight,  Color.WHITE, centerX-width/2+scale*PROGRESS_CAP, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
 		}
+		*/
 	}
 
 	// ADDITIONAL SCREEN METHODS
@@ -353,8 +375,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		scale = (sx < sy ? sx : sy);
 		
 		this.width = (int)(BAR_WIDTH_RATIO*width);
-		centerY = (int)(BAR_HEIGHT_RATIO*height);
-		centerX = width/2;
+		centerY = (int)(BAR_HEIGHT_RATIO*height)-60;
+		centerX = width/2+440;
 		heightY = height;
 	}
 
@@ -427,7 +449,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		
 		// TODO: Fix scaling
 		// Play button is a circle.
-		float radius = BUTTON_SCALE*scale*playButton.getWidth()/2.0f;
+		//float radius = BUTTON_SCALE*scale*playButton.getWidth()/2.0f;
+		float radius = play.getWidth()/2.0f;
 		float dist = (screenX-centerX)*(screenX-centerX)+(screenY-centerY)*(screenY-centerY);
 		if (dist < radius*radius) {
 			pressState = 1;
