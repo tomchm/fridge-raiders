@@ -93,6 +93,7 @@ public class AssetLoader
         }
         assetMap.put("gothic32", new FontAsset("shared/gothic32.ttf", "gothic32", 32));
         assetMap.put("gothic72", new FontAsset("shared/gothic72.ttf", "gothic72", 72));
+        assetMap.put("fridgeMagnets72", new FontAsset("shared/FridgeMagnets72.ttf", "fridgeMagnets72", 72));
     }
 
     public void preLoadContent(AssetManager manager) {

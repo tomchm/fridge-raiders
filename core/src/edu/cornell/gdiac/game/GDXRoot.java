@@ -43,6 +43,7 @@ public class GDXRoot extends Game implements ScreenListener {
 	/** List of all WorldControllers */
 	private WorldController controller;
 	private Cutscene cutscene;
+	private LevelSelect levelSelect;
 
 	/**
 	 * Creates a new game from the configuration settings.
@@ -68,6 +69,8 @@ public class GDXRoot extends Game implements ScreenListener {
 		loading = new LoadingMode(canvas,manager,1);
 		cutscene = new Cutscene(canvas);
 		cutscene.setScreenListener(this);
+		levelSelect = new LevelSelect(canvas);
+		levelSelect.setScreenListener(this);
 
 		// Initialize the three game worlds
 		controller = new WorldController();
@@ -85,7 +88,7 @@ public class GDXRoot extends Game implements ScreenListener {
 	public void dispose() {
 		// Call dispose on our children
 		setScreen(null);
-		controller.getAssetLoader().unloadContent(manager);
+		//controller.getAssetLoader().unloadContent(manager);
 		controller.dispose();
 
 		canvas.dispose();
@@ -125,7 +128,7 @@ public class GDXRoot extends Game implements ScreenListener {
 			controller.setScreenListener(this);
 			controller.setCanvas(canvas);
 			controller.reset();
-			setScreen(controller);
+			setScreen(levelSelect);
 
 			loading.dispose();
 			loading = null;
