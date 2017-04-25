@@ -10,6 +10,7 @@ import edu.cornell.gdiac.game.model.CrumbModel;
 import edu.cornell.gdiac.game.model.DetectiveModel;
 import edu.cornell.gdiac.game.model.GameObject;
 import edu.cornell.gdiac.game.model.TrajectoryModel;
+import edu.cornell.gdiac.util.SoundController;
 
 import javax.annotation.processing.SupportedSourceVersion;
 import java.util.Random;
@@ -202,6 +203,7 @@ public class DetectiveController {
                     player.setAnimation(DetectiveModel.Animation.ROLL_STOP);
                     processor.shouldRecordClick = true;
                     if (didClickOnPlayer(processor)) {
+                        if (!SoundController.getInstance().isActive("stretch")) SoundController.getInstance().play("stretch", true);
                         handleShots(processor);
                     }
                 } else {

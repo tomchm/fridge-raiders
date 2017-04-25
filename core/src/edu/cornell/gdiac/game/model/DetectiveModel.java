@@ -18,6 +18,7 @@ import edu.cornell.gdiac.game.asset.Asset;
 import edu.cornell.gdiac.game.asset.FilmstripAsset;
 import edu.cornell.gdiac.game.asset.ImageAsset;
 import edu.cornell.gdiac.util.PooledList;
+import edu.cornell.gdiac.util.SoundController;
 
 /**
  * Created by tomchm on 3/9/17.
@@ -445,6 +446,8 @@ public class DetectiveModel extends GameObject{
         shotsRemaining--;
         shotsTaken++;
         animation = Animation.ROLL_MOVE;
+        if (SoundController.getInstance().isActive("stretch")) SoundController.getInstance().stop("stretch");
+        //SoundController.getInstance().play("whistle", false);
     }
 
     public boolean hasShots(){

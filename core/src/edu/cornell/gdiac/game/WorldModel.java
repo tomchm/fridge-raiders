@@ -127,6 +127,7 @@ public class WorldModel {
 
     public void setWon(){
         hasWon = true;
+        SoundController.getInstance().play("win", false);
     }
 
     public void setPar(int par) {
