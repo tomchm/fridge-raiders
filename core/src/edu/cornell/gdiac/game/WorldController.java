@@ -47,6 +47,7 @@ public class WorldController implements Screen {
 	public static final int EXIT_QUIT = 0;
 	public static final int CUTSCENE = 1;
 	public static final int GAMEVIEW = 2;
+	public static final int LEVEL_SELECT = 3;
 	/** The amount of time for a game engine step. */
 	public static final float WORLD_STEP = 1/60.0f;
 	/** Number of velocity iterations for the constrain solvers */
@@ -77,13 +78,13 @@ public class WorldController implements Screen {
 	private boolean didShowMenu = false;
 	private boolean shouldPlayScene = true;
 	private boolean isPaused = false;
-
+	private String levelFile;
 
 	public AssetLoader getAssetLoader() {
 		return assetLoader;
 	}
 
-	public WorldController() {
+	public WorldController(String levelFile) {
 		setDebug(false);
 		WorldModel worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
 		assetLoader = AssetLoader.getInstance();
@@ -95,6 +96,7 @@ public class WorldController implements Screen {
 		guiController = new GUIController(worldModel, spacebarController, input);
 		resetCounter = 0;
 		guicanvas = new GameCanvas();
+		this.levelFile = levelFile;
 	}
 
 	public void reset() {
@@ -149,7 +151,7 @@ public class WorldController implements Screen {
 	 * Lays out the game geography.
 	 */
 	private void populateLevel() {
-		fileIOController.load("levels/simpleLevel.json");
+		fileIOController.load(levelFile);
 		assetLoader.assignContent(worldModel);
 		for (AIModel ai: worldModel.getAIList()) {
 			aiControllers.add(new AIController(ai, worldModel));
@@ -293,7 +295,8 @@ public class WorldController implements Screen {
 
 		if(worldModel.hasWon()){
 		    resetCounter++;
-		    if(resetCounter == 300){
+		    if(resetCounter == 180){
+		    	listener.exitScreen(this, LEVEL_SELECT);
 		    	hardReset = true;
 		        reset();
 		        hardReset = false;

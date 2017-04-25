@@ -219,16 +219,6 @@
     },
     {
       "type": "image",
-      "tag": "",
-      "filename": "gui/circle2.png",
-      "origin_x": "0",
-      "origin_y": "0",
-      "scale_x": "0",
-      "scale_y": "0",
-      "shape": "none"
-    },
-    {
-      "type": "image",
       "tag": "Food-Burger",
       "filename": "food/burger.png",
       "origin_x": "138",
@@ -426,16 +416,6 @@
     },
     {
       "type": "image",
-      "tag": "",
-      "filename": "gui/circle2.png",
-      "origin_x": "0",
-      "origin_y": "0",
-      "scale_x": "0",
-      "scale_y": "0",
-      "shape": "none"
-    },
-    {
-      "type": "image",
       "tag": "Furniture-AptCouch",
       "filename": "furniture/Apartment Couch Front.png",
       "origin_x": "466",
@@ -577,16 +557,6 @@
     },
     {
       "type": "image",
-      "tag": "",
-      "filename": "gui/circle2.png",
-      "origin_x": "0",
-      "origin_y": "0",
-      "scale_x": "0",
-      "scale_y": "0",
-      "shape": "none"
-    },
-    {
-      "type": "image",
       "tag": "Floor-Linoleum",
       "filename": "floor/linoleum.png",
       "origin_x": "198",
@@ -643,16 +613,6 @@
       "origin_y": "248",
       "scale_x": "0.6",
       "scale_y": "0.6",
-      "shape": "none"
-    },
-    {
-      "type": "image",
-      "tag": "",
-      "filename": "gui/circle2.png",
-      "origin_x": "0",
-      "origin_y": "0",
-      "scale_x": "0",
-      "scale_y": "0",
       "shape": "none"
     },
     {
@@ -926,6 +886,108 @@
       "scale_y": "0.35",
       "frames": "16",
       "speed": "3",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "foodtick",
+      "filename": "gui/foodtick.png",
+      "scale_x": "0.5",
+      "scale_y": "0.5",
+      "origin_x": "120",
+      "origin_y": "120",
+      "shape": "none",
+      "frames": "10",
+      "speed": "0"
+    },
+    {
+      "type": "image",
+      "tag": "fridgeMenu",
+      "filename": "gui/fridge_menu.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "newspaperOpen1",
+      "filename": "gui/newspaper.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "newspaperOpen2",
+      "filename": "gui/newspaper2.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "newspaperOpen3",
+      "filename": "gui/newspaper3.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "newspaperClosed",
+      "filename": "gui/newspaper_closed.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "magnet",
+      "filename": "gui/magnet.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "120",
+      "origin_y": "120",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "playButton",
+      "filename": "gui/play.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "64",
+      "origin_y": "64",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "title",
+      "filename": "gui/title.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "silo",
+      "filename": "gui/silo.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
       "shape": "none"
     }
   ]

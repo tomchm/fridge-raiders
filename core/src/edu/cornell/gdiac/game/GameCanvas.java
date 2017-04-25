@@ -133,6 +133,15 @@ public class GameCanvas {
 		shapeRender.rect(x*sx, y*sy, width*sx, height*sy);
 		endShape();
 	}
+
+	public void drawRect(float x, float y, float width, float height, float r, float g, float b ,float a) {
+		beginShape();
+		shapeRender.setColor(r, g, b, a);
+		float sx = GameObject.getDrawScale().x;
+		float sy = GameObject.getDrawScale().y;
+		shapeRender.rect(x*sx, y*sy, width*sx, height*sy);
+		endShape();
+	}
 	public void drawPolygon(float[] coords, float r, float g, float b) {
 		beginShape();
 		shapeRender.setColor(r,g,b,1.0f);
@@ -1217,5 +1226,15 @@ public class GameCanvas {
 
 	public void resetZoom(){
 		camera.zoom = 1.0f;
+	}
+
+	public void zoomCamera(float z){
+		camera.zoom = z;
+		camera.update();
+	}
+
+	public void positionCamera(float x, float y){
+		camera.position.set(x,y,0);
+		camera.update();
 	}
 }
