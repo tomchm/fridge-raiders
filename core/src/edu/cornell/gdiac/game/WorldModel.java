@@ -264,7 +264,7 @@ public class WorldModel {
         height = (int)max;
         sensors = new int[(height-heightS)*(width-widthS)];
         //DEBUG
-//        debugLights = new Light[(height-heightS)*(width - widthS)];
+        debugLights = new Light[(height-heightS)*(width - widthS)];
     }
 
 
@@ -278,10 +278,10 @@ public class WorldModel {
         for(int i = 0; i < width - widthS ;i ++){
             for(int j = 0; j < height - heightS; j++){
                 // CHANGE magic number
-                sensors[i*(width - widthS) + j] = isAccessibleWithRadius(i,j,detective.getRadius());
+                sensors[i*(width - widthS) + j] = isAccessibleWithRadius(i + widthS,j + heightS,detective.getRadius());
                 //DEBUG
-//                debugLights[i*(width - widthS) + j] = new PointLight(rayhandler, 10, Color.RED, detective.getRadius(), i, j);
-//                debugLights[i*(width - widthS) +j].setActive(sensors[i*(width - widthS) +j] != 0);
+//                debugLights[i*(width - widthS) + j] = new PointLight(rayhandler, 10, Color.RED, detective.getRadius(), i + widthS, j + heightS);
+//                debugLights[i*(width - widthS) + j].setActive(sensors[i*(width - widthS) +j] != 0);
             }
         }
     }
@@ -574,7 +574,7 @@ public class WorldModel {
         if (x < widthS || y < heightS || x > width - 1 || y > height -1) {
             return false;
         }
-        return sensors[x*(width-widthS) + y] <= 0 + ((noFurniture) ? 1 : 0);
+        return sensors[(x-widthS)*(width-widthS) + (y-heightS)] <= 0 + ((noFurniture) ? 1 : 0);
     }
 
     /** returns 0 if any of 8 cardinal points radius away from x y

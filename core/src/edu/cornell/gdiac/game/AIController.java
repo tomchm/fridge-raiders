@@ -103,7 +103,7 @@ public class AIController implements RayCastCallback{
         this.player = worldModel.getPlayer();
 
         //lights
-        //DEBUG
+//        DEBUG
 //        for(Vector2 step: ai.getPath()) {
 //            new PointLight(worldModel.rayhandler, 10, Color.GREEN, 1, step.x, step.y );
 //        }
