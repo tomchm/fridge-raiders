@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.PolygonRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
 import edu.cornell.gdiac.game.GameCanvas;
+import edu.cornell.gdiac.util.SoundController;
 
 /**
  * Created by Sal on 3/14/2017.
@@ -88,7 +89,14 @@ public class GoalModel extends GameObject implements ContactListener{
 
     @Override
     public void endContact(Contact contact) {
-
+        Object a = contact.getFixtureA().getUserData();
+        Object b = contact.getFixtureB().getUserData();
+        if (a instanceof DetectiveModel) {
+            if (((DetectiveModel)a).isSecondStage()) SoundController.getInstance().play("wall_hit", false);
+        }
+        if (b instanceof DetectiveModel) {
+            if (((DetectiveModel)b).isSecondStage()) SoundController.getInstance().play("wall_hit", false);
+        }
     }
 
     @Override

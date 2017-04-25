@@ -19,6 +19,7 @@ import shaders.LightShader;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Random;
 
 /**
  * Created by tomchm on 3/9/17.
@@ -131,6 +132,7 @@ public class WorldModel {
 
     public void setWon(){
         hasWon = true;
+        SoundController.getInstance().play("win", false);
     }
 
     public void setPar(int par) {
@@ -330,6 +332,10 @@ public class WorldModel {
         for(GameObject gm : gameObjects){
             if(gm instanceof FoodModel){
                 if(((FoodModel) gm).getAmount() <= 0){
+                    if (SoundController.getInstance().isActive("chewing")) SoundController.getInstance().stop("chewing");
+                    int index = (new Random()).nextInt(3);
+                    String tag = new String[] {"burp", "oof", "gulp"}[index];
+                    SoundController.getInstance().play(tag, false);
                     removeGameObject(gm);
                 }
             }

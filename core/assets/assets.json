@@ -777,6 +777,21 @@
     },
     {
       "type": "sound",
+      "tag": "win",
+      "filename": "sound/win.wav"
+    },
+    {
+      "type": "sound",
+      "tag": "stretch",
+      "filename": "sound/stretch.ogg"
+    },
+    {
+      "type": "sound",
+      "tag": "whistle",
+      "filename": "sound/whistle.ogg"
+    },
+    {
+      "type": "sound",
       "tag": "titlemusic",
       "filename": "sound/title.wav"
     },

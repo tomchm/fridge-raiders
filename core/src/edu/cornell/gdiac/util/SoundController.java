@@ -336,6 +336,7 @@ public class SoundController {
 	 * @param key	The sound instance to stop.
 	 */
 	public void stop(String key) {
+		System.out.println("stop sound!");
 		// Get the active sound for the key
 		if (!actives.containsKey(key)) {
 			return;
@@ -344,7 +345,7 @@ public class SoundController {
 		ActiveSound snd = actives.get(key);
 		
 		// This is a workaround for the OS X sound bug
-		//snd.sound.stop(snd.id);
+		snd.sound.stop(snd.id);
 		snd.sound.setLooping(snd.id,false); // Will eventually garbage collect
 		snd.sound.setVolume(snd.id, 0.0f); 
 		actives.remove(key);
