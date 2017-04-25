@@ -39,6 +39,12 @@ public class AIModel extends GameObject{
 
     public boolean isDead = false;
 
+    public enum Animation {
+        LEFT_MOVE, RIGHT_MOVE, UP_MOVE, DOWN_MOVE, LEFT_STOP, RIGHT_STOP, UP_STOP, DOWN_STOP, ROLL_MOVE, ROLL_STOP,
+        LEFT_GRAB, RIGHT_GRAB, UP_GRAB, DOWN_GRAB
+    }
+
+
 
     /**
      * @return speed of the ai model

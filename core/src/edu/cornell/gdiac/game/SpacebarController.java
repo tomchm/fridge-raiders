@@ -64,16 +64,16 @@ public class SpacebarController implements RayCastCallback {
         int endInd=8;
         int[] dirArr = new int []{0,1,2,3,4,5,6,7};
         if(playerDir == DetectiveModel.Animation.LEFT_MOVE || playerDir == DetectiveModel.Animation.LEFT_STOP || playerDir == DetectiveModel.Animation.LEFT_GRAB){
-            dirArr = new int[]{2, 3, 4, 5, 6};
+            dirArr = new int[]{3, 4, 5};
         }
         else if(playerDir == DetectiveModel.Animation.DOWN_MOVE || playerDir == DetectiveModel.Animation.DOWN_STOP || playerDir == DetectiveModel.Animation.DOWN_GRAB){
-            dirArr = new int[]{0, 4, 5, 6, 7};
+            dirArr = new int[]{5, 6, 7};
         }
         else if(playerDir == DetectiveModel.Animation.RIGHT_MOVE || playerDir == DetectiveModel.Animation.RIGHT_STOP || playerDir == DetectiveModel.Animation.RIGHT_GRAB){
-            dirArr = new int[]{2, 1, 0, 6, 7};
+            dirArr = new int[]{1, 0,7};
         }
         else if(playerDir == DetectiveModel.Animation.UP_MOVE || playerDir == DetectiveModel.Animation.UP_STOP || playerDir == DetectiveModel.Animation.UP_GRAB){
-            dirArr = new int[]{0, 1, 2, 3, 4};
+            dirArr = new int[]{1, 2, 3};
         }
         // look for closest physics body in 8 cardinal directions
         for (k=0; k < 8; ++k) {
