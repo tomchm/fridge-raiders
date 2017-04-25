@@ -157,7 +157,7 @@ public class WorldController implements Screen {
 		worldModel.updateAllSensors();
 		worldModel.setMaximumFood();
 
-		SoundController.getInstance().play("levelmusic", true);
+		SoundController.getInstance().play("levelmusic", true, 0.75f);
 		//fileIOController.save("levels/testOutput.json");
 	}
 

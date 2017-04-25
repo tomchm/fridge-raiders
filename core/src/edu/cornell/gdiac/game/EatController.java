@@ -20,11 +20,11 @@ public class EatController {
     public void eat(FoodModel food) {
         worldModel.getPlayer().startEating(food);
         worldModel.getPlayer().setSpeed();
-        //SoundController.getInstance().play("nom", true);
+        SoundController.getInstance().play("chewing", true);
     }
 
     public void stop() {
+        if (SoundController.getInstance().isActive("chewing")) SoundController.getInstance().stop("chewing");
         worldModel.getPlayer().stopEating();
-        //SoundController.getInstance().stop("nom");
     }
 }

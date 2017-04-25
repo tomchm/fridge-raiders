@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import edu.cornell.gdiac.game.GameCanvas;
 import edu.cornell.gdiac.game.asset.Asset;
 import edu.cornell.gdiac.game.asset.ImageAsset;
+import edu.cornell.gdiac.util.SoundController;
 
 import java.util.Random;
 
@@ -109,6 +110,12 @@ public class FoodModel extends GameObject {
             eaten = intAmount - ((int) amount);
         }
         intAmount -= eaten;
+        if (intAmount == 0) {
+            if (SoundController.getInstance().isActive("chewing")) SoundController.getInstance().stop("chewing");
+            int index = (new Random()).nextInt(3);
+            String tag = new String[] {"burp", "oof", "gulp"}[index];
+            SoundController.getInstance().play(tag, false);
+        }
         return eaten;
     }
 

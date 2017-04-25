@@ -752,6 +752,31 @@
     },
     {
       "type": "sound",
+      "tag": "burp",
+      "filename": "sound/burp.ogg"
+    },
+    {
+      "type": "sound",
+      "tag": "oof",
+      "filename": "sound/oof.ogg"
+    },
+    {
+      "type": "sound",
+      "tag": "gulp",
+      "filename": "sound/gulp.ogg"
+    },
+    {
+      "type": "sound",
+      "tag": "chewing",
+      "filename": "sound/chewing.ogg"
+    },
+    {
+      "type": "sound",
+      "tag": "wall_hit",
+      "filename": "sound/wall_hit.ogg"
+    },
+    {
+      "type": "sound",
       "tag": "titlemusic",
       "filename": "sound/title.wav"
     },
