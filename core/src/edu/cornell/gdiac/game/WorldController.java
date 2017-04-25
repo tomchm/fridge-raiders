@@ -145,6 +145,9 @@ public class WorldController implements Screen {
 		}
 	}
 
+	public void setHardReset(){
+		hardReset = true;
+	}
 
 
 	/**
@@ -234,6 +237,16 @@ public class WorldController implements Screen {
 		}
 		if(pauseGui.shouldQuit()){
 			listener.exitScreen(this, EXIT_QUIT);
+			return false;
+		}
+		else if(pauseGui.shouldLevelSelect()){
+			listener.exitScreen(this, LEVEL_SELECT);
+			return false;
+		}
+
+		if(worldModel.isLevelSelect()){
+			listener.exitScreen(this, LEVEL_SELECT);
+			worldModel.setLevelSelect(false);
 			return false;
 		}
 

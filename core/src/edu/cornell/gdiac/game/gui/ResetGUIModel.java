@@ -53,6 +53,10 @@ public class ResetGUIModel extends GUIModel{
                     worldModel.setNotLost();
                     softReset=true;
                 }
+                else if(myY >= 480 && myY <= 575){
+                    //reset softs
+                    worldModel.setLevelSelect(true);
+                }
             }
 
         }

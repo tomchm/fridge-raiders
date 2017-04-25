@@ -161,6 +161,13 @@ public class MinimapGUIModel extends GUIModel {
                 float px = origin.x*GameObject.getDrawScale().x + (world.getPlayer().getBody().getPosition().x-minX)/scale + SCREEN_X;
                 float py = origin.y*GameObject.getDrawScale().y + (world.getPlayer().getBody().getPosition().y-minY)/scale + SCREEN_Y;
                 canvas.draw(ia.getTexture(), Color.RED, ia.getOrigin().x , ia.getOrigin().y , px, py, 0, ia.getImageScale().x, ia.getImageScale().y);
+                /*
+                if(world.getPlayer().getAmountEaten() > world.getPlayer().getThreshold() && !world.getPlayer().isSecondStage()){
+                    float px = origin.x*GameObject.getDrawScale().x + (world.getPlayer().getBody().getPosition().x-minX)/scale + SCREEN_X;
+                    float py = origin.y*GameObject.getDrawScale().y + (world.getPlayer().getBody().getPosition().y-minY)/scale + SCREEN_Y;
+                    canvas.draw(ia.getTexture(), Color.RED, ia.getOrigin().x , ia.getOrigin().y , px, py, 0, ia.getImageScale().x, ia.getImageScale().y);
+                }
+                */
             }
 
     }

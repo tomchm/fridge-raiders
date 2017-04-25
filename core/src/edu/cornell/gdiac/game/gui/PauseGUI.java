@@ -30,6 +30,7 @@ public class PauseGUI extends GUIModel {
         private int countdown;
         private boolean didCountdown = false;
         public boolean quitScreen = false;
+        public boolean levelSelectScreen = false;
         private ScreenListener listener;
         private InputController inputController;
         public PauseGUI(WorldModel worldModel, InputController input){
@@ -45,6 +46,8 @@ public class PauseGUI extends GUIModel {
         }
 
         public boolean shouldQuit(){return quitScreen;}
+
+        public boolean shouldLevelSelect(){return levelSelectScreen;}
 
         public void update(float dt){
             if(inputController.getInstance().didRetreat()){
@@ -63,7 +66,7 @@ public class PauseGUI extends GUIModel {
 
                 }
                 else if (myX >= 530 && myX <= 750 && myY>=220 && myY <= 295){
-                    //second option
+                    levelSelectScreen = true;
 
                 }
                 else if (myX >= 530 && myX <= 720 && myY>=320 && myY <= 400){

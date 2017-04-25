@@ -49,6 +49,7 @@ public class WorldModel {
     protected int[] sensors;
     protected boolean clearJoints;
     protected boolean addJoints;
+    protected  boolean levelSelect;
     protected DetectiveModel detective;
     protected GoalModel goal;
 
@@ -93,11 +94,13 @@ public class WorldModel {
         addJoints = false;
         hasLost = false;
         hasWon = false;
+        levelSelect = false;
 
         // ai info
         aiList = new PooledList <AIModel>();
         solidGameObjects = new PooledList <GameObject>();
         initLighting();
+
 
         // sensor info
         heightS = -1;
@@ -117,6 +120,14 @@ public class WorldModel {
 
     public boolean isPaused(){
         return isPaused;
+    }
+
+    public boolean isLevelSelect(){
+        return levelSelect;
+    }
+
+    public void setLevelSelect(boolean b){
+        levelSelect = b;
     }
 
     public void setPaused(boolean b ) {this.isPaused = b;}
@@ -349,6 +360,8 @@ public class WorldModel {
             }
         }
     }
+
+
 
     public void removeCrumbs(){
         for(GameObject gm : gameObjects){

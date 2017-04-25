@@ -157,18 +157,21 @@ public class GDXRoot extends Game implements ScreenListener {
 		else if(exitCode == 100){
 			controllers[0].setScreenListener(this);
 			controllers[0].setCanvas(canvas);
+			controllers[0].setHardReset();
 			controllers[0].reset();
 			setScreen(controllers[0]);
 		}
 		else if(exitCode == 101){
 			controllers[1].setScreenListener(this);
 			controllers[1].setCanvas(canvas);
+			controllers[1].setHardReset();
 			controllers[1].reset();
 			setScreen(controllers[1]);
 		}
 		else if(exitCode == 102){
 			controllers[2].setScreenListener(this);
 			controllers[2].setCanvas(canvas);
+			controllers[2].setHardReset();
 			controllers[2].reset();
 			setScreen(controllers[2]);
 		}
