@@ -989,6 +989,54 @@
       "origin_x": "0",
       "origin_y": "0",
       "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "ai_walk_right",
+      "filename": "ai/ai_walk_right.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
+      "frames": "8",
+      "speed": "6",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "ai_walk_left",
+      "filename": "ai/ai_walk_left.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
+      "frames": "8",
+      "speed": "6",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "ai_walk_up",
+      "filename": "ai/ai_walk_up.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
+      "frames": "8",
+      "speed": "6",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "ai_walk_down",
+      "filename": "ai/ai_walk_down.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
+      "frames": "8",
+      "speed": "6",
+      "shape": "none"
     }
   ]
 }

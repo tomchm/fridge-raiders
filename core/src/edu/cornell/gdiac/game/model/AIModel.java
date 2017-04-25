@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.graphics.Color;
 import edu.cornell.gdiac.game.GameCanvas;
 import edu.cornell.gdiac.game.asset.Asset;
+import edu.cornell.gdiac.game.asset.FilmstripAsset;
 import edu.cornell.gdiac.game.asset.ImageAsset;
 
 import java.awt.*;
@@ -40,8 +41,7 @@ public class AIModel extends GameObject{
     public boolean isDead = false;
 
     public enum Animation {
-        LEFT_MOVE, RIGHT_MOVE, UP_MOVE, DOWN_MOVE, LEFT_STOP, RIGHT_STOP, UP_STOP, DOWN_STOP, ROLL_MOVE, ROLL_STOP,
-        LEFT_GRAB, RIGHT_GRAB, UP_GRAB, DOWN_GRAB
+        LEFT_MOVE, RIGHT_MOVE, UP_MOVE, DOWN_MOVE, LEFT_STOP, RIGHT_STOP, UP_STOP, DOWN_STOP
     }
 
 
@@ -110,6 +110,7 @@ public class AIModel extends GameObject{
 
         this.path = path;
         this.tags = tags;
+        this.tags = new String[] {"ai_walk_right", "ai_walk_left", "ai_walk_down", "ai_walk_up"};
     }
 
     /**
@@ -156,12 +157,35 @@ public class AIModel extends GameObject{
     /** Overwrite GameObject draw method so the sprite does not turn akwardly*/
     public void draw(GameCanvas canvas){
         if(tags.length > 0 && body != null){
+            FilmstripAsset fa = null;
+            float angle = (float)((getBody().getAngle() + Math.PI * 4) % (Math.PI * 2));
+            if(angle <= Math.PI*0.25f  || angle > Math.PI*1.75f){
+                fa = (FilmstripAsset) assetMap.get("ai_walk_right");
+            }
+            else if(angle <= Math.PI*0.75f  && angle > Math.PI*0.25f){
+                fa = (FilmstripAsset) assetMap.get("ai_walk_up");
+            }
+            else if(angle <= Math.PI*1.25f  && angle > Math.PI*0.75f){
+                fa = (FilmstripAsset) assetMap.get("ai_walk_left");
+            }
+            else {
+                fa = (FilmstripAsset) assetMap.get("ai_walk_down");
+            }
+
+            if(fa != null){
+                int nFrame = (GameObject.counter / fa.getSpeed()) % fa.getNumFrames();
+                TextureRegion texture = fa.getTexture(nFrame);
+                canvas.draw(texture, Color.WHITE,fa.getOrigin().x,fa.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,fa.getImageScale().x,fa.getImageScale().y);
+            }
+
+            /*
             Asset asset = assetMap.get(tags[0]);
             if(asset instanceof ImageAsset){
                 ImageAsset ia = (ImageAsset) asset;
                 float angle = isDead ? body.getAngle() : 0;
                 canvas.draw(ia.getTexture(), Color.WHITE,ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,angle,ia.getImageScale().x,ia.getImageScale().y);
             }
+            */
         }
     }
 }

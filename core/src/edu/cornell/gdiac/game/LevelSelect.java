@@ -86,7 +86,6 @@ public class LevelSelect implements Screen, InputProcessor {
         SoundController.getInstance().update();
         Gdx.input.setInputProcessor(this);
 
-
         canvas.clear();
         canvas.begin();
 
@@ -255,6 +254,9 @@ public class LevelSelect implements Screen, InputProcessor {
 
     public void activate(){
         Gdx.input.setInputProcessor(this);
+        SoundController.getInstance().update();
+
+        SoundController.getInstance().play("levelMusic", true, 0.75f);
     }
 
     private class Level{
