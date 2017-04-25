@@ -29,6 +29,8 @@ public class WorldModel {
     protected World world;
     protected Vector2 scale;
     protected Vector2 bounds;
+    protected int widthS;
+    protected int heightS;
     protected int width;
     protected int height;
     protected PooledList<GameObject> addGameObjectQueue;
@@ -96,6 +98,8 @@ public class WorldModel {
         initLighting();
 
         // sensor info
+        heightS = -1;
+        widthS = -1;
         height = -1;
         width = -1;
         initContactListener();
@@ -239,6 +243,7 @@ public class WorldModel {
      */
     private void findAndSetDimensions(){
         float max = Float.MIN_VALUE;
+        float min = Float.MAX_VALUE;
         float f;
         float [] coords;
         for(GameObject g : gameObjects) {
@@ -246,15 +251,18 @@ public class WorldModel {
                 coords =  ((WallModel)g).getCoords();
                 for(int i = 0; i < coords.length; i++) {
                     f = coords[i];
-                    if (f > max) max  = f;
+                    if (f > max) max = f;
+                    if (f < min) min = f;
                 }
             }
         }
+        widthS = (int)min;
+        heightS = (int)min;
         width = (int)max;
         height = (int)max;
-        sensors = new int[height*width];
+        sensors = new int[(height-heightS)*(width-widthS)];
         //DEBUG
-//        debugLights = new Light[height*width];
+//        debugLights = new Light[(height-heightS)*(width - widthS)];
     }
 
 
@@ -265,13 +273,13 @@ public class WorldModel {
         if(height == -1) {
             findAndSetDimensions();
         }
-        for(int i = 0; i < width ;i ++){
-            for(int j = 0; j < height; j++){
+        for(int i = 0; i < width - widthS ;i ++){
+            for(int j = 0; j < height - heightS; j++){
                 // CHANGE magic number
-                sensors[i*width + j] = isAccessibleWithRadius(i,j,1.2f);
+                sensors[i*(width - widthS) + j] = isAccessibleWithRadius(i,j,detective.getRadius());
                 //DEBUG
-//                debugLights[i*width + j] = new PointLight(rayhandler, 10, Color.RED, 1.2f, i, j);
-//                debugLights[i*width +j].setActive(sensors[i*width +j] != 0);
+//                debugLights[i*(width - widthS) + j] = new PointLight(rayhandler, 10, Color.RED, detective.getRadius(), i, j);
+//                debugLights[i*(width - widthS) +j].setActive(sensors[i*(width - widthS) +j] != 0);
             }
         }
     }
@@ -280,14 +288,14 @@ public class WorldModel {
      * Turns value of all sensors for a given object to onoff
      */
     public void turnOnOffObjSensors(GameObject object, int onoff){
-        for(int i = 0; i < width ;i ++){
-            for(int j = 0; j < height; j++){
+        for(int i = 0; i < width - widthS ;i ++){
+            for(int j = 0; j < height - heightS; j++){
                 // CHANGE magic number
-                if (!(isAccessibleWithRadiusSingleObject(i,j,1.2f, object))) {
-                    if (sensors [i*width +j] != 2) {
-                        sensors[i*width + j] = onoff;
+                if (!(isAccessibleWithRadiusSingleObject(i,j,detective.getRadius(), object))) {
+                    if (sensors [i*(width - widthS) +j] != 2) {
+                        sensors[i*(width-widthS) + j] = onoff;
                     }
-//                    debugLights[i*width + j].setActive(sensors[i*width+j]!= 0);
+//                    debugLights[i*(width - widthS) + j].setActive(sensors[i*(width - widthS)+j]!= 0);
                 }
             }
         }
@@ -561,10 +569,10 @@ public class WorldModel {
 
     /** returns true sensor at position x y is not overlapping with some object */
     public boolean isAccessibleByAI(int x, int y, boolean noFurniture) {
-        if (x < 0 || y < 0 || x > width - 1 || y > width -1) {
+        if (x < widthS || y < heightS || x > width - 1 || y > height -1) {
             return false;
         }
-        return sensors[x*width + y] <= 0 + ((noFurniture) ? 1 : 0);
+        return sensors[x*(width-widthS) + y] <= 0 + ((noFurniture) ? 1 : 0);
     }
 
     /** returns 0 if any of 8 cardinal points radius away from x y
