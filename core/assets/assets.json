@@ -758,7 +758,7 @@
     {
       "type": "sound",
       "tag": "levelmusic",
-      "filename": "sound/level.ogg"
+      "filename": "sound/level.wav"
     },
     {
       "type": "sound",

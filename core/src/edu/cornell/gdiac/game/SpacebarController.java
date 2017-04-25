@@ -4,8 +4,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
+import com.sun.deploy.util.ArrayUtil;
+import com.sun.tools.javac.util.ArrayUtils;
 import edu.cornell.gdiac.game.model.*;
 import edu.cornell.gdiac.util.PooledList;
+
+import java.util.Arrays;
 
 /**
  * Created by Sal on 3/12/2017.
@@ -40,6 +44,7 @@ public class SpacebarController implements RayCastCallback {
     public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
         GameObject go = (GameObject) fixture.getUserData();
         if (go instanceof FurnitureModel || go instanceof DoorModel || go instanceof FoodModel) {
+            System.out.println(interactionCandidates.length + " " + k + "LOOKERE") ;
             interactionCandidates[k] = go;
             candidateIntersections[k] = point.cpy();
             return 0;
@@ -54,17 +59,40 @@ public class SpacebarController implements RayCastCallback {
         GameObject closest = null;
         DetectiveModel player = worldModel.getPlayer();
         Vector2 playerPos = player.getBody().getPosition();
-
+        DetectiveModel.Animation playerDir = player.getAnimation();
+        int startInd =0;
+        int endInd=8;
+        int[] dirArr = new int []{0,1,2,3,4,5,6,7};
+        if(playerDir == DetectiveModel.Animation.LEFT_MOVE || playerDir == DetectiveModel.Animation.LEFT_STOP || playerDir == DetectiveModel.Animation.LEFT_GRAB){
+            dirArr = new int[]{2, 3, 4, 5, 6};
+        }
+        else if(playerDir == DetectiveModel.Animation.DOWN_MOVE || playerDir == DetectiveModel.Animation.DOWN_STOP || playerDir == DetectiveModel.Animation.DOWN_GRAB){
+            dirArr = new int[]{0, 4, 5, 6, 7};
+        }
+        else if(playerDir == DetectiveModel.Animation.RIGHT_MOVE || playerDir == DetectiveModel.Animation.RIGHT_STOP || playerDir == DetectiveModel.Animation.RIGHT_GRAB){
+            dirArr = new int[]{2, 1, 0, 6, 7};
+        }
+        else if(playerDir == DetectiveModel.Animation.UP_MOVE || playerDir == DetectiveModel.Animation.UP_STOP || playerDir == DetectiveModel.Animation.UP_GRAB){
+            dirArr = new int[]{0, 1, 2, 3, 4};
+        }
         // look for closest physics body in 8 cardinal directions
         for (k=0; k < 8; ++k) {
             interactionCandidates[k] = null;
-            worldModel.getWorld().rayCast(
-                    this,
-                    playerPos.x,
-                    playerPos.y,
-                    playerPos.x + 2f * (float)Math.cos(k*Math.PI/4),
-                    playerPos.y + 2f * (float)Math.sin(k*Math.PI/4)
-            ); // an object, if hit, will get placed into interactionCandidates[k]
+            boolean contained = false;
+            for(int mn = 0; mn < dirArr.length ; mn++){
+                if (dirArr[mn] == k){
+                    contained = true;
+                }
+            }
+            if(contained) {
+                worldModel.getWorld().rayCast(
+                        this,
+                        playerPos.x,
+                        playerPos.y,
+                        playerPos.x + 2f * (float) Math.cos(k * Math.PI / 4),
+                        playerPos.y + 2f * (float) Math.sin(k * Math.PI / 4)
+                ); // an object, if hit, will get placed into interactionCandidates[k]
+            }
         }
 
         // now check if any is the body of an interactible gameobject type
@@ -96,7 +124,6 @@ public class SpacebarController implements RayCastCallback {
                 closest = gob;
             }
         }
-
         return closest;
     }
 
