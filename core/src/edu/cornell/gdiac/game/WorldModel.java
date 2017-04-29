@@ -142,8 +142,8 @@ public class WorldModel {
     }
 
     public void setWon(){
+        if (!hasWon) SoundController.getInstance().play("win", false);
         hasWon = true;
-        SoundController.getInstance().play("win", false);
     }
 
     public void setPar(int par) {

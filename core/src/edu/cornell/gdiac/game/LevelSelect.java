@@ -47,6 +47,7 @@ public class LevelSelect implements Screen, InputProcessor {
     private Level[][] levels;
 
     public LevelSelect(GameCanvas c) {
+        SoundController.getInstance().play("levelmusic", true, 0.75f);
         canvas = new GameCanvas();
         assets= AssetLoader.getInstance();
         started = false;
