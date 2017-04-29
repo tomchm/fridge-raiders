@@ -142,7 +142,11 @@ public class WorldModel {
     }
 
     public void setWon(){
-        if (!hasWon) SoundController.getInstance().play("win", false);
+        SoundController sc = SoundController.getInstance();
+        if (!hasWon) {
+            if (sc.isActive("levelmusic")) sc.stop("levelmusic");
+            sc.play("win", false);
+        }
         hasWon = true;
     }
 
