@@ -97,7 +97,10 @@ public class GDXRoot extends Game implements ScreenListener {
 		// Call dispose on our children
 		setScreen(null);
 		//controller.getAssetLoader().unloadContent(manager);
-		controller.dispose();
+		if(controller != null){
+			controller.dispose();
+		}
+
 
 		/*
 		for(int i=0; i<controllers.length; i++){
@@ -161,7 +164,7 @@ public class GDXRoot extends Game implements ScreenListener {
 			setScreen(levelSelect);
 		}
 		else if(exitCode == 100){
-			controller = new WorldController("levels/betaHard.json");
+			controller = new WorldController("levels/BetaHard.json");
 			controller.setScreenListener(this);
 			controller.setCanvas(canvas);
 			controller.setHardReset();
