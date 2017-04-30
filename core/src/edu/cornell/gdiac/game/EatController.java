@@ -18,9 +18,16 @@ public class EatController {
     }
 
     public void eat(FoodModel food) {
-        worldModel.getPlayer().startEating(food);
-        worldModel.getPlayer().setSpeed();
-        SoundController.getInstance().play("chewing", true);
+        if(food.isDessert() && worldModel.getPlayer().getAmountEaten() > worldModel.getPlayer().getThreshold()) {
+            worldModel.getPlayer().startEating(food);
+            worldModel.getPlayer().setSpeed();
+            SoundController.getInstance().play("chewing", true);
+        }
+        else if(!food.isDessert()){
+            worldModel.getPlayer().startEating(food);
+            worldModel.getPlayer().setSpeed();
+            SoundController.getInstance().play("chewing", true);
+        }
     }
 
     public void stop() {

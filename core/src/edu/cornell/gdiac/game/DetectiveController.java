@@ -227,6 +227,7 @@ public class DetectiveController {
                     Random random = new Random();
                     if (random.nextFloat() > 0.7f) {
                         worldModel.addGameObjectQueue(new CrumbModel(player.getBody().getPosition(), player.getChewing().getCrumbColor(), player.getZ(), player.getAnimation()));
+
                     }
                 }
             }

@@ -43,7 +43,6 @@ public class SpacebarController implements RayCastCallback {
     public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
         GameObject go = (GameObject) fixture.getUserData();
         if (go instanceof FurnitureModel || go instanceof DoorModel || go instanceof FoodModel) {
-            System.out.println(interactionCandidates.length + " " + k + "LOOKERE") ;
             interactionCandidates[k] = go;
             candidateIntersections[k] = point.cpy();
             return 0;
