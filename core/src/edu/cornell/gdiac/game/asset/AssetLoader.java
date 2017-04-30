@@ -1,5 +1,6 @@
 package edu.cornell.gdiac.game.asset;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -54,7 +55,7 @@ public class AssetLoader
         JsonReader parser = new JsonReader();
         JsonValue value;
         try{
-            value = parser.parse(new FileReader("assets.json"));
+            value = parser.parse(Gdx.files.local("assets.json"));
             JsonValue map = value.get("data");
             for (JsonValue entry = map.child; entry != null; entry = entry.next){
                 String type = entry.getString("type");
