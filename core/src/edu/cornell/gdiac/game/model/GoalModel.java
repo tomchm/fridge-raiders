@@ -91,11 +91,18 @@ public class GoalModel extends GameObject implements ContactListener{
     public void endContact(Contact contact) {
         Object a = contact.getFixtureA().getUserData();
         Object b = contact.getFixtureB().getUserData();
+        SoundController sc = SoundController.getInstance();
         if (a instanceof DetectiveModel) {
-            if (((DetectiveModel)a).isSecondStage()) SoundController.getInstance().play("wall_hit", false);
+            if (((DetectiveModel)a).isSecondStage()) {
+                if (sc.isActive("wall_hit")) sc.stop("wall_hit");
+                sc.play("wall_hit", false);
+            }
         }
         if (b instanceof DetectiveModel) {
-            if (((DetectiveModel)b).isSecondStage()) SoundController.getInstance().play("wall_hit", false);
+            if (((DetectiveModel)b).isSecondStage()) {
+                if (sc.isActive("wall_hit")) sc.stop("wall_hit");
+                sc.play("wall_hit", false);
+            }
         }
     }
 
