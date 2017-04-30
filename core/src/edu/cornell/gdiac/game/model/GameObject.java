@@ -19,7 +19,7 @@ import java.awt.*;
  * Created by tomchm on 3/9/17.
  */
 public abstract class GameObject implements Comparable{
-    protected static Vector2 drawScale;
+    protected static  Vector2 drawScale = new Vector2(32,32);
     protected Body body;
     protected BodyDef bodyDef;
     protected FixtureDef fixtureDef;

@@ -44,6 +44,7 @@ public class GDXRoot extends Game implements ScreenListener {
 	private int current;
 	/** List of all WorldControllers */
 	private WorldController[] controllers;
+	private WorldController controller;
 	private Cutscene cutscene;
 	private LevelSelect levelSelect;
 
@@ -75,10 +76,12 @@ public class GDXRoot extends Game implements ScreenListener {
 		levelSelect.setScreenListener(this);
 
 		// Initialize the three game worlds
-		controllers = new WorldController[3];
-		controllers[0] = new WorldController("levels/betaHard.json");
-		controllers[1] = new WorldController("levels/alphaLevel.json");
-		controllers[2] = new WorldController("levels/simple.json");
+		//controllers = new WorldController[3];
+		//controllers[0] = new WorldController("levels/betaHard.json");
+		//controllers[1] = new WorldController("levels/alphaLevel.json");
+		//controllers[2] = new WorldController("levels/simple.json");
+
+		//controller = new WorldController("levels/betaHard.json");
 		AssetLoader.getInstance().preLoadContent(manager);
 		current = 0;
 		loading.setScreenListener(this);
@@ -94,10 +97,13 @@ public class GDXRoot extends Game implements ScreenListener {
 		// Call dispose on our children
 		setScreen(null);
 		//controller.getAssetLoader().unloadContent(manager);
+		controller.dispose();
+
+		/*
 		for(int i=0; i<controllers.length; i++){
 			controllers[i].dispose();
 		}
-
+*/
 
 		canvas.dispose();
 		canvas = null;
@@ -147,7 +153,7 @@ public class GDXRoot extends Game implements ScreenListener {
 			setScreen(cutscene);
 		}
 		else if (exitCode == WorldController.GAMEVIEW) {
-			setScreen(controllers[current]);
+			setScreen(controller);
 			canvas.zoomOut();
 		}
 		else if (exitCode == WorldController.LEVEL_SELECT) {
@@ -155,25 +161,28 @@ public class GDXRoot extends Game implements ScreenListener {
 			setScreen(levelSelect);
 		}
 		else if(exitCode == 100){
-			controllers[0].setScreenListener(this);
-			controllers[0].setCanvas(canvas);
-			controllers[0].setHardReset();
-			controllers[0].reset();
-			setScreen(controllers[0]);
+			controller = new WorldController("levels/betaHard.json");
+			controller.setScreenListener(this);
+			controller.setCanvas(canvas);
+			controller.setHardReset();
+			controller.reset();
+			setScreen(controller);
 		}
 		else if(exitCode == 101){
-			controllers[1].setScreenListener(this);
-			controllers[1].setCanvas(canvas);
-			controllers[1].setHardReset();
-			controllers[1].reset();
-			setScreen(controllers[1]);
+			controller = new WorldController("levels/alphaLevel.json");
+			controller.setScreenListener(this);
+			controller.setCanvas(canvas);
+			controller.setHardReset();
+			controller.reset();
+			setScreen(controller);
 		}
 		else if(exitCode == 102){
-			controllers[2].setScreenListener(this);
-			controllers[2].setCanvas(canvas);
-			controllers[2].setHardReset();
-			controllers[2].reset();
-			setScreen(controllers[2]);
+			controller = new WorldController("levels/simpleLevel.json");
+			controller.setScreenListener(this);
+			controller.setCanvas(canvas);
+			controller.setHardReset();
+			controller.reset();
+			setScreen(controller);
 		}
 
 	}

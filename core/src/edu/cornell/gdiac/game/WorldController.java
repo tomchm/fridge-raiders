@@ -80,9 +80,6 @@ public class WorldController implements Screen {
 	private boolean isPaused = false;
 	private String levelFile;
 
-	public AssetLoader getAssetLoader() {
-		return assetLoader;
-	}
 
 	public WorldController(String levelFile) {
 		setDebug(false);
