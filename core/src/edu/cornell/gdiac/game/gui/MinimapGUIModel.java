@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.QueryCallback;
 import edu.cornell.gdiac.game.GameCanvas;
 import edu.cornell.gdiac.game.WorldModel;
 import edu.cornell.gdiac.game.asset.ImageAsset;
+import edu.cornell.gdiac.game.model.FoodModel;
 import edu.cornell.gdiac.game.model.GameObject;
 import edu.cornell.gdiac.game.model.WallModel;
 
@@ -168,7 +169,28 @@ public class MinimapGUIModel extends GUIModel {
                     canvas.draw(ia.getTexture(), Color.RED, ia.getOrigin().x , ia.getOrigin().y , px, py, 0, ia.getImageScale().x, ia.getImageScale().y);
                 }
                 */
+
+                //Draw Dessert
+                if(world.getPlayer().getAmountEaten() > world.getPlayer().getThreshold() && (!world.getPlayer().isSecondStage())){
+                    // Get Dessert
+                    float dessertX = 0f;
+                    float dessertY = 0f;
+                    for(GameObject gm: world.getGameObjects()){
+                        if(gm instanceof FoodModel){
+                            if(((FoodModel) gm).isDessert()){
+                                dessertX = gm.getBody().getPosition().x;
+                                dessertY = gm.getBody().getPosition().y;
+                            }
+                        }
+                    }
+
+
+                    float dx = origin.x*GameObject.getDrawScale().x + (dessertX-minX)/scale + SCREEN_X;
+                    float dy = origin.y*GameObject.getDrawScale().y + (dessertY-minY)/scale + SCREEN_Y;
+                    canvas.draw(ia.getTexture(), Color.YELLOW, ia.getOrigin().x , ia.getOrigin().y , dx, dy, 0, ia.getImageScale().x, ia.getImageScale().y);
+                }
             }
+
 
     }
 

@@ -31,7 +31,7 @@ public class DetectiveModel extends GameObject{
     /** The friction of this rocket */
     private static final float DEFAULT_FRICTION = 0f;
     /** The restitution of this rocket */
-    private static final float DEFAULT_RESTITUTION = 1f;
+    private static final float DEFAULT_RESTITUTION = 0f;
     /** The thrust factor to convert player input into thrust */
     private static final float DEFAULT_THRUST = 20.0f;
     private static final float DEFAULT_SPEED = 10.0f;
@@ -178,7 +178,10 @@ public class DetectiveModel extends GameObject{
 
     public void startEating(FoodModel f) {
         chewing = f;
-        eatDelay += 3.0f;
+        if(!(f.isDessert() && this.getAmountEaten() < this.getThreshold())){
+            System.out.println("INside");
+            eatDelay += 3.0f;
+        }
     }
     public void stopEating() { chewing = null; }
 
@@ -413,7 +416,7 @@ public class DetectiveModel extends GameObject{
     }
 
     public void setDefaultRestitution(){
-        fixtureDef.restitution = DEFAULT_RESTITUTION;
+        fixtureDef.restitution = 0f;
     }
 
     public float getAmountEaten(){

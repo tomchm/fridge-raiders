@@ -15,6 +15,7 @@
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.*;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.*;
 import com.badlogic.gdx.assets.loaders.*;
@@ -142,10 +143,9 @@ public class GDXRoot extends Game implements ScreenListener {
 	public void exitScreen(Screen screen, int exitCode) {
 		if (screen == loading) {
 			AssetLoader.getInstance().loadContent(manager);
-
+			SoundController.getInstance().play("titlemusic", true, 0.75f);
 			levelSelect.activate();
 			setScreen(levelSelect);
-
 			loading.dispose();
 			loading = null;
 		} else if (exitCode == WorldController.EXIT_QUIT) {
@@ -160,6 +160,8 @@ public class GDXRoot extends Game implements ScreenListener {
 			canvas.zoomOut();
 		}
 		else if (exitCode == WorldController.LEVEL_SELECT) {
+			SoundController.getInstance().play("titlemusic", true, 0.75f);
+			SoundController.getInstance().stop("levelmusic");
 			levelSelect.activate();
 			setScreen(levelSelect);
 		}
@@ -170,6 +172,7 @@ public class GDXRoot extends Game implements ScreenListener {
 			controller.setHardReset();
 			controller.reset();
 			setScreen(controller);
+			SoundController.getInstance().stop("titlemusic");
 		}
 		else if(exitCode == 101){
 			controller = new WorldController("levels/alphaLevel.json");
@@ -178,6 +181,7 @@ public class GDXRoot extends Game implements ScreenListener {
 			controller.setHardReset();
 			controller.reset();
 			setScreen(controller);
+			SoundController.getInstance().stop("titlemusic");
 		}
 		else if(exitCode == 102){
 			controller = new WorldController("levels/simpleLevel.json");
@@ -186,6 +190,7 @@ public class GDXRoot extends Game implements ScreenListener {
 			controller.setHardReset();
 			controller.reset();
 			setScreen(controller);
+			SoundController.getInstance().stop("titlemusic");
 		}
 
 	}

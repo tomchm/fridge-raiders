@@ -281,28 +281,6 @@ public class WorldController implements Screen {
 			resetGUI.softReset = false;
 		}
 
-//		if(worldModel.hasLost() && worldModel.getPlayer().isSecondStage()){
-//			int myX = input.getMyProcessor().menuX;
-//			int myY = input.getMyProcessor().menuY;
-//			System.out.println(myX + " " + myY);
-//			if(myX >= 290 && myX <= 1080){
-//				System.out.println("IN?????????");
-//
-//				if(myY >= 120 && myY <= 195){
-//					//reset hard
-//					hardReset = true;
-//					reset();
-//					hardReset = false;
-//					didShowMenu = false;
-//				}
-//				else if(myY >= 300 && myY <= 375){
-//					//reset softs
-//
-//
-//				}
-//			}
-//
-//		}
 		if(worldModel.hasLost() && (!this.worldModel.getPlayer().isSecondStage())){
 			reset();
 		}
