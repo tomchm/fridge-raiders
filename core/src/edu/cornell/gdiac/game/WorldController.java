@@ -205,6 +205,10 @@ public class WorldController implements Screen {
 			reset();
 		}
 
+		if (input.didLightTest()) {
+			worldModel.getPlayer().getPointLight().setXray(!worldModel.getPlayer().getPointLight().isXray());
+		}
+
 
 
 		if(input.didExit()){

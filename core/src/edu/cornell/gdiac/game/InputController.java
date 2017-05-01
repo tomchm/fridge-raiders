@@ -77,6 +77,10 @@ public class InputController {
 
 	private boolean cutscenePressed;
 	private boolean cutscenePrevious;
+
+	private boolean lightTestPressed;
+	private boolean lightTestPrevious;
+
 	private boolean didDismissPause;
 	/** How much did we move horizontally? */
 	private float horizontal;
@@ -224,6 +228,15 @@ public class InputController {
 	public boolean didExit() {
 		return exitPressed && !exitPrevious;
 	}
+
+	/**
+	 * Returns true if the exit button was pressed.
+	 *
+	 * @return true if the exit button was pressed.
+	 */
+	public boolean didLightTest() {
+		return lightTestPressed && !lightTestPrevious;
+	}
 	
 	/**
 	 * Creates a new input controller
@@ -244,9 +257,6 @@ public class InputController {
 	 * The method provides both the input bounds and the drawing scale.  It needs
 	 * the drawing scale to convert screen coordinates to world coordinates.  The
 	 * bounds are for the crosshair.  They cannot go outside of this zone.
-	 *
-	 * @param bounds The input bounds for the crosshair.  
-	 * @param scale  The drawing scale
 	 */
 	public void readInput() {
 		// Copy state from last animation frame
@@ -259,6 +269,7 @@ public class InputController {
 		nextPrevious = nextPressed;
 		cutscenePrevious = cutscenePressed;
 		prevPrevious = prevPressed;
+		lightTestPrevious = lightTestPressed;
 
 		readKeyboard();
 
@@ -282,6 +293,9 @@ public class InputController {
 		primePressed = (secondary && primePressed) || (Gdx.input.isKeyPressed(Input.Keys.UP));
 		secondPressed = (secondary && secondPressed) || (Gdx.input.isKeyPressed(Input.Keys.SPACE));
 		prevPressed = (Gdx.input.isKeyPressed(Input.Keys.P)) || (Gdx.input.isKeyPressed(Input.Keys.ESCAPE));
+
+		lightTestPressed = (secondary && lightTestPressed) || (Gdx.input.isKeyPressed(Input.Keys.L));
+
 
 		nextPressed = (secondary && nextPressed) || (Gdx.input.isKeyPressed(Input.Keys.N));
 		cutscenePressed = (Gdx.input.isKeyPressed(Input.Keys.C));

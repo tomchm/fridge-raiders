@@ -161,6 +161,7 @@ public class DetectiveModel extends GameObject{
         pointLight.attachToBody(getBody());
         pointLight.setContactFilter((short)0x0005, (short)-1, (short) 0xFFFF);
         pointLight.setSoft(false);
+        pointLight.setXray(true);
     }
 
     /**
