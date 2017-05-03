@@ -82,13 +82,15 @@ public class WallModel extends GameObject {
                 coords[2*b2], coords[2*b2+1]+WALL_HEIGHT, coords[2*b2], coords[2*b2+1]
         }, r,g,b);
         // draw a couple stripes
-        canvas.drawPolygon(new float[]{
-                coords[2*b1], coords[2*b1+1]+STRIPE_HEIGHT, coords[2*b1], coords[2*b1+1]+STRIPE_HEIGHT+STRIPE_THICKNESS,
-                coords[2*b2], coords[2*b2+1]+STRIPE_HEIGHT+STRIPE_THICKNESS, coords[2*b2], coords[2*b2+1]+STRIPE_HEIGHT
-        }, 1f-(1f-r)*0.5f,1f-(1f-g)*0.5f,1f-(1f-b)*0.5f);
-        canvas.drawPolygon(new float[]{
-                coords[2*b1], coords[2*b1+1]+STRIPE_HEIGHT, coords[2*b1], coords[2*b1+1]+STRIPE_HEIGHT-STRIPE_THICKNESS/2f,
-                coords[2*b2], coords[2*b2+1]+STRIPE_HEIGHT-STRIPE_THICKNESS/2f, coords[2*b2], coords[2*b2+1]+STRIPE_HEIGHT
-        }, 0.7f*r,0.7f*g,0.7f*b);
+        if (r+g+b > 0.01) {
+            canvas.drawPolygon(new float[]{
+                    coords[2 * b1], coords[2 * b1 + 1] + STRIPE_HEIGHT, coords[2 * b1], coords[2 * b1 + 1] + STRIPE_HEIGHT + STRIPE_THICKNESS,
+                    coords[2 * b2], coords[2 * b2 + 1] + STRIPE_HEIGHT + STRIPE_THICKNESS, coords[2 * b2], coords[2 * b2 + 1] + STRIPE_HEIGHT
+            }, 1f - (1f - r) * 0.5f, 1f - (1f - g) * 0.5f, 1f - (1f - b) * 0.5f);
+            canvas.drawPolygon(new float[]{
+                    coords[2 * b1], coords[2 * b1 + 1] + STRIPE_HEIGHT, coords[2 * b1], coords[2 * b1 + 1] + STRIPE_HEIGHT - STRIPE_THICKNESS / 2f,
+                    coords[2 * b2], coords[2 * b2 + 1] + STRIPE_HEIGHT - STRIPE_THICKNESS / 2f, coords[2 * b2], coords[2 * b2 + 1] + STRIPE_HEIGHT
+            }, 0.7f * r, 0.7f * g, 0.7f * b);
+        }
     }
 }
