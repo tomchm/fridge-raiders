@@ -37,6 +37,22 @@ public class GrabController {
         jointDef.initialize(worldModel.getPlayer().getBody(), furniture.getBody(), new Vector2());
         jointDef.collideConnected = false;
 
+        Vector2 dif = new Vector2(furniture.getBody().getPosition()).sub(worldModel.getPlayer().getBody().getPosition());
+        double angle = Math.atan2((double)dif.y, (double)dif.x);
+
+        if(angle <= Math.PI/4 && angle >=  -Math.PI/4) {
+            worldModel.getPlayer().setAnimation(DetectiveModel.Animation.RIGHT_GRAB);
+        }
+        else if(angle <= 3* Math.PI/4 && angle >= Math.PI/4) {
+            worldModel.getPlayer().setAnimation(DetectiveModel.Animation.UP_GRAB);
+        }
+        else if(angle >= 3* Math.PI/4 || angle <= -3*Math.PI/4) {
+            worldModel.getPlayer().setAnimation(DetectiveModel.Animation.LEFT_GRAB);
+        }
+        else if(angle <= - Math.PI/4 && angle >= -3*Math.PI/4) {
+            worldModel.getPlayer().setAnimation(DetectiveModel.Animation.DOWN_GRAB);
+        }
+
         worldModel.getPlayer().setGrappled(true);
         switch(worldModel.getPlayer().getAnimation()){
             case DOWN_MOVE:

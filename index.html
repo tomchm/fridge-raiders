@@ -180,12 +180,12 @@
             $('#aibutton').click(function() {
                 if (level.ais.includes(selected)) {
                     // add a new coordinate
-                    selected.coords.push(camX+5);
-                    selected.coords.push(camY+5);
+                    selected.coords.push(camX + 0.5*cnv.width/DRAW_SCALE);
+                    selected.coords.push(camY + 0.5*cnv.height/DRAW_SCALE);
                 }
                 else {
                     // make a new AI!
-                    var newAI = {"tags":["ai"], "coords":[camX+5, camY+5]};
+                    var newAI = {"tags":["ai"], "coords":[camX + 0.5*cnv.width/DRAW_SCALE, camY + 0.5*cnv.height/DRAW_SCALE]};
                     level.ais.push(newAI);
                 }
                 draw(level);
@@ -657,7 +657,9 @@
             }
             else {
                 // add a new one!
-                var newObj = { "tags": [newtag], "x": 25, "y": 25, "theta": 0, "width": 0, "height": 0, "radius": 0 };
+                var xspawn = camX + 0.5*cnv.width/DRAW_SCALE;
+                var yspawn = camY + 0.5*cnv.height/DRAW_SCALE;
+                var newObj = { "tags": [newtag], "x": xspawn, "y": yspawn, "theta": 0, "width": 0, "height": 0, "radius": 0 };
                 if (asset.shape == 'circle') {newObj.radius = eval(asset.radius);}
                 else if (asset.shape == 'rectangle') { newObj.width = eval(asset.width); newObj.height = eval(asset.height); }
                 
@@ -671,7 +673,7 @@
                     selected = level.decor[level.decor.length-1];
                 }
                 else if (type == 'floor') {
-                    newObj = {"tags": [newtag], "coords": [30,30,35,30,35,35,30,35]};
+                    newObj = {"tags": [newtag], "coords": [xspawn,yspawn,xspawn+5,yspawn,xspawn+5,yspawn+5,xspawn,yspawn+5]};
                     level.floors.push( newObj );
                     selected = level.floors[level.floors.length-1];
                     seli = 0;
