@@ -25,7 +25,7 @@ public class MinimapGUIModel extends GUIModel {
     private final static Color borderColor = new Color(0.7f, 0.7f, 0.7f, 1f);
     private final static Color playerColor = new Color(110f/255f, 76f/255f, 41f/255f, 1f);
     private final static int SCREEN_X = 400, SCREEN_Y = 120;
-
+    private int counter = 0;
     private Pixmap map;
     private float minY, minX, scale;
 
@@ -171,8 +171,12 @@ public class MinimapGUIModel extends GUIModel {
                 */
 
                 //Draw Dessert
-                if(world.getPlayer().getAmountEaten() > world.getPlayer().getThreshold() && (!world.getPlayer().isSecondStage())){
+
+
+
+                if(world.getPlayer().getAmountEaten() > world.getPlayer().getThreshold() && (!world.getPlayer().isSecondStage()) && (counter <= 60)){
                     // Get Dessert
+                    counter +=1;
                     float dessertX = 0f;
                     float dessertY = 0f;
                     for(GameObject gm: world.getGameObjects()){
@@ -189,6 +193,14 @@ public class MinimapGUIModel extends GUIModel {
                     float dy = origin.y*GameObject.getDrawScale().y + (dessertY-minY)/scale + SCREEN_Y;
                     canvas.draw(ia.getTexture(), Color.YELLOW, ia.getOrigin().x , ia.getOrigin().y , dx, dy, 0, ia.getImageScale().x, ia.getImageScale().y);
                 }
+
+                if(counter >= 60 && counter < 90) {
+                    counter += 1;
+                }
+                if(counter >= 90){
+                    counter = 0;
+                }
+
             }
 
 
