@@ -424,7 +424,7 @@ $("#choose_asset").change(function(){
 $( document ).ready(function() {
     console.log( "ready!" );
     if (localStorage.jsonFile) {
-        $("#json_input").val(localStorage.jsonFile);
+        //$("#json_input").val(localStorage.jsonFile);
     } else {
         localStorage.jsonFile = "";
     }
