@@ -79,6 +79,7 @@ public class WorldController implements Screen {
 	private boolean shouldPlayScene = true;
 	private boolean isPaused = false;
 	private String levelFile;
+	private boolean panToDessert = false;
 
 
 	public WorldController(String levelFile) {
@@ -250,6 +251,28 @@ public class WorldController implements Screen {
 			worldModel.setLevelSelect(false);
 			return false;
 		}
+
+
+		// Tried to pan to dessert????
+
+
+
+//		if((!(panToDessert)) && worldModel.getPlayer().getAmountEaten() >= worldModel.getPlayer().getThreshold()){
+//			float dessertX = 0f;
+//			float dessertY = 0f;
+//			for(GameObject gm: worldModel.getGameObjects()){
+//				if(gm instanceof FoodModel){
+//					if(((FoodModel) gm).isDessert()){
+//						dessertX = gm.getBody().getPosition().x;
+//						dessertY = gm.getBody().getPosition().y;
+//					}
+//				}
+//			}
+//
+//			canvas.moveCamera(dessertX,dessertY);
+//			guicanvas.moveCamera(dessertX, dessertY);
+//			panToDessert = true;
+//		}
 
 		else {
 			if(worldModel.getGoal().hasPlayerCollided()){
