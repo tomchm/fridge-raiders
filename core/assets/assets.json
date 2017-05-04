@@ -687,6 +687,256 @@
     },
     {
       "type": "image",
+      "tag": "Decor-Clock2",
+      "filename": "decor/Clock2.png",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
+      "origin_x": "162",
+      "origin_y": "329",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Decor-Clock3",
+      "filename": "decor/Clock3.png",
+      "scale_x": "0.3",
+      "scale_y": "0.3",
+      "origin_x": "134",
+      "origin_y": "130",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Decor-Candle",
+      "filename": "decor/Candle.png",
+      "scale_x": "0.4",
+      "scale_y": "0.4",
+      "origin_x": "56",
+      "origin_y": "146",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Decor-Clef",
+      "filename": "decor/Clef.png",
+      "scale_x": "0.30",
+      "scale_y": "0.3",
+      "origin_x": "232",
+      "origin_y": "364",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Decor-Fireplace",
+      "filename": "decor/Fireplace.png",
+      "scale_x": "0.24",
+      "scale_y": "0.24",
+      "origin_x": "434",
+      "origin_y": "360",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Decor-MissNoir",
+      "filename": "decor/MissNoir.png",
+      "scale_x": "0.3",
+      "scale_y": "0.3",
+      "origin_x": "239",
+      "origin_y": "376",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Decor-PortraitFemale",
+      "filename": "Decor/Portrait1.png",
+      "scale_x": "0.26",
+      "scale_y": "0.26",
+      "origin_x": "302",
+      "origin_y": "302",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Decor-PortraitMale",
+      "filename": "decor/Portrait2.png",
+      "scale_x": "0.26",
+      "scale_y": "0.26",
+      "origin_x": "286",
+      "origin_y": "290",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Decor-Window3",
+      "filename": "decor/Window3.png",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "origin_x": "235",
+      "origin_y": "298",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Decor-Window4",
+      "filename": "decor/Window4.png",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "origin_x": "204",
+      "origin_y": "294",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Decor-Window5",
+      "filename": "decor/Window5.png",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "origin_x": "446",
+      "origin_y": "224",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Decor-WineCabinet",
+      "filename": "decor/WineCabinet.png",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "origin_x": "290",
+      "origin_y": "204",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Furniture-AptTableLarge45",
+      "filename": "furniture/Apartment Table Large 45.png",
+      "scale_x": "0.3",
+      "scale_y": "0.3",
+      "origin_x": "426",
+      "origin_y": "356",
+      "shape": "rectangle",
+      "width": "4",
+      "height": "4",
+      "angle": "45"
+    },
+    {
+      "type": "image",
+      "tag": "Furniture-MsnTableLarge45",
+      "filename": "furniture/Mansion Table Large 45.png",
+      "scale_x": ".3",
+      "scale_y": "0.3",
+      "origin_x": "430",
+      "origin_y": "329",
+      "shape": "rectangle",
+      "width": "4",
+      "height": "4",
+      "angle": "45"
+    },
+    {
+      "type": "image",
+      "tag": "Furniture-MsnPianoLeft",
+      "filename": "furniture/Mansion Piano Left.png",
+      "scale_x": "0.28",
+      "scale_y": "0.28",
+      "origin_x": "520",
+      "origin_y": "465",
+      "shape": "rectangle",
+      "width": "5",
+      "height": "5",
+      "angle": "45"
+    },
+    {
+      "type": "image",
+      "tag": "Furniture-MsnPianoRight",
+      "filename": "furniture/Mansion Piano Right.png",
+      "scale_x": ".28",
+      "scale_y": ".28",
+      "origin_x": "535",
+      "origin_y": "457",
+      "shape": "rectangle",
+      "width": "5.3",
+      "height": "5.3",
+      "angle": "45"
+    },
+    {
+      "type": "image",
+      "tag": "Furniture-NcbPiano",
+      "filename": "furniture/Nightclub Grand Piano.png",
+      "scale_x": "0.32",
+      "scale_y": "0.32",
+      "origin_x": "523",
+      "origin_y": "422",
+      "shape": "rectangle",
+      "width": "5.3",
+      "height": "5.3",
+      "angle": "45"
+    },
+    {
+      "type": "image",
+      "tag": "Furniture-NcbLounge",
+      "filename": "furniture/Nightclub Lounge.png",
+      "scale_x": "0.31",
+      "scale_y": "0.31",
+      "origin_x": "477",
+      "origin_y": "165",
+      "shape": "rectangle",
+      "width": "6.41",
+      "height": "2.57",
+      "angle": "0"
+    },
+    {
+      "type": "image",
+      "tag": "Furniture-NcbStoolGreen",
+      "filename": "furniture/Nightclub Stool Green.png",
+      "scale_x": ".12",
+      "scale_y": "0.12",
+      "origin_x": "422",
+      "origin_y": "302",
+      "shape": "rectangle",
+      "width": "1.59",
+      "height": "1.43",
+      "angle": "0"
+    },
+    {
+      "type": "image",
+      "tag": "Furniture-NcbStoolPurple",
+      "filename": "furniture/Nightclub Stool Purple.png",
+      "scale_x": ".12",
+      "scale_y": ".12",
+      "origin_x": "403",
+      "origin_y": "302",
+      "shape": "rectangle",
+      "width": "1.59",
+      "height": "1.43",
+      "angle": "0"
+    },
+    {
+      "type": "image",
+      "tag": "Furniture-NcbTableLarge",
+      "filename": "furniture/Nightclub Table Large.png",
+      "scale_x": "0.27",
+      "scale_y": "0.27",
+      "origin_x": "411",
+      "origin_y": "294",
+      "shape": "rectangle",
+      "width": "4.73",
+      "height": "3.59",
+      "angle": "0"
+    },
+    {
+      "type": "image",
+      "tag": "Furniture-NcbTableLarge45",
+      "filename": "furniture/Nightclub Table Large 45.png",
+      "scale_x": ".3",
+      "scale_y": "0.3",
+      "origin_x": "391",
+      "origin_y": "337",
+      "shape": "rectangle",
+      "width": "4",
+      "height": "4",
+      "angle": "45"
+    }
+    {
+      "type": "image",
       "tag": "",
       "filename": "gui/circle2.png",
       "origin_x": "0",
@@ -1038,6 +1288,5 @@
       "speed": "6",
       "shape": "none"
     }
-
   ]
 }
