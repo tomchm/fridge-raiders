@@ -62,10 +62,10 @@ public class SpacebarGUIModel extends GUIModel{
             }
         }
         if(nearest != null){
-            if(nearest instanceof FoodModel){
+            if(nearest instanceof FoodModel && !worldModel.getPlayer().isGrappled()){
                 ((FoodModel) nearest).highlight();
             }
-            else if(nearest instanceof FurnitureModel){
+            else if(nearest instanceof FurnitureModel && nearest != worldModel.getPlayer().getGrappledFurniture()){
                 ((FurnitureModel) nearest).highlight();
             }
 
@@ -74,7 +74,7 @@ public class SpacebarGUIModel extends GUIModel{
 
     public void draw(GameCanvas canvas){
         if(nearest != null){
-            if(nearest instanceof FoodModel){
+            if(nearest instanceof FoodModel && !worldModel.getPlayer().isGrappled()){
                 FilmstripAsset asset = (FilmstripAsset) assetMap.get("foodtick");
                 if(asset != null){
                     FoodModel food = (FoodModel) nearest;
