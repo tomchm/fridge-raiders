@@ -201,8 +201,6 @@ public class MinimapGUIModel extends GUIModel {
                     counter = 0;
                 }
 
-
-
             }
 
 
