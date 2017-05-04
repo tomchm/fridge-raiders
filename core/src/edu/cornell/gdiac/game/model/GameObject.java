@@ -27,7 +27,7 @@ public abstract class GameObject implements Comparable{
     protected boolean isRemoved;
     protected String[] tags;
     protected ObjectMap<String, Asset> assetMap = new ObjectMap<String, Asset>();
-    protected static int counter;
+    public static int counter;
 
     public boolean isRemoved() {
         return isRemoved;
