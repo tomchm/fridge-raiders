@@ -114,7 +114,7 @@ public class DetectiveModel extends GameObject{
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
         fixtureDef.friction = 0f;
-        fixtureDef.restitution = 0.0f;
+        fixtureDef.restitution = -1.0f;
         animation = Animation.DOWN_MOVE;
 
         tags = new String[] {"player_down", "player_up", "player_left", "player_right",
@@ -250,7 +250,9 @@ public class DetectiveModel extends GameObject{
 
         if(!isSecondStage){
             FilmstripAsset fa = null;
-            frame++;
+            if(this.getSpeed() > 0.5f) {
+                frame++;
+            }
             switch (animation){
                 case DOWN_MOVE:
                     fa = (FilmstripAsset)assetMap.get("player_down");
