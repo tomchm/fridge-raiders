@@ -25,6 +25,7 @@ public class MinimapGUIModel extends GUIModel {
     private final static Color borderColor = new Color(0.7f, 0.7f, 0.7f, 1f);
     private final static Color playerColor = new Color(110f/255f, 76f/255f, 41f/255f, 1f);
     private final static int SCREEN_X = 400, SCREEN_Y = 120;
+    private int adjX, adjY;
     private int counter = 0;
     private Pixmap map;
     private float minY, minX, scale;
@@ -32,12 +33,15 @@ public class MinimapGUIModel extends GUIModel {
     private WorldModel world;
 
     public MinimapGUIModel(WorldModel world){
+        adjX = 0;
+        adjY = 0;
         this.world = world;
         findConstants();
         map = new Pixmap(MAX_SIZE, MAX_SIZE, Pixmap.Format.RGBA8888);
         makeMap();
         guiTag = "MinimapGUI";
         tags = new String[]{"crumb"};
+
     }
 
     private void findConstants(){
@@ -71,11 +75,12 @@ public class MinimapGUIModel extends GUIModel {
         minY-=1;
         if(maxX-minX > maxY-minY){
             scale = (maxX - minX)/MAX_SIZE;
+            adjY = MAX_SIZE/2 - (int)((maxY - minY)/scale*0.5f);
         }
         else {
             scale = (maxY - minY)/MAX_SIZE;
+            adjX = MAX_SIZE/2 - (int)((maxX - minX)/scale*0.5f);
         }
-        System.out.println(minX +" "+minY+" "+scale);
     }
 
     private void makeMap(){
@@ -92,8 +97,8 @@ public class MinimapGUIModel extends GUIModel {
         float[] coords = wall.getCoords();
         int[] icoords = new int[8];
         for(int i=0; i<8; i+=2){
-            icoords[i] = (int)((coords[i]-minX)/scale);
-            icoords[i+1] = (int)((coords[i+1]-minY)/scale);
+            icoords[i] = adjX + (int)((coords[i]-minX)/scale);
+            icoords[i+1] = adjY + (int)((coords[i+1]-minY)/scale);
         }
         map.setColor(wallColor);
         map.fillTriangle(icoords[0], icoords[1], icoords[2], icoords[3], icoords[4], icoords[5]);
@@ -159,8 +164,8 @@ public class MinimapGUIModel extends GUIModel {
             canvas.draw(texture, new Color(1,1,1,0.5f), 0, 0, origin.x*GameObject.getDrawScale().x + SCREEN_X , origin.y*GameObject.getDrawScale().y + SCREEN_Y + MAX_SIZE, 0, 1f, -1f);
             ImageAsset ia = (ImageAsset)assetMap.get("crumb");
             if(ia != null){
-                float px = origin.x*GameObject.getDrawScale().x + (world.getPlayer().getBody().getPosition().x-minX)/scale + SCREEN_X;
-                float py = origin.y*GameObject.getDrawScale().y + (world.getPlayer().getBody().getPosition().y-minY)/scale + SCREEN_Y;
+                float px = origin.x*GameObject.getDrawScale().x + (world.getPlayer().getBody().getPosition().x-minX)/scale + SCREEN_X + adjX;
+                float py = origin.y*GameObject.getDrawScale().y + (world.getPlayer().getBody().getPosition().y-minY)/scale + SCREEN_Y + adjY;
                 canvas.draw(ia.getTexture(), Color.RED, ia.getOrigin().x , ia.getOrigin().y , px, py, 0, ia.getImageScale().x, ia.getImageScale().y);
                 /*
                 if(world.getPlayer().getAmountEaten() > world.getPlayer().getThreshold() && !world.getPlayer().isSecondStage()){
@@ -189,8 +194,8 @@ public class MinimapGUIModel extends GUIModel {
                     }
 
 
-                    float dx = origin.x*GameObject.getDrawScale().x + (dessertX-minX)/scale + SCREEN_X;
-                    float dy = origin.y*GameObject.getDrawScale().y + (dessertY-minY)/scale + SCREEN_Y;
+                    float dx = origin.x*GameObject.getDrawScale().x + (dessertX-minX)/scale + SCREEN_X + adjX;
+                    float dy = origin.y*GameObject.getDrawScale().y + (dessertY-minY)/scale + SCREEN_Y + adjY;
                     canvas.draw(ia.getTexture(), Color.YELLOW, ia.getOrigin().x , ia.getOrigin().y , dx, dy, 0, ia.getImageScale().x, ia.getImageScale().y);
                 }
 
