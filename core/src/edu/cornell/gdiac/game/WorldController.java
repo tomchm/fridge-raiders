@@ -21,6 +21,7 @@ import java.util.Iterator;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.*;
 import edu.cornell.gdiac.game.asset.AssetLoader;
 import edu.cornell.gdiac.game.gui.AimGUIModel;
 import edu.cornell.gdiac.game.gui.GUIController;
@@ -33,12 +34,18 @@ import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 public class WorldController implements Screen {
 
 	private static final float DRAW_SCALE = 32f;
+	private static final float PAN_TIME = 1.5f;
+	private static final float HOLD_TIME = 1.5f;
+
 	private WorldModel worldModel;
 	private boolean debug = false;
 	private SpacebarController spacebarController;
 	private GUIController guiController;
 
 	private boolean playedScene = false;
+	private Queue<Vector2> panQueue = null;
+	private float panS = 0f; // ranges from 0 to 1 as you vary between pan start & pan end.
+	private float panT = 0f; // ranges from 0 to 1 as you hold on the destination.
 
 	/** List of ai controllers (one for each ai)*/
 	private PooledList<AIController> aiControllers;
@@ -92,9 +99,14 @@ public class WorldController implements Screen {
 		aiControllers = new PooledList <AIController>();
 		fileIOController = new FileIOController(worldModel);
 		guiController = new GUIController(worldModel, spacebarController, input);
+		panQueue = new Queue<Vector2>();
 		resetCounter = 0;
 		guicanvas = new GameCanvas();
 		this.levelFile = levelFile;
+	}
+
+	public boolean isPanning() {
+		return panQueue.size >= 2;
 	}
 
 	public void reset() {
@@ -159,6 +171,12 @@ public class WorldController implements Screen {
 		}
 		worldModel.updateAllSensors();
 		worldModel.setMaximumFood();
+		panQueue.addLast(worldModel.getPlayer().getBody().getPosition());
+		for (AIModel ai : worldModel.aiList) {
+			panQueue.addLast(ai.getBody().getPosition());
+		}
+		panQueue.addLast(worldModel.getDessertPosition());
+		panQueue.addLast(worldModel.getPlayer().getBody().getPosition());
 
 		SoundController.getInstance().play("levelmusic", true, 0.75f);
 		//fileIOController.save("levels/testOutput.json");
@@ -386,8 +404,27 @@ public class WorldController implements Screen {
 			}
 		}
 		Vector2 position = worldModel.getPlayer().getBody().getPosition();
+		// here, update position if we're supposed to be panning somewhere
+		if (isPanning()) {
+			position.x = panQueue.get(0).x + panS * (panQueue.get(1).x - panQueue.get(0).x);
+			position.y = panQueue.get(0).y + panS * (panQueue.get(1).y - panQueue.get(0).y);
+		}
+		if (isPanning() && panS < 1f) {
+			panS += 1f / (PAN_TIME * 60f);
+		}
+		else if (isPanning() && panS > 1f) {
+			panT += 1f / (HOLD_TIME * 60f);
+		}
+		if (panT > 1f) {
+			panQueue.removeFirst();
+			panS = 0f;
+			panT = 0f;
+			if (panQueue.size == 1) panQueue.clear();
+		}
+
 		canvas.moveCamera(position.x, position.y);
 		guicanvas.moveCamera(position.x, position.y);
+		worldModel.moveRayCamera(position.x, position.y);
 		if(worldModel.getPlayer().isSecondStage()){
 			//canvas.zoomOut();
 			worldModel.zoomOutRaycamera();
