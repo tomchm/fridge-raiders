@@ -323,6 +323,13 @@ public class WorldModel {
     public DetectiveModel getPlayer() { return detective; }
     public void setPlayer(DetectiveModel dm) {detective=dm;}
 
+    public Vector2 getDessertPosition() {
+        for (GameObject go : gameObjects) {
+            if (go instanceof FoodModel && ((FoodModel)go).isDessert()) return go.getBody().getPosition();
+        }
+        return null;
+    }
+
     public GoalModel getGoal() { return goal; }
     public void setGoal(GoalModel gm) {goal =gm;}
 
@@ -503,7 +510,7 @@ public class WorldModel {
         }
         canvas.end();
 
-        updateRayCamera();
+        //updateRayCamera();
 
         // draw lights
 
@@ -558,6 +565,14 @@ public class WorldModel {
      */
     public void updateRayCamera() {
         raycamera.position.set(detective.getBody().getPosition(), 0);
+        raycamera.update();
+        rayhandler.setCombinedMatrix(raycamera);
+        rayhandlerD.setCombinedMatrix(raycamera);
+        rayhandlerA.setCombinedMatrix(raycamera);
+    }
+
+    public void moveRayCamera(float x, float y) {
+        raycamera.position.set(x, y, 0);
         raycamera.update();
         rayhandler.setCombinedMatrix(raycamera);
         rayhandlerD.setCombinedMatrix(raycamera);

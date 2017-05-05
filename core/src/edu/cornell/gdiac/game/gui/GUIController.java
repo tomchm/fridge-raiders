@@ -11,26 +11,37 @@ import edu.cornell.gdiac.game.WorldModel;
 import edu.cornell.gdiac.game.asset.Asset;
 import edu.cornell.gdiac.util.ScreenListener;
 
+import java.util.ArrayList;
+
 /**
  * Created by tomchm on 3/19/17.
  */
 public class GUIController {
 
     private ObjectMap<String, GUIModel> guiMap = new ObjectMap<String, GUIModel>();
+    private ArrayList<GUIModel> guiList = new ArrayList<GUIModel>();
 
     public GUIController(WorldModel worldModel, SpacebarController controller, InputController inputControlla){
+        GUIModel minimapGUI = new MinimapGUIModel(worldModel);
+        guiMap.put(minimapGUI.guiTag, minimapGUI);
         GUIModel spacebarGUI = new SpacebarGUIModel(controller, worldModel);
         guiMap.put(spacebarGUI.guiTag, spacebarGUI);
         GUIModel aimGUI = new AimGUIModel(controller, worldModel);
         guiMap.put(aimGUI.guiTag, aimGUI);
-        GUIModel pauseGUI = new PauseGUI(worldModel, inputControlla);
-        guiMap.put(pauseGUI.guiTag, pauseGUI);
         GUIModel textGUI = new TextGUIModel(worldModel);
         guiMap.put(textGUI.guiTag, textGUI);
-        GUIModel minimapGUI = new MinimapGUIModel(worldModel);
-        guiMap.put(minimapGUI.guiTag, minimapGUI);
         GUIModel resetGUI = new ResetGUIModel(worldModel,inputControlla);
         guiMap.put(resetGUI.guiTag, resetGUI);
+        GUIModel pauseGUI = new PauseGUI(worldModel, inputControlla);
+        guiMap.put(pauseGUI.guiTag, pauseGUI);
+
+        guiList.add(minimapGUI);
+        guiList.add(spacebarGUI);
+        guiList.add(aimGUI);
+        guiList.add(textGUI);
+        guiList.add(pauseGUI);
+        guiList.add(resetGUI);
+
 
     }
 
@@ -46,7 +57,7 @@ public class GUIController {
 
     public void draw(GameCanvas canvas){
         canvas.begin();
-        for(GUIModel gui: guiMap.values()){
+        for(GUIModel gui: guiList){
             gui.draw(canvas);
         }
         canvas.end();
