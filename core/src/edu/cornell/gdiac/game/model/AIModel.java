@@ -38,7 +38,10 @@ public class AIModel extends GameObject{
     /*the path the ai takes around level*/
     protected Vector2[] path;
 
+    /*true if the ai has been rolled over*/
     public boolean isDead = false;
+    /*true if the ai is in the second stage*/
+    public boolean isSecondStage= false;
 
     public enum Animation {
         LEFT_MOVE, RIGHT_MOVE, UP_MOVE, DOWN_MOVE, LEFT_STOP, RIGHT_STOP, UP_STOP, DOWN_STOP
@@ -108,7 +111,7 @@ public class AIModel extends GameObject{
 
         this.path = path;
         this.tags = tags;
-        this.tags = new String[] {"ai_walk_right", "ai_walk_left", "ai_walk_down", "ai_walk_up"};
+        this.tags = new String[] {"ai1_walk_right", "ai1_walk_left", "ai1_walk_down", "ai1_walk_up"};
     }
 
     /**
@@ -127,7 +130,9 @@ public class AIModel extends GameObject{
      * updates the cone light position based on the position of the AI
      */
     public void updateConeLight() {
-        coneLight.setDirection((float)(getBody().getAngle()*180 / Math.PI));
+        if (coneLight.isActive()) {
+            coneLight.setDirection((float)(getBody().getAngle()*180 / Math.PI));
+        }
     }
 
     /**
@@ -157,22 +162,25 @@ public class AIModel extends GameObject{
         if(tags.length > 0 && body != null){
             FilmstripAsset fa = null;
             float angle = (float)((getBody().getAngle() + Math.PI * 4) % (Math.PI * 2));
-            if(angle <= Math.PI*0.25f  || angle > Math.PI*1.75f){
-                fa = (FilmstripAsset) assetMap.get("ai_walk_right");
+            if (isSecondStage){
+                fa = (FilmstripAsset) assetMap.get("ai1_walk_down");
+            }
+            else if(angle <= Math.PI*0.25f  || angle > Math.PI*1.75f){
+                fa = (FilmstripAsset) assetMap.get("ai1_walk_right");
             }
             else if(angle <= Math.PI*0.75f  && angle > Math.PI*0.25f){
-                fa = (FilmstripAsset) assetMap.get("ai_walk_up");
+                fa = (FilmstripAsset) assetMap.get("ai1_walk_up");
             }
             else if(angle <= Math.PI*1.25f  && angle > Math.PI*0.75f){
-                fa = (FilmstripAsset) assetMap.get("ai_walk_left");
+                fa = (FilmstripAsset) assetMap.get("ai1_walk_left");
             }
             else {
-                fa = (FilmstripAsset) assetMap.get("ai_walk_down");
+                fa = (FilmstripAsset) assetMap.get("ai1_walk_down");
             }
 
             if(fa != null){
                 int nFrame = (GameObject.counter / fa.getSpeed()) % fa.getNumFrames();
-                TextureRegion texture = fa.getTexture(nFrame);
+                TextureRegion texture = fa.getTexture(nFrame/2);
                 canvas.draw(texture, Color.WHITE,fa.getOrigin().x,fa.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,fa.getImageScale().x,fa.getImageScale().y);
             }
 

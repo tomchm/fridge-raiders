@@ -62,10 +62,7 @@ public class SpacebarGUIModel extends GUIModel{
             }
         }
         if(nearest != null){
-            if(nearest instanceof FoodModel && !worldModel.getPlayer().isGrappled()){
-                ((FoodModel) nearest).highlight();
-            }
-            else if(nearest instanceof FurnitureModel && nearest != worldModel.getPlayer().getGrappledFurniture()){
+            if(nearest instanceof FurnitureModel && nearest != worldModel.getPlayer().getGrappledFurniture()){
                 ((FurnitureModel) nearest).highlight();
             }
 

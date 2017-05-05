@@ -472,17 +472,17 @@ public class AIController implements RayCastCallback{
     public void update2(float dt){
         if(!isSecondStage){
             ai.getBody().getFixtureList().first().setSensor(true);
+            ai.getConeLight().setActive(false);
             worldModel.setStatic(ai.getBody());
             ai.setSpeed(0);
             isSecondStage = true;
+            ai.isSecondStage = true;
         }
         Vector2 playerPos = player.getBody().getPosition().cpy();
         Vector2 myPos = ai.getBody().getPosition().cpy();
-        if(!isDead && playerPos.dst(myPos) < ai.getRadius()*2){
-            ai.getBody().setTransform(ai.getBody().getPosition(), MathUtils.degreesToRadians*90);
+        if(!isDead && playerPos.dst(myPos) < ai.getRadius() + worldModel.getPlayer().getRadius()){
+
             ai.isDead = true;
-            System.out.println("DEAD");
-            System.out.println(ai.getBody().getAngle());
             isDead = true;
         }
     }
