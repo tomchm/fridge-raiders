@@ -3,6 +3,7 @@ package edu.cornell.gdiac.game.model;
 import box2dLight.ConeLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.Shape;
@@ -42,6 +43,8 @@ public class AIModel extends GameObject{
     public boolean isDead = false;
     /*true if the ai is in the second stage*/
     public boolean isSecondStage= false;
+    /*the angle at which the player rolled over the AI*/
+    public double deadAngle;
 
     public enum Animation {
         LEFT_MOVE, RIGHT_MOVE, UP_MOVE, DOWN_MOVE, LEFT_STOP, RIGHT_STOP, UP_STOP, DOWN_STOP
@@ -111,7 +114,7 @@ public class AIModel extends GameObject{
 
         this.path = path;
         this.tags = tags;
-        this.tags = new String[] {"ai1_walk_right", "ai1_walk_left", "ai1_walk_down", "ai1_walk_up"};
+        this.tags = new String[] {"ai1_walk_right", "ai1_walk_left", "ai1_walk_down", "ai1_walk_up", "ai1_flat"};
     }
 
     /**
@@ -157,11 +160,38 @@ public class AIModel extends GameObject{
         getBody().setAngularVelocity(ANG_VEL * direction * Math.min(dist1, dist2));
     }
 
-    /** Overwrite GameObject draw method so the sprite does not turn akwardly*/
+
+    @Override
+    /**
+     * Overrites given z funciton to make it draw below everything
+     */
+    public float getZ(){
+        if (isDead) {
+            return 9f * WallModel.LARGE_Z;
+        }
+        else {
+            return super.getZ();
+        }
+    }
+
+    /**
+     * Overwrite GameObject draw method so the sprite does not turn akwardly
+     */
     public void draw(GameCanvas canvas){
         if(tags.length > 0 && body != null){
-            FilmstripAsset fa = null;
+            FilmstripAsset fa;
             float angle = (float)((getBody().getAngle() + Math.PI * 4) % (Math.PI * 2));
+
+            if (isDead) {
+                ImageAsset ia = (ImageAsset) assetMap.get("ai1_flat");
+                Affine2 aff = new Affine2();
+                aff.setToRotationRad((float)(deadAngle + Math.PI/2));
+                aff.preScale(ia.getImageScale().x,ia.getImageScale().y * 0.6f );
+                aff.preTranslate(body.getPosition().x * drawScale.x, body.getPosition().y*drawScale.y);
+                canvas.draw(ia.getTexture(), Color.WHITE, ia.getOrigin().x, ia.getOrigin().y,aff);
+                return;
+            }
+
             if (isSecondStage){
                 fa = (FilmstripAsset) assetMap.get("ai1_walk_down");
             }
@@ -183,15 +213,6 @@ public class AIModel extends GameObject{
                 TextureRegion texture = fa.getTexture(nFrame/2);
                 canvas.draw(texture, Color.WHITE,fa.getOrigin().x,fa.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,fa.getImageScale().x,fa.getImageScale().y);
             }
-
-            /*
-            Asset asset = assetMap.get(tags[0]);
-            if(asset instanceof ImageAsset){
-                ImageAsset ia = (ImageAsset) asset;
-                float angle = isDead ? body.getAngle() : 0;
-                canvas.draw(ia.getTexture(), Color.WHITE,ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,angle,ia.getImageScale().x,ia.getImageScale().y);
-            }
-            */
         }
     }
 }

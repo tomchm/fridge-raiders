@@ -90,6 +90,8 @@ public class AIController implements RayCastCallback{
     /** true if AI was run over */
     private boolean isDead;
 
+    public float tempCount = 0;
+
     /**
      * Creates an AIController for the given ai.
      *
@@ -480,11 +482,22 @@ public class AIController implements RayCastCallback{
         }
         Vector2 playerPos = player.getBody().getPosition().cpy();
         Vector2 myPos = ai.getBody().getPosition().cpy();
+        Vector2 posDif = playerPos.cpy().sub(myPos);
         if(!isDead && playerPos.dst(myPos) < ai.getRadius() + worldModel.getPlayer().getRadius()){
-
+            System.out.println("HERE");
+            ai.deadAngle = Math.atan2(posDif.y, posDif.x);
             ai.isDead = true;
             isDead = true;
         }
+//        if(tempCount > 200) {
+//            isDead = false;
+//            ai.isDead = false;
+//            tempCount =0;
+//        }
+//        tempCount ++;
+
+
+
     }
 
     /**

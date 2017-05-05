@@ -1242,7 +1242,7 @@
     },
     {
       "type": "filmstrip",
-      "tag": "ai_walk_right",
+      "tag": "ai1_walk_right",
       "filename": "ai/ai_walk_right.png",
       "origin_x": "128",
       "origin_y": "144",
@@ -1254,7 +1254,7 @@
     },
     {
       "type": "filmstrip",
-      "tag": "ai_walk_left",
+      "tag": "ai1_walk_left",
       "filename": "ai/ai_walk_left.png",
       "origin_x": "128",
       "origin_y": "144",
@@ -1266,7 +1266,7 @@
     },
     {
       "type": "filmstrip",
-      "tag": "ai_walk_up",
+      "tag": "ai1_walk_up",
       "filename": "ai/ai_walk_up.png",
       "origin_x": "128",
       "origin_y": "144",
@@ -1278,7 +1278,7 @@
     },
     {
       "type": "filmstrip",
-      "tag": "ai_walk_down",
+      "tag": "ai1_walk_down",
       "filename": "ai/ai_walk_down.png",
       "origin_x": "128",
       "origin_y": "144",
@@ -1286,6 +1286,17 @@
       "scale_y": "0.35",
       "frames": "8",
       "speed": "6",
+      "shape": "none"
+    }
+  ,
+    {
+      "type": "image",
+      "tag": "ai1_flat",
+      "filename": "ai/Woman Mansion Flat.png",
+      "origin_x": "500",
+      "origin_y": "400",
+      "scale_x": "0.2",
+      "scale_y": "0.2",
       "shape": "none"
     }
   ]
