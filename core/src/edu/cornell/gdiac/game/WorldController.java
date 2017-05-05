@@ -211,7 +211,9 @@ public class WorldController implements Screen {
 
 	public boolean preUpdate(float dt) {
 		input = InputController.getInstance();
-		input.readInput();
+		if (!isPanning()) {
+            input.readInput();
+        }
 		if (listener == null) {
 			return true;
 		}
@@ -413,6 +415,7 @@ public class WorldController implements Screen {
 			panS += 1f / (PAN_TIME * 60f);
 		}
 		else if (isPanning() && panS > 1f) {
+            if (panQueue.size == 2) { panT = 1f; } // prevent hold delay on last object panned to
 			panT += 1f / (HOLD_TIME * 60f);
 		}
 		if (panT > 1f) {
