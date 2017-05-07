@@ -211,12 +211,21 @@ public class WorldController implements Screen {
 
 	public boolean preUpdate(float dt) {
 		input = InputController.getInstance();
-		if (!isPanning()) {
-            input.readInput();
-        }
+		input.readInput();
+
 		if (listener == null) {
 			return true;
 		}
+
+		if (isPanning()) {
+		    input.lockPlayer();
+        }
+
+		if (input.didSkip()) {
+		    panQueue.clear();
+		    panS = 0f;
+		    panT = 0f;
+        }
 
 		if (input.didDebug()) {
 			debug = !debug;
@@ -442,7 +451,9 @@ public class WorldController implements Screen {
 		guicanvas.clear();
 		GameObject.incCounter();
 		worldModel.draw(canvas);
-		guiController.draw(guicanvas);
+		if (!isPanning()) {
+		    guiController.draw(guicanvas);
+		}
 	}
 
 	public void drawDebug(float delta){

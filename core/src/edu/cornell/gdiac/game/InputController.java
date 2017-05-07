@@ -193,6 +193,8 @@ public class InputController {
 		return resetPressed && !resetPrevious;
 	}
 
+	public boolean didSkip() { return didSecondary(); }
+
 	/**
 	 * Returns true if the player wants to go to the next level.
 	 *
@@ -273,6 +275,11 @@ public class InputController {
 
 		readKeyboard();
 
+	}
+
+	public void lockPlayer() {
+		horizontal = 0f;
+		vertical = 0f;
 	}
 
 
