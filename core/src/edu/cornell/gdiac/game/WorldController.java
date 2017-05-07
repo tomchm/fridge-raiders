@@ -43,6 +43,7 @@ public class WorldController implements Screen {
 	private GUIController guiController;
 
 	private boolean playedScene = false;
+	private boolean didIntroPan = false;
 	private Queue<Vector2> panQueue = null;
 	private float panS = 0f; // ranges from 0 to 1 as you vary between pan start & pan end.
 	private float panT = 0f; // ranges from 0 to 1 as you hold on the destination.
@@ -55,6 +56,7 @@ public class WorldController implements Screen {
 	public static final int CUTSCENE = 1;
 	public static final int GAMEVIEW = 2;
 	public static final int LEVEL_SELECT = 3;
+	// STORY SCREEN: 100 + the level code. eg, 203 will play a cutscene, then exit with levelCode 103
 	/** The amount of time for a game engine step. */
 	public static final float WORLD_STEP = 1/60.0f;
 	/** Number of velocity iterations for the constrain solvers */
@@ -171,12 +173,15 @@ public class WorldController implements Screen {
 		}
 		worldModel.updateAllSensors();
 		worldModel.setMaximumFood();
-		panQueue.addLast(worldModel.getPlayer().getBody().getPosition());
-		for (AIModel ai : worldModel.aiList) {
-			panQueue.addLast(ai.getBody().getPosition());
-		}
-		panQueue.addLast(worldModel.getDessertPosition());
-		panQueue.addLast(worldModel.getPlayer().getBody().getPosition());
+		if (!didIntroPan) {
+		    didIntroPan = true;
+            panQueue.addLast(worldModel.getPlayer().getBody().getPosition());
+            for (AIModel ai : worldModel.aiList) {
+                panQueue.addLast(ai.getBody().getPosition());
+            }
+            panQueue.addLast(worldModel.getDessertPosition());
+            panQueue.addLast(worldModel.getPlayer().getBody().getPosition());
+        }
 
 		SoundController.getInstance().play("levelmusic", true, 0.75f);
 		//fileIOController.save("levels/testOutput.json");

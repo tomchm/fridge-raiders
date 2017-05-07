@@ -93,6 +93,7 @@ public class AssetLoader
             System.out.println("assets.json not found.");
         }
         assetMap.put("gothic32", new FontAsset("shared/gothic32.ttf", "gothic32", 32));
+        assetMap.put("typewriter", new FontAsset("shared/MomsTypewriter.ttf", "typewriter", 32));
         assetMap.put("gothic72", new FontAsset("shared/gothic72.ttf", "gothic72", 72));
         assetMap.put("fridgeMagnets72", new FontAsset("shared/FridgeMagnets72.ttf", "fridgeMagnets72", 72));
     }

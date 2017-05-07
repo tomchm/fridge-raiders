@@ -48,6 +48,7 @@ public class GDXRoot extends Game implements ScreenListener {
 	private WorldController controller;
 	private Cutscene cutscene;
 	private LevelSelect levelSelect;
+	private StoryScene storyScene;
 
 	/**
 	 * Creates a new game from the configuration settings.
@@ -75,6 +76,8 @@ public class GDXRoot extends Game implements ScreenListener {
 		cutscene.setScreenListener(this);
 		levelSelect = new LevelSelect(canvas);
 		levelSelect.setScreenListener(this);
+		storyScene = new StoryScene(canvas);
+		storyScene.setScreenListener(this);
 
 		// Initialize the three game worlds
 		//controllers = new WorldController[3];
@@ -154,6 +157,11 @@ public class GDXRoot extends Game implements ScreenListener {
 		}
 		else if (exitCode == WorldController.CUTSCENE) {
 			setScreen(cutscene);
+		}
+		else if (exitCode >= 200) {
+			System.out.println("playing a story scene now!");
+			storyScene.setUp(exitCode - 100);
+			setScreen(storyScene);
 		}
 		else if (exitCode == WorldController.GAMEVIEW) {
 			setScreen(controller);
