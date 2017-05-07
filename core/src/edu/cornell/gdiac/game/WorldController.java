@@ -113,6 +113,9 @@ public class WorldController implements Screen {
 
 	public void reset() {
 		playedScene = false;
+		if (SoundController.getInstance().isActive("music_rolling")) {
+			SoundController.getInstance().stop("music_rolling");
+		}
 		if(this.detectiveController == null || hardReset) {
 			shouldPlayScene = true;
             worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
@@ -363,6 +366,8 @@ public class WorldController implements Screen {
 		if (worldModel.getPlayer().isSecondStage() && !playedScene) {
 			playedScene = true;
 			if(shouldPlayScene) {
+				if (SoundController.getInstance().isActive("levelmusic"))
+					SoundController.getInstance().stop("levelmusic");
 				listener.exitScreen(this, CUTSCENE);
 				shouldPlayScene = false;
 			}

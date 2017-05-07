@@ -1012,6 +1012,11 @@
     },
     {
       "type": "sound",
+      "tag": "music_rolling",
+      "filename": "sound/rolling.ogg"
+    },
+    {
+      "type": "sound",
       "tag": "pop",
       "filename": "sound/pop.wav"
     },
