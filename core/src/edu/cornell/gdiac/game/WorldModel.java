@@ -145,6 +145,7 @@ public class WorldModel {
         SoundController sc = SoundController.getInstance();
         if (!hasWon) {
             if (sc.isActive("levelmusic")) sc.stop("levelmusic");
+            if (sc.isActive("music_rolling")) sc.stop("music_rolling");
             sc.play("win", false);
         }
         hasWon = true;
