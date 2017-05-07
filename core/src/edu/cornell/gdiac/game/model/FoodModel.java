@@ -168,8 +168,12 @@ public class FoodModel extends GameObject {
                 canvas.draw(ia.getTexture(), color,ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),ia.getImageScale().x,ia.getImageScale().y);
 
                 if(isDessert && isUnlocked){
-                    float alpha = 0.15f* MathUtils.sinDeg(counter*2%360) + 0.15f;
-                    canvas.setBlendState(GameCanvas.BlendState.ADDITIVE);
+                    float alpha = 0.35f* MathUtils.sinDeg(counter*4%360) + 1f;
+                    System.out.println(alpha);
+                    if (alpha > 1){
+                        canvas.setBlendState(GameCanvas.BlendState.ADDITIVE);
+                        alpha --;
+                    }
                     canvas.draw(ia.getTexture(), new Color(alpha, alpha, alpha, 1),ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),ia.getImageScale().x,ia.getImageScale().y);
                     canvas.setBlendState(GameCanvas.BlendState.NO_PREMULT);
                 }
