@@ -1003,7 +1003,7 @@
     {
       "type": "sound",
       "tag": "titlemusic",
-      "filename": "sound/title.wav"
+      "filename": "sound/level.wav"
     },
     {
       "type": "sound",
