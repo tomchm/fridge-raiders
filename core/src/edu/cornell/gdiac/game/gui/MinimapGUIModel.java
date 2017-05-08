@@ -179,7 +179,7 @@ public class MinimapGUIModel extends GUIModel {
 
 
 
-                if(world.getPlayer().getAmountEaten() > world.getPlayer().getThreshold() && (!world.getPlayer().isSecondStage()) && (counter <= 60)){
+                if(world.getPlayer().getAmountEaten() >= world.getPlayer().getThreshold() && (!world.getPlayer().isSecondStage()) && (counter <= 60)){
                     // Get Dessert
                     counter +=1;
                     float dessertX = 0f;

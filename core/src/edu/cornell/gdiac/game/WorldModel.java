@@ -311,7 +311,7 @@ public class WorldModel {
         for(int i = 0; i < width - widthS ;i ++){
             for(int j = 0; j < height - heightS; j++){
                 // CHANGE magic number
-                if (!(isAccessibleWithRadiusSingleObject(i,j,detective.getRadius(), object))) {
+                if (!(isAccessibleWithRadiusSingleObject(i+widthS,j+heightS,detective.getRadius(), object))) {
                     if (sensors [i*(width - widthS) +j] != 2) {
                         sensors[i*(width-widthS) + j] = onoff;
                     }
@@ -505,7 +505,7 @@ public class WorldModel {
         canvas.begin();
         Collections.sort(gameObjects);
         for(GameObject gm : gameObjects){
-            if(gm instanceof FloorModel || gm instanceof FoodModel || gm instanceof WallModel || gm instanceof CrumbModel){
+            if(gm instanceof DecorModel || gm instanceof FloorModel || gm instanceof FoodModel || gm instanceof WallModel || gm instanceof CrumbModel){
                 gm.draw(canvas);
             }
         }
@@ -543,7 +543,7 @@ public class WorldModel {
         canvas.begin();
         Collections.sort(gameObjects);
         for(GameObject gm : gameObjects){
-            if(!(gm instanceof FloorModel || gm instanceof FoodModel || gm instanceof WallModel || gm instanceof CrumbModel)){
+            if(!(gm instanceof DecorModel || gm instanceof FloorModel || gm instanceof FoodModel || gm instanceof WallModel || gm instanceof CrumbModel)){
                 gm.draw(canvas);
             }
         }
