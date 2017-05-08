@@ -211,7 +211,7 @@ public class DetectiveController {
                 }
 
                 if (speed < 20) {
-                    player.getBody().setLinearDamping(0.9f);
+                    player.getBody().setLinearDamping(0.5f);
                 }
                 if (speed < 5) {
                     player.getBody().setLinearVelocity(0, 0);
