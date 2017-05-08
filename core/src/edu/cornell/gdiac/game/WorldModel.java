@@ -216,6 +216,8 @@ public class WorldModel {
 
     /**
      * Creates new contact listener to allow for dynamic interactions between ai and furniture
+     *
+     * NOT ACTUALLY USED, ACTUAL CODE IN GOAL MODEL,
      */
     private void initContactListener(){
         world.setContactListener(new ContactListener() {

@@ -58,6 +58,7 @@ public class SpacebarGUIModel extends GUIModel{
                 else {
                     isFirstStage = false;
                     worldModel.getGoal().setActive();
+                    worldModel.getWorld().setContactListener(worldModel.getGoal());
                 }
             }
         }

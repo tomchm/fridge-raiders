@@ -142,8 +142,8 @@ public class AIController implements RayCastCallback{
             double interval = Math.round(STUCK_TIME * 60);
             if (ticks % interval == 0) {
                 if (prevPos.dst2(ai.getBody().getPosition()) < 0.001) {
+                    System.out.println("STUCK");
                     isStuck = true;
-                    System.out.println("AI stuck. Switching directions.");
                 } else {
                     if (ticks % (interval * STUCK_TIME_MULT) == 0) {
                         isStuck = false;
@@ -323,11 +323,7 @@ public class AIController implements RayCastCallback{
         Vector2[] path = ai.getPath();
         Vector2 temp = new Vector2(ai.getBody().getPosition());
         temp.sub(path[pathIndex]);
-        if (isStuck) {
-            direction *= -1;
-        }
-        if (isStuck || temp.dst2(0,0) < 0.01) {
-            isStuck = false;
+        if (temp.dst2(0,0) < 0.01) {
             if (pathIndex == path.length - 1) direction = -1;
             else if (pathIndex == 0) direction = 1;
 
