@@ -934,7 +934,7 @@
       "width": "4",
       "height": "4",
       "angle": "45"
-    }
+    },
     {
       "type": "image",
       "tag": "",
@@ -1024,7 +1024,7 @@
       "type": "sound",
       "tag": "lose",
       "filename": "sound/lose.wav"
-    }
+    },
     {
       "type": "image",
       "tag": "glow",
