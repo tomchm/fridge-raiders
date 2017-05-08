@@ -26,8 +26,7 @@ import java.awt.*;
  * Created by tomchm on 3/19/17.
  */
 public class AimGUIModel extends GUIModel{
-
-    private final static int PAR_PLUS = 5;
+    private int par_plus;
     private final static float MAX_FORCE = DetectiveController.MAX_FORCE;
     private final static float SHOOT_FORCE = DetectiveController.SHOOT_FORCE;
     private final static int MAX_BALLS = 15;
@@ -64,6 +63,9 @@ public class AimGUIModel extends GUIModel{
     }
 
     public void update(float dt){
+        if (worldModel.getPlayer() != null) {
+            par_plus = worldModel.getPlayer().getPar();
+        }
         if(isAiming && aimVector != null && aimPosition != null) {
             Vector2 velocity = aimVector.cpy().nor();
             TrajectoryModel tm = new TrajectoryModel(aimPosition.x, aimPosition.y, worldModel.getPlayer().getRadius(), new Vector2(velocity.x, -velocity.y));
@@ -130,10 +132,10 @@ public class AimGUIModel extends GUIModel{
             }
         }
         GameObject tempInteractible = controller.getInteractible();
-        if (tempInteractible != null && tempInteractible.getClass() == FoodModel.class && tempInteractible != interactible) {
+        if (tempInteractible != null && tempInteractible.getClass() == FoodModel.class && !((FoodModel)tempInteractible).isDessert() && tempInteractible != interactible) {
             highlightAmount = foodAmount + ((FoodModel)tempInteractible).getAmount();
         }
-        else if (tempInteractible != null && tempInteractible.getClass() == FoodModel.class && tempInteractible == interactible) {
+        else if (tempInteractible != null && tempInteractible.getClass() == FoodModel.class && !((FoodModel)tempInteractible).isDessert() && tempInteractible == interactible) {
             highlightAmount = highlightAmount;
         }
         else {
@@ -209,18 +211,19 @@ public class AimGUIModel extends GUIModel{
                     canvas.draw(bar, Color.WHITE, asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
 
                     bar.setRegion(0, 120, 4, 40);
-                    for(int i=1; i<PAR_PLUS; i++){
-                        canvas.draw(bar, Color.WHITE, asset.getOrigin().x+2, asset.getOrigin().y, x+i*(480f/PAR_PLUS), y, 0, asset.getImageScale().x, asset.getImageScale().y);
+                    for(int i=1; i<par_plus; i++){
+                        canvas.draw(bar, Color.WHITE, asset.getOrigin().x+2, asset.getOrigin().y, x+i*(480f/par_plus), y, 0, asset.getImageScale().x, asset.getImageScale().y);
                     }
 
                     if(bf != null){
                         float percent = ((foodAmount - threshold)*100f / (maximum - threshold));
                         String text = "";
-                        if(percent < 20){
+                        int percentSlice = (100/par_plus);
+                        if(percent < percentSlice){
                             text = "PAR ACHIEVED";
                         }
                         else {
-                            int i = (int)percent / 20;
+                            int i = (int)percent / percentSlice;
                             text = "PAR +"+i;
                         }
 
@@ -306,7 +309,7 @@ public class AimGUIModel extends GUIModel{
 
                 // DRAW YELLOW BAR
                 if(shotsRemaining > par){
-                    width = (int)((shotsRemaining - par)*480f / (PAR_PLUS));
+                    width = (int)((shotsRemaining - par)*480f / (par_plus));
                     bar.setRegion(0,40,width, 40);
                     canvas.draw(bar, Color.WHITE, asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
                 }
@@ -316,7 +319,7 @@ public class AimGUIModel extends GUIModel{
 
                 int sects = par;
                 if(shotsRemaining > par){
-                    sects = PAR_PLUS;
+                    sects = par_plus;
                 }
 
                 for(int i=1; i<sects; i++){

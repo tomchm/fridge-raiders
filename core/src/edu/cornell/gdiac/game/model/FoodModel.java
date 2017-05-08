@@ -169,7 +169,6 @@ public class FoodModel extends GameObject {
 
                 if(isDessert && isUnlocked){
                     float alpha = 0.35f* MathUtils.sinDeg(counter*4%360) + 1f;
-                    System.out.println(alpha);
                     if (alpha > 1){
                         canvas.setBlendState(GameCanvas.BlendState.ADDITIVE);
                         alpha --;
