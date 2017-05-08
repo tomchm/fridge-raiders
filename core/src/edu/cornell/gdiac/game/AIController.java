@@ -324,8 +324,9 @@ public class AIController implements RayCastCallback{
         Vector2 temp = new Vector2(ai.getBody().getPosition());
         temp.sub(path[pathIndex]);
         if (temp.dst2(0,0) < 0.01) {
-            if (pathIndex == path.length - 1) direction = -1;
-            else if (pathIndex == 0) direction = 1;
+//            if (pathIndex == path.length - 1) direction = -1;
+//            else if (pathIndex == 0) direction = 1;
+            if (pathIndex == path.length-1) pathIndex = 0;
 
             pathIndex = pathIndex + direction;
         }
