@@ -141,8 +141,9 @@ public class AIController implements RayCastCallback{
             // check if AI is stuck
             double interval = Math.round(STUCK_TIME * 60);
             if (ticks % interval == 0) {
-                if (prevPos.equals(ai.getBody().getPosition())) {
+                if (prevPos.dst2(ai.getBody().getPosition()) < 0.001) {
                     isStuck = true;
+                    System.out.println("AI stuck. Switching directions.");
                 } else {
                     if (ticks % (interval * STUCK_TIME_MULT) == 0) {
                         isStuck = false;
@@ -281,7 +282,6 @@ public class AIController implements RayCastCallback{
      * Change the state of the ai;
      */
     private void changeStateIfApplicable() {
-        Random rand_gen = new Random();
 
         // Next state depends on current state.
         switch (state) {
@@ -323,7 +323,11 @@ public class AIController implements RayCastCallback{
         Vector2[] path = ai.getPath();
         Vector2 temp = new Vector2(ai.getBody().getPosition());
         temp.sub(path[pathIndex]);
-        if (temp.dst2(0,0) < 0.01) {
+        if (isStuck) {
+            direction *= -1;
+        }
+        if (isStuck || temp.dst2(0,0) < 0.01) {
+            isStuck = false;
             if (pathIndex == path.length - 1) direction = -1;
             else if (pathIndex == 0) direction = 1;
 
