@@ -366,11 +366,21 @@ public class WorldController implements Screen {
 		if (worldModel.getPlayer().isSecondStage() && !playedScene) {
 			playedScene = true;
 			if(shouldPlayScene) {
-				if (SoundController.getInstance().isActive("levelmusic"))
-					SoundController.getInstance().stop("levelmusic");
+				SoundController.getInstance().safeStop("levelmusic");
 				listener.exitScreen(this, CUTSCENE);
 				shouldPlayScene = false;
 			}
+
+			// pan to the goal region
+			Vector2 goalPos = new Vector2(0f, 0f);
+			float[] goalCoords = worldModel.getGoal().getCoords();
+			goalPos.x = 0.25f * (goalCoords[0] + goalCoords[2] + goalCoords[4] + goalCoords[6]);
+			goalPos.y = 0.25f * (goalCoords[1] + goalCoords[3] + goalCoords[5] + goalCoords[7]);
+			panQueue.addLast( worldModel.getPlayer().getBody().getPosition() );
+			panQueue.addLast( goalPos );
+			panQueue.addLast( worldModel.getPlayer().getBody().getPosition() );
+			panS = 0f; panT = 0f;
+
 			this.wmSave = worldModel;
 			this.dcSave = detectiveController;
 			this.dmSave = new DetectiveModel(worldModel.getPlayer().getBody().getPosition().x, worldModel.getPlayer().getBody().getPosition().y);
