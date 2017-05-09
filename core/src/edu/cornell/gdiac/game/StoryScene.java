@@ -71,11 +71,11 @@ public class StoryScene implements Screen {
                 break;
             case 101:
                 add("cutscene2");
-                storyText = "The rain comes down and the moon shimmers overhead.\nI must eat.";
+                storyText = "The rain comes down and the moon\nshimmers overhead.  I must eat.";
                 break;
             case 102:
                 add("cutscene3");
-                storyText = "I awake screaming and in a cold sweat. I can't shake the image\nof flat, off-brand soda.";
+                storyText = "I awake screaming and in a cold sweat.\nI can't shake the image of flat, off-brand soda.";
                 break;
             default:
                 add("cutscene1");

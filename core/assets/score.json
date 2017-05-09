@@ -8,9 +8,9 @@
 	},
 	{
 		"filename": "level1.json",
-		"unlocked": false,
-		"foodMedal": "none",
-		"golfMedal": "none"
+		"unlocked": true,
+		"foodMedal": "gold",
+		"golfMedal": "gold"
 	},
 	{
 		"filename": "level2.json",

@@ -179,7 +179,7 @@ public class GDXRoot extends Game implements ScreenListener {
 		}
 		else if(exitCode >= 100 && exitCode < 110){
 			int i = exitCode - 100;
-			controller = new WorldController("levels/level"+i+".json");
+			controller = new WorldController(i);
 			controller.setScreenListener(this);
 			controller.setCanvas(canvas);
 			controller.setHardReset();

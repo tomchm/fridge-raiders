@@ -35,6 +35,7 @@ public class WorldModel {
     protected int heightS;
     protected int width;
     protected int height;
+    protected int levelNumber = 0;
     protected PooledList<GameObject> addGameObjectQueue;
     protected PooledList<GameObject> removeGameObjectQueue;
 
@@ -149,6 +150,23 @@ public class WorldModel {
             sc.play("win", false);
         }
         hasWon = true;
+        String foodMedal = "bronze";
+        if (detective.getAmountEaten() >= 0.5f * (detective.getThreshold() + detective.getMaximumFood() ) ) {
+            foodMedal = "silver";
+        }
+        if (detective.getAmountEaten() >= 0.99f*detective.getMaximumFood()) { foodMedal = "gold"; }
+        String golfMedal = "bronze";
+        if (detective.getShotsTaken() <= detective.getPar()) { golfMedal = "silver"; }
+        if (detective.getShotsTaken() == getMinShots()) { golfMedal = "gold"; }
+        ScoreIOController.updateLevel(getLevelNumber(), true, foodMedal, golfMedal);
+    }
+
+    /** 0-indexed */
+    public int getLevelNumber() { return levelNumber; }
+    public void setLevelNumber(int l) { levelNumber = l; }
+    public int getMinShots() {
+        if (levelNumber == 2) { return 2; }
+        else return 1;
     }
 
     public void setPar(int par) {
