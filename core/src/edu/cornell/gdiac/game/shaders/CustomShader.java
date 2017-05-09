@@ -19,7 +19,7 @@ public final class CustomShader {
                         + "varying vec4 v_color;\n" //
                         + "void main()\n" //
                         + "{\n" //
-                        + "   v_color = (s + 0.55) * quad_colors * 0.7;\n" //
+                        + "   v_color = (s + 0.8) * quad_colors * 0.5;\n" //
                         + "   gl_Position =  u_projTrans * vertex_positions;\n" //
                         + "}\n";
         final String fragmentShader = "#ifdef GL_ES\n" //
