@@ -326,7 +326,7 @@ public class AIController implements RayCastCallback{
         if (temp.dst2(0,0) < 0.01) {
 //            if (pathIndex == path.length - 1) direction = -1;
 //            else if (pathIndex == 0) direction = 1;
-            if (pathIndex == path.length-1) pathIndex = 0;
+            if (pathIndex == path.length-1) pathIndex = -1;
 
             pathIndex = pathIndex + direction;
         }

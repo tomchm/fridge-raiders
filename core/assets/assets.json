@@ -802,8 +802,8 @@
       "type": "image",
       "tag": "Decor-Clock2",
       "filename": "decor/Clock2.png",
-      "scale_x": "0.35",
-      "scale_y": "0.35",
+      "scale_x": "0.24",
+      "scale_y": "0.24",
       "origin_x": "162",
       "origin_y": "329",
       "shape": "none"

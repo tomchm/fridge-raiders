@@ -47,7 +47,7 @@ public class LevelSelect implements Screen, InputProcessor {
     private Level[][] levels;
 
     public LevelSelect(GameCanvas c) {
-        SoundController.getInstance().play("levelmusic", true, 0.75f);
+        //SoundController.getInstance().play("levelmusic", true, 0.75f);
         canvas = new GameCanvas();
         assets= AssetLoader.getInstance();
         started = false;
@@ -263,9 +263,9 @@ public class LevelSelect implements Screen, InputProcessor {
 
     public void activate(){
         Gdx.input.setInputProcessor(this);
-        SoundController.getInstance().update();
+        //SoundController.getInstance().update();
 
-        SoundController.getInstance().play("levelMusic", true, 0.75f);
+        //SoundController.getInstance().play("levelmusic", true, 0.75f);
     }
 
     private class Level{

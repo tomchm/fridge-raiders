@@ -61,7 +61,6 @@ public class GDXRoot extends Game implements ScreenListener {
 		FileHandleResolver resolver = new InternalFileHandleResolver();
 		manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
 		manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
-		//ScoreIOController.saveDefaultScore();
 	}
 
 	/**
@@ -147,12 +146,22 @@ public class GDXRoot extends Game implements ScreenListener {
 	public void exitScreen(Screen screen, int exitCode) {
 		if (screen == loading) {
 			AssetLoader.getInstance().loadContent(manager);
+			System.out.println("exited from loading screen.");
 			SoundController.getInstance().play("titlemusic", true, 0.75f);
 			levelSelect.activate();
 			setScreen(levelSelect);
 			loading.dispose();
 			loading = null;
-		} else if (exitCode == WorldController.EXIT_QUIT) {
+		}
+
+		else if (exitCode == WorldController.LEVEL_SELECT) {
+			//System.out.println("Exited to level select.");
+			SoundController.getInstance().play("titlemusic", true, 0.75f);
+			SoundController.getInstance().safeStop("levelmusic");
+			levelSelect.activate();
+			setScreen(levelSelect);
+		}
+		else if (exitCode == WorldController.EXIT_QUIT) {
 			// We quit the main application
 			Gdx.app.exit();
 		}
@@ -168,12 +177,6 @@ public class GDXRoot extends Game implements ScreenListener {
 			setScreen(controller);
 			canvas.zoomOut();
 		}
-		else if (exitCode == WorldController.LEVEL_SELECT) {
-			SoundController.getInstance().play("titlemusic", true, 0.75f);
-			SoundController.getInstance().stop("levelmusic");
-			levelSelect.activate();
-			setScreen(levelSelect);
-		}
 		else if(exitCode >= 100 && exitCode < 110){
 			int i = exitCode - 100;
 			controller = new WorldController("levels/level"+i+".json");
@@ -183,7 +186,9 @@ public class GDXRoot extends Game implements ScreenListener {
 			controller.reset();
 			setScreen(controller);
 			SoundController.getInstance().stop("titlemusic");
-		}
+			SoundController.getInstance().play("levelmusic", true, 0.75f);
+        }
+
 	}
 
 }
