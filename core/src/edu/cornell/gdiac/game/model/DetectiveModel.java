@@ -76,7 +76,7 @@ public class DetectiveModel extends GameObject{
     /** Par shots for the level*/
     private int par;
 
-    private int amountEaten = 300;
+    private int amountEaten = 0;
     private boolean hasEatenDessert = false;
     private boolean isSecondStage = false;
     public float eatDelay = 0.0f;

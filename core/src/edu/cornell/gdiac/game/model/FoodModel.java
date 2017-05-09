@@ -2,6 +2,7 @@ package edu.cornell.gdiac.game.model;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
 import edu.cornell.gdiac.game.GameCanvas;
@@ -18,6 +19,8 @@ public class FoodModel extends GameObject {
     private boolean isDessert;
     private float radius;
     private float amount;
+    private float width;
+    private float height;
     private int intAmount;
     private float maxAmount;
     private boolean isHighlight;
@@ -48,6 +51,8 @@ public class FoodModel extends GameObject {
 
         isDessert = dessert;
         this.radius = radius;
+        this.width = radius;
+        this.height = radius;
 
         this.tags = tags;
         this.amount = amount;
@@ -82,6 +87,8 @@ public class FoodModel extends GameObject {
 
         isDessert = dessert;
         this.radius = Math.max(width, height)/2;
+        this.width = width;
+        this.height = height;
 
         this.tags = tags;
         this.amount = amount;
@@ -151,6 +158,12 @@ public class FoodModel extends GameObject {
             if(asset instanceof ImageAsset){
                 ImageAsset ia = (ImageAsset) asset;
 
+                Affine2 aff = new Affine2();
+                aff.setToScaling(ia.getImageScale().x,ia.getImageScale().y * -0.4f);
+                aff.preShear(0.8f, 0);
+                aff.preTranslate((body.getPosition().x) * drawScale.x, (body.getPosition().y - height/2)*drawScale.y);
+                canvas.draw(ia.getTexture(), Color.BLACK, ia.getOrigin().x, ia.getOrigin().y,aff);
+
                 if(isHighlight && (!isDessert || isUnlocked)){
                     isHighlight = false;
                     float alpha = 0.3f* MathUtils.sinDeg(counter*1%360) + 0.5f;
@@ -176,6 +189,7 @@ public class FoodModel extends GameObject {
                     canvas.draw(ia.getTexture(), new Color(alpha, alpha, alpha, 1),ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),ia.getImageScale().x,ia.getImageScale().y);
                     canvas.setBlendState(GameCanvas.BlendState.NO_PREMULT);
                 }
+
             }
         }
     }
