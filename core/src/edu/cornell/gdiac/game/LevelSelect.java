@@ -261,7 +261,6 @@ public class LevelSelect implements Screen, InputProcessor {
                         golfMedalTexture = goldShots.getTexture();
                     }
                     if(golfMedalTexture != null){
-                        System.out.println("YESs");
                         canvas.draw(golfMedalTexture, newsTint, 70, 70, px+4, py, randAngles[(i*3+j)], 0.18f, 0.18f);
 
                     }
