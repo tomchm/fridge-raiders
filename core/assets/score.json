@@ -1,0 +1,58 @@
+{
+"data": [
+	{
+		"filename": "level0.json",
+		"unlocked": true,
+		"foodMedal": "none",
+		"golfMedal": "none"
+	},
+	{
+		"filename": "level1.json",
+		"unlocked": false,
+		"foodMedal": "none",
+		"golfMedal": "none"
+	},
+	{
+		"filename": "level2.json",
+		"unlocked": false,
+		"foodMedal": "none",
+		"golfMedal": "none"
+	},
+	{
+		"filename": "level3.json",
+		"unlocked": false,
+		"foodMedal": "none",
+		"golfMedal": "none"
+	},
+	{
+		"filename": "level4.json",
+		"unlocked": false,
+		"foodMedal": "none",
+		"golfMedal": "none"
+	},
+	{
+		"filename": "level5.json",
+		"unlocked": false,
+		"foodMedal": "none",
+		"golfMedal": "none"
+	},
+	{
+		"filename": "level6.json",
+		"unlocked": false,
+		"foodMedal": "none",
+		"golfMedal": "none"
+	},
+	{
+		"filename": "level7.json",
+		"unlocked": false,
+		"foodMedal": "none",
+		"golfMedal": "none"
+	},
+	{
+		"filename": "level8.json",
+		"unlocked": false,
+		"foodMedal": "none",
+		"golfMedal": "none"
+	}
+]
+}
