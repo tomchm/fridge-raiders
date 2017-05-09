@@ -335,18 +335,6 @@ public class AimGUIModel extends GUIModel{
                 bf32.setColor(Color.WHITE);
                 canvas.drawText("FOOD METER", font32.getFont(), x-210, y+32);
 
-                bf32.setColor(Color.BLACK);
-                canvas.drawText("SCORE:", font32.getFont(), x+650+2, y+32-2);
-                bf32.setColor(Color.WHITE);
-                canvas.drawText("SCORE:", font32.getFont(), x+650, y+32);
-
-
-                String score = "" + (worldModel.getPlayer().getShotsTaken() - par);
-                bf72.setColor(Color.BLACK);
-                canvas.drawText(score, font72.getFont(), x+780+4, y+54-4);
-                bf72.setColor(Color.WHITE);
-                canvas.drawText(score, font72.getFont(), x+780, y+54);
-
             }
         }
 
