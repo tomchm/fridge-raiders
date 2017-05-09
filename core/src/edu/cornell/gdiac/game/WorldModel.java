@@ -159,6 +159,11 @@ public class WorldModel {
         if (detective.getShotsTaken() <= detective.getPar()) { golfMedal = "silver"; }
         if (detective.getShotsTaken() == getMinShots()) { golfMedal = "gold"; }
         ScoreIOController.updateLevel(getLevelNumber(), true, foodMedal, golfMedal);
+
+        WinScreen.foodMedal = foodMedal;
+        WinScreen.golfMedal = golfMedal;
+        WinScreen.putts = detective.getShotsTaken();
+        WinScreen.foodPercent = (int)(detective.getAmountEaten() / detective.getMaximumFood());
     }
 
     /** 0-indexed */

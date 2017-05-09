@@ -56,6 +56,7 @@ public class WorldController implements Screen {
 	public static final int CUTSCENE = 1;
 	public static final int GAMEVIEW = 2;
 	public static final int LEVEL_SELECT = 3;
+	public static final int WIN_SCREEN = 4;
 	// STORY SCREEN: 100 + the level code. eg, 203 will play a cutscene, then exit with levelCode 103
 	/** The amount of time for a game engine step. */
 	public static final float WORLD_STEP = 1/60.0f;
@@ -343,10 +344,12 @@ public class WorldController implements Screen {
 		if(worldModel.hasWon()){
 		    resetCounter++;
 		    if(resetCounter == 180){
-		    	listener.exitScreen(this, LEVEL_SELECT);
+		    	listener.exitScreen(this, WIN_SCREEN);
+		    	/*
 		    	hardReset = true;
 		        reset();
 		        hardReset = false;
+            	*/
             }
         }
 
