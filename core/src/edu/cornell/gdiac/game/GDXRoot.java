@@ -177,6 +177,12 @@ public class GDXRoot extends Game implements ScreenListener {
 			setScreen(controller);
 			canvas.zoomOut();
 		}
+		else if(exitCode == WorldController.WIN_SCREEN){
+			WinScreen ws = new WinScreen(canvas);
+			ws.activate();
+			ws.setScreenListener(this);
+			setScreen(ws);
+		}
 		else if(exitCode >= 100 && exitCode < 110){
 			int i = exitCode - 100;
 			controller = new WorldController(i);
@@ -188,27 +194,6 @@ public class GDXRoot extends Game implements ScreenListener {
 			setScreen(controller);
 			SoundController.getInstance().stop("titlemusic");
 		}
-		else if(exitCode == 101){
-			controller = new WorldController("levels/alphaLevel.json");
-			controller.setScreenListener(this);
-			controller.setCanvas(canvas);
-			controller.setHardReset();
-			controller.reset();
-			controller.unsetHardReset();
-			setScreen(controller);
-			SoundController.getInstance().stop("titlemusic");
-		}
-		else if(exitCode == 102){
-			controller = new WorldController("levels/simpleLevel.json");
-			controller.setScreenListener(this);
-			controller.setCanvas(canvas);
-			controller.setHardReset();
-			controller.reset();
-			controller.unsetHardReset();
-			setScreen(controller);
-			SoundController.getInstance().stop("titlemusic");
-		}
-
 	}
 
 }

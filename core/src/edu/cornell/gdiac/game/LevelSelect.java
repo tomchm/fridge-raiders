@@ -66,7 +66,7 @@ public class LevelSelect implements Screen, InputProcessor {
         ScoreIOController.LevelData levelData[] = ScoreIOController.getScores();
 
         for(int i=0; i<9; i++){
-            levels[i/3][i%3] = new Level(100+i, "newspaperOpen1", levelData[i].unlocked, levelData[i].foodMedal, levelData[i].golfMedal);
+            levels[i/3][i%3] = new Level(100+i, "newspaper"+i, levelData[i].unlocked, levelData[i].foodMedal, levelData[i].golfMedal);
         }
 
         /*
@@ -107,7 +107,7 @@ public class LevelSelect implements Screen, InputProcessor {
         canvas.begin();
 
         ImageAsset bg = (ImageAsset) assets.getAsset("fridgeMenu");
-        ImageAsset closed = (ImageAsset) assets.getAsset("newspaperClosed");
+        ImageAsset closed = (ImageAsset) assets.getAsset("newspaper_closed");
         ImageAsset magnet = (ImageAsset) assets.getAsset("magnet");
         ImageAsset goldShots = (ImageAsset) assets.getAsset("medal_gold_shots");
         ImageAsset goldFood = (ImageAsset) assets.getAsset("medal_gold_food");
@@ -229,7 +229,7 @@ public class LevelSelect implements Screen, InputProcessor {
                     float py = 360 - ((210f+i*140f)*(1-pratio)) -  (pratio*(80f+i*200f));
                     */
                     float px = -640 + (920f+j*100f);
-                    float py = 360 - (190f+i*100f);
+                    float py = 360 - (182f+i*97f);
                     ImageAsset ia = (ImageAsset)assets.getAsset(levels[i][j].tag);
                     if(ia != null){
                         if(levels[i][j].unlocked){
@@ -246,7 +246,7 @@ public class LevelSelect implements Screen, InputProcessor {
                     }
 
                     if(levels[i][j].golfMedal.equals("none")){
-                        canvas.draw(magnet.getTexture(), magnetTint, 0, 0, px+28, py-10, 0, 0.10f, 0.10f);
+                        canvas.draw(magnet.getTexture(), magnetTint, 0, 0, px+28, py-8, 0, 0.10f, 0.10f);
                     }
 
                     String golfMedal = levels[i][j].golfMedal;
@@ -261,7 +261,7 @@ public class LevelSelect implements Screen, InputProcessor {
                         golfMedalTexture = goldShots.getTexture();
                     }
                     if(golfMedalTexture != null){
-                        canvas.draw(golfMedalTexture, newsTint, 70, 70, px+4, py, randAngles[(i*3+j)], 0.18f, 0.18f);
+                        canvas.draw(golfMedalTexture, newsTint, 70, 70, px+18, py+4, randAngles[(i*3+j)], 0.18f, 0.18f);
 
                     }
 
@@ -277,7 +277,7 @@ public class LevelSelect implements Screen, InputProcessor {
                         foodMedalTexture = goldFood.getTexture();
                     }
                     if(foodMedalTexture != null){
-                        canvas.draw(foodMedalTexture, newsTint, 70, 70, px+76, py, randAngles[(i*3+j)*2], 0.18f, 0.18f);
+                        canvas.draw(foodMedalTexture, newsTint, 70, 70, px+62, py+4, randAngles[(i*3+j)*2], 0.18f, 0.18f);
 
                     }
 
