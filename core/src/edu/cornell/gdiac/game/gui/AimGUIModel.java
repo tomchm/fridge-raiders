@@ -304,14 +304,18 @@ public class AimGUIModel extends GUIModel{
                 if(shotsRemaining < par){
                     width = (int)(shotsRemaining*480f / par);
                 }
-                bar.setRegion(0,0,width, 40);
-                canvas.draw(bar, Color.WHITE, asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
-
+                if(width > 0) {
+                    bar.setRegion(0, 0, width, 40);
+                    canvas.draw(bar, Color.WHITE, asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
+                }
                 // DRAW YELLOW BAR
                 if(shotsRemaining > par){
                     width = (int)((shotsRemaining - par)*480f / (par_plus));
-                    bar.setRegion(0,40,width, 40);
-                    canvas.draw(bar, Color.WHITE, asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
+                    width = Math.min(width, 480);
+                    if(width > 0) {
+                        bar.setRegion(0, 40, width, 40);
+                        canvas.draw(bar, Color.WHITE, asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
+                    }
                 }
 
 

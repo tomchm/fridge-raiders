@@ -144,6 +144,9 @@ public class WorldController implements Screen {
 			if(this.detectiveController.inSecondStage()){
 			    worldModel = wmSave;
 			    detectiveController = dcSave;
+			    for(AIController ai: aiControllers) {
+			    	ai.reset();
+				}
 			    worldModel.getPlayer().setSoftReset();
 			    worldModel.getPlayer().setFX(0.0f);
 			    worldModel.getPlayer().setFY(0.0f);
