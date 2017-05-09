@@ -89,11 +89,17 @@ public class WorldController implements Screen {
 	private boolean isPaused = false;
 	private String levelFile;
 	private boolean panToDessert = false;
+	private int levelNumber;
 
+
+	public WorldController(int levelNumber) {
+		this("levels/level" + levelNumber + ".json");
+		this.levelNumber = levelNumber;
+	}
 
 	public WorldController(String levelFile) {
 		setDebug(false);
-		WorldModel worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
+		WorldModel worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE); // this shadows the class member field!!
 		assetLoader = AssetLoader.getInstance();
 		GameObject.setDrawScale(worldModel.getScale());
 		setDebug(false);
@@ -119,6 +125,7 @@ public class WorldController implements Screen {
 		if(this.detectiveController == null || hardReset) {
 			shouldPlayScene = true;
             worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
+            worldModel.setLevelNumber(levelNumber);
             spacebarController = new SpacebarController(worldModel);
             aiControllers.clear();
             fileIOController = new FileIOController(worldModel);
@@ -146,6 +153,7 @@ public class WorldController implements Screen {
 			else{
 				shouldPlayScene = true;
                 worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
+                worldModel.setLevelNumber(levelNumber);
                 spacebarController = new SpacebarController(worldModel);
                 aiControllers.clear();
                 fileIOController = new FileIOController(worldModel);
