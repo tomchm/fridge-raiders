@@ -47,6 +47,8 @@ public class DetectiveModel extends GameObject{
     private Pixmap fatMan;
     private Texture fatTex;
 
+    private boolean didSoftReset;
+
     /** The food the player is currently eating. */
     private FoodModel chewing = null;
 
@@ -184,6 +186,10 @@ public class DetectiveModel extends GameObject{
         }
     }
     public void stopEating() { chewing = null; }
+
+    public void setSoftReset() {this.didSoftReset = true;}
+    public boolean didSoftReset() {return didSoftReset;}
+    public void unsetSoftReset() {this.didSoftReset = false;}
 
     public FoodModel getChewing(){
         return chewing;

@@ -184,10 +184,30 @@ public class GDXRoot extends Game implements ScreenListener {
 			controller.setCanvas(canvas);
 			controller.setHardReset();
 			controller.reset();
+			controller.unsetHardReset();
 			setScreen(controller);
 			SoundController.getInstance().stop("titlemusic");
-			SoundController.getInstance().play("levelmusic", true, 0.75f);
-        }
+		}
+		else if(exitCode == 101){
+			controller = new WorldController("levels/alphaLevel.json");
+			controller.setScreenListener(this);
+			controller.setCanvas(canvas);
+			controller.setHardReset();
+			controller.reset();
+			controller.unsetHardReset();
+			setScreen(controller);
+			SoundController.getInstance().stop("titlemusic");
+		}
+		else if(exitCode == 102){
+			controller = new WorldController("levels/simpleLevel.json");
+			controller.setScreenListener(this);
+			controller.setCanvas(canvas);
+			controller.setHardReset();
+			controller.reset();
+			controller.unsetHardReset();
+			setScreen(controller);
+			SoundController.getInstance().stop("titlemusic");
+		}
 
 	}
 

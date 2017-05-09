@@ -44,6 +44,11 @@ public class MyInputProcessor implements InputProcessor {
 
     }
 
+    public void resetPause(){
+        this.pauseY = 0;
+        this.pauseX = 0;
+    }
+
     public boolean touchUp (int x, int y, int pointer, int button) {
         if(magnitude.x != 0 && magnitude.y != 0) {
             released = true;

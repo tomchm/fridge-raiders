@@ -127,6 +127,11 @@ public class AIController implements RayCastCallback{
         isStuck = false;
     }
 
+
+    public AIModel getModel(){
+        return this.ai;
+    }
+
     /**
      * updates AI
      */
