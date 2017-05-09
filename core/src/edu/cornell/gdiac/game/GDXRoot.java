@@ -61,6 +61,7 @@ public class GDXRoot extends Game implements ScreenListener {
 		FileHandleResolver resolver = new InternalFileHandleResolver();
 		manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
 		manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
+		//ScoreIOController.saveDefaultScore();
 	}
 
 	/**
@@ -173,8 +174,9 @@ public class GDXRoot extends Game implements ScreenListener {
 			levelSelect.activate();
 			setScreen(levelSelect);
 		}
-		else if(exitCode == 100){
-			controller = new WorldController("levels/BetaHard.json");
+		else if(exitCode >= 100 && exitCode < 110){
+			int i = exitCode - 100;
+			controller = new WorldController("levels/level"+i+".json");
 			controller.setScreenListener(this);
 			controller.setCanvas(canvas);
 			controller.setHardReset();
@@ -182,25 +184,6 @@ public class GDXRoot extends Game implements ScreenListener {
 			setScreen(controller);
 			SoundController.getInstance().stop("titlemusic");
 		}
-		else if(exitCode == 101){
-			controller = new WorldController("levels/alphaLevel.json");
-			controller.setScreenListener(this);
-			controller.setCanvas(canvas);
-			controller.setHardReset();
-			controller.reset();
-			setScreen(controller);
-			SoundController.getInstance().stop("titlemusic");
-		}
-		else if(exitCode == 102){
-			controller = new WorldController("levels/simpleLevel.json");
-			controller.setScreenListener(this);
-			controller.setCanvas(canvas);
-			controller.setHardReset();
-			controller.reset();
-			setScreen(controller);
-			SoundController.getInstance().stop("titlemusic");
-		}
-
 	}
 
 }

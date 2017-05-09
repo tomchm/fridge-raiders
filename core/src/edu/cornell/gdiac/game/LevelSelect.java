@@ -61,6 +61,13 @@ public class LevelSelect implements Screen, InputProcessor {
         guyX = -400;
 
         levels = new Level[3][3];
+        ScoreIOController.LevelData levelData[] = ScoreIOController.getScores();
+
+        for(int i=0; i<9; i++){
+            levels[i/3][i%3] = new Level(100+i, "newspaperOpen1", levelData[i].unlocked, levelData[i].foodMedal, levelData[i].golfMedal);
+        }
+
+        /*
         levels[0][0] = new Level(101, "newspaperOpen1", true);
         levels[0][1] = new Level(102, "newspaperOpen2", true);
         levels[0][2] = new Level(103, "newspaperOpen3", true);
@@ -72,6 +79,7 @@ public class LevelSelect implements Screen, InputProcessor {
         levels[2][0] = new Level(107, "newspaperOpen1", false);
         levels[2][1] = new Level(108, "newspaperOpen1", false);
         levels[2][2] = new Level(109, "newspaperOpen1", false);
+        */
     }
 
     public void dispose() {
@@ -265,11 +273,14 @@ public class LevelSelect implements Screen, InputProcessor {
         int exitCode;
         String tag;
         boolean unlocked, completed, highlight;
+        String foodMedal, golfMedal;
 
-        public Level(int exitCode, String tag, boolean unlocked){
+        public Level(int exitCode, String tag, boolean unlocked, String foodMedal, String golfMedal){
             this.exitCode = exitCode;
             this.tag = tag;
             this.unlocked = unlocked;
+            this.foodMedal = foodMedal;
+            this.golfMedal = golfMedal;
             highlight = false;
         }
 
