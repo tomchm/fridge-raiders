@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.PolygonRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
 import edu.cornell.gdiac.game.GameCanvas;
+import edu.cornell.gdiac.game.WorldModel;
 import edu.cornell.gdiac.util.SoundController;
 
 /**
@@ -13,10 +14,12 @@ public class GoalModel extends GameObject implements ContactListener{
     private float[] coords;
     private boolean active;
     private boolean playerCollided;
+    public WorldModel worldModel;
     PolygonRegion black;
     PolygonRegion color;
 
-    public GoalModel(float[] coords) {
+    public GoalModel(float[] coords, WorldModel wm) {
+        worldModel = wm;
         active = false;
         playerCollided = false;
 

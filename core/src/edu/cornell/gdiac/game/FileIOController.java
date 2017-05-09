@@ -99,10 +99,9 @@ public class FileIOController {
 
             // goal area
             float[] goalCoords = level.get("exit").get("coords").asFloatArray();
-            GoalModel goal = new GoalModel(goalCoords);
+            GoalModel goal = new GoalModel(goalCoords, worldModel);
             worldModel.addGameObjectQueue(goal);
             worldModel.setGoal(goal);
-            worldModel.getWorld().setContactListener(goal);
 
             // array of food objects
             JsonValue food = level.get("food");
