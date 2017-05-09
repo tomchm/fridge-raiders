@@ -324,7 +324,12 @@ public class SoundController {
 		current++;
 		return true;
 	}
-	
+
+	/** Check if a sound is playing, and if so, stop it. */
+	public void safeStop(String key) {
+		if (isActive(key)) {stop(key);}
+	}
+
 	/**
 	 * Stops the sound, allowing its key to be reused.
 	 * 

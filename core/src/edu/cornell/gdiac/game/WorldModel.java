@@ -359,7 +359,8 @@ public class WorldModel {
                 if(((FoodModel) gm).getAmount() <= 0){
                     if (SoundController.getInstance().isActive("chewing")) SoundController.getInstance().stop("chewing");
                     int index = (new Random()).nextInt(3);
-                    String tag = new String[] {"burp", "oof", "gulp"}[index];
+                    //String tag = new String[] {"burp", "oof", "gulp"}[index];
+                    String tag = "gulp";
                     SoundController.getInstance().play(tag, false);
                     removeGameObject(gm);
                 }

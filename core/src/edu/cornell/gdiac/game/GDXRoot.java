@@ -146,12 +146,22 @@ public class GDXRoot extends Game implements ScreenListener {
 	public void exitScreen(Screen screen, int exitCode) {
 		if (screen == loading) {
 			AssetLoader.getInstance().loadContent(manager);
+			System.out.println("exited from loading screen.");
 			SoundController.getInstance().play("titlemusic", true, 0.75f);
 			levelSelect.activate();
 			setScreen(levelSelect);
 			loading.dispose();
 			loading = null;
-		} else if (exitCode == WorldController.EXIT_QUIT) {
+		}
+
+		else if (exitCode == WorldController.LEVEL_SELECT) {
+			//System.out.println("Exited to level select.");
+			SoundController.getInstance().play("titlemusic", true, 0.75f);
+			SoundController.getInstance().safeStop("levelmusic");
+			levelSelect.activate();
+			setScreen(levelSelect);
+		}
+		else if (exitCode == WorldController.EXIT_QUIT) {
 			// We quit the main application
 			Gdx.app.exit();
 		}
@@ -167,12 +177,6 @@ public class GDXRoot extends Game implements ScreenListener {
 			setScreen(controller);
 			canvas.zoomOut();
 		}
-		else if (exitCode == WorldController.LEVEL_SELECT) {
-			SoundController.getInstance().play("titlemusic", true, 0.75f);
-			SoundController.getInstance().stop("levelmusic");
-			levelSelect.activate();
-			setScreen(levelSelect);
-		}
 		else if(exitCode == 100){
 			controller = new WorldController("levels/Level1.json");
 			controller.setScreenListener(this);
@@ -181,6 +185,7 @@ public class GDXRoot extends Game implements ScreenListener {
 			controller.reset();
 			setScreen(controller);
 			SoundController.getInstance().stop("titlemusic");
+			SoundController.getInstance().play("levelmusic", true, 0.75f);
 		}
 		else if(exitCode == 101){
 			controller = new WorldController("levels/Level2.json");
@@ -190,6 +195,7 @@ public class GDXRoot extends Game implements ScreenListener {
 			controller.reset();
 			setScreen(controller);
 			SoundController.getInstance().stop("titlemusic");
+			SoundController.getInstance().play("levelmusic", true, 0.75f);
 		}
 		else if(exitCode == 102){
 			controller = new WorldController("levels/Level3.json");
@@ -199,6 +205,7 @@ public class GDXRoot extends Game implements ScreenListener {
 			controller.reset();
 			setScreen(controller);
 			SoundController.getInstance().stop("titlemusic");
+			SoundController.getInstance().play("levelmusic", true, 0.75f);
 		}
 
 	}
