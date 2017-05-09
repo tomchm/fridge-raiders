@@ -159,10 +159,10 @@ public class FoodModel extends GameObject {
                 ImageAsset ia = (ImageAsset) asset;
 
                 Affine2 aff = new Affine2();
-                aff.setToScaling(ia.getImageScale().x,ia.getImageScale().y * -0.4f);
-                aff.preShear(0.8f, 0);
-                aff.preTranslate((body.getPosition().x) * drawScale.x, (body.getPosition().y - height/2)*drawScale.y);
-                canvas.draw(ia.getTexture(), Color.BLACK, ia.getOrigin().x, ia.getOrigin().y,aff);
+                aff.setToScaling(ia.getImageScale().x * 1,ia.getImageScale().y * 0.8f);
+                aff.preShear(0, 0);
+                aff.preTranslate((body.getPosition().x-0.2f) * drawScale.x, (body.getPosition().y - (height * 0.2f))*drawScale.y);
+                canvas.draw(ia.getTexture(), new Color(0,0,0,0.6f), ia.getOrigin().x, ia.getOrigin().y,aff);
 
                 if(isHighlight && (!isDessert || isUnlocked)){
                     isHighlight = false;
