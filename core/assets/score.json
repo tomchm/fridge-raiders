@@ -20,7 +20,7 @@
 	},
 	{
 		"filename": "level3.json",
-		"unlocked": false,
+		"unlocked": true,
 		"foodMedal": "none",
 		"golfMedal": "none"
 	},
