@@ -38,8 +38,8 @@ public class WinScreen implements Screen, InputProcessor {
     private boolean playHighlight;
     private float[] randAngles;
 
-    public static int foodPercent = 100, putts = 5;
-    public static String foodMedal = "bronze", golfMedal = "bronze";
+    public static int foodPercent, putts;
+    public static String foodMedal, golfMedal;
 
     public WinScreen(GameCanvas c) {
         //SoundController.getInstance().play("levelmusic", true, 0.75f);
