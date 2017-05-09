@@ -46,6 +46,8 @@ public class LevelSelect implements Screen, InputProcessor {
 
     private Level[][] levels;
 
+    private float[] randAngles;
+
     public LevelSelect(GameCanvas c) {
         //SoundController.getInstance().play("levelmusic", true, 0.75f);
         canvas = new GameCanvas();
@@ -80,6 +82,12 @@ public class LevelSelect implements Screen, InputProcessor {
         levels[2][1] = new Level(108, "newspaperOpen1", false);
         levels[2][2] = new Level(109, "newspaperOpen1", false);
         */
+        Random rand = new Random();
+        randAngles = new float[18];
+        for(int i=0; i<18; i++){
+            //randAngles[i] = rand.nextFloat()*30 - 15;
+            randAngles[i] = (rand.nextFloat()*40f - 20f)*MathUtils.degreesToRadians;
+        }
     }
 
     public void dispose() {
@@ -101,6 +109,13 @@ public class LevelSelect implements Screen, InputProcessor {
         ImageAsset bg = (ImageAsset) assets.getAsset("fridgeMenu");
         ImageAsset closed = (ImageAsset) assets.getAsset("newspaperClosed");
         ImageAsset magnet = (ImageAsset) assets.getAsset("magnet");
+        ImageAsset goldShots = (ImageAsset) assets.getAsset("medal_gold_shots");
+        ImageAsset goldFood = (ImageAsset) assets.getAsset("medal_gold_food");
+        ImageAsset silverShots = (ImageAsset) assets.getAsset("medal_silver_shots");
+        ImageAsset silverFood = (ImageAsset) assets.getAsset("medal_silver_food");
+        ImageAsset bronzeShots = (ImageAsset) assets.getAsset("medal_bronze_shots");
+        ImageAsset bronzeFood = (ImageAsset) assets.getAsset("medal_bronze_food");
+
         ImageAsset title = (ImageAsset) assets.getAsset("title");
         if(bg != null && closed != null && magnet != null && title != null){
             if(state == SelectState.ZOOM_IN){
@@ -230,7 +245,44 @@ public class LevelSelect implements Screen, InputProcessor {
                         }
                     }
 
-                    canvas.draw(magnet.getTexture(), magnetTint, 0, 0, px+28, py-10, 0, 0.10f, 0.10f);
+                    if(levels[i][j].golfMedal.equals("none")){
+                        canvas.draw(magnet.getTexture(), magnetTint, 0, 0, px+28, py-10, 0, 0.10f, 0.10f);
+                    }
+
+                    String golfMedal = levels[i][j].golfMedal;
+                    TextureRegion golfMedalTexture = null;
+                    if(golfMedal.equals("bronze")){
+                        golfMedalTexture = bronzeShots.getTexture();
+                    }
+                    else if(golfMedal.equals("silver")){
+                        golfMedalTexture = silverShots.getTexture();
+                    }
+                    else if(golfMedal.equals("gold")){
+                        golfMedalTexture = goldShots.getTexture();
+                    }
+                    if(golfMedalTexture != null){
+                        System.out.println("YESs");
+                        canvas.draw(golfMedalTexture, newsTint, 70, 70, px+4, py, randAngles[(i*3+j)], 0.18f, 0.18f);
+
+                    }
+
+                    String foodMedal = levels[i][j].foodMedal;
+                    TextureRegion foodMedalTexture = null;
+                    if(foodMedal.equals("bronze")){
+                        foodMedalTexture = bronzeFood.getTexture();
+                    }
+                    else if(foodMedal.equals("silver")){
+                        foodMedalTexture = silverFood.getTexture();
+                    }
+                    else if(foodMedal.equals("gold")){
+                        foodMedalTexture = goldFood.getTexture();
+                    }
+                    if(foodMedalTexture != null){
+                        canvas.draw(foodMedalTexture, newsTint, 70, 70, px+76, py, randAngles[(i*3+j)*2], 0.18f, 0.18f);
+
+                    }
+
+
 
                 }
             }

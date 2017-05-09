@@ -1455,6 +1455,66 @@
       "scale_x": "0.2",
       "scale_y": "0.2",
       "shape": "none"
-    }
+    },
+    {
+      "type": "image",
+      "tag": "medal_bronze_food",
+      "filename": "gui/Bronze Food.png",
+      "origin_x": "70",
+      "origin_y": "70",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "medal_bronze_shots",
+      "filename": "gui/Bronze Shots.png",
+      "origin_x": "70",
+      "origin_y": "70",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "medal_gold_food",
+      "filename": "gui/Gold Food.png",
+      "origin_x": "70",
+      "origin_y": "70",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "medal_gold_shots",
+      "filename": "gui/Gold Shots.png",
+      "origin_x": "70",
+      "origin_y": "70",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "medal_silver_food",
+      "filename": "gui/Silver Food.png",
+      "origin_x": "70",
+      "origin_y": "70",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "medal_silver_shots",
+      "filename": "gui/Silver Shots.png",
+      "origin_x": "70",
+      "origin_y": "70",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
   ]
 }
