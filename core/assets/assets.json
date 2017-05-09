@@ -1360,6 +1360,16 @@
     },
     {
       "type": "image",
+      "tag": "pausemenu",
+      "filename": "cutscenes/pausemenu.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
       "tag": "gradient",
       "filename": "cutscenes/gradient.png",
       "scale_x": "1",
@@ -1376,6 +1386,46 @@
       "scale_y": "1",
       "origin_x": "64",
       "origin_y": "64",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "MusicOff",
+      "filename": "gui/MusicOff.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "MusicOn",
+      "filename": "gui/MusicOn.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "SoundOff",
+      "filename": "gui/SoundOff.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "SoundOn",
+      "filename": "gui/SoundOn.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
       "shape": "none"
     },
     {

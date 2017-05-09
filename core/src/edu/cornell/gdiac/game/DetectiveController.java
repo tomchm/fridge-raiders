@@ -25,9 +25,12 @@ public class DetectiveController {
     private WorldModel worldModel;
     private AimGUIModel aimGUI;
     private boolean isSecondStage;
+    private boolean didSoftReset;
     private int lastMove = -1;
     public final static float SHOOT_FORCE = 45f;
     public final static float MAX_FORCE = 240*SHOOT_FORCE;
+    private Vector2 pausedVelocity;
+    private boolean pausedShot = false;
 
 
     public  DetectiveController( DetectiveModel playerModel, WorldModel world, AimGUIModel aimGUI){
@@ -174,6 +177,9 @@ public class DetectiveController {
 
     public void update(InputController input){
         isSecondStage = player.isSecondStage();
+        if(this.worldModel.isPaused() && (!isSecondStage)){
+            if(player.isEating()){player.stopEating();}
+        }
         if(!this.worldModel.hasLost && !this.worldModel.hasWon() && !this.worldModel.isPaused) {
 
             // First we want to update walking mechanics if it's in stage one.
@@ -192,6 +198,19 @@ public class DetectiveController {
 
             // If we are in stage two, no walking mechanics allowed
             if (isSecondStage) {
+                if(player.didSoftReset()){
+                    pausedShot = false;
+                    worldModel.getPlayer().setFX(0.0f);
+                    worldModel.getPlayer().setFY(0.0f);
+                    worldModel.getPlayer().applyForce();
+                }
+                if(pausedShot && (!player.didSoftReset())){
+                    pausedShot = false;
+                    player.setFX(pausedVelocity.x);
+                    player.setFY(pausedVelocity.y);
+                    player.applyForce();
+                }
+                player.unsetSoftReset();
                 player.setAnimation(DetectiveModel.Animation.DOWN_STOP);
                 // Need the special input processor to do mouse commands from the input controller.
                 MyInputProcessor processor = input.getMyProcessor();
@@ -233,8 +252,13 @@ public class DetectiveController {
             }
         }
         else{
+            if(!pausedShot) {
+                pausedVelocity = new Vector2(player.getBody().getLinearVelocity().x, player.getBody().getLinearVelocity().y);
+                pausedShot = true;
+            }
             player.getBody().setLinearVelocity(0, 0);
             this.stopAnimating();
+
         }
 
     }
@@ -242,6 +266,7 @@ public class DetectiveController {
     public boolean inSecondStage(){
         return this.isSecondStage;
     }
+
 
 
 

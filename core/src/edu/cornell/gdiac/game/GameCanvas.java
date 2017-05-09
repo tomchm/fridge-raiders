@@ -136,9 +136,12 @@ public class GameCanvas {
 
 	public void drawRect(float x, float y, float width, float height, float r, float g, float b ,float a) {
 		beginShape();
+
 		shapeRender.setColor(r, g, b, a);
 		float sx = GameObject.getDrawScale().x;
 		float sy = GameObject.getDrawScale().y;
+		shapeRender.rect(x*sx,y*sy,x*sx,y*sy,width*sx,height*sy,1.0f,1.0f,0.15f);
+
 		shapeRender.rect(x*sx, y*sy, width*sx, height*sy);
 		endShape();
 	}
@@ -957,6 +960,10 @@ public class GameCanvas {
 		GlyphLayout layout = new GlyphLayout(font,text);
 		font.draw(spriteBatch, layout, x, y);
     }
+
+
+
+
 
     /**
      * Draws text centered on the screen.
