@@ -132,6 +132,10 @@ public class AIController implements RayCastCallback{
         return this.ai;
     }
 
+    public void reset() {
+        isDead = false;
+        ai.isDead = false;
+    }
     /**
      * updates AI
      */

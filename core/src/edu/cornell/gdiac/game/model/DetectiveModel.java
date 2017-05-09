@@ -74,9 +74,9 @@ public class DetectiveModel extends GameObject{
     /** Maximum amount of food in level */
     private int maximumFood = 200;
     /** Par shots for the level*/
-    private int par = 5;
+    private int par;
 
-    private int amountEaten = 0;
+    private int amountEaten = 300;
     private boolean hasEatenDessert = false;
     private boolean isSecondStage = false;
     public float eatDelay = 0.0f;
@@ -205,7 +205,7 @@ public class DetectiveModel extends GameObject{
         /** Rotate all of the body parts in 3D on the balled-up character. */
         if (isSecondStage) {
             if(shotsRemaining == -1){
-                int extra = (int)(5*(amountEaten - threshold) / (maximumFood - threshold));
+                int extra = (int)(par*(amountEaten - threshold) / (maximumFood - threshold));
                 shotsRemaining = par + extra;
                 System.out.println(shotsRemaining);
             }
