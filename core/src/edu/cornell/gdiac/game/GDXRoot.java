@@ -174,7 +174,7 @@ public class GDXRoot extends Game implements ScreenListener {
 			setScreen(levelSelect);
 		}
 		else if(exitCode == 100){
-			controller = new WorldController("levels/BetaHard.json");
+			controller = new WorldController("levels/Level1.json");
 			controller.setScreenListener(this);
 			controller.setCanvas(canvas);
 			controller.setHardReset();
@@ -183,7 +183,7 @@ public class GDXRoot extends Game implements ScreenListener {
 			SoundController.getInstance().stop("titlemusic");
 		}
 		else if(exitCode == 101){
-			controller = new WorldController("levels/alphaLevel.json");
+			controller = new WorldController("levels/Level2.json");
 			controller.setScreenListener(this);
 			controller.setCanvas(canvas);
 			controller.setHardReset();
@@ -192,7 +192,7 @@ public class GDXRoot extends Game implements ScreenListener {
 			SoundController.getInstance().stop("titlemusic");
 		}
 		else if(exitCode == 102){
-			controller = new WorldController("levels/simpleLevel.json");
+			controller = new WorldController("levels/Level3.json");
 			controller.setScreenListener(this);
 			controller.setCanvas(canvas);
 			controller.setHardReset();
