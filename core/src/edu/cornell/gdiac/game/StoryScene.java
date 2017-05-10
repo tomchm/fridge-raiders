@@ -35,6 +35,7 @@ public class StoryScene implements Screen {
     private int levelCode;
     private String storyText;
     private int numChars;
+    private boolean highlight;
 
     public StoryScene(GameCanvas c) {
         canvas = c;
@@ -63,19 +64,26 @@ public class StoryScene implements Screen {
 
         // this can't go in the constructor! The assets wouldn't be ready yet.
         gradient = ((ImageAsset)AssetLoader.getInstance().getAsset("gradient")).getTexture().getTexture();
-
         switch (levelCode) {
             case 100:
                 add("cutscene1");
-                storyText = "Some are born to love. Others, to pray. I was born\nto break into people's houses and eat all their food.";
+                storyText = "I go by many names. Some say I'm a monster. I call myself an \nartist. And tonight, I will paint my masterpiece.";
                 break;
-            case 101:
-                add("cutscene2");
-                storyText = "The rain comes down and the moon\nshimmers overhead.  I must eat.";
+            case 104:
+                add("cutscene4");
+                storyText = "The scents wafting from that mansion are heavenly. I’m sure \nthe homeowner wouldn’t mind a little company for dinner.";
                 break;
             case 102:
                 add("cutscene3");
                 storyText = "I awake screaming and in a cold sweat.\nI can't shake the image of flat, off-brand soda.";
+                break;
+            case 200:
+                add("cutscene2");
+                storyText = "Night falls across the city like a slice of provolone on bread. \nI'm not sentimental, but there's something pretty about it.";
+                break;
+            case 204:
+                add("cutscene3");
+                storyText = "On a night like this, a guy could really go for seconds. Or \nfifths. Who am I to resist the beckoning of a home-cooked meal?";
                 break;
             default:
                 add("cutscene1");
@@ -111,7 +119,7 @@ public class StoryScene implements Screen {
         canvas.draw(currentImg, tint, -640, -360, 1280, 720);
         canvas.draw(gradient, -640, -360);
         //canvas.drawText("Space to skip", ((FontAsset)AssetLoader.getInstance().getAsset("gothic32")).getFont(), -600, 300);
-        canvas.drawText(storyText.substring(0,numChars), ((FontAsset)AssetLoader.getInstance().getAsset("typewriter")).getFont(), -600, -270);
+        canvas.drawText(storyText.substring(0,numChars), ((FontAsset)AssetLoader.getInstance().getAsset("typewriter")).getFont(), -630, -270);
 
         if (imgTime > IMAGE_TIME && imgQueue.size > 0) {
             imgTime = 0f;
@@ -121,15 +129,24 @@ public class StoryScene implements Screen {
         if (sceneTime > TEXT_TIME) {
             ImageAsset play = (ImageAsset)AssetLoader.getInstance().getAsset("playButton");
             if(play != null){
-                Color tint = (true ? Color.GRAY: Color.WHITE);
+                Color tint = (highlight ? Color.GRAY: Color.WHITE);
                 float xx = 440f+5f* MathUtils.sin(sceneTime*0.1f*60f);
-                canvas.draw(play.getTexture(), tint, play.getOrigin().x, play.getOrigin().y, xx, -240f, 0, 1f, 1f);
+                canvas.draw(play.getTexture(), tint, play.getOrigin().x, play.getOrigin().y, xx, 240f, 0, 1f, 1f);
             }
         }
 
         InputController.getInstance().readInput();
         if (InputController.getInstance().didSkip()) {
             listener.exitScreen(this, levelCode);
+        }
+
+        int mx = InputController.getInstance().getMyProcessor().hoveringX;
+        int my = InputController.getInstance().getMyProcessor().hoveringY;
+        highlight = false;
+        float radius = 64f;
+        float dist = (mx-440f)*(mx-440f)+(my-240f)*(my-240f);
+        if (dist < radius*radius) {
+            highlight = true;
         }
 
         canvas.end();

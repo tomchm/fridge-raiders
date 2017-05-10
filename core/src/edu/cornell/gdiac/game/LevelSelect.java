@@ -66,7 +66,11 @@ public class LevelSelect implements Screen, InputProcessor {
         ScoreIOController.LevelData levelData[] = ScoreIOController.getScores();
 
         for(int i=0; i<9; i++){
-            levels[i/3][i%3] = new Level(100+i, "newspaper"+i, levelData[i].unlocked, levelData[i].foodMedal, levelData[i].golfMedal);
+            int code = 100+i;
+            if(i%4 == 0){
+                code += 200;
+            }
+            levels[i/3][i%3] = new Level(code, "newspaper"+i, levelData[i].unlocked, levelData[i].foodMedal, levelData[i].golfMedal);
         }
 
         /*
@@ -293,7 +297,7 @@ public class LevelSelect implements Screen, InputProcessor {
             fadeTime++;
             if(fadeTime == FADE_TIME){
                 state = SelectState.FADE_IN;
-                listener.exitScreen(this, 100 + levelCode);
+                listener.exitScreen(this, levelCode);
             }
             float ratio = fadeTime / FADE_TIME;
             canvas.drawRect(0, -500, 2000, 2000, 0, 0, 0, ratio);
@@ -322,7 +326,11 @@ public class LevelSelect implements Screen, InputProcessor {
 
         ScoreIOController.LevelData levelData[] = ScoreIOController.getScores();
         for(int i=0; i<9; i++){
-            levels[i/3][i%3] = new Level(100+i, "newspaper"+i, levelData[i].unlocked, levelData[i].foodMedal, levelData[i].golfMedal);
+            int code = 100+i;
+            if(i%4 == 0){
+                code += 200;
+            }
+            levels[i/3][i%3] = new Level(code, "newspaper"+i, levelData[i].unlocked, levelData[i].foodMedal, levelData[i].golfMedal);
         }
     }
 
@@ -371,7 +379,7 @@ public class LevelSelect implements Screen, InputProcessor {
                         if(screenX >= x && screenX <= x+187 && screenY >= y && screenY <= y + 187){
                             if(levels[j][i].unlocked){
                                 state = SelectState.FADE_OUT;
-                                levelCode = 100+j*3+i;
+                                levelCode = levels[j][i].exitCode;
                             }
                         }
                     }
