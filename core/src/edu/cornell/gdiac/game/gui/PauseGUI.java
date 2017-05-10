@@ -76,7 +76,7 @@ public class PauseGUI extends GUIModel {
             this.message = "";
             this.inputController = input;
             tint = new Color(1f, 1f, 1f, 1f);
-            hoverTint =  new Color(0.09803921568627451f, 0.3686274509803922f, 0.7490196078431373f,1f);
+            hoverTint =  new Color((float) (227.0/255.0), 0.7450980392156863f, (float) 0.25882354f, 0f);
             textTint1 = new Color(0.25f,0.25f,0.25f,0f);
             textTint2 = new Color(0.25f,0.25f,0.25f,0f);
             textTint3 = new Color(0.25f,0.25f,0.25f,0f);
