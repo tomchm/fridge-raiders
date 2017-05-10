@@ -79,7 +79,7 @@ public class WinScreen implements Screen, InputProcessor {
         BitmapFont bf2 = font2.getFont();
         if(bg != null){
             if (time == 0) {
-                SoundController.getInstance().play("cymbals", true, 0.25f);
+                SoundController.getInstance().play("cymbals", true, 0.15f);
             }
 
             time++;
