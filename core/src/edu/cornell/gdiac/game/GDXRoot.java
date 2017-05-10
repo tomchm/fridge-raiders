@@ -144,6 +144,8 @@ public class GDXRoot extends Game implements ScreenListener {
 	 * @param exitCode The state of the screen upon exit
 	 */
 	public void exitScreen(Screen screen, int exitCode) {
+		System.out.println("exitCode = " + exitCode);
+
 		if (screen == loading) {
 			AssetLoader.getInstance().loadContent(manager);
 			System.out.println("exited from loading screen.");
