@@ -270,8 +270,8 @@ public class WorldController implements Screen {
 			return false;
 		}
 		if(input.didCutscene()) {
-			//listener.exitScreen(this, CUTSCENE);
-			//return false;
+			listener.exitScreen(this, CUTSCENE);
+			return false;
 		}
 		if(!worldModel.getPlayer().isSecondStage()){
 			for(AIController ai : aiControllers){
