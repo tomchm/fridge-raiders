@@ -26,9 +26,9 @@
 	},
 	{
 		"filename": "level4.json",
-		"unlocked": false,
-		"foodMedal": "none",
-		"golfMedal": "none"
+		"unlocked": true,
+		"foodMedal": "gold",
+		"golfMedal": "bronze"
 	},
 	{
 		"filename": "level5.json",
@@ -38,7 +38,7 @@
 	},
 	{
 		"filename": "level6.json",
-		"unlocked": false,
+		"unlocked": true,
 		"foodMedal": "none",
 		"golfMedal": "none"
 	},

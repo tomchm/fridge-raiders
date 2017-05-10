@@ -92,11 +92,11 @@ public class FurnitureModel extends GameObject {
                     float hscale_x = (ia.getTexture().getRegionWidth()*ia.getImageScale().x + 16f) / (ia.getTexture().getRegionWidth()*ia.getImageScale().x);
                     float hscale_y = (ia.getTexture().getRegionHeight()*ia.getImageScale().y + 16f) / (ia.getTexture().getRegionHeight()*ia.getImageScale().y);
                     canvas.setBlendState(GameCanvas.BlendState.ADDITIVE);
-                    canvas.draw(ia.getTexture(), new Color(alpha,alpha,alpha,1), ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),ia.getImageScale().x*hscale_x,ia.getImageScale().y*hscale_y);
+                    canvas.draw(ia.getTexture(), new Color(alpha,alpha,alpha,1), ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,ia.getImageScale().x*hscale_x,ia.getImageScale().y*hscale_y);
                     canvas.setBlendState(GameCanvas.BlendState.NO_PREMULT);
                 }
 
-                canvas.draw(ia.getTexture(), Color.WHITE,ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),ia.getImageScale().x,ia.getImageScale().y);
+                canvas.draw(ia.getTexture(), Color.WHITE,ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,ia.getImageScale().x,ia.getImageScale().y);
             }
         }
     }

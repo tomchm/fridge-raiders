@@ -170,7 +170,7 @@ public class FoodModel extends GameObject {
                     float hscale_x = (ia.getTexture().getRegionWidth()*ia.getImageScale().x + 20f) / (ia.getTexture().getRegionWidth()*ia.getImageScale().x);
                     float hscale_y = (ia.getTexture().getRegionHeight()*ia.getImageScale().y + 20f) / (ia.getTexture().getRegionHeight()*ia.getImageScale().y);
                     canvas.setBlendState(GameCanvas.BlendState.ADDITIVE);
-                    canvas.draw(ia.getTexture(), new Color(alpha,alpha,alpha,1), ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),ia.getImageScale().x*hscale_x,ia.getImageScale().y*hscale_y);
+                    canvas.draw(ia.getTexture(), new Color(alpha,alpha,alpha,1), ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,ia.getImageScale().x*hscale_x,ia.getImageScale().y*hscale_y);
                     canvas.setBlendState(GameCanvas.BlendState.NO_PREMULT);
                 }
 
@@ -178,7 +178,7 @@ public class FoodModel extends GameObject {
                 if(isDessert && !isUnlocked){
                     color = new Color(0.4f,0.4f,0.4f,1);
                 }
-                canvas.draw(ia.getTexture(), color,ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),ia.getImageScale().x,ia.getImageScale().y);
+                canvas.draw(ia.getTexture(), color,ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,ia.getImageScale().x,ia.getImageScale().y);
 
                 if(isDessert && isUnlocked){
                     float alpha = 0.35f* MathUtils.sinDeg(counter*4%360) + 1f;
@@ -186,7 +186,7 @@ public class FoodModel extends GameObject {
                         canvas.setBlendState(GameCanvas.BlendState.ADDITIVE);
                         alpha --;
                     }
-                    canvas.draw(ia.getTexture(), new Color(alpha, alpha, alpha, 1),ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,body.getAngle(),ia.getImageScale().x,ia.getImageScale().y);
+                    canvas.draw(ia.getTexture(), new Color(alpha, alpha, alpha, 1),ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,ia.getImageScale().x,ia.getImageScale().y);
                     canvas.setBlendState(GameCanvas.BlendState.NO_PREMULT);
                 }
 
