@@ -1130,6 +1130,31 @@
     },
     {
       "type": "sound",
+      "tag": "bronzesfx",
+      "filename": "sound/bronzesfx.ogg"
+    },
+    {
+      "type": "sound",
+      "tag": "silversfx",
+      "filename": "sound/silver.ogg"
+    },
+    {
+      "type": "sound",
+      "tag": "goldsfx",
+      "filename": "sound/gold.ogg"
+    },
+    {
+      "type": "sound",
+      "tag": "crush",
+      "filename": "sound/crush.ogg"
+    },
+    {
+      "type": "sound",
+      "tag": "music_transition",
+      "filename": "sound/music_transition.ogg"
+    },
+    {
+      "type": "sound",
       "tag": "pop",
       "filename": "sound/pop.wav"
     },
