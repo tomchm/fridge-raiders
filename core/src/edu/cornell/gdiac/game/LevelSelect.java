@@ -318,7 +318,12 @@ public class LevelSelect implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(this);
         //SoundController.getInstance().update();
 
-        //SoundController.getInstance().play("levelmusic", true, 0.75f);
+        SoundController.getInstance().play("levelmusic", true, 0.75f);
+
+        ScoreIOController.LevelData levelData[] = ScoreIOController.getScores();
+        for(int i=0; i<9; i++){
+            levels[i/3][i%3] = new Level(100+i, "newspaper"+i, levelData[i].unlocked, levelData[i].foodMedal, levelData[i].golfMedal);
+        }
     }
 
     private class Level{

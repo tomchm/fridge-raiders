@@ -256,45 +256,63 @@ public class DetectiveModel extends GameObject{
 
         if(!isSecondStage){
             FilmstripAsset fa = null;
-            if(this.getSpeed() > 0.5f) {
-                frame++;
-            }
+
             switch (animation){
                 case DOWN_MOVE:
                     fa = (FilmstripAsset)assetMap.get("player_down");
+                    frame++;
                     break;
                 case DOWN_STOP:
                     fa = (FilmstripAsset)assetMap.get("player_down_idle");
+                    frame++;
                     break;
                 case UP_MOVE:
                     fa = (FilmstripAsset)assetMap.get("player_up");
+                    frame++;
                     break;
                 case UP_STOP:
                     fa = (FilmstripAsset)assetMap.get("player_up_idle");
+                    frame++;
                     break;
                 case LEFT_MOVE:
                     fa = (FilmstripAsset)assetMap.get("player_left");
+                    frame++;
                     break;
                 case LEFT_STOP:
                     fa = (FilmstripAsset)assetMap.get("player_left_idle");
+                    frame++;
                     break;
                 case RIGHT_MOVE:
                     fa = (FilmstripAsset)assetMap.get("player_right");
+                    frame++;
                     break;
                 case RIGHT_STOP:
                     fa = (FilmstripAsset)assetMap.get("player_right_idle");
+                    frame++;
                     break;
                 case DOWN_GRAB:
                     fa = (FilmstripAsset)assetMap.get("player_down_grab");
+                    if(this.getSpeed() > 0.5f) {
+                        frame++;
+                    }
                     break;
                 case UP_GRAB:
                     fa = (FilmstripAsset)assetMap.get("player_up_grab");
+                    if(this.getSpeed() > 0.5f) {
+                        frame++;
+                    }
                     break;
                 case LEFT_GRAB:
                     fa = (FilmstripAsset)assetMap.get("player_left_grab");
+                    if(this.getSpeed() > 0.5f) {
+                        frame++;
+                    }
                     break;
                 case RIGHT_GRAB:
                     fa = (FilmstripAsset)assetMap.get("player_right_grab");
+                    if(this.getSpeed() > 0.5f) {
+                        frame++;
+                    }
                     break;
             }
             if(fa != null){
