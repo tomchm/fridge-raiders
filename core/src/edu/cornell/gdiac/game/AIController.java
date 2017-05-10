@@ -76,7 +76,7 @@ public class AIController implements RayCastCallback{
     /** the threshold before chase*/
     protected static float CHASE_LIM = 1.0f;
     /** the distance at which the ai catches the player*/
-    protected static float CATCH_DIST = 2.0f;
+    protected static float CATCH_DIST = 1.5f;
     /** the weighted time the player has been in the light*/
     private float lightTime;
     /** caches dt value for callback*/
@@ -226,8 +226,12 @@ public class AIController implements RayCastCallback{
         Vector2 temp = new Vector2(point);
         temp.sub(ai.getBody().getPosition());
 
-        float angle = (float) Math.atan2(temp.y, temp.x);
-        double angledif = (ai.getBody().getAngle() - angle + Math.PI * 2) % (Math.PI * 2);
+        float angle = (float) ((Math.atan2(temp.y, temp.x) + 2*Math.PI) % (2*Math.PI));
+        float bodyAngle = (float)(Math.PI*2 + (ai.getBody().getAngle() % (2*Math.PI)));
+//        System.out.println(angle);
+//        System.out.println(bodyAngle);
+//        System.out.println("-----");
+        double angledif = Math.abs(angle - bodyAngle);
         double angledifDeg = angledif * 180 / Math.PI;
         float dist = ai.getBody().getPosition().dst(point);
         boolean fixtureTest = (fixture.getBody() == player.getBody() || fixture.getUserData() == player.getGrappledFurniture());
