@@ -163,7 +163,7 @@ public class WorldModel {
         WinScreen.foodMedal = foodMedal;
         WinScreen.golfMedal = golfMedal;
         WinScreen.putts = detective.getShotsTaken();
-        WinScreen.foodPercent = (int)(detective.getAmountEaten() / detective.getMaximumFood());
+        WinScreen.foodPercent = (int)(detective.getAmountEaten()*100 / detective.getMaximumFood());
     }
 
     /** 0-indexed */

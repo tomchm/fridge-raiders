@@ -1,6 +1,7 @@
 package edu.cornell.gdiac.game.gui;
 
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.QueryCallback;
@@ -11,6 +12,7 @@ import edu.cornell.gdiac.game.model.FoodModel;
 import edu.cornell.gdiac.game.model.GameObject;
 import edu.cornell.gdiac.game.model.WallModel;
 
+import java.awt.*;
 import java.util.Stack;
 
 
@@ -40,7 +42,7 @@ public class MinimapGUIModel extends GUIModel {
         map = new Pixmap(MAX_SIZE, MAX_SIZE, Pixmap.Format.RGBA8888);
         makeMap();
         guiTag = "MinimapGUI";
-        tags = new String[]{"crumb"};
+        tags = new String[]{"crumb", "gui_flag"};
 
     }
 
@@ -197,6 +199,26 @@ public class MinimapGUIModel extends GUIModel {
                     float dx = origin.x*GameObject.getDrawScale().x + (dessertX-minX)/scale + SCREEN_X + adjX;
                     float dy = origin.y*GameObject.getDrawScale().y + (dessertY-minY)/scale + SCREEN_Y + adjY;
                     canvas.draw(ia.getTexture(), Color.YELLOW, ia.getOrigin().x , ia.getOrigin().y , dx, dy, 0, ia.getImageScale().x, ia.getImageScale().y);
+
+                }
+
+                if(world.getPlayer().isSecondStage() && (counter <= 60)){
+                    counter++;
+                    ImageAsset flag = (ImageAsset) assetMap.get("gui_flag");
+                    float coords[] = world.getGoal().getCoords();
+                    float gx = 0, gy = 0;
+                    for(int i=0; i<4; i++){
+                        gx += coords[i*2];
+                        gy += coords[i*2+1];
+                    }
+                    gx /= 4f;
+                    gy /= 4f;
+
+                    float dx = origin.x*GameObject.getDrawScale().x + (gx-minX)/scale + SCREEN_X + adjX;
+                    float dy = origin.y*GameObject.getDrawScale().y + (gy-minY)/scale + SCREEN_Y + adjY;
+                    if(flag != null){
+                        canvas.draw(flag.getTexture(), Color.YELLOW, flag.getOrigin().x , flag.getOrigin().y , dx, dy, 0, flag.getImageScale().x, flag.getImageScale().y);
+                    }
                 }
 
                 if(counter >= 60 && counter < 90) {
@@ -205,6 +227,8 @@ public class MinimapGUIModel extends GUIModel {
                 if(counter >= 90){
                     counter = 0;
                 }
+
+
 
             }
 

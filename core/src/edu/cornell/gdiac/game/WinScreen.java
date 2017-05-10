@@ -107,7 +107,7 @@ public class WinScreen implements Screen, InputProcessor {
                 typewrite(bf, "PUTTS TAKEN:", 535, 415, FADE_TIME + TEXT_TIME + NUM_TIME + MEDAL_TIME, 5, time);
             }
             if(time > FADE_TIME + 2*TEXT_TIME + NUM_TIME + MEDAL_TIME){
-                upwrite(bf2, 5, 760, 349, FADE_TIME+2*TEXT_TIME+NUM_TIME+MEDAL_TIME, FADE_TIME+2*TEXT_TIME+2*NUM_TIME+MEDAL_TIME, time);
+                upwrite(bf2, putts, 760, 349, FADE_TIME+2*TEXT_TIME+NUM_TIME+MEDAL_TIME, FADE_TIME+2*TEXT_TIME+2*NUM_TIME+MEDAL_TIME, time);
             }
             if(time > FADE_TIME + 2*TEXT_TIME + 2*NUM_TIME + MEDAL_TIME){
                 String tag = "medal_" + golfMedal + "_shots";
