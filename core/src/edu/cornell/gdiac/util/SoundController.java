@@ -89,7 +89,7 @@ public class SoundController {
 	/** The default sound cooldown */
 	private static final int DEFAULT_COOL = 20;
 	/** The default sound length limit */
-	private static final int DEFAULT_LIMIT = 60*3;
+	private static final int DEFAULT_LIMIT = 60*5;
 	/** The default limit on sounds per frame */
 	private static final int DEFAULT_FRAME = 2;
 	

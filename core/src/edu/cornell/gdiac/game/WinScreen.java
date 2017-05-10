@@ -78,6 +78,10 @@ public class WinScreen implements Screen, InputProcessor {
         FontAsset font2 = (FontAsset) assets.getAsset("gunny72");
         BitmapFont bf2 = font2.getFont();
         if(bg != null){
+            if (time == 0) {
+                SoundController.getInstance().play("cymbals", true, 0.25f);
+            }
+
             time++;
             if(time >= 0){
                 canvas.drawRect(0, -500, 2000, 2000, 0.3f, 0.3f, 0.3f, 1);
@@ -197,6 +201,7 @@ public class WinScreen implements Screen, InputProcessor {
             float dist = (screenX-1140f)*(screenX-1140f)+(screenY-620f)*(screenY-620f);
             if (dist < radius*radius) {
                 listener.exitScreen(this, WorldController.LEVEL_SELECT);
+                SoundController.getInstance().safeStop("cymbals");
                 playHighlight = false;
             }
         }

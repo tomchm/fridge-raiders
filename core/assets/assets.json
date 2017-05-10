@@ -1130,6 +1130,16 @@
     },
     {
       "type": "sound",
+      "tag": "cymbals",
+      "filename": "sound/cymbals.ogg"
+    },
+    {
+      "type": "sound",
+      "tag": "blah",
+      "filename": "sound/blah.ogg"
+    },
+    {
+      "type": "sound",
       "tag": "bronzesfx",
       "filename": "sound/bronze.ogg"
     },

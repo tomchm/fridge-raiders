@@ -297,7 +297,7 @@ public class LevelSelect implements Screen, InputProcessor {
             fadeTime++;
             if(fadeTime == FADE_TIME){
                 state = SelectState.FADE_IN;
-                listener.exitScreen(this, levelCode);
+                listener.exitScreen(this, 100 + levelCode);
             }
             float ratio = fadeTime / FADE_TIME;
             canvas.drawRect(0, -500, 2000, 2000, 0, 0, 0, ratio);
