@@ -119,7 +119,7 @@ public class StoryScene implements Screen {
         canvas.draw(currentImg, tint, -640, -360, 1280, 720);
         canvas.draw(gradient, -640, -360);
         //canvas.drawText("Space to skip", ((FontAsset)AssetLoader.getInstance().getAsset("gothic32")).getFont(), -600, 300);
-        canvas.drawText(storyText.substring(0,numChars), ((FontAsset)AssetLoader.getInstance().getAsset("typewriter")).getFont(), -630, -270);
+        canvas.drawText(storyText.substring(0,numChars), ((FontAsset)AssetLoader.getInstance().getAsset("typewriter")).getFont(), -620, -270);
 
         if (imgTime > IMAGE_TIME && imgQueue.size > 0) {
             imgTime = 0f;
