@@ -661,7 +661,7 @@
                 var yspawn = camY + 0.5*cnv.height/DRAW_SCALE;
                 var newObj = { "tags": [newtag], "x": xspawn, "y": yspawn, "theta": 0, "width": 0, "height": 0, "radius": 0 };
                 if (asset.shape == 'circle') {newObj.radius = eval(asset.radius);}
-                else if (asset.shape == 'rectangle') { newObj.width = eval(asset.width); newObj.height = eval(asset.height); selected.theta = eval(asset.angle); }
+                else if (asset.shape == 'rectangle') { newObj.width = eval(asset.width); newObj.height = eval(asset.height); newObj.theta = eval(asset.angle); }
                 
                 if (type == 'furniture') {
                     newObj.moveable = asset.moveable;
