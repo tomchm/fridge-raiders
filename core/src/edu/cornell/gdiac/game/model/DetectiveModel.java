@@ -47,6 +47,8 @@ public class DetectiveModel extends GameObject{
     private Pixmap fatMan;
     private Texture fatTex;
 
+    private boolean didSoftReset;
+
     /** The food the player is currently eating. */
     private FoodModel chewing = null;
 
@@ -72,7 +74,7 @@ public class DetectiveModel extends GameObject{
     /** Maximum amount of food in level */
     private int maximumFood = 200;
     /** Par shots for the level*/
-    private int par = 5;
+    private int par;
 
     private int amountEaten = 0;
     private boolean hasEatenDessert = false;
@@ -185,6 +187,10 @@ public class DetectiveModel extends GameObject{
     }
     public void stopEating() { chewing = null; }
 
+    public void setSoftReset() {this.didSoftReset = true;}
+    public boolean didSoftReset() {return didSoftReset;}
+    public void unsetSoftReset() {this.didSoftReset = false;}
+
     public FoodModel getChewing(){
         return chewing;
     }
@@ -199,7 +205,7 @@ public class DetectiveModel extends GameObject{
         /** Rotate all of the body parts in 3D on the balled-up character. */
         if (isSecondStage) {
             if(shotsRemaining == -1){
-                int extra = (int)(5*(amountEaten - threshold) / (maximumFood - threshold));
+                int extra = (int)(par*(amountEaten - threshold) / (maximumFood - threshold));
                 shotsRemaining = par + extra;
                 System.out.println(shotsRemaining);
             }
@@ -250,63 +256,75 @@ public class DetectiveModel extends GameObject{
 
         if(!isSecondStage){
             FilmstripAsset fa = null;
-            if(this.getSpeed() > 0.5f) {
-                frame++;
-            }
+
             switch (animation){
                 case DOWN_MOVE:
                     fa = (FilmstripAsset)assetMap.get("player_down");
+                    frame++;
                     break;
                 case DOWN_STOP:
                     fa = (FilmstripAsset)assetMap.get("player_down_idle");
+                    frame++;
                     break;
                 case UP_MOVE:
                     fa = (FilmstripAsset)assetMap.get("player_up");
+                    frame++;
                     break;
                 case UP_STOP:
                     fa = (FilmstripAsset)assetMap.get("player_up_idle");
+                    frame++;
                     break;
                 case LEFT_MOVE:
                     fa = (FilmstripAsset)assetMap.get("player_left");
+                    frame++;
                     break;
                 case LEFT_STOP:
                     fa = (FilmstripAsset)assetMap.get("player_left_idle");
+                    frame++;
                     break;
                 case RIGHT_MOVE:
                     fa = (FilmstripAsset)assetMap.get("player_right");
+                    frame++;
                     break;
                 case RIGHT_STOP:
                     fa = (FilmstripAsset)assetMap.get("player_right_idle");
+                    frame++;
                     break;
                 case DOWN_GRAB:
                     fa = (FilmstripAsset)assetMap.get("player_down_grab");
+                    if(this.getSpeed() > 0.5f) {
+                        frame++;
+                    }
                     break;
                 case UP_GRAB:
                     fa = (FilmstripAsset)assetMap.get("player_up_grab");
+                    if(this.getSpeed() > 0.5f) {
+                        frame++;
+                    }
                     break;
                 case LEFT_GRAB:
                     fa = (FilmstripAsset)assetMap.get("player_left_grab");
+                    if(this.getSpeed() > 0.5f) {
+                        frame++;
+                    }
                     break;
                 case RIGHT_GRAB:
                     fa = (FilmstripAsset)assetMap.get("player_right_grab");
+                    if(this.getSpeed() > 0.5f) {
+                        frame++;
+                    }
                     break;
             }
             if(fa != null){
                 int nFrame = (frame / fa.getSpeed()) % fa.getNumFrames();
                 TextureRegion texture = fa.getTexture(nFrame);
-                /*texture.getTexture().getTextureData().prepare();
-                normalMan = texture.getTexture().getTextureData().consumePixmap();
-                // new one should be square so we have plenty of room to grow!
-                int height = normalMan.getHeight();
-                fatMan = new Pixmap(normalMan.getWidth(), height, Pixmap.Format.RGBA4444);
-                bulge(normalMan, fatMan, frame*fa.getWidth(), fa.getWidth(),
-                        normalMan.getWidth()/2, height/2, height/2, height/2,
-                        normalMan.getHeight()/2, 1f);
-                fatTex = new Texture(fatMan);
-                TextureRegion fatTexReg = new TextureRegion(fatTex);
-                fatTexReg.setRegion(frame*fa.getWidth(), 0, fa.getWidth(), height);
-                canvas.draw(fatTexReg, Color.WHITE,fa.getOrigin().x,fa.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,fa.getImageScale().x,fa.getImageScale().y);
-            */
+
+                Affine2 aff = new Affine2();
+                aff.setToScaling(fa.getImageScale().x * 1, fa.getImageScale().y * 0.7f);
+                aff.preShear(-0.2f, 0);
+                aff.preTranslate((body.getPosition().x)* drawScale.x  - fa.getImageScale().x * fa.getTexture(nFrame/2).getRegionWidth() * 0.05f , (body.getPosition().y) * drawScale.y - fa.getTexture(nFrame/2).getRegionHeight() * fa.getImageScale().y * 0.05f);
+                canvas.draw(fa.getTexture(nFrame/2), new Color(0,0,0,0.5f), fa.getOrigin().x, fa.getOrigin().y, aff);
+
                 canvas.draw(texture, Color.WHITE,fa.getOrigin().x,fa.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,fa.getImageScale().x,fa.getImageScale().y);
             }
         }

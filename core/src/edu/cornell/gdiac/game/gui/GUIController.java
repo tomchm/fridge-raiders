@@ -19,9 +19,11 @@ import java.util.ArrayList;
 public class GUIController {
 
     private ObjectMap<String, GUIModel> guiMap = new ObjectMap<String, GUIModel>();
+    private WorldModel wm;
     private ArrayList<GUIModel> guiList = new ArrayList<GUIModel>();
 
     public GUIController(WorldModel worldModel, SpacebarController controller, InputController inputControlla){
+        wm = worldModel;
         GUIModel minimapGUI = new MinimapGUIModel(worldModel);
         guiMap.put(minimapGUI.guiTag, minimapGUI);
         GUIModel spacebarGUI = new SpacebarGUIModel(controller, worldModel);
@@ -57,8 +59,20 @@ public class GUIController {
 
     public void draw(GameCanvas canvas){
         canvas.begin();
-        for(GUIModel gui: guiList){
+
+        if(wm.isPaused()){
+            GUIModel gui = guiList.get(4);
             gui.draw(canvas);
+        }
+        else if(wm.hasLost()){
+            GUIModel gui = guiList.get(5);
+            gui.draw(canvas);
+        }
+        else {
+            for (GUIModel gui : guiList) {
+                gui.draw(canvas);
+            }
+
         }
         canvas.end();
     }

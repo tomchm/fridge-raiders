@@ -56,6 +56,7 @@ public class WorldController implements Screen {
 	public static final int CUTSCENE = 1;
 	public static final int GAMEVIEW = 2;
 	public static final int LEVEL_SELECT = 3;
+	public static final int WIN_SCREEN = 4;
 	// STORY SCREEN: 100 + the level code. eg, 203 will play a cutscene, then exit with levelCode 103
 	/** The amount of time for a game engine step. */
 	public static final float WORLD_STEP = 1/60.0f;
@@ -122,6 +123,8 @@ public class WorldController implements Screen {
 		if (SoundController.getInstance().isActive("music_rolling")) {
 			SoundController.getInstance().stop("music_rolling");
 		}
+
+
 		if(this.detectiveController == null || hardReset) {
 			shouldPlayScene = true;
             worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
@@ -142,6 +145,10 @@ public class WorldController implements Screen {
 			if(this.detectiveController.inSecondStage()){
 			    worldModel = wmSave;
 			    detectiveController = dcSave;
+			    for(AIController ai: aiControllers) {
+			    	ai.reset();
+				}
+			    worldModel.getPlayer().setSoftReset();
 			    worldModel.getPlayer().setFX(0.0f);
 			    worldModel.getPlayer().setFY(0.0f);
 			    worldModel.getPlayer().applyForce();
@@ -171,6 +178,7 @@ public class WorldController implements Screen {
 	public void setHardReset(){
 		hardReset = true;
 	}
+	public void unsetHardReset(){hardReset = false;}
 
 
 	/**
@@ -274,7 +282,7 @@ public class WorldController implements Screen {
 			}
 
 		}
-
+		ResetGUIModel resetGUI = (ResetGUIModel) this.guiController.getGUI("ResetGUI");
 		PauseGUI pauseGui = (PauseGUI) this.guiController.getGUI("PauseGUI");
 		if(pauseGui.paused){
 			this.worldModel.setPaused(true);
@@ -282,11 +290,11 @@ public class WorldController implements Screen {
 		else{
 			this.worldModel.setPaused(false);
 		}
-		if(pauseGui.shouldQuit()){
+		if(pauseGui.shouldQuit() || resetGUI.quitScreen){
 			listener.exitScreen(this, EXIT_QUIT);
 			return false;
 		}
-		else if(pauseGui.shouldLevelSelect()){
+		else if(pauseGui.shouldLevelSelect() || resetGUI.levelSelectScreen){
 			listener.exitScreen(this, LEVEL_SELECT);
 			return false;
 		}
@@ -297,27 +305,6 @@ public class WorldController implements Screen {
 			return false;
 		}
 
-
-		// Tried to pan to dessert????
-
-
-
-//		if((!(panToDessert)) && worldModel.getPlayer().getAmountEaten() >= worldModel.getPlayer().getThreshold()){
-//			float dessertX = 0f;
-//			float dessertY = 0f;
-//			for(GameObject gm: worldModel.getGameObjects()){
-//				if(gm instanceof FoodModel){
-//					if(((FoodModel) gm).isDessert()){
-//						dessertX = gm.getBody().getPosition().x;
-//						dessertY = gm.getBody().getPosition().y;
-//					}
-//				}
-//			}
-//
-//			canvas.moveCamera(dessertX,dessertY);
-//			guicanvas.moveCamera(dessertX, dessertY);
-//			panToDessert = true;
-//		}
 
 		else {
 			if(worldModel.getGoal().hasPlayerCollided()){
@@ -333,8 +320,8 @@ public class WorldController implements Screen {
 			}
 		}
 
-		ResetGUIModel resetGUI = (ResetGUIModel) this.guiController.getGUI("ResetGUI");
-		if(resetGUI.hardReset){
+
+		if(resetGUI.hardReset || pauseGui.hardReset){
 			hardReset = true;
 			reset();
 			hardReset = false;
@@ -342,11 +329,12 @@ public class WorldController implements Screen {
 			resetGUI.hardReset = false;
 		}
 
-		else if(resetGUI.softReset){
+		else if(resetGUI.softReset || pauseGui.softReset){
 			worldModel.hasLost = false;
 			reset();
 			didShowMenu = false;
 			resetGUI.softReset = false;
+			pauseGui.softReset = false;
 		}
 
 		if(worldModel.hasLost() && (!this.worldModel.getPlayer().isSecondStage())){
@@ -356,10 +344,12 @@ public class WorldController implements Screen {
 		if(worldModel.hasWon()){
 		    resetCounter++;
 		    if(resetCounter == 180){
-		    	listener.exitScreen(this, LEVEL_SELECT);
+		    	listener.exitScreen(this, WIN_SCREEN);
+		    	/*
 		    	hardReset = true;
 		        reset();
 		        hardReset = false;
+            	*/
             }
         }
 
@@ -400,11 +390,16 @@ public class WorldController implements Screen {
 		else if (InputController.getInstance().releasedSecondary()) spacebarController.keyUp();
 
 		for (AIController aic : aiControllers) {
-			if(worldModel.getPlayer().isSecondStage()){
-				aic.update2(dt);
+			if(!worldModel.isPaused()) {
+				if (worldModel.getPlayer().isSecondStage()) {
+					aic.update2(dt);
+				} else {
+					aic.update(dt);
+				}
 			}
-			else {
-				aic.update(dt);
+			else{
+				aic.getModel().getBody().setLinearVelocity(0,0);
+				aic.getModel().getBody().setAngularVelocity(0);
 			}
 		}
 

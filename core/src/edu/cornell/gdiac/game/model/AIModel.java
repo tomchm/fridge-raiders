@@ -29,7 +29,7 @@ public class AIModel extends GameObject{
     /*speed of the ai movement*/
     protected float speed = 3.5f;
     /*scaling factor of speed after ai finds player*/
-    protected float speedUpScale = 2.5f;
+    protected float speedUpScale = 1.8f;
     /*cone Light of the ai*/
     protected ConeLight coneLight;
     /*radius of light cone*/
@@ -211,6 +211,13 @@ public class AIModel extends GameObject{
             if(fa != null){
                 int nFrame = (GameObject.counter / fa.getSpeed()) % fa.getNumFrames();
                 TextureRegion texture = fa.getTexture(nFrame/2);
+
+                Affine2 aff = new Affine2();
+                aff.setToScaling(fa.getImageScale().x * 1, fa.getImageScale().y * 0.7f);
+                aff.preShear(-0.2f, 0);
+                aff.preTranslate((body.getPosition().x)* drawScale.x  - fa.getImageScale().x * fa.getTexture(nFrame/2).getRegionWidth() * 0.05f , (body.getPosition().y -0.2f ) * drawScale.y - fa.getTexture(nFrame/2).getRegionHeight() * fa.getImageScale().y * 0.05f);
+                canvas.draw(fa.getTexture(nFrame/2), new Color(0,0,0,0.5f), fa.getOrigin().x, fa.getOrigin().y, aff);
+
                 canvas.draw(texture, Color.WHITE,fa.getOrigin().x,fa.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,fa.getImageScale().x,fa.getImageScale().y);
             }
         }

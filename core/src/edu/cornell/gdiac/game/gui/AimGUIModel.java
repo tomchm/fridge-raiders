@@ -304,14 +304,18 @@ public class AimGUIModel extends GUIModel{
                 if(shotsRemaining < par){
                     width = (int)(shotsRemaining*480f / par);
                 }
-                bar.setRegion(0,0,width, 40);
-                canvas.draw(bar, Color.WHITE, asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
-
+                if(width > 0) {
+                    bar.setRegion(0, 0, width, 40);
+                    canvas.draw(bar, Color.WHITE, asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
+                }
                 // DRAW YELLOW BAR
                 if(shotsRemaining > par){
                     width = (int)((shotsRemaining - par)*480f / (par_plus));
-                    bar.setRegion(0,40,width, 40);
-                    canvas.draw(bar, Color.WHITE, asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
+                    width = Math.min(width, 480);
+                    if(width > 0) {
+                        bar.setRegion(0, 40, width, 40);
+                        canvas.draw(bar, Color.WHITE, asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x, asset.getImageScale().y);
+                    }
                 }
 
 
@@ -330,18 +334,6 @@ public class AimGUIModel extends GUIModel{
                 canvas.drawText("FOOD METER", font32.getFont(), x-210+2, y+32-2);
                 bf32.setColor(Color.WHITE);
                 canvas.drawText("FOOD METER", font32.getFont(), x-210, y+32);
-
-                bf32.setColor(Color.BLACK);
-                canvas.drawText("SCORE:", font32.getFont(), x+650+2, y+32-2);
-                bf32.setColor(Color.WHITE);
-                canvas.drawText("SCORE:", font32.getFont(), x+650, y+32);
-
-
-                String score = "" + (worldModel.getPlayer().getShotsTaken() - par);
-                bf72.setColor(Color.BLACK);
-                canvas.drawText(score, font72.getFont(), x+780+4, y+54-4);
-                bf72.setColor(Color.WHITE);
-                canvas.drawText(score, font72.getFont(), x+780, y+54);
 
             }
         }

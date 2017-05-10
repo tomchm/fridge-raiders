@@ -16,6 +16,8 @@ public class MyInputProcessor implements InputProcessor {
     public int menuY = 0;
     public int pauseX = 0;
     public int pauseY = 0;
+    public int hoveringX = 0;
+    public int hoveringY = 0;
     public boolean released = false;
     public boolean shouldRecordClick = true;
 
@@ -44,6 +46,11 @@ public class MyInputProcessor implements InputProcessor {
 
     }
 
+    public void resetPause(){
+        this.pauseY = 0;
+        this.pauseX = 0;
+    }
+
     public boolean touchUp (int x, int y, int pointer, int button) {
         if(magnitude.x != 0 && magnitude.y != 0) {
             released = true;
@@ -65,7 +72,9 @@ public class MyInputProcessor implements InputProcessor {
     }
 
     public boolean mouseMoved (int x, int y) {
-        return false;
+        hoveringX = x;
+        hoveringY = y;
+        return true;
     }
 
     public boolean scrolled (int amount) {

@@ -1280,46 +1280,6 @@
     },
     {
       "type": "image",
-      "tag": "newspaperOpen1",
-      "filename": "gui/newspaper.png",
-      "scale_x": "1",
-      "scale_y": "1",
-      "origin_x": "0",
-      "origin_y": "0",
-      "shape": "none"
-    },
-    {
-      "type": "image",
-      "tag": "newspaperOpen2",
-      "filename": "gui/newspaper2.png",
-      "scale_x": "1",
-      "scale_y": "1",
-      "origin_x": "0",
-      "origin_y": "0",
-      "shape": "none"
-    },
-    {
-      "type": "image",
-      "tag": "newspaperOpen3",
-      "filename": "gui/newspaper3.png",
-      "scale_x": "1",
-      "scale_y": "1",
-      "origin_x": "0",
-      "origin_y": "0",
-      "shape": "none"
-    },
-    {
-      "type": "image",
-      "tag": "newspaperClosed",
-      "filename": "gui/newspaper_closed.png",
-      "scale_x": "1",
-      "scale_y": "1",
-      "origin_x": "0",
-      "origin_y": "0",
-      "shape": "none"
-    },
-    {
-      "type": "image",
       "tag": "magnet",
       "filename": "gui/magnet.png",
       "scale_x": "1",
@@ -1360,6 +1320,16 @@
     },
     {
       "type": "image",
+      "tag": "pausemenu",
+      "filename": "cutscenes/pausemenu.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
       "tag": "gradient",
       "filename": "cutscenes/gradient.png",
       "scale_x": "1",
@@ -1376,6 +1346,46 @@
       "scale_y": "1",
       "origin_x": "64",
       "origin_y": "64",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "MusicOff",
+      "filename": "gui/MusicOff.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "MusicOn",
+      "filename": "gui/MusicOn.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "SoundOff",
+      "filename": "gui/SoundOff.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "SoundOn",
+      "filename": "gui/SoundOn.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
       "shape": "none"
     },
     {
@@ -1455,6 +1465,186 @@
       "scale_x": "0.2",
       "scale_y": "0.2",
       "shape": "none"
-    }
+    },
+    {
+      "type": "image",
+      "tag": "medal_bronze_food",
+      "filename": "gui/Bronze Food.png",
+      "origin_x": "70",
+      "origin_y": "70",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "medal_bronze_shots",
+      "filename": "gui/Bronze Shots.png",
+      "origin_x": "70",
+      "origin_y": "70",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "medal_gold_food",
+      "filename": "gui/Gold Food.png",
+      "origin_x": "70",
+      "origin_y": "70",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "medal_gold_shots",
+      "filename": "gui/Gold Shots.png",
+      "origin_x": "70",
+      "origin_y": "70",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "medal_silver_food",
+      "filename": "gui/Silver Food.png",
+      "origin_x": "70",
+      "origin_y": "70",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "medal_silver_shots",
+      "filename": "gui/Silver Shots.png",
+      "origin_x": "70",
+      "origin_y": "70",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "newspaper0",
+      "filename": "gui/newspaper/newspaper0.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "newspaper1",
+      "filename": "gui/newspaper/newspaper1.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "newspaper2",
+      "filename": "gui/newspaper/newspaper2.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "newspaper3",
+      "filename": "gui/newspaper/newspaper3.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "newspaper4",
+      "filename": "gui/newspaper/newspaper4.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "newspaper5",
+      "filename": "gui/newspaper/newspaper5.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "newspaper6",
+      "filename": "gui/newspaper/newspaper6.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "newspaper7",
+      "filename": "gui/newspaper/newspaper7.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "newspaper8",
+      "filename": "gui/newspaper/newspaper8.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "newspaper_closed",
+      "filename": "gui/newspaper/newspaper_closed.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "newspaper_shadow",
+      "filename": "gui/Newspaper Shadow.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "gui_flag",
+      "filename": "gui/flag.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "2",
+      "origin_y": "0",
+      "shape": "none"
+    },
   ]
 }

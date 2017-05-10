@@ -136,9 +136,12 @@ public class GameCanvas {
 
 	public void drawRect(float x, float y, float width, float height, float r, float g, float b ,float a) {
 		beginShape();
+
 		shapeRender.setColor(r, g, b, a);
 		float sx = GameObject.getDrawScale().x;
 		float sy = GameObject.getDrawScale().y;
+		shapeRender.rect(x*sx,y*sy,x*sx,y*sy,width*sx,height*sy,1.0f,1.0f,0.15f);
+
 		shapeRender.rect(x*sx, y*sy, width*sx, height*sy);
 		endShape();
 	}
@@ -958,6 +961,28 @@ public class GameCanvas {
 		font.draw(spriteBatch, layout, x, y);
     }
 
+	/**
+	 * Draws text on the screen.
+	 *
+	 * @param text The string to draw
+	 * @param font The font to use
+	 * @param x The x-coordinate of the lower-left corner
+	 * @param y The y-coordinate of the lower-left corner
+	 */
+	public void drawTextRight(String text, BitmapFont font, float x, float y) {
+		if (active != DrawPass.STANDARD) {
+			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
+			return;
+		}
+		GlyphLayout layout = new GlyphLayout(font,text);
+		x = (x  - layout.width);
+		font.draw(spriteBatch, layout, x, y);
+	}
+
+
+
+
+
     /**
      * Draws text centered on the screen.
      *
@@ -976,6 +1001,8 @@ public class GameCanvas {
 		float y = (getHeight() + layout.height) / 2.0f;
 		font.draw(spriteBatch, layout, x, y+offset);
     }
+
+
     
 	/**
 	 * Start the debug drawing sequence.

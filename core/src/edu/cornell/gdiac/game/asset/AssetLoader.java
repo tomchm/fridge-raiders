@@ -92,6 +92,9 @@ public class AssetLoader
         catch(Exception e){
             System.out.println("assets.json not found.");
         }
+//        assetMap.put("gunwyn32", new FontAsset("shared/gunwyn32.ttf", "gunwyn32", 32));
+        assetMap.put("gunny72", new FontAsset("shared/gunny72.ttf", "gunny72", 72));
+        assetMap.put("gunny48", new FontAsset("shared/gunny48.ttf", "gunny48", 48));
         assetMap.put("gothic32", new FontAsset("shared/gothic32.ttf", "gothic32", 32));
         assetMap.put("typewriter", new FontAsset("shared/MomsTypewriter.ttf", "typewriter", 32));
         assetMap.put("gothic72", new FontAsset("shared/gothic72.ttf", "gothic72", 72));

@@ -127,6 +127,15 @@ public class AIController implements RayCastCallback{
         isStuck = false;
     }
 
+
+    public AIModel getModel(){
+        return this.ai;
+    }
+
+    public void reset() {
+        isDead = false;
+        ai.isDead = false;
+    }
     /**
      * updates AI
      */

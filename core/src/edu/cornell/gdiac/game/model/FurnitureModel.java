@@ -1,6 +1,7 @@
 package edu.cornell.gdiac.game.model;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
 import edu.cornell.gdiac.game.GameCanvas;
@@ -76,6 +77,14 @@ public class FurnitureModel extends GameObject {
             Asset asset = assetMap.get(tags[0]);
             if(asset instanceof ImageAsset){
                 ImageAsset ia = (ImageAsset) asset;
+
+                if (body.getJointList().size == 0) {
+                    Affine2 aff = new Affine2();
+                    aff.setToScaling(ia.getImageScale().x * 1, ia.getImageScale().y * 0.8f);
+                    aff.preShear(-0.2f, 0);
+                    aff.preTranslate((body.getPosition().x)* drawScale.x  - ia.getImageScale().x * ia.getTexture().getRegionWidth() * 0.05f , (body.getPosition().y ) * drawScale.y - ia.getTexture().getRegionHeight() * ia.getImageScale().y * 0.05f);
+                    canvas.draw(ia.getTexture(), new Color(0,0,0,0.6f), ia.getOrigin().x, ia.getOrigin().y, aff);
+                }
 
                 if(isHighlight){
                     isHighlight = false;
