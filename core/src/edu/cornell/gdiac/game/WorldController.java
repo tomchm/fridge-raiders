@@ -365,6 +365,7 @@ public class WorldController implements Screen {
 			playedScene = true;
 			if(shouldPlayScene) {
 				SoundController.getInstance().safeStop("levelmusic");
+				SoundController.getInstance().play("music_transition", false);
 				listener.exitScreen(this, CUTSCENE);
 				shouldPlayScene = false;
 			}

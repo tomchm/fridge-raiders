@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.utils.ObjectSet;
 import edu.cornell.gdiac.game.model.*;
+import edu.cornell.gdiac.util.SoundController;
 
 
 import java.util.LinkedList;
@@ -306,6 +307,9 @@ public class AIController implements RayCastCallback{
             case PATHING:
                 if (lightTime >= CHASE_LIM){
                     ai.setSpeed(ai.getSpeed()*ai.getSpeedUpScale());
+                    if (state != FSMState.CHASE) {
+                        SoundController.getInstance().play("notice", false);
+                    }
                     state = FSMState.CHASE;
                 }
                 break;
@@ -498,6 +502,7 @@ public class AIController implements RayCastCallback{
             ai.deadAngle = Math.atan2(posDif.y, posDif.x);
             ai.isDead = true;
             isDead = true;
+            SoundController.getInstance().play("crush", false);
         }
 //        if(tempCount > 200) {
 //            isDead = false;

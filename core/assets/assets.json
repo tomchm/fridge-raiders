@@ -1145,6 +1145,11 @@
     },
     {
       "type": "sound",
+      "tag": "notice",
+      "filename": "sound/notice.ogg"
+    },
+    {
+      "type": "sound",
       "tag": "crush",
       "filename": "sound/crush.ogg"
     },
