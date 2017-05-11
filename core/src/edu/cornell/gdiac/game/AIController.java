@@ -227,9 +227,9 @@ public class AIController implements RayCastCallback{
         temp.sub(ai.getBody().getPosition());
 
         float angle = (float) ((Math.atan2(temp.y, temp.x) + 2*Math.PI) % (2*Math.PI));
-        float bodyAngle = (float)(Math.PI*2 + (ai.getBody().getAngle() % (2*Math.PI)));
+        float bodyAngle = (float)(((ai.getBody().getAngle() % (2*Math.PI)) + 2 * Math.PI) % (2*Math.PI));
 //        System.out.println(angle);
-//        System.out.println(bodyAngle);
+//        System.out.println(ai.getBody().getAngle());
 //        System.out.println("-----");
         double angledif = Math.abs(angle - bodyAngle);
         double angledifDeg = angledif * 180 / Math.PI;
