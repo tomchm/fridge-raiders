@@ -202,7 +202,7 @@ public class MinimapGUIModel extends GUIModel {
 
                 }
 
-                if(world.getPlayer().isSecondStage() && (counter <= 60)){
+                if(world.getPlayer().isSecondStage()){
                     counter++;
                     ImageAsset flag = (ImageAsset) assetMap.get("gui_flag");
                     float coords[] = world.getGoal().getCoords();
