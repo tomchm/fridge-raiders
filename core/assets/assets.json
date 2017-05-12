@@ -222,13 +222,11 @@
       "tag": "Food-Burger",
       "filename": "food/burger.png",
       "origin_x": "138",
-      "origin_y": "91",
+      "origin_y": "129",
       "scale_x": "0.25",
       "scale_y": "0.25",
-      "shape": "rectangle",
-      "width": "1.65",
-      "height": "0.95",
-      "angle": "0"
+      "shape": "circle",
+      "radius": "0.79"
     },
     {
       "type": "image",
@@ -236,8 +234,8 @@
       "filename": "food/avocado.png",
       "scale_x": "0.25",
       "scale_y": "0.25",
-      "origin_x": "110",
-      "origin_y": "49",
+      "origin_x": "114",
+      "origin_y": "79",
       "shape": "rectangle",
       "frames": "10",
       "speed": "0",
@@ -249,13 +247,13 @@
       "type": "image",
       "tag": "Food-Hotdog",
       "filename": "food/hotdog.png",
-      "origin_x": "177",
-      "origin_y": "107",
+      "origin_x": "190",
+      "origin_y": "125",
       "scale_x": "0.25",
       "scale_y": "0.25",
       "shape": "rectangle",
       "width": "2.35",
-      "height": "0.95",
+      "height": "1.17",
       "angle": "163"
     },
     {
@@ -263,12 +261,12 @@
       "tag": "Food-Pie",
       "filename": "food/pie1.png",
       "origin_x": "210",
-      "origin_y": "119",
+      "origin_y": "171",
       "scale_x": "0.25",
       "scale_y": "0.25",
       "shape": "rectangle",
       "width": "2.62",
-      "height": "1.27",
+      "height": "1.7",
       "angle": "0"
     },
     {
@@ -276,12 +274,12 @@
       "tag": "Food-Pie2",
       "filename": "food/pie2.png",
       "origin_x": "210",
-      "origin_y": "130",
+      "origin_y": "163",
       "scale_x": "0.25",
       "scale_y": "0.25",
       "shape": "rectangle",
       "width": "2.62",
-      "height": "1.27",
+      "height": "1.48",
       "angle": "0"
     },
     {
@@ -454,26 +452,22 @@
       "tag": "Food-Tomato",
       "filename": "food/tomato1.png",
       "origin_x": "108",
-      "origin_y": "80",
+      "origin_y": "114",
       "scale_x": "0.25",
       "scale_y": "0.25",
-      "shape": "rectangle",
-      "width": "1.54",
-      "height": "0.89",
-      "angle": "0"
+      "shape": "circle",
+      "radius": "0.77"
     },
     {
       "type": "image",
       "tag": "Food-Tomato2",
       "filename": "food/tomato2.png",
       "origin_x": "116",
-      "origin_y": "72",
+      "origin_y": "114",
       "scale_x": "0.25",
       "scale_y": "0.25",
-      "shape": "rectangle",
-      "width": "1.54",
-      "height": "0.89",
-      "angle": "0"
+      "shape": "circle",
+      "radius": "0.71"
     },
     {
       "type": "image",
@@ -495,10 +489,10 @@
       "scale_x": "0.2",
       "scale_y": "0.2",
       "origin_x": "178",
-      "origin_y": "60",
+      "origin_y": "76",
       "shape": "rectangle",
-      "width": "1.65",
-      "height": "0.62",
+      "width": "1.88",
+      "height": "0.74",
       "angle": "0"
     },
     {
@@ -508,11 +502,9 @@
       "scale_x": "0.25",
       "scale_y": "0.25",
       "origin_x": "98",
-      "origin_y": "56",
-      "shape": "rectangle",
-      "width": "1.54",
-      "height": "0.89",
-      "angle": "0"
+      "origin_y": "106",
+      "shape": "circle",
+      "radius": "0.77"
     },
     {
       "type": "image",
@@ -744,9 +736,12 @@
       "filename": "decor/InlayedShelves.png",
       "scale_x": "0.3",
       "scale_y": "0.25",
-      "origin_x": "182",
-      "origin_y": "110",
-      "shape": "none"
+      "origin_x": "178",
+      "origin_y": "312",
+      "shape": "rectangle",
+      "width": "2.84",
+      "height": "4.71",
+      "angle": "0"
     },
     {
       "type": "image",
@@ -754,9 +749,12 @@
       "filename": "decor/KitchenSink.png",
       "scale_x": "0.2",
       "scale_y": "0.2",
-      "origin_x": "281",
-      "origin_y": "205",
-      "shape": "none"
+      "origin_x": "262",
+      "origin_y": "258",
+      "shape": "rectangle",
+      "width": "3.15",
+      "height": "2.97",
+      "angle": "0"
     },
     {
       "type": "image",
@@ -794,9 +792,12 @@
       "filename": "decor/WoodenDrawers.png",
       "scale_x": "0.2",
       "scale_y": "0.2",
-      "origin_x": "281",
-      "origin_y": "216",
-      "shape": "none"
+      "origin_x": "270",
+      "origin_y": "319",
+      "shape": "rectangle",
+      "width": "3.15",
+      "height": "2.97",
+      "angle": "0"
     },
     {
       "type": "image",
