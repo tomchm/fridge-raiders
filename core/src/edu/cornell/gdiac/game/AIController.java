@@ -240,7 +240,7 @@ public class AIController implements RayCastCallback{
             seen = true;
             distCache = dist;
         }
-        else if (!fixtureTest && fixture.getUserData().getClass() != CrumbModel.class && fixture.getUserData().getClass() != FoodModel.class){
+        else if (!fixtureTest && fixture.getUserData().getClass() != CrumbModel.class && fixture.getUserData().getClass() != FoodModel.class && fixture.getUserData().getClass() != GoalModel.class){
             blocked = true;
         }
         return -1;
