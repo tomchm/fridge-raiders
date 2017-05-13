@@ -54,6 +54,7 @@ public class WorldModel {
     protected DetectiveModel detective;
     protected GoalModel goal;
 
+    protected float zoom = 1.5f;
     // Box2D lights
     /** The camera defining the RayHandler view; scale is in physics coordinates */
     protected OrthographicCamera raycamera;
@@ -229,12 +230,20 @@ public class WorldModel {
 
     }
 
-    public void zoomOutRaycamera(){
-        raycamera.zoom = 1.5f;
+    public void zoomOutRaycamera(float zoom){
+        raycamera.zoom = zoom;
     }
 
     public void resetZoomRaycamera(){
         raycamera.zoom = 1.0f;
+    }
+
+    public float getZoomValue() {
+        return zoom;
+    }
+
+    public void setZoom(float val) {
+        zoom = val;
     }
 
     /**

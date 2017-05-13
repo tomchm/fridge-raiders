@@ -47,6 +47,7 @@ public class WorldController implements Screen {
 	private Queue<Vector2> panQueue = null;
 	private float panS = 0f; // ranges from 0 to 1 as you vary between pan start & pan end.
 	private float panT = 0f; // ranges from 0 to 1 as you hold on the destination.
+	private boolean cutsceneDone = false;
 
 	/** List of ai controllers (one for each ai)*/
 	private PooledList<AIController> aiControllers;
@@ -94,7 +95,7 @@ public class WorldController implements Screen {
 
 
 	public WorldController(int levelNumber) {
-		this("levels/level" + levelNumber + ".json");
+		this("levels/templevel" + levelNumber + ".json");
 		this.levelNumber = levelNumber;
 	}
 
@@ -362,6 +363,7 @@ public class WorldController implements Screen {
 		detectiveController.update(input);
 
 		if (worldModel.getPlayer().isSecondStage() && !playedScene) {
+			worldModel.zoomOutRaycamera(1.5f);
 			playedScene = true;
 			if(shouldPlayScene) {
 				SoundController.getInstance().safeStop("levelmusic");
@@ -389,6 +391,10 @@ public class WorldController implements Screen {
 
 		if (InputController.getInstance().didSecondary()) spacebarController.keyDown();
 		else if (InputController.getInstance().releasedSecondary()) spacebarController.keyUp();
+
+		if (!cutsceneDone && canvas.getZoom() == 1.5f){
+			cutsceneDone = true;
+		}
 
 		for (AIController aic : aiControllers) {
 			if(!worldModel.isPaused()) {
@@ -463,7 +469,9 @@ public class WorldController implements Screen {
 		worldModel.moveRayCamera(position.x, position.y);
 		if(worldModel.getPlayer().isSecondStage()){
 			//canvas.zoomOut();
-			worldModel.zoomOutRaycamera();
+			if (worldModel.getZoomValue() != canvas.getZoom() && cutsceneDone){
+				canvas.zoomOut(worldModel.getZoomValue());
+			}
 		}
 
 

@@ -1247,8 +1247,12 @@ public class GameCanvas {
 		camera.update();
 	}
 
-	public void zoomOut(){
-		camera.zoom = 1.5f;
+	public float getZoom(){
+		return camera.zoom;
+	}
+
+	public void zoomOut(float zoom){
+		camera.zoom = zoom;
 	}
 
 	public void resetZoom(){

@@ -32,6 +32,8 @@ public class DetectiveController {
     private Vector2 pausedVelocity;
     private boolean pausedShot = false;
 
+    private float maxSpeed = Float.MAX_VALUE;
+    private float tempZoom = 0f;
 
     public  DetectiveController( DetectiveModel playerModel, WorldModel world, AimGUIModel aimGUI){
         player = playerModel;
@@ -64,6 +66,7 @@ public class DetectiveController {
             if(force.len() > MAX_FORCE){
                 force.scl(MAX_FORCE/force.len());
             }
+            tempZoom =  worldModel.getZoomValue() - 1.5f;
             player.setFX(force.x);
             player.setFY(force.y);
             player.applyForce();
@@ -76,6 +79,13 @@ public class DetectiveController {
         }
         else {
             Vector2 position = player.getBody().getPosition();
+
+            //zoom out ray
+            float fx = myProcessor.magnitude.x * SHOOT_FORCE;
+            float fy = (-myProcessor.magnitude.y) * SHOOT_FORCE;
+            Vector2 force = new Vector2(fx,fy);
+            worldModel.setZoom(1.5f + 0.5f * Math.min(force.len(), MAX_FORCE)/MAX_FORCE);
+
             aimGUI.setAimVector(myProcessor.magnitude, position);
             aimGUI.setAim(true);
         }
@@ -215,10 +225,16 @@ public class DetectiveController {
                 // Need the special input processor to do mouse commands from the input controller.
                 MyInputProcessor processor = input.getMyProcessor();
                 float speed = player.getSpeed();
-
+                if (maxSpeed == Float.MAX_VALUE && speed != 0) {
+                    maxSpeed = speed;
+                }
+                if (maxSpeed != Float.MAX_VALUE){
+                    worldModel.setZoom(1.5f + tempZoom * (speed/maxSpeed));
+                }
                 // Only want the player shooting when they've come to a stop
                 // Slow them down otherwise.
                 if (speed == 0) {
+                    maxSpeed = Float.MAX_VALUE;
                     player.setAnimation(DetectiveModel.Animation.ROLL_STOP);
                     processor.shouldRecordClick = true;
                     if (didClickOnPlayer(processor)) {

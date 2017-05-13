@@ -95,8 +95,8 @@ public class AimGUIModel extends GUIModel{
                 }
             }
 
-            float fx = aimVector.x * SHOOT_FORCE;
-            float fy = (-aimVector.y) * SHOOT_FORCE;
+            float fx = aimVector.x * SHOOT_FORCE * 1.5f;
+            float fy = (-aimVector.y) * SHOOT_FORCE * 1.5f;
             Vector2 force = new Vector2(fx,fy);
             if(force.len() > MAX_FORCE){
                 force.scl(MAX_FORCE/force.len());

@@ -207,7 +207,6 @@ public class DetectiveModel extends GameObject{
             if(shotsRemaining == -1){
                 int extra = (int)(par*(amountEaten - threshold) / (maximumFood - threshold));
                 shotsRemaining = par + extra;
-                System.out.println(shotsRemaining);
             }
 
             Vector2 vel = body.getLinearVelocity();

@@ -180,7 +180,7 @@ public class GDXRoot extends Game implements ScreenListener {
 		}
 		else if (exitCode == WorldController.GAMEVIEW) {
 			setScreen(controller);
-			canvas.zoomOut();
+			canvas.zoomOut(1.5f);
 		}
 		else if(exitCode == WorldController.WIN_SCREEN){
 			WinScreen ws = new WinScreen(canvas);
