@@ -1696,6 +1696,86 @@
       "origin_x": "2",
       "origin_y": "0",
       "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Decor-Smashed1",
+      "filename": "decor/smashed1.png",
+      "scale_x": ".25",
+      "scale_y": "0.25",
+      "origin_x": "232",
+      "origin_y": "294",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Decor-Smashed2",
+      "filename": "decor/smashed2.png",
+      "scale_x": "0.25",
+      "scale_y": ".25",
+      "origin_x": "239",
+      "origin_y": "309",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Decor-Smashed3",
+      "filename": "decor/smashed3.png",
+      "scale_x": ".25",
+      "scale_y": ".25",
+      "origin_x": "212",
+      "origin_y": "309",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Decor-GlassShards",
+      "filename": "decor/Glass Shards.png",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
+      "origin_x": "325",
+      "origin_y": "235",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Floor-TileBlack",
+      "filename": "floor/Tile Black.png",
+      "scale_x": "0.4",
+      "scale_y": "0.4",
+      "origin_x": "250",
+      "origin_y": "250",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Floor-TileBlue",
+      "filename": "floor/Tile Blue.png",
+      "scale_x": "0.4",
+      "scale_y": "0.4",
+      "origin_x": "250",
+      "origin_y": "250",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Floor-CarpetGreen",
+      "filename": "floor/Carpet Green.png",
+      "scale_x": ".25",
+      "scale_y": ".25",
+      "origin_x": "200",
+      "origin_y": "200",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Floor-CarpetPurple",
+      "filename": "floor/Carpet Purple.png",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "origin_x": "200",
+      "origin_y": "200",
+      "shape": "none"
     }
   ]
 }
