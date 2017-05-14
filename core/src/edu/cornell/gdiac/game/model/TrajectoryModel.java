@@ -49,7 +49,7 @@ public class TrajectoryModel extends GameObject{
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
         fixtureDef.friction = 0f;
-        fixtureDef.restitution = 0.0f;
+        fixtureDef.restitution = 1.0f;
 
         this.tags = new String[]{"solidBall"};
         time = MAX_TIME;

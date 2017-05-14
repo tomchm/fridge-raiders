@@ -95,7 +95,7 @@ public class WorldController implements Screen {
 
 
 	public WorldController(int levelNumber) {
-		this("levels/level" + levelNumber + ".json");
+		this("levels/templevel" + levelNumber + ".json");
 		this.levelNumber = levelNumber;
 	}
 
@@ -128,7 +128,8 @@ public class WorldController implements Screen {
 
 		if(this.detectiveController == null || hardReset) {
 			shouldPlayScene = true;
-            worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
+			cutsceneDone = false;
+			worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
             worldModel.setLevelNumber(levelNumber);
             spacebarController = new SpacebarController(worldModel);
             aiControllers.clear();
@@ -139,6 +140,7 @@ public class WorldController implements Screen {
             assetLoader.assignContent(guiController);
             canvas.resetZoom();
             worldModel.resetZoomRaycamera();
+
             resetCounter = 0;
 		}
 		else{
@@ -160,7 +162,8 @@ public class WorldController implements Screen {
 			}
 			else{
 				shouldPlayScene = true;
-                worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
+				cutsceneDone = false;
+				worldModel = new WorldModel(DRAW_SCALE, DRAW_SCALE);
                 worldModel.setLevelNumber(levelNumber);
                 spacebarController = new SpacebarController(worldModel);
                 aiControllers.clear();

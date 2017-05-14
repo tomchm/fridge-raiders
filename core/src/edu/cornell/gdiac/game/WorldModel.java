@@ -540,8 +540,13 @@ public class WorldModel {
         canvas.begin();
         Collections.sort(gameObjects);
         for(GameObject gm : gameObjects){
-            if(gm instanceof DecorModel || gm instanceof FloorModel || gm instanceof FoodModel || gm instanceof WallModel || gm instanceof CrumbModel){
+            if(gm instanceof DecorModel || gm instanceof FloorModel  || gm instanceof WallModel || gm instanceof CrumbModel){
                 gm.draw(canvas);
+            }
+            if (gm instanceof FoodModel) {
+                if (!((FoodModel) gm).isDessert()){
+                    gm.draw(canvas);
+                }
             }
         }
         canvas.end();
@@ -580,6 +585,11 @@ public class WorldModel {
         for(GameObject gm : gameObjects){
             if(!(gm instanceof DecorModel || gm instanceof FloorModel || gm instanceof FoodModel || gm instanceof WallModel || gm instanceof CrumbModel)){
                 gm.draw(canvas);
+            }
+            if (gm instanceof FoodModel) {
+                if (((FoodModel) gm).isDessert()){
+                    gm.draw(canvas);
+                }
             }
         }
 

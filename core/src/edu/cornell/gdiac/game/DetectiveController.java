@@ -84,7 +84,7 @@ public class DetectiveController {
             float fx = myProcessor.magnitude.x * SHOOT_FORCE;
             float fy = (-myProcessor.magnitude.y) * SHOOT_FORCE;
             Vector2 force = new Vector2(fx,fy);
-            worldModel.setZoom(1.5f + 0.5f * Math.min(force.len(), MAX_FORCE)/MAX_FORCE);
+            worldModel.setZoom(1.5f + 1.0f * Math.min(force.len(), MAX_FORCE)/MAX_FORCE);
 
             aimGUI.setAimVector(myProcessor.magnitude, position);
             aimGUI.setAim(true);
