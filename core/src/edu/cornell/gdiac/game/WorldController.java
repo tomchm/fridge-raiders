@@ -95,7 +95,7 @@ public class WorldController implements Screen {
 
 
 	public WorldController(int levelNumber) {
-		this("levels/templevel" + levelNumber + ".json");
+		this("levels/level" + levelNumber + ".json");
 		this.levelNumber = levelNumber;
 	}
 
