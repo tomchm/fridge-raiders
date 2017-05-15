@@ -833,8 +833,8 @@
       "type": "image",
       "tag": "Decor-Clef",
       "filename": "decor/Clef.png",
-      "scale_x": "0.30",
-      "scale_y": "0.3",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
       "origin_x": "232",
       "origin_y": "364",
       "shape": "none"
@@ -853,8 +853,8 @@
       "type": "image",
       "tag": "Decor-MissNoir",
       "filename": "decor/MissNoir.png",
-      "scale_x": "0.3",
-      "scale_y": "0.3",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
       "origin_x": "239",
       "origin_y": "376",
       "shape": "none"
@@ -863,8 +863,8 @@
       "type": "image",
       "tag": "Decor-PortraitFemale",
       "filename": "Decor/Portrait1.png",
-      "scale_x": "0.26",
-      "scale_y": "0.26",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
       "origin_x": "302",
       "origin_y": "302",
       "shape": "none"
@@ -873,8 +873,8 @@
       "type": "image",
       "tag": "Decor-PortraitMale",
       "filename": "decor/Portrait2.png",
-      "scale_x": "0.26",
-      "scale_y": "0.26",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
       "origin_x": "286",
       "origin_y": "290",
       "shape": "none"
