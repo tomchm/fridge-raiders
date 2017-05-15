@@ -23,6 +23,8 @@ import com.badlogic.gdx.audio.*;
 import com.badlogic.gdx.utils.*;
 import edu.cornell.gdiac.game.asset.SoundAsset;
 
+import java.util.Iterator;
+
 /**
  * A singleton class for controlling sound effects in LibGDX
  * 
@@ -295,7 +297,7 @@ public class SoundController {
 	 */
 	public boolean play(String key, boolean loop, float volume) {
 		// Get the sound for the file
-		if (!soundbank.containsKey(key) || current >= frameLimit) {
+		if (!soundbank.containsKey(key) || current >= frameLimit || ) {
 			return false;
 		}
 
@@ -329,6 +331,28 @@ public class SoundController {
 	public void safeStop(String key) {
 		if (isActive(key)) {stop(key);}
 	}
+
+	public void pauseMusic() {
+        Iterator<ObjectMap.Entry<String, ActiveSound>> s = actives.iterator();
+		while(s.hasNext()){
+            String key = s.next().key;
+            ActiveSound sound = actives.get(key);
+            if(sound.loop){
+                sound.sound.setVolume(sound.id,0.0f);
+            }
+        }
+	}
+
+	public  void  unPauseMusic(){
+        Iterator<ObjectMap.Entry<String, ActiveSound>> s = actives.iterator();
+        while(s.hasNext()){
+            String key = s.next().key;
+            ActiveSound sound = actives.get(key);
+            if(sound.loop){
+                sound.sound.setVolume(sound.id,0.7f);
+            }
+        }
+    }
 
 	/**
 	 * Stops the sound, allowing its key to be reused.

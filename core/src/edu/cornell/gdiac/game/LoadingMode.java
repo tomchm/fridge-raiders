@@ -77,7 +77,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	/** Middle portion of the status forground (colored region) */
 	private TextureRegion statusFrgMiddle;
 	/** Right cap to the status forground (colored region) */
-	private TextureRegion statusFrgRight;	
+	private TextureRegion statusFrgRight;
 
 	/** Default budget for asset loader (do nothing but load 60 fps) */
 	private static int DEFAULT_BUDGET = 15;
@@ -88,7 +88,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	/** Ratio of the bar width to the screen */
 	private static float BAR_WIDTH_RATIO  = 0.66f;
 	/** Ration of the bar height to the screen */
-	private static float BAR_HEIGHT_RATIO = 0.25f;	
+	private static float BAR_HEIGHT_RATIO = 0.25f;
 	/** Height of the progress bar */
 	private static int PROGRESS_HEIGHT = 30;
 	/** Width of the rounded cap on left or right */
@@ -97,7 +97,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private static int PROGRESS_MIDDLE = 200;
 	/** Amount to scale the play button */
 	private static float BUTTON_SCALE  = 0.75f;
-	
+
 	/** Start button for XBox controller on Windows */
 	private static int WINDOWS_START = 7;
 	/** Start button for XBox controller on Mac OS X */
@@ -110,7 +110,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	/** Listener that will update the player mode when we are done */
 	private ScreenListener listener;
 
-	/** The width of the progress bar */	
+	/** The width of the progress bar */
 	private int width;
 	/** The y-coordinate of the center of the progress bar */
 	private int centerY;
@@ -120,7 +120,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private int heightY;
 	/** Scaling factor for when the student changes the resolution. */
 	private float scale;
-	
+
 	/** Current progress (0 to 1) of the asset manager */
 	private float progress;
 	/** The current state of the play button */
@@ -138,8 +138,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 * Returns the budget for the asset loader.
 	 *
 	 * The budget is the number of milliseconds to spend loading assets each animation
-	 * frame.  This allows you to do something other than load assets.  An animation 
-	 * frame is ~16 milliseconds. So if the budget is 10, you have 6 milliseconds to 
+	 * frame.  This allows you to do something other than load assets.  An animation
+	 * frame is ~16 milliseconds. So if the budget is 10, you have 6 milliseconds to
 	 * do something else.  This is how game companies animate their loading screens.
 	 *
 	 * @return the budget in milliseconds
@@ -152,8 +152,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 * Sets the budget for the asset loader.
 	 *
 	 * The budget is the number of milliseconds to spend loading assets each animation
-	 * frame.  This allows you to do something other than load assets.  An animation 
-	 * frame is ~16 milliseconds. So if the budget is 10, you have 6 milliseconds to 
+	 * frame.  This allows you to do something other than load assets.  An animation
+	 * frame is ~16 milliseconds. So if the budget is 10, you have 6 milliseconds to
 	 * do something else.  This is how game companies animate their loading screens.
 	 *
 	 * @param millis the budget in milliseconds
@@ -161,7 +161,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	public void setBudget(int millis) {
 		budget = millis;
 	}
-	
+
 	/**
 	 * Returns true if all assets are loaded and the player is ready to go.
 	 *
@@ -170,7 +170,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	public boolean isReady() {
 		return pressState == 2;
 	}
-	
+
 	/**
 	 * Creates a LoadingMode with the default budget, size and position.
 	 *
@@ -184,8 +184,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 * Creates a LoadingMode with the default size and position.
 	 *
 	 * The budget is the number of milliseconds to spend loading assets each animation
-	 * frame.  This allows you to do something other than load assets.  An animation 
-	 * frame is ~16 milliseconds. So if the budget is 10, you have 6 milliseconds to 
+	 * frame.  This allows you to do something other than load assets.  An animation
+	 * frame is ~16 milliseconds. So if the budget is 10, you have 6 milliseconds to
 	 * do something else.  This is how game companies animate their loading screens.
 	 *
 	 * @param manager The AssetManager to load in the background
@@ -195,7 +195,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		this.manager = manager;
 		this.canvas  = canvas;
 		budget = millis;
-		
+
 		// Compute the dimensions from the canvas
 		resize(canvas.getWidth(),canvas.getHeight());
 
@@ -207,8 +207,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		syomic = new Texture(SYOMIC_FILE);
 		fader = new Texture(FADER_FILE);
 		play = new Texture(PLAY_FILE);
-		
-		// No progress so far.		
+
+		// No progress so far.
 		progress   = 0;
 		pressState = 0;
 		active = false;
@@ -231,7 +231,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		}
 		active = true;
 	}
-	
+
 	/**
 	 * Called when this screen should release all resources.
 	 */
@@ -261,7 +261,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 			 playButton = null;
 		 }
 	}
-	
+
 	/**
 	 * Update the status of this player mode.
 	 *
@@ -309,16 +309,16 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		}
 		canvas.end();
 	}
-	
+
 	/**
 	 * Updates the progress bar according to loading progress
 	 *
-	 * The progress bar is composed of parts: two rounded caps on the end, 
+	 * The progress bar is composed of parts: two rounded caps on the end,
 	 * and a rectangle in a middle.  We adjust the size of the rectangle in
 	 * the middle to represent the amount of progress.
 	 *
 	 * @param canvas The drawing context
-	 */	
+	 */
 	private void drawProgress(GameCanvas canvas) {
 		canvas.draw(fader, -1280+1280*progress,0);
 
@@ -360,9 +360,9 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	}
 
 	/**
-	 * Called when the Screen is resized. 
+	 * Called when the Screen is resized.
 	 *
-	 * This can happen at any point during a non-paused state but will never happen 
+	 * This can happen at any point during a non-paused state but will never happen
 	 * before a call to show().
 	 *
 	 * @param width  The new width in pixels
@@ -373,7 +373,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		float sx = ((float)width)/STANDARD_WIDTH;
 		float sy = ((float)height)/STANDARD_HEIGHT;
 		scale = (sx < sy ? sx : sy);
-		
+
 		this.width = (int)(BAR_WIDTH_RATIO*width);
 		centerY = (int)(BAR_HEIGHT_RATIO*height)-60;
 		centerX = width/2+440;
@@ -382,8 +382,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 
 	/**
 	 * Called when the Screen is paused.
-	 * 
-	 * This is usually when it's not active or visible on screen. An Application is 
+	 *
+	 * This is usually when it's not active or visible on screen. An Application is
 	 * also paused before it is destroyed.
 	 */
 	public void pause() {
@@ -400,7 +400,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	/**
 	 * Called when this screen becomes the current screen for a Game.
 	 */
@@ -416,7 +416,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		// Useless if called in outside animation loop
 		active = false;
 	}
-	
+
 	/**
 	 * Sets the ScreenListener for this mode
 	 *
@@ -425,9 +425,9 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	public void setScreenListener(ScreenListener listener) {
 		this.listener = listener;
 	}
-	
+
 	// PROCESSING PLAYER INPUT
-	/** 
+	/**
 	 * Called when the screen was touched or a mouse button was pressed.
 	 *
 	 * This method checks to see if the play button is available and if the click
@@ -437,16 +437,16 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 * @param screenX the x-coordinate of the mouse on the screen
 	 * @param screenY the y-coordinate of the mouse on the screen
 	 * @param pointer the button or touch finger number
-	 * @return whether to hand the event to other listeners. 
+	 * @return whether to hand the event to other listeners.
 	 */
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if (playButton == null || pressState == 2) {
 			return true;
 		}
-		
+
 		// Flip to match graphics coordinates
 		screenY = heightY-screenY;
-		
+
 		// TODO: Fix scaling
 		// Play button is a circle.
 		//float radius = BUTTON_SCALE*scale*playButton.getWidth()/2.0f;
@@ -457,36 +457,36 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		}
 		return false;
 	}
-	
-	/** 
+
+	/**
 	 * Called when a finger was lifted or a mouse button was released.
 	 *
-	 * This method checks to see if the play button is currently pressed down. If so, 
+	 * This method checks to see if the play button is currently pressed down. If so,
 	 * it signals the that the player is ready to go.
 	 *
 	 * @param screenX the x-coordinate of the mouse on the screen
 	 * @param screenY the y-coordinate of the mouse on the screen
 	 * @param pointer the button or touch finger number
-	 * @return whether to hand the event to other listeners. 
-	 */	
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) { 
+	 * @return whether to hand the event to other listeners.
+	 */
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		if (pressState == 1) {
 			pressState = 2;
 			return false;
 		}
 		return true;
 	}
-	
-	/** 
-	 * Called when a button on the Controller was pressed. 
+
+	/**
+	 * Called when a button on the Controller was pressed.
 	 *
 	 * The buttonCode is controller specific. This listener only supports the start
-	 * button on an X-Box controller.  This outcome of this method is identical to 
+	 * button on an X-Box controller.  This outcome of this method is identical to
 	 * pressing (but not releasing) the play button.
 	 *
 	 * @param controller The game controller
 	 * @param buttonCode The button pressed
-	 * @return whether to hand the event to other listeners. 
+	 * @return whether to hand the event to other listeners.
 	 */
 	public boolean buttonDown (Controller controller, int buttonCode) {
 		if (buttonCode == startButton && pressState == 0) {
@@ -495,17 +495,17 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		}
 		return true;
 	}
-	
-	/** 
-	 * Called when a button on the Controller was released. 
+
+	/**
+	 * Called when a button on the Controller was released.
 	 *
 	 * The buttonCode is controller specific. This listener only supports the start
-	 * button on an X-Box controller.  This outcome of this method is identical to 
+	 * button on an X-Box controller.  This outcome of this method is identical to
 	 * releasing the the play button after pressing it.
 	 *
 	 * @param controller The game controller
 	 * @param buttonCode The button pressed
-	 * @return whether to hand the event to other listeners. 
+	 * @return whether to hand the event to other listeners.
 	 */
 	public boolean buttonUp (Controller controller, int buttonCode) {
 		if (pressState == 1 && buttonCode == startButton) {
@@ -514,17 +514,24 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		}
 		return true;
 	}
-	
+
 	// UNSUPPORTED METHODS FROM InputProcessor
 
-	/** 
+	/**
 	 * Called when a key is pressed (UNSUPPORTED)
 	 *
 	 * @param keycode the key pressed
-	 * @return whether to hand the event to other listeners. 
+	 * @return whether to hand the event to other listeners.
 	 */
-	public boolean keyDown(int keycode) { 
-		return true; 
+	public boolean keyDown(int keycode) {
+
+		if(keycode == 62 && playButton != null){
+			pressState = 2;
+			return false;
+
+		}
+
+		return true;
 	}
 
 	/** 

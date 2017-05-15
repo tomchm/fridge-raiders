@@ -21,6 +21,7 @@ public class StoryScene implements Screen {
     private static float FADE_TIME = 1f;
 
     public enum Level { APARTMENT_1, APARTMENT_2, APARTMENT_3, CLUB_1, CLUB_2, CLUB_3, MANSION_1, MANSION_2, MANSION_3 };
+    private static final String PLAY_FILE = "gui/play.png";
 
     private GameCanvas canvas;
     /** Overall time that the story scene has been up */
@@ -139,12 +140,30 @@ public class StoryScene implements Screen {
         if (InputController.getInstance().didSkip()) {
             listener.exitScreen(this, levelCode);
         }
+        ImageAsset play = (ImageAsset)AssetLoader.getInstance().getAsset("playButton");
+        int clickx = InputController.getInstance().getMyProcessor().menuX;
+        int clicky = InputController.getInstance().getMyProcessor().menuY;
+        int width = 1280;
+        int height = 720;
+        int centerX = width/2+440;
+        int centerY = (int)(0.25f*height)-60;
+        if(play !=null){
+            Texture playb = new Texture(PLAY_FILE);
+            float radius = playb.getWidth()/2.0f;
+
+            float dist = (clickx-centerX)*(clickx-centerX)+(clicky-centerY)*(clicky-centerY);
+            if (dist < radius*radius) {
+                listener.exitScreen(this, levelCode);
+            }
+            InputController.getInstance().getMyProcessor().menuX = 0;
+            InputController.getInstance().getMyProcessor().menuY = 0;
+        }
 
         int mx = InputController.getInstance().getMyProcessor().hoveringX;
         int my = InputController.getInstance().getMyProcessor().hoveringY;
         highlight = false;
         float radius = 64f;
-        float dist = (mx-440f)*(mx-440f)+(my-240f)*(my-240f);
+        float dist = (mx-centerX)*(mx-centerX)+(my-centerY)*(my-centerY);
         if (dist < radius*radius) {
             highlight = true;
         }
@@ -156,6 +175,8 @@ public class StoryScene implements Screen {
     public void resume() {}
     public void resize(int width, int height) {}
     public void reset() {this.sceneTime = 0f; this.imgTime = 0f; this.imgQueue.clear();}
+
+
 
 
 }
