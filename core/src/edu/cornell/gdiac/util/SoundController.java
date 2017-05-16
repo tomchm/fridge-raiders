@@ -300,6 +300,12 @@ public class SoundController {
 	 */
 	public boolean play(String key, boolean loop, float volume) {
 		// Get the sound for the file
+		if((!musicOn && loop && (!(key.equals("chewing")))) || !sfxOn){
+			return false;
+		}
+
+
+
 		if (!soundbank.containsKey(key) || current >= frameLimit) {
 			return false;
 		}

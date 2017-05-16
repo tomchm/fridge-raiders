@@ -184,10 +184,12 @@ public class PauseGUI extends GUIModel {
                         //Left Music option
                         if(this.soundController.getMusicOn()){
                             this.soundController.setMusic(false);
+                            this.soundController.pauseMusic();
                             music = ((ImageAsset) AssetLoader.getInstance().getAsset("MusicOff")).getTexture().getTexture();
                         }
                         else{
                             this.soundController.setMusic(true);
+                            this.soundController.unPauseMusic();
                             music = ((ImageAsset) AssetLoader.getInstance().getAsset("MusicOn")).getTexture().getTexture();
                         }
                     } else if (myX >= 620 && myX <= 680 && myY >= 490 && myY <= 555) {
@@ -239,10 +241,12 @@ public class PauseGUI extends GUIModel {
                         //Left Music option
                         if(this.soundController.getMusicOn()){
                             this.soundController.setMusic(false);
+                            this.soundController.pauseMusic();
                             music = ((ImageAsset) AssetLoader.getInstance().getAsset("MusicOff")).getTexture().getTexture();
                         }
                         else{
                             this.soundController.setMusic(true);
+                            this.soundController.unPauseMusic();
                             music = ((ImageAsset) AssetLoader.getInstance().getAsset("MusicOn")).getTexture().getTexture();
                         }
                     } else if (myX >= 620 && myX <= 680 && myY >= 490 && myY <= 555) {
