@@ -355,6 +355,18 @@ public class LevelSelect implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+        if(keycode == 62){
+            if(state == SelectState.HOME){
+                state = SelectState.ZOOM_IN;
+                playHighlight = false;
+
+            }
+            else if(state == SelectState.SELECTION){
+                state = SelectState.ZOOM_OUT;
+                playHighlight = false;
+            }
+
+        }
         return false;
     }
 
@@ -365,6 +377,7 @@ public class LevelSelect implements Screen, InputProcessor {
 
     @Override
     public boolean keyTyped(char character) {
+        System.out.println(character);
         return false;
     }
 

@@ -167,7 +167,7 @@ public class AIModel extends GameObject{
      */
     public float getZ(){
         if (isDead) {
-            return 9f * WallModel.LARGE_Z;
+            return 11f * WallModel.LARGE_Z;
         }
         else {
             return super.getZ();

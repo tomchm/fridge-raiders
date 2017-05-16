@@ -54,7 +54,10 @@ import java.util.Iterator;
  */
 public class SoundController {
 
-	/**
+    private boolean musicOn = true;
+    private boolean sfxOn = true;
+
+    /**
 	 * Inner class to track and active sound instance
 	 * 
 	 * A sound instance is a Sound object and a number.  That is because
@@ -297,7 +300,7 @@ public class SoundController {
 	 */
 	public boolean play(String key, boolean loop, float volume) {
 		// Get the sound for the file
-		if (!soundbank.containsKey(key) || current >= frameLimit || ) {
+		if (!soundbank.containsKey(key) || current >= frameLimit) {
 			return false;
 		}
 
@@ -415,4 +418,10 @@ public class SoundController {
 		current = 0;
 	}
 
+
+	public boolean getMusicOn(){return  this.musicOn;}
+    public boolean getSfxOn(){return  this.sfxOn;}
+    public void setMusic(boolean b){ this.musicOn = b;}
+    public void setSfx(boolean b){this.sfxOn = b;}
+    
 }

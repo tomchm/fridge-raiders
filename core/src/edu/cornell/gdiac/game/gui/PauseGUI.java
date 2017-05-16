@@ -2,6 +2,7 @@ package edu.cornell.gdiac.game.gui;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,6 +14,7 @@ import edu.cornell.gdiac.game.asset.FontAsset;
 import edu.cornell.gdiac.game.asset.ImageAsset;
 import edu.cornell.gdiac.game.model.GameObject;
 import edu.cornell.gdiac.util.ScreenListener;
+import edu.cornell.gdiac.util.SoundController;
 
 import java.util.ArrayList;
 
@@ -46,8 +48,6 @@ public class PauseGUI extends GUIModel {
         public boolean levelSelectScreen = false;
         public boolean hardReset =false;
         public boolean softReset = false;
-        public boolean soundOn = true;
-        public boolean musicOn = true;
         private Color tint;
         private Color hoverTint;
         private Color textTint1;
@@ -65,6 +65,7 @@ public class PauseGUI extends GUIModel {
         private ArrayList<Color> textColors;
         private ScreenListener listener;
         private InputController inputController;
+        private SoundController soundController;
         public PauseGUI(WorldModel worldModel, InputController input){
             tags = new String[] {"gunny72"};
             guiTag = "PauseGUI";
@@ -76,6 +77,7 @@ public class PauseGUI extends GUIModel {
             this.message = "";
             this.inputController = input;
             tint = new Color(1f, 1f, 1f, 1f);
+            this.soundController = SoundController.getInstance();
             hoverTint =  new Color((float) (227.0/255.0), 0.7450980392156863f, (float) 0.25882354f, 0f);
             textTint1 = new Color(0.25f,0.25f,0.25f,0f);
             textTint2 = new Color(0.25f,0.25f,0.25f,0f);
@@ -89,8 +91,18 @@ public class PauseGUI extends GUIModel {
             this.listener = listener;
             countdown = 100;
             gradient = ((ImageAsset) AssetLoader.getInstance().getAsset("pausemenu")).getTexture().getTexture();
-            music = ((ImageAsset) AssetLoader.getInstance().getAsset("MusicOn")).getTexture().getTexture();
-            soundSfx = ((ImageAsset) AssetLoader.getInstance().getAsset("SoundOn")).getTexture().getTexture();
+            if(this.soundController.getMusicOn()) {
+                music = ((ImageAsset) AssetLoader.getInstance().getAsset("MusicOn")).getTexture().getTexture();
+            }
+            else{
+                music = ((ImageAsset) AssetLoader.getInstance().getAsset("MusicOff")).getTexture().getTexture();
+            }
+            if(this.soundController.getSfxOn()) {
+                soundSfx = ((ImageAsset) AssetLoader.getInstance().getAsset("SoundOn")).getTexture().getTexture();
+            }
+            else{
+                soundSfx = ((ImageAsset) AssetLoader.getInstance().getAsset("SoundOff")).getTexture().getTexture();
+            }
 
         }
 
@@ -100,6 +112,7 @@ public class PauseGUI extends GUIModel {
 
         public void update(float dt) {
             if (inputController.getInstance().didRetreat()) {
+                System.out.println(" pause " + this.soundController.getMusicOn());
                 paused = !paused;
                 inputController.getInstance().getMyProcessor().pauseX = 0;
                 inputController.getInstance().getMyProcessor().pauseY = 0;
@@ -169,22 +182,22 @@ public class PauseGUI extends GUIModel {
 
                     } else if (myX >= 545 && myX <= 605 && myY >= 490 && myY <= 555) {
                         //Left Music option
-                        if(musicOn){
-                            musicOn = false;
+                        if(this.soundController.getMusicOn()){
+                            this.soundController.setMusic(false);
                             music = ((ImageAsset) AssetLoader.getInstance().getAsset("MusicOff")).getTexture().getTexture();
                         }
                         else{
-                            musicOn = true;
+                            this.soundController.setMusic(true);
                             music = ((ImageAsset) AssetLoader.getInstance().getAsset("MusicOn")).getTexture().getTexture();
                         }
                     } else if (myX >= 620 && myX <= 680 && myY >= 490 && myY <= 555) {
                         //Right Sound option
-                        if(soundOn){
-                            soundOn = false;
+                        if(this.soundController.getSfxOn()){
+                            this.soundController.setSfx(false);
                             soundSfx = ((ImageAsset) AssetLoader.getInstance().getAsset("SoundOff")).getTexture().getTexture();
                         }
                         else{
-                            soundOn = true;
+                            this.soundController.setSfx(true);
                             soundSfx = ((ImageAsset) AssetLoader.getInstance().getAsset("SoundOn")).getTexture().getTexture();
                         }
 
@@ -224,22 +237,22 @@ public class PauseGUI extends GUIModel {
 
                     else if (myX >= 545 && myX <= 605 && myY >= 490 && myY <= 555) {
                         //Left Music option
-                        if(musicOn){
-                            musicOn = false;
+                        if(this.soundController.getMusicOn()){
+                            this.soundController.setMusic(false);
                             music = ((ImageAsset) AssetLoader.getInstance().getAsset("MusicOff")).getTexture().getTexture();
                         }
                         else{
-                            musicOn = true;
+                            this.soundController.setMusic(true);
                             music = ((ImageAsset) AssetLoader.getInstance().getAsset("MusicOn")).getTexture().getTexture();
                         }
                     } else if (myX >= 620 && myX <= 680 && myY >= 490 && myY <= 555) {
                         //Right Sound option
-                        if(soundOn){
-                            soundOn = false;
+                        if(this.soundController.getSfxOn()){
+                            this.soundController.setSfx(false);
                             soundSfx = ((ImageAsset) AssetLoader.getInstance().getAsset("SoundOff")).getTexture().getTexture();
                         }
                         else{
-                            soundOn = true;
+                            this.soundController.setSfx(true);
                             soundSfx = ((ImageAsset) AssetLoader.getInstance().getAsset("SoundOn")).getTexture().getTexture();
                         }
 

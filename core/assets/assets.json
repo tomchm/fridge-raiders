@@ -833,8 +833,8 @@
       "type": "image",
       "tag": "Decor-Clef",
       "filename": "decor/Clef.png",
-      "scale_x": "0.30",
-      "scale_y": "0.3",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
       "origin_x": "232",
       "origin_y": "364",
       "shape": "none"
@@ -853,8 +853,8 @@
       "type": "image",
       "tag": "Decor-MissNoir",
       "filename": "decor/MissNoir.png",
-      "scale_x": "0.3",
-      "scale_y": "0.3",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
       "origin_x": "239",
       "origin_y": "376",
       "shape": "none"
@@ -863,8 +863,8 @@
       "type": "image",
       "tag": "Decor-PortraitFemale",
       "filename": "Decor/Portrait1.png",
-      "scale_x": "0.26",
-      "scale_y": "0.26",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
       "origin_x": "302",
       "origin_y": "302",
       "shape": "none"
@@ -873,8 +873,8 @@
       "type": "image",
       "tag": "Decor-PortraitMale",
       "filename": "decor/Portrait2.png",
-      "scale_x": "0.26",
-      "scale_y": "0.26",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
       "origin_x": "286",
       "origin_y": "290",
       "shape": "none"
@@ -1775,6 +1775,115 @@
       "scale_y": "0.25",
       "origin_x": "200",
       "origin_y": "200",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Decor-OfficeWindow",
+      "filename": "decor/Office Window.png",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "origin_x": "418",
+      "origin_y": "278",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "food-Coffee",
+      "filename": "food/coffee.png",
+      "scale_x": ".2",
+      "scale_y": ".2",
+      "origin_x": "185",
+      "origin_y": "115",
+      "shape": "rectangle",
+      "width": "1.7",
+      "height": "1.11",
+      "angle": ""
+    },
+    {
+      "type": "image",
+      "tag": "food-donut",
+      "filename": "food/donut.png",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "origin_x": "111",
+      "origin_y": "56",
+      "shape": "rectangle",
+      "width": "1.27",
+      "height": "0.78",
+      "angle": ""
+    },
+    {
+      "type": "image",
+      "tag": "food-DESSERT-Mint",
+      "filename": "food/D_mint.png",
+      "scale_x": "0.25",
+      "scale_y": "0.25",
+      "origin_x": "461",
+      "origin_y": "232",
+      "shape": "rectangle",
+      "width": "5.59",
+      "height": "1.7",
+      "angle": "0"
+    },
+    {
+      "type": "image",
+      "tag": "Arrowkeys1",
+      "filename": "gui/Arrowkeys1.png",
+      "scale_x": ".3",
+      "scale_y": "0.3",
+      "origin_x": "387",
+      "origin_y": "142",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Arrowkeys2",
+      "filename": "gui/arrowkeys2.png",
+      "scale_x": "0.3",
+      "scale_y": "0.3",
+      "origin_x": "387",
+      "origin_y": "142",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Spacebar1",
+      "filename": "gui/spacebar1.png",
+      "scale_x": "0.3",
+      "scale_y": "0.3",
+      "origin_x": "360",
+      "origin_y": "119",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Spacebar2",
+      "filename": "gui/spacebar2.png",
+      "scale_x": ".3",
+      "scale_y": "0.3",
+      "origin_x": "360",
+      "origin_y": "119",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Mouse1",
+      "filename": "gui/mouse1.png",
+      "scale_x": "0.2",
+      "scale_y": "0.2",
+      "origin_x": "267",
+      "origin_y": "360",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "Mouse2",
+      "filename": "gui/mouse2.png",
+      "scale_x": "0.2",
+      "scale_y": "0.2",
+      "origin_x": "267",
+      "origin_y": "360",
       "shape": "none"
     }
   ]
