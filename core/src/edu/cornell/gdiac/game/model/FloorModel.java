@@ -65,14 +65,13 @@ public class FloorModel extends GameObject{
             if(ia != null){
                 Texture floorTex = ia.getTexture().getTexture();
                 floorTex.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-                //TextureRegion region = new TextureRegion(ia.getTexture().getTexture());
-                //float width = floorTex.getWidth();
-                //float height = floorTex.getHeight();
-                ia.getTexture().setRegion((int)0, (int)0, (int)((maxx-x)*drawScale.x/ia.getImageScale().x), (int)((maxy-y)*drawScale.y/ia.getImageScale().y));
-                //float[] scaledCoords = new float[8];
-                //for (int i=0; i<8; i++) {scaledCoords[i] = (i%2==0 ? drawScale.x : drawScale.y)*coords[i];}
-                //region = new PolygonRegion(ia.getTexture(), scaledCoords, new short[] {0,1,2,0,3,2});
-                canvas.draw(ia.getTexture(), Color.WHITE, 0f,0f,x*drawScale.x,y*drawScale.x,0f,ia.getImageScale().x,ia.getImageScale().y);
+                int startx = (int)(x*drawScale.x/ia.getImageScale().x); // pixel to start sampling from,
+                int starty = (int)(maxy*drawScale.y/ia.getImageScale().y); // relative to top-left
+                int localwidth = (int)((maxx-x)*drawScale.x/ia.getImageScale().x); // width in pixels on image asset
+                int localheight = (int)((maxy-y)*drawScale.y/ia.getImageScale().y); // height in pixels of image asset
+
+                ia.getTexture().setRegion(startx, starty, localwidth, localheight);
+                canvas.draw(ia.getTexture(), Color.WHITE, 0,0,x*drawScale.x,y*drawScale.x,0f,ia.getImageScale().x,ia.getImageScale().y);
             }
         }
         //canvas.draw(region, drawScale.x*x, drawScale.y*y);

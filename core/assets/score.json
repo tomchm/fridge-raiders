@@ -21,8 +21,8 @@
 	{
 		"filename": "level3.json",
 		"unlocked": true,
-		"foodMedal": "bronze",
-		"golfMedal": "silver"
+		"foodMedal": "gold",
+		"golfMedal": "gold"
 	},
 	{
 		"filename": "level4.json",
