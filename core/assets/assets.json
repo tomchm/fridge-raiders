@@ -1388,6 +1388,11 @@
     },
     {
       "type": "sound",
+      "tag": "slide",
+      "filename": "sound/slide.ogg"
+    },
+    {
+      "type": "sound",
       "tag": "bronzesfx",
       "filename": "sound/bronze.ogg"
     },
