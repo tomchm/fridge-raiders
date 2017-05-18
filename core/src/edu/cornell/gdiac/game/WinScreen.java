@@ -103,7 +103,7 @@ public class WinScreen implements Screen, InputProcessor {
                 bf2.setColor(textTint);
                 canvas.drawText("%", bf2, 770,520);
             }
-            if (time == FADE_TIME + TEXT_TIME) {
+            if (time == FADE_TIME + TEXT_TIME + NUM_TIME) {
                 SoundController.getInstance().play(foodMedal+"sfx", false);
             }
             if(time > FADE_TIME + TEXT_TIME + NUM_TIME){
@@ -116,7 +116,7 @@ public class WinScreen implements Screen, InputProcessor {
             if(time > FADE_TIME + 2*TEXT_TIME + NUM_TIME + MEDAL_TIME){
                 upwrite(bf2, putts, 760, 349, FADE_TIME+2*TEXT_TIME+NUM_TIME+MEDAL_TIME, FADE_TIME+2*TEXT_TIME+2*NUM_TIME+MEDAL_TIME, time);
             }
-            if (time == FADE_TIME + 2*TEXT_TIME + NUM_TIME + MEDAL_TIME) {
+            if (time == FADE_TIME + 2*TEXT_TIME + 2*NUM_TIME + MEDAL_TIME) {
                 SoundController.getInstance().play(golfMedal + "sfx", false);
             }
             if(time > FADE_TIME + 2*TEXT_TIME + 2*NUM_TIME + MEDAL_TIME){
