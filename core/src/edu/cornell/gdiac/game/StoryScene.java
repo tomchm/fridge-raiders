@@ -72,11 +72,11 @@ public class StoryScene implements Screen {
                 break;
             case 104:
                 add("cutscene4");
-                storyText = "The scents wafting from that mansion are heavenly. I’m sure \nthe homeowner wouldn’t mind a little company for dinner.";
+                storyText = "The scents wafting from that mansion are heavenly. I'm sure \nthe homeowner wouldn't mind a little company for dinner.";
                 break;
-            case 102:
-                add("cutscene3");
-                storyText = "I awake screaming and in a cold sweat.\nI can't shake the image of flat, off-brand soda.";
+            case 108:
+                add("cutscene5");
+                storyText = "I've arrived at my last target. A lotta guys spend their nights\nat the jazz club dancing, but I stop by for the in-house meal.";
                 break;
             case 200:
                 add("cutscene2");
