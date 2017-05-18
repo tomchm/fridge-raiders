@@ -151,7 +151,7 @@ public class WorldModel {
         if (!hasWon) {
             if (sc.isActive("music_level")) sc.stop("music_level");
             if (sc.isActive("music_rolling")) sc.stop("music_rolling");
-            sc.play("win", false);
+            sc.play("music_win", false);
         }
         hasWon = true;
         String foodMedal = "bronze";

@@ -1343,7 +1343,7 @@
     },
     {
       "type": "sound",
-      "tag": "win",
+      "tag": "music_win",
       "filename": "sound/win.wav"
     },
     {
