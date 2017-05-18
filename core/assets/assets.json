@@ -1359,12 +1359,12 @@
     {
       "type": "sound",
       "tag": "music_title",
-      "filename": "sound/level.wav"
+      "filename": "sound/title.ogg"
     },
     {
       "type": "sound",
       "tag": "music_level",
-      "filename": "sound/level.wav"
+      "filename": "sound/level.ogg"
     },
     {
       "type": "sound",
