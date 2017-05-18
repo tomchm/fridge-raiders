@@ -113,8 +113,7 @@ public class AIModel extends GameObject{
         fixtureDef.shape = shape;
 
         this.path = path;
-        this.tags = tags;
-        this.tags = new String[] {"ai1_walk_right", "ai1_walk_left", "ai1_walk_down", "ai1_walk_up", "ai1_flat"};
+        this.tags = new String[] {tags[0] +"_left", tags[0] + "_right", tags[0] + "_up", tags[0] + "_down", tags[0] + "_flat"};
     }
 
     /**
@@ -183,7 +182,7 @@ public class AIModel extends GameObject{
             float angle = (float)((getBody().getAngle() + Math.PI * 4) % (Math.PI * 2));
 
             if (isDead) {
-                ImageAsset ia = (ImageAsset) assetMap.get("ai1_flat");
+                ImageAsset ia = (ImageAsset) assetMap.get(tags[4]);
                 Affine2 aff = new Affine2();
                 aff.setToRotationRad((float)(deadAngle + Math.PI/2));
                 aff.preScale(ia.getImageScale().x,ia.getImageScale().y * 0.6f );
@@ -193,19 +192,19 @@ public class AIModel extends GameObject{
             }
 
             if (isSecondStage){
-                fa = (FilmstripAsset) assetMap.get("ai1_walk_down");
+                fa = (FilmstripAsset) assetMap.get(tags[3]);
             }
             else if(angle <= Math.PI*0.25f  || angle > Math.PI*1.75f){
-                fa = (FilmstripAsset) assetMap.get("ai1_walk_right");
+                fa = (FilmstripAsset) assetMap.get(tags[1]);
             }
             else if(angle <= Math.PI*0.75f  && angle > Math.PI*0.25f){
-                fa = (FilmstripAsset) assetMap.get("ai1_walk_up");
+                fa = (FilmstripAsset) assetMap.get(tags[2]);
             }
             else if(angle <= Math.PI*1.25f  && angle > Math.PI*0.75f){
-                fa = (FilmstripAsset) assetMap.get("ai1_walk_left");
+                fa = (FilmstripAsset) assetMap.get(tags[0]);
             }
             else {
-                fa = (FilmstripAsset) assetMap.get("ai1_walk_down");
+                fa = (FilmstripAsset) assetMap.get(tags[3]);
             }
 
             if(fa != null){

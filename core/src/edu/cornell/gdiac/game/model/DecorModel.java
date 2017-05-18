@@ -19,7 +19,6 @@ public class DecorModel extends GameObject {
     public boolean isGlass = false;
 
     public DecorModel(float x, float y, float width, float height, String[] tags) {
-        System.out.println(tags[0]);
         isGlass = tags[0].equals("Decor-GlassShards");
         this.x = x;
         this.y = y;
