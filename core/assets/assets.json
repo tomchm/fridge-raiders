@@ -196,6 +196,30 @@
     },
     {
       "type": "filmstrip",
+      "tag": "player_left_idle_menu",
+      "filename": "player/idle_left_menu.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
+      "frames": "8",
+      "speed": "6",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
+      "tag": "player_right_idle_menu",
+      "filename": "player/idle_right_menu.png",
+      "origin_x": "128",
+      "origin_y": "144",
+      "scale_x": "0.35",
+      "scale_y": "0.35",
+      "frames": "8",
+      "speed": "6",
+      "shape": "none"
+    },
+    {
+      "type": "filmstrip",
       "tag": "player_right_idle",
       "filename": "player/idle_right.png",
       "origin_x": "44.8",

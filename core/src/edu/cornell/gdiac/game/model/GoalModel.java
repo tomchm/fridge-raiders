@@ -65,7 +65,7 @@ public class GoalModel extends GameObject implements ContactListener{
     }
 
     public float getZ() {
-        return 9000f + GameObject.getDrawScale().y*0.25f*(coords[1] + coords[3] + coords[5] + coords[7]);
+        return 11f * WallModel.LARGE_Z;
     }
 
     public void draw(GameCanvas canvas){

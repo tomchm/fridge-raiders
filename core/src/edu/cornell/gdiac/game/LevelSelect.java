@@ -165,8 +165,8 @@ public class LevelSelect implements Screen, InputProcessor {
 
 
 
-            FilmstripAsset far = (FilmstripAsset)assets.getAsset("player_right_idle");
-            FilmstripAsset fal = (FilmstripAsset)assets.getAsset("player_left_idle");
+            FilmstripAsset far = (FilmstripAsset)assets.getAsset("player_right_idle_menu");
+            FilmstripAsset fal = (FilmstripAsset)assets.getAsset("player_left_idle_menu");
             if(far != null && fal != null){
                 int nFrame = (count / far.getSpeed()) % far.getNumFrames();
                 if(animation == GuyState.WALK_RIGHT){
