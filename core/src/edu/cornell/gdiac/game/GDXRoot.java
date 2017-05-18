@@ -146,10 +146,14 @@ public class GDXRoot extends Game implements ScreenListener {
 	public void exitScreen(Screen screen, int exitCode) {
 		System.out.println("exitCode = " + exitCode);
 
+		if (exitCode != WorldController.LEVEL_SELECT) {
+			SoundController.getInstance().safeStop("music_title");
+		}
+
 		if (screen == loading) {
 			AssetLoader.getInstance().loadContent(manager);
 			System.out.println("exited from loading screen.");
-			SoundController.getInstance().play("music_title", true, 0.75f);
+			//SoundController.getInstance().play("music_title", true, 0.75f);
 			levelSelect.activate();
 			setScreen(levelSelect);
 			loading.dispose();
@@ -188,6 +192,11 @@ public class GDXRoot extends Game implements ScreenListener {
 			ws.setScreenListener(this);
 			setScreen(ws);
 		}
+		else if(exitCode == WorldController.CREDITS){
+			Credits cs = new Credits(canvas);
+			cs.setScreenListener(this);
+			setScreen(cs);
+		}
 		else if(exitCode >= 100 && exitCode < 110){
 			int i = exitCode - 100;
 			controller = new WorldController(i);
@@ -197,7 +206,6 @@ public class GDXRoot extends Game implements ScreenListener {
 			controller.reset();
 			controller.unsetHardReset();
 			setScreen(controller);
-			SoundController.getInstance().safeStop("music_title");
 		}
 		else if(exitCode >= 300 && exitCode < 310){
 			SoundController.getInstance().play("blah", false);

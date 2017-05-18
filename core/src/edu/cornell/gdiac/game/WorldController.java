@@ -61,6 +61,7 @@ public class WorldController implements Screen {
 	public static final int GAMEVIEW = 2;
 	public static final int LEVEL_SELECT = 3;
 	public static final int WIN_SCREEN = 4;
+	public static final int CREDITS = 5;
 	// STORY SCREEN: 100 + the level code. eg, 203 will play a cutscene, then exit with levelCode 103
 	/** The amount of time for a game engine step. */
 	public static final float WORLD_STEP = 1/60.0f;

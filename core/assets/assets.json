@@ -1433,6 +1433,36 @@
     },
     {
       "type": "image",
+      "tag": "credits0",
+      "filename": "gui/credits0.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "640",
+      "origin_y": "300",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "credits1",
+      "filename": "gui/credits1.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "640",
+      "origin_y": "300",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "credits2",
+      "filename": "gui/credits2.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "640",
+      "origin_y": "300",
+      "shape": "none"
+    },
+    {
+      "type": "image",
       "tag": "modernFoodbar",
       "filename": "gui/modernfoodbar.png",
       "scale_x": "1",
