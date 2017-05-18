@@ -114,7 +114,7 @@
                 }
                 if (inWall(level.exit, worldXY)) { selected = level.exit; draw(level); return; }
                 for (var i = 0; i < level.ais.length; i++) {
-                    if (inAI(level.ais[i], worldXY)) { selected = level.ais[i]; draw(level); return; }
+                    if (inAI(level.ais[i], worldXY)) { selected = level.ais[i]; $('#aiselect').val(selected.tags[0]); draw(level); return; }
                 }
                 if (inPlayer(worldXY)) { selected = level.player; return; }
                 for (var i = 0; i < level.floors.length; i++) {
@@ -185,10 +185,16 @@
                 }
                 else {
                     // make a new AI!
-                    var newAI = {"tags":["ai"], "coords":[camX + 0.5*cnv.width/DRAW_SCALE, camY + 0.5*cnv.height/DRAW_SCALE]};
+                    var newAI = {"tags":[$('#aiselect').val()], "coords":[camX + 0.5*cnv.width/DRAW_SCALE, camY + 0.5*cnv.height/DRAW_SCALE]};
                     level.ais.push(newAI);
                 }
                 draw(level);
+            });
+
+            $('#aiselect').change(function() {
+                if (level.ais.includes(selected)) {
+                    selected.tags[0] = $('#aiselect').val();
+                }
             });
 
             $('#par').change(function() {
@@ -1641,6 +1647,14 @@
             </div>
             <h2>AI</h2>
                 <input id="aibutton" type="button" value="Add coordinate" />
+                <select id="aiselect">
+                  <option value="ai0">Apartment man</option>
+                  <option value="ai1">Apartment woman</option>
+                  <option value="ai2">Mansion man</option>
+                  <option value="ai3">Mansion woman</option>
+                  <option value="ai4">Club man</option>
+                  <option value="ai5">Club woman</option>
+                </select>
             <div id="ais">
             </div>
             <h2>Decor</h2>
