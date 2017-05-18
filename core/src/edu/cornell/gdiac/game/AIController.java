@@ -212,7 +212,7 @@ public class AIController implements RayCastCallback{
             lightTime = (lightTime > LIGHT_LIM) ? LIGHT_LIM : lightTime;
         }
         else {
-            lightTime = lightTime - dtCache/2;
+            lightTime = lightTime - dtCache/1.5f;
             lightTime = (lightTime < 0) ? 0 : lightTime;
         }
     }
@@ -240,8 +240,13 @@ public class AIController implements RayCastCallback{
             seen = true;
             distCache = dist;
         }
+        else if (!fixtureTest && fixture.getUserData().getClass() == DecorModel.class){
+            if ( !((DecorModel)fixture.getUserData()).isGlass) {
+                blocked = true;
+            }
+        }
         else if (!fixtureTest && fixture.getUserData().getClass() != CrumbModel.class && fixture.getUserData().getClass() != FoodModel.class
-                && fixture.getUserData().getClass() != GoalModel.class && (fixture.getUserData() == DecorModel.class && ((DecorModel)fixture.getUserData()).isGlass)){
+                && fixture.getUserData().getClass() != GoalModel.class){
             blocked = true;
         }
         return -1;
