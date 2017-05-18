@@ -1037,6 +1037,16 @@
     },
     {
       "type": "image",
+      "tag": "blackhalf",
+      "filename": "gui/blackhalf.png",
+      "origin_x": "640",
+      "origin_y": "0",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "image",
       "tag": "Decor-Clock",
       "filename": "decor/clock.png",
       "scale_x": "1",
@@ -1333,7 +1343,7 @@
     },
     {
       "type": "sound",
-      "tag": "win",
+      "tag": "music_win",
       "filename": "sound/win.wav"
     },
     {
@@ -1348,13 +1358,13 @@
     },
     {
       "type": "sound",
-      "tag": "titlemusic",
-      "filename": "sound/level.wav"
+      "tag": "music_title",
+      "filename": "sound/title.ogg"
     },
     {
       "type": "sound",
-      "tag": "levelmusic",
-      "filename": "sound/level.wav"
+      "tag": "music_level",
+      "filename": "sound/level.ogg"
     },
     {
       "type": "sound",
@@ -1363,7 +1373,7 @@
     },
     {
       "type": "sound",
-      "tag": "cymbals",
+      "tag": "music_cymbals",
       "filename": "sound/cymbals.ogg"
     },
     {
@@ -1399,7 +1409,7 @@
     {
       "type": "sound",
       "tag": "music_transition",
-      "filename": "sound/music_transition.ogg"
+      "filename": "sound/music_transition2.ogg"
     },
     {
       "type": "sound",
@@ -1419,6 +1429,36 @@
       "scale_y": "0.35",
       "origin_x": "240",
       "origin_y": "240",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "credits0",
+      "filename": "gui/credits0.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "640",
+      "origin_y": "300",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "credits1",
+      "filename": "gui/credits1.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "640",
+      "origin_y": "300",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "credits2",
+      "filename": "gui/credits2.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "640",
+      "origin_y": "300",
       "shape": "none"
     },
     {

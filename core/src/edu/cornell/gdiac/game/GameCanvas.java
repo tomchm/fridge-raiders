@@ -124,6 +124,7 @@ public class GameCanvas {
 
 	private void endShape() {shapeRender.end(); Gdx.gl.glDisable(Gdx.gl.GL_BLEND); begin(); }
 	private void beginShape() {end(); Gdx.gl.glEnable(Gdx.gl.GL_BLEND); shapeRender.setProjectionMatrix(camera.combined); shapeRender.begin(ShapeRenderer.ShapeType.Filled); }
+	private void beginShapeLine() {end(); Gdx.gl.glEnable(Gdx.gl.GL_BLEND); shapeRender.setProjectionMatrix(camera.combined); shapeRender.begin(ShapeRenderer.ShapeType.Line);}
 
 	public void drawRect(float x, float y, float width, float height, float r, float g, float b) {
 		beginShape();
@@ -131,6 +132,35 @@ public class GameCanvas {
 		float sx = GameObject.getDrawScale().x;
 		float sy = GameObject.getDrawScale().y;
 		shapeRender.rect(x*sx, y*sy, width*sx, height*sy);
+		endShape();
+	}
+
+	public void drawPinhole(float x, float y, float r, float R) {
+		beginShapeLine();
+		shapeRender.setColor(0, 0, 0, 1f);
+		float sx = GameObject.getDrawScale().x;
+		float sy = GameObject.getDrawScale().y;
+		float[] poly = new float[8];
+		float cx, cy; // center of square
+		float ct, st; // cos, sin of theta
+		float theta;
+		int CIRCLE_SIDES = 10;
+		for (int k = 0; k < CIRCLE_SIDES; ++k) {
+			theta = 2f * k * (float)Math.PI / CIRCLE_SIDES; // angle from center to edge of rectangle
+			ct = (float)Math.cos(theta);
+			st = (float)Math.sin(theta);
+			cx = x + (r+R) * ct;
+			cy = y + (r+R) * st;
+			poly[0] = cx + (float)(Math.sqrt(2)*R*Math.cos(theta + Math.PI / 4f));
+			poly[1] = cy + (float)(Math.sqrt(2)*R*Math.sin(theta + Math.PI / 4f));
+			poly[2] = cx + (float)(Math.sqrt(2)*R*Math.cos(theta + 3f * Math.PI / 4f));
+			poly[3] = cy + (float)(Math.sqrt(2)*R*Math.sin(theta + 3f * Math.PI / 4f));
+			poly[4] = cx + (float)(Math.sqrt(2)*R*Math.cos(theta + 5f * Math.PI / 4f));
+			poly[5] = cy + (float)(Math.sqrt(2)*R*Math.sin(theta + 5f * Math.PI / 4f));
+			poly[6] = cx + (float)(Math.sqrt(2)*R*Math.cos(theta + 7f * Math.PI / 4f));
+			poly[7] = cy + (float)(Math.sqrt(2)*R*Math.sin(theta + 7f * Math.PI / 4f));
+		}
+		shapeRender.polygon(poly);
 		endShape();
 	}
 

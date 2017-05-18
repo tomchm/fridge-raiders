@@ -53,9 +53,9 @@ public class Cutscene implements Screen {
 
         Texture hand = hands[0];
         if (time > 1f) hand = hands[1]; if (time > 1.33f) {hand = hands[2];}
-        if (time > 1.67f) hand = hands[3]; if (time > 2f && time < 2.5f) {hand = hands[4]; pop();}
-        if (time > 2.5f && time < 2.7f) {hand = hands[5]; pop();} if (time > 2.7f && time < 2.9f) {hand = hands[6]; pop();}
-        if (time > 2.9 && time < 3.1f) {hand = hands[7]; pop();} if (time > 3.1f && time < 4f) {hand = hands[8];}
+        if (time > 1.67f) hand = hands[3]; if (time > 2f && time < 2.5f) {hand = hands[4];}
+        if (time > 2.5f && time < 2.7f) {hand = hands[5];} if (time > 2.7f && time < 2.9f) {hand = hands[6];}
+        if (time > 2.9 && time < 3.1f) {hand = hands[7];} if (time > 3.1f && time < 4f) {hand = hands[8];}
         if (time > 4f) {
             if(SoundController.getInstance().getMusicOn()) {
                 SoundController.getInstance().play("music_rolling", true, 0.7f);

@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import edu.cornell.gdiac.game.asset.AssetLoader;
+import edu.cornell.gdiac.game.asset.ImageAsset;
 import edu.cornell.gdiac.game.model.*;
 import edu.cornell.gdiac.game.shaders.CustomDetectiveShader;
 import edu.cornell.gdiac.game.shaders.CustomShader;
@@ -70,6 +71,7 @@ public class WorldModel {
     protected DirectionalLight dLight;
     /** debug lights*/
     private Light[] debugLights;
+    private float openT = 0f;
 
     /**
      * @return a list of all AI models currently populating the level
@@ -134,6 +136,7 @@ public class WorldModel {
 
     public void setPaused(boolean b ) {this.isPaused = b;}
 
+    public void setOpen(float ot) {openT = ot;}
 
     public void setLost(){
         hasLost = true;
@@ -146,9 +149,9 @@ public class WorldModel {
     public void setWon(){
         SoundController sc = SoundController.getInstance();
         if (!hasWon) {
-            if (sc.isActive("levelmusic")) sc.stop("levelmusic");
+            if (sc.isActive("music_level")) sc.stop("music_level");
             if (sc.isActive("music_rolling")) sc.stop("music_rolling");
-            sc.play("win", false);
+            sc.play("music_win", false);
         }
         hasWon = true;
         String foodMedal = "bronze";
@@ -604,6 +607,24 @@ public class WorldModel {
             rayhandlerA.updateAndRender();
         }
 
+        // if relevant, do the circle that opens up on the player
+        if (openT < 1f) {
+            canvas.begin();
+            Vector2 ppos = detective.getBody().getPosition();
+            float maxdist = (float)Math.sqrt(640*640 + 360*360);
+            //canvas.drawPinhole(ppos.x, ppos.y, maxdist * openT, maxdist);
+            ImageAsset blackhalf = (ImageAsset)AssetLoader.getInstance().getAsset("blackhalf");
+            int NUM_SIDES = 10;
+            for (int k = 0; k < NUM_SIDES; ++k) {
+                float theta = (float)Math.PI * 2f * k / NUM_SIDES;
+                canvas.draw(blackhalf.getTexture(), Color.WHITE,
+                        blackhalf.getOrigin().x, blackhalf.getOrigin().y,
+                        ppos.x*GameObject.getDrawScale().x + maxdist * (float)(openT) * (float)Math.cos(theta),
+                        ppos.y*GameObject.getDrawScale().y + maxdist * (float)(openT) * (float)Math.sin(theta),
+                        theta - (float)Math.PI/2f, blackhalf.getImageScale().x, blackhalf.getImageScale().y);
+            }
+            canvas.end();
+        }
     }
 
     /**
