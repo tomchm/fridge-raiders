@@ -3,6 +3,7 @@ package edu.cornell.gdiac.game.model;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import edu.cornell.gdiac.game.GameCanvas;
@@ -15,8 +16,11 @@ import edu.cornell.gdiac.game.asset.ImageAsset;
 public class DecorModel extends GameObject {
     private float x, y;
     private float height, width;
+    public boolean isGlass = false;
 
     public DecorModel(float x, float y, float width, float height, String[] tags) {
+        System.out.println(tags[0]);
+        isGlass = tags[0].equals("Decor-GlassShards");
         this.x = x;
         this.y = y;
         this.tags = tags;
@@ -38,6 +42,14 @@ public class DecorModel extends GameObject {
         fixtureDef.density = 1.0f;
         fixtureDef.shape = shape;
         fixtureDef.restitution = 1f;
+        fixtureDef.isSensor = isGlass;
+
+        if (isGlass) {
+            filter = new Filter();
+            filter.groupIndex = -1;
+            filter.categoryBits = 0x0002;
+            filter.maskBits = 0x0006;
+        }
     }
 
     public float getZ() {
@@ -48,12 +60,13 @@ public class DecorModel extends GameObject {
         Asset asset = assetMap.get(tags[0]);
         ImageAsset ia = (ImageAsset) asset;
 
-        Affine2 aff = new Affine2();
-        aff.setToScaling(ia.getImageScale().x * 1,ia.getImageScale().y * 0.9f);
-        aff.preShear(0, 0);
-        aff.preTranslate((body.getPosition().x-0.1f) * drawScale.x, (body.getPosition().y - (height * 0.05f))*drawScale.y);
-        canvas.draw(ia.getTexture(), new Color(0,0,0,0.6f), ia.getOrigin().x, ia.getOrigin().y,aff);
-
+        if (!isGlass) {
+            Affine2 aff = new Affine2();
+            aff.setToScaling(ia.getImageScale().x * 1, ia.getImageScale().y * 0.9f);
+            aff.preShear(0, 0);
+            aff.preTranslate((body.getPosition().x - 0.1f) * drawScale.x, (body.getPosition().y - (height * 0.05f)) * drawScale.y);
+            canvas.draw(ia.getTexture(), new Color(0, 0, 0, 0.6f), ia.getOrigin().x, ia.getOrigin().y, aff);
+        }
         canvas.draw(ia.getTexture(), Color.WHITE,ia.getOrigin().x,ia.getOrigin().y,body.getPosition().x*drawScale.x,body.getPosition().y*drawScale.x,0,ia.getImageScale().x,ia.getImageScale().y);
 
     }
