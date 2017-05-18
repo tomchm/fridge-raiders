@@ -372,7 +372,7 @@ public class WorldController implements Screen {
 			worldModel.zoomOutRaycamera(1.5f);
 			playedScene = true;
 			if(shouldPlayScene) {
-				SoundController.getInstance().safeStop("levelmusic");
+				SoundController.getInstance().safeStop("music_level");
 				SoundController.getInstance().play("music_transition", false);
 				listener.exitScreen(this, CUTSCENE);
 				shouldPlayScene = false;

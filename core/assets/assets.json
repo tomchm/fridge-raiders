@@ -1358,12 +1358,12 @@
     },
     {
       "type": "sound",
-      "tag": "titlemusic",
+      "tag": "music_title",
       "filename": "sound/level.wav"
     },
     {
       "type": "sound",
-      "tag": "levelmusic",
+      "tag": "music_level",
       "filename": "sound/level.wav"
     },
     {
@@ -1373,7 +1373,7 @@
     },
     {
       "type": "sound",
-      "tag": "cymbals",
+      "tag": "music_cymbals",
       "filename": "sound/cymbals.ogg"
     },
     {

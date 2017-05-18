@@ -149,7 +149,7 @@ public class GDXRoot extends Game implements ScreenListener {
 		if (screen == loading) {
 			AssetLoader.getInstance().loadContent(manager);
 			System.out.println("exited from loading screen.");
-			SoundController.getInstance().play("titlemusic", true, 0.75f);
+			SoundController.getInstance().play("music_title", true, 0.75f);
 			levelSelect.activate();
 			setScreen(levelSelect);
 			loading.dispose();
@@ -158,8 +158,8 @@ public class GDXRoot extends Game implements ScreenListener {
 
 		else if (exitCode == WorldController.LEVEL_SELECT) {
 			//System.out.println("Exited to level select.");
-			SoundController.getInstance().play("titlemusic", true, 0.75f);
-			SoundController.getInstance().safeStop("levelmusic");
+			SoundController.getInstance().play("music_title", true, 0.75f);
+			SoundController.getInstance().safeStop("music_level");
 			levelSelect.activate();
 			setScreen(levelSelect);
 		}
@@ -197,7 +197,7 @@ public class GDXRoot extends Game implements ScreenListener {
 			controller.reset();
 			controller.unsetHardReset();
 			setScreen(controller);
-			SoundController.getInstance().stop("titlemusic");
+			SoundController.getInstance().stop("music_title");
 		}
 		else if(exitCode >= 300 && exitCode < 310){
 			SoundController.getInstance().play("blah", false);
