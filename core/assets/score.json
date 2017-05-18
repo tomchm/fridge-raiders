@@ -9,8 +9,8 @@
 	{
 		"filename": "level1.json",
 		"unlocked": true,
-		"foodMedal": "gold",
-		"golfMedal": "gold"
+		"foodMedal": "silver",
+		"golfMedal": "bronze"
 	},
 	{
 		"filename": "level2.json",
@@ -22,7 +22,7 @@
 		"filename": "level3.json",
 		"unlocked": true,
 		"foodMedal": "bronze",
-		"golfMedal": "silver"
+		"golfMedal": "gold"
 	},
 	{
 		"filename": "level4.json",
@@ -32,25 +32,25 @@
 	},
 	{
 		"filename": "level5.json",
-		"unlocked": false,
-		"foodMedal": "none",
-		"golfMedal": "none"
+		"unlocked": true,
+		"foodMedal": "bronze",
+		"golfMedal": "silver"
 	},
 	{
 		"filename": "level6.json",
+		"unlocked": true,
+		"foodMedal": "silver",
+		"golfMedal": "silver"
+	},
+	{
+		"filename": "level7.json",
 		"unlocked": true,
 		"foodMedal": "none",
 		"golfMedal": "none"
 	},
 	{
-		"filename": "level7.json",
-		"unlocked": false,
-		"foodMedal": "none",
-		"golfMedal": "none"
-	},
-	{
 		"filename": "level8.json",
-		"unlocked": false,
+		"unlocked": true,
 		"foodMedal": "none",
 		"golfMedal": "none"
 	}
