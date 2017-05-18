@@ -33,7 +33,7 @@ public class AIModel extends GameObject{
     /*cone Light of the ai*/
     protected ConeLight coneLight;
     /*radius of light cone*/
-    protected  float lightRadius = 15.0f;
+    protected  float lightRadius = 13.5f;
     /*angle of light cone*/
     protected float lightAngle = 45.0f;
     /*the path the ai takes around level*/
