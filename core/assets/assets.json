@@ -1037,6 +1037,16 @@
     },
     {
       "type": "image",
+      "tag": "blackhalf",
+      "filename": "gui/blackhalf.png",
+      "origin_x": "640",
+      "origin_y": "0",
+      "scale_x": "1",
+      "scale_y": "1",
+      "shape": "none"
+    },
+    {
+      "type": "image",
       "tag": "Decor-Clock",
       "filename": "decor/clock.png",
       "scale_x": "1",

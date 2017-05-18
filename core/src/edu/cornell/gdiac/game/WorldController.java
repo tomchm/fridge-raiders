@@ -36,6 +36,7 @@ public class WorldController implements Screen {
 	private static final float DRAW_SCALE = 32f;
 	private static final float PAN_TIME = 1.5f;
 	private static final float HOLD_TIME = 1.5f;
+	private static final float OPEN_TIME = 2f;
 
 	private WorldModel worldModel;
 	private boolean debug = false;
@@ -44,9 +45,11 @@ public class WorldController implements Screen {
 
 	private boolean playedScene = false;
 	private boolean didIntroPan = false;
+	private boolean didOpening = false;
 	private Queue<Vector2> panQueue = null;
 	private float panS = 0f; // ranges from 0 to 1 as you vary between pan start & pan end.
 	private float panT = 0f; // ranges from 0 to 1 as you hold on the destination.
+	private float openT = 0f; // ranges from 0 to 1 as you open up the circle over the player
 	private boolean cutsceneDone = false;
 
 	/** List of ai controllers (one for each ai)*/
@@ -447,20 +450,27 @@ public class WorldController implements Screen {
 				obj.update(dt);
 			}
 		}
+
 		Vector2 position = worldModel.getPlayer().getBody().getPosition();
+		if (!didOpening) {
+			openT += 1f / (OPEN_TIME * 60f);
+			worldModel.setOpen(openT);
+			if (openT >= 1f) didOpening = true;
+		}
+
 		// here, update position if we're supposed to be panning somewhere
-		if (isPanning()) {
+		if (didOpening && isPanning()) {
 			position.x = panQueue.get(0).x + panS * (panQueue.get(1).x - panQueue.get(0).x);
 			position.y = panQueue.get(0).y + panS * (panQueue.get(1).y - panQueue.get(0).y);
 		}
-		if (isPanning() && panS < 1f) {
+		if (didOpening && isPanning() && panS < 1f) {
 			panS += 1f / (PAN_TIME * 60f);
 		}
-		else if (isPanning() && panS > 1f) {
+		else if (didOpening && isPanning() && panS > 1f) {
             if (panQueue.size == 2) { panT = 1f; } // prevent hold delay on last object panned to
 			panT += 1f / (HOLD_TIME * 60f);
 		}
-		if (panT > 1f) {
+		if (didOpening && panT > 1f) {
 			panQueue.removeFirst();
 			panS = 0f;
 			panT = 0f;
@@ -486,7 +496,7 @@ public class WorldController implements Screen {
 		guicanvas.clear();
 		GameObject.incCounter();
 		worldModel.draw(canvas);
-		if (!isPanning()) {
+		if (didOpening && !isPanning()) {
 		    guiController.draw(guicanvas);
 		}
 	}
