@@ -209,6 +209,9 @@ public class WorldController implements Screen {
             panQueue.addLast(worldModel.getDessertPosition());
             panQueue.addLast(worldModel.getPlayer().getBody().getPosition());
         }
+        if (didOpening) {
+			worldModel.setOpen(1.1f);
+		}
 
 		//SoundController.getInstance().play("levelmusic", true, 0.75f);
 		//fileIOController.save("levels/testOutput.json");

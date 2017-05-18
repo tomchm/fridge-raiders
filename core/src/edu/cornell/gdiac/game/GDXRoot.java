@@ -208,7 +208,7 @@ public class GDXRoot extends Game implements ScreenListener {
 			setScreen(controller);
 		}
 		else if(exitCode >= 300 && exitCode < 310){
-			SoundController.getInstance().play("blah", false);
+			SoundController.getInstance().play("blah2", false);
 			storyScene = new StoryScene(canvas);
 			storyScene.setScreenListener(this);
 			storyScene.setUp(exitCode - 100);

@@ -1383,6 +1383,11 @@
     },
     {
       "type": "sound",
+      "tag": "blah2",
+      "filename": "sound/blah2.ogg"
+    },
+    {
+      "type": "sound",
       "tag": "bronzesfx",
       "filename": "sound/bronze.ogg"
     },

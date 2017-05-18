@@ -139,7 +139,9 @@ public class StoryScene implements Screen {
         InputController.getInstance().readInput();
         if (InputController.getInstance().didSkip()) {
             listener.exitScreen(this, levelCode);
-            SoundController.getInstance().safeStop("blah");
+            //System.out.println(levelCode / 100);
+            if (levelCode / 100 == 1) SoundController.getInstance().safeStop("blah");
+            if (levelCode / 100 == 2) SoundController.getInstance().safeStop("blah2");
         }
         ImageAsset play = (ImageAsset)AssetLoader.getInstance().getAsset("playButton");
         int clickx = InputController.getInstance().getMyProcessor().menuX;
