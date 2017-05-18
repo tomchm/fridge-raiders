@@ -33,11 +33,21 @@ public class ScoreIOController {
         }
     }
 
+    public static boolean better(String oldone, String newone) {
+        int oldval = 0;
+        if (oldone.equals("silver")) oldval = 1;
+        if (oldone.equals("gold")) oldval = 2;
+        int newval = 0;
+        if (newone.equals("silver")) newval = 1;
+        if (newone.equals("gold")) newval = 2;
+        return newval > oldval;
+    }
+
     public static void updateLevel(int i, boolean unlocked, String foodMedal, String golfMedal){
         LevelData[] levels = getScores();
         levels[i].unlocked = unlocked;
-        levels[i].foodMedal = foodMedal;
-        levels[i].golfMedal = golfMedal;
+        if (better(levels[i].foodMedal, foodMedal)) levels[i].foodMedal = foodMedal;
+        if (better(levels[i].golfMedal, golfMedal)) levels[i].golfMedal = golfMedal;
 
         Json json  = new Json();
         json.setOutputType(JsonWriter.OutputType.json);
