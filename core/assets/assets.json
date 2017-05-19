@@ -568,7 +568,7 @@
     {
       "type": "image",
       "tag": "food-Coffee",
-      "filename": "food/coffee.png",
+      "filename": "food/Coffee.png",
       "scale_x": "1",
       "scale_y": "1",
       "origin_x": "37",
@@ -581,7 +581,7 @@
     {
       "type": "image",
       "tag": "food-donut",
-      "filename": "food/donut.png",
+      "filename": "food/Donut.png",
       "scale_x": "1",
       "scale_y": "1",
       "origin_x": "27.75",
@@ -594,7 +594,7 @@
     {
       "type": "image",
       "tag": "food-DESSERT-Mint",
-      "filename": "food/D_mint.png",
+      "filename": "food/D_Mint.png",
       "scale_x": "1",
       "scale_y": "1",
       "origin_x": "115.25",
@@ -938,7 +938,7 @@
     {
       "type": "image",
       "tag": "Floor-TileBlack",
-      "filename": "floor/Tile Black.png",
+      "filename": "floor/tile black.png",
       "scale_x": "1",
       "scale_y": "1",
       "origin_x": "100",
@@ -948,7 +948,7 @@
     {
       "type": "image",
       "tag": "Floor-TileBlue",
-      "filename": "floor/Tile Blue.png",
+      "filename": "floor/tile blue.png",
       "scale_x": "1",
       "scale_y": "1",
       "origin_x": "100",
@@ -958,7 +958,7 @@
     {
       "type": "image",
       "tag": "Floor-CarpetGreen",
-      "filename": "floor/Carpet Green.png",
+      "filename": "floor/carpet green.png",
       "scale_x": "1",
       "scale_y": "1",
       "origin_x": "50",
@@ -968,7 +968,7 @@
     {
       "type": "image",
       "tag": "Floor-CarpetPurple",
-      "filename": "floor/Carpet Purple.png",
+      "filename": "floor/carpet purple.png",
       "scale_x": "1",
       "scale_y": "1",
       "origin_x": "50",
@@ -1124,7 +1124,7 @@
     {
       "type": "image",
       "tag": "Decor-PortraitFemale",
-      "filename": "Decor/Portrait1.png",
+      "filename": "decor/Portrait1.png",
       "scale_x": "1",
       "scale_y": "1",
       "origin_x": "75.5",
@@ -1184,7 +1184,7 @@
     {
       "type": "image",
       "tag": "Decor-Smashed1",
-      "filename": "decor/smashed1.png",
+      "filename": "decor/Smashed1.png",
       "scale_x": "1",
       "scale_y": "1",
       "origin_x": "58",
@@ -1194,7 +1194,7 @@
     {
       "type": "image",
       "tag": "Decor-Smashed2",
-      "filename": "decor/smashed2.png",
+      "filename": "decor/Smashed2.png",
       "scale_x": "1",
       "scale_y": "1",
       "origin_x": "59.75",
@@ -1204,7 +1204,7 @@
     {
       "type": "image",
       "tag": "Decor-Smashed3",
-      "filename": "decor/smashed3.png",
+      "filename": "decor/Smashed3.png",
       "scale_x": "1",
       "scale_y": "1",
       "origin_x": "53",
@@ -2297,7 +2297,7 @@
     {
       "type": "image",
       "tag": "Arrowkeys1",
-      "filename": "gui/Arrowkeys1.png",
+      "filename": "gui/ArrowKeys1.png",
       "scale_x": ".3",
       "scale_y": "0.3",
       "origin_x": "387",
@@ -2307,7 +2307,7 @@
     {
       "type": "image",
       "tag": "Arrowkeys2",
-      "filename": "gui/arrowkeys2.png",
+      "filename": "gui/ArrowKeys2.png",
       "scale_x": "0.3",
       "scale_y": "0.3",
       "origin_x": "387",
@@ -2317,7 +2317,7 @@
     {
       "type": "image",
       "tag": "Spacebar1",
-      "filename": "gui/spacebar1.png",
+      "filename": "gui/Spacebar1.png",
       "scale_x": "0.3",
       "scale_y": "0.3",
       "origin_x": "360",
@@ -2327,7 +2327,7 @@
     {
       "type": "image",
       "tag": "Spacebar2",
-      "filename": "gui/spacebar2.png",
+      "filename": "gui/Spacebar2.png",
       "scale_x": ".3",
       "scale_y": "0.3",
       "origin_x": "360",
@@ -2337,7 +2337,7 @@
     {
       "type": "image",
       "tag": "Mouse1",
-      "filename": "gui/mouse1.png",
+      "filename": "gui/Mouse1.png",
       "scale_x": "0.2",
       "scale_y": "0.2",
       "origin_x": "267",
@@ -2347,7 +2347,7 @@
     {
       "type": "image",
       "tag": "Mouse2",
-      "filename": "gui/mouse2.png",
+      "filename": "gui/Mouse2.png",
       "scale_x": "0.2",
       "scale_y": "0.2",
       "origin_x": "267",
