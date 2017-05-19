@@ -78,6 +78,10 @@ public class StoryScene implements Screen {
                 add("cutscene5");
                 storyText = "I've arrived at my last target. A lotta guys spend their nights\nat the jazz club dancing, but I stop by for the in-house meal.";
                 break;
+            case 150:
+                add("cutscene7");
+                storyText = "They fear what I can do. I fear it too. But when they finally\n come to catch me, I'll be waiting. And I'll be  h u n g r y.";
+                break;
             case 200:
                 add("cutscene2");
                 storyText = "Night falls across the city like a slice of provolone on bread. \nI'm not sentimental, but there's something pretty about it.";
@@ -85,6 +89,10 @@ public class StoryScene implements Screen {
             case 204:
                 add("cutscene3");
                 storyText = "On a night like this, a guy could really go for seconds. Or \nfifths. Who am I to resist the beckoning of a home-cooked meal?";
+                break;
+            case 250:
+                add("cutscene6");
+                storyText = "Rain pelts the empty street. I tilt my head back and quench\nmy thirst. I've earned a long night's rest at my office.";
                 break;
             default:
                 add("cutscene1");
