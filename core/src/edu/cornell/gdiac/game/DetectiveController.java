@@ -75,6 +75,7 @@ public class DetectiveController {
             aimGUI.setAim(false);
             myProcessor.shouldRecordClick = false;
             player.consumeShot();
+            SoundController.getInstance().play("slide", false);
             player.setAnimation(DetectiveModel.Animation.ROLL_MOVE);
         }
         else {
