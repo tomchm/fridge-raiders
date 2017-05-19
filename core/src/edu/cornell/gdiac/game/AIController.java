@@ -405,13 +405,26 @@ public class AIController implements RayCastCallback{
         Vector2 aiPos = new Vector2((float)Math.round(temp.x), (float)Math.round(temp.y));
         Vector2 targetPos = getNearestValidLoc(target.x, target.y);
 
-        queue.add(new searchPairs(aiPos));
+        searchPairs first = new searchPairs(aiPos);
+        searchPairs bestLoc = first;
+        float bestDist = Float.MAX_VALUE;
+        queue.add(first);
         ObjectSet<Vector2> visited = new ObjectSet<Vector2>();
 
+
         while (!queue.isEmpty()){
+//            System.out.println(queue.size());
             searchPairs loc = queue.poll();
             float x = loc.position.x;
             float y = loc.position.y;
+            float dist = loc.position.dst2(targetPos);
+            if (dist < bestDist) {
+                bestLoc = loc;
+                bestDist = dist;
+            }
+            if (queue.size() > 75) {
+                return tracePathGetAction(bestLoc);
+            }
             if (loc.position.equals(targetPos)) {
                 return tracePathGetAction(loc);
             }
