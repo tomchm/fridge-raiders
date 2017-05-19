@@ -657,6 +657,7 @@
                 (type == 'ais' && level.ais.includes(selected)) ||
                 (type == 'wall' && level.walls.includes(selected)))) {
                 selected.tags[0] = newtag;
+                if (type == 'ais') return;
                 if (asset.shape == 'circle') { selected.radius = eval(asset.radius); selected.width = 0; selected.height = 0; }
                 if (asset.shape == 'rectangle') { selected.radius = 0; selected.width = eval(asset.width); selected.height = eval(asset.height); selected.theta = eval(asset.angle);}
                 if (type == 'furniture') { selected.moveable = asset.moveable; }
