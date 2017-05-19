@@ -168,6 +168,7 @@ public class WorldModel {
         WinScreen.golfMedal = golfMedal;
         WinScreen.putts = detective.getShotsTaken();
         WinScreen.foodPercent = (int)(detective.getAmountEaten()*100 / detective.getMaximumFood());
+        WinScreen.levelCode = levelNumber;
     }
 
     /** 0-indexed */

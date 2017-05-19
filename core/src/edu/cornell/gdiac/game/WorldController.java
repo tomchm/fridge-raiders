@@ -129,7 +129,7 @@ public class WorldController implements Screen {
 		}
 		if (hardReset) {
 			SoundController.getInstance().play("music_level", true, 0.75f);
-		} else {
+		} else if(worldModel.getPlayer().isSecondStage()){
 			SoundController.getInstance().play("music_rolling", true, 0.7f);
 		}
 
@@ -221,7 +221,7 @@ public class WorldController implements Screen {
 	}
 
 	public boolean isDebug( ) {
-		return debug;
+		return false;
 	}
 
 	public void setDebug(boolean value) {

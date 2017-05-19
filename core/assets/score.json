@@ -2,63 +2,63 @@
 "data": [
 	{
 		"filename": "level0.json",
-		"unlocked": false,
-		"foodMedal": "none",
-		"golfMedal": "none"
+		"unlocked": true,
+		"foodMedal": "bronze",
+		"golfMedal": "gold"
 	},
 	{
 		"filename": "level1.json",
-		"unlocked": false,
-		"foodMedal": "none",
-		"golfMedal": "none"
+		"unlocked": true,
+		"foodMedal": "bronze",
+		"golfMedal": "silver"
 	},
 	{
 		"filename": "level2.json",
-		"unlocked": false,
-		"foodMedal": "none",
-		"golfMedal": "none"
+		"unlocked": true,
+		"foodMedal": "gold",
+		"golfMedal": "silver"
 	},
 	{
 		"filename": "level3.json",
-		"unlocked": false,
-		"foodMedal": "none",
-		"golfMedal": "none"
+		"unlocked": true,
+		"foodMedal": "bronze",
+		"golfMedal": "gold"
 	},
 	{
 		"filename": "level4.json",
-		"unlocked": false,
-		"foodMedal": "none",
-		"golfMedal": "none"
+		"unlocked": true,
+		"foodMedal": "bronze",
+		"golfMedal": "gold"
 	},
 	{
 		"filename": "level5.json",
-		"unlocked": false,
-		"foodMedal": "none",
-		"golfMedal": "none"
+		"unlocked": true,
+		"foodMedal": "gold",
+		"golfMedal": "bronze"
 	},
 	{
 		"filename": "level6.json",
-		"unlocked": false,
-		"foodMedal": "none",
-		"golfMedal": "none"
+		"unlocked": true,
+		"foodMedal": "bronze",
+		"golfMedal": "silver"
 	},
 	{
 		"filename": "level7.json",
-		"unlocked": false,
-		"foodMedal": "none",
-		"golfMedal": "none"
+		"unlocked": true,
+		"foodMedal": "silver",
+		"golfMedal": "silver"
 	},
 	{
 		"filename": "level8.json",
-		"unlocked": false,
-		"foodMedal": "none",
-		"golfMedal": "none"
+		"unlocked": true,
+		"foodMedal": "gold",
+		"golfMedal": "gold"
 	},
 	{
 		"filename": "level9.json",
-		"unlocked": false,
-		"foodMedal": "none",
-		"golfMedal": "none"
+		"unlocked": true,
+		"foodMedal": "gold",
+		"golfMedal": "gold"
 	}
 ]
 }

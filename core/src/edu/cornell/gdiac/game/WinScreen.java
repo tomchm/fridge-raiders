@@ -33,13 +33,14 @@ public class WinScreen implements Screen, InputProcessor {
     private Color newsTint, magnetTint;
     private Color textTint;
     private Color blackTint;
-    private int levelCode;
+
     private int count, guyX;
     private boolean playHighlight;
     private float[] randAngles;
 
     public static int foodPercent, putts;
     public static String foodMedal, golfMedal;
+    public static int levelCode;
 
     public WinScreen(GameCanvas c) {
         //SoundController.getInstance().play("levelmusic", true, 0.75f);
@@ -200,6 +201,7 @@ public class WinScreen implements Screen, InputProcessor {
             float radius = 64f;
             float dist = (screenX-1140f)*(screenX-1140f)+(screenY-620f)*(screenY-620f);
             if (dist < radius*radius) {
+                System.out.println(levelCode +"EEE");
                 if(levelCode == 8){
                     listener.exitScreen(this, 350);
                 }
