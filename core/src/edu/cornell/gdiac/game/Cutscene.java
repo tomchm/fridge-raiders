@@ -44,6 +44,7 @@ public class Cutscene implements Screen {
     }
     public void render(float dt) {
         SoundController.getInstance().update();
+        InputController.getInstance().readInput();
 
         canvas.moveCamera(0f, 0f);
         time += dt;
@@ -51,18 +52,29 @@ public class Cutscene implements Screen {
         canvas.begin();
         canvas.draw(background, -640f, -360f);
 
-        Texture hand = hands[0];
-        if (time > 1f) hand = hands[1]; if (time > 1.33f) {hand = hands[2];}
-        if (time > 1.67f) hand = hands[3]; if (time > 2f && time < 2.5f) {hand = hands[4];}
-        if (time > 2.5f && time < 2.7f) {hand = hands[5];} if (time > 2.7f && time < 2.9f) {hand = hands[6];}
-        if (time > 2.9 && time < 3.1f) {hand = hands[7];} if (time > 3.1f && time < 4f) {hand = hands[8];}
-        if (time > 4f) {
+        if (InputController.getInstance().didSkip()) {
+            SoundController.getInstance().safeStop("music_transition");
             if(SoundController.getInstance().getMusicOn()) {
                 SoundController.getInstance().play("music_rolling", true, 0.7f);
             }
             listener.exitScreen(this, WorldController.GAMEVIEW);
             time = 0f;
         }
+
+        Texture hand = hands[0];
+        if (time > 1f) hand = hands[1]; if (time > 1.33f) {hand = hands[2];}
+        if (time > 1.67f) hand = hands[3]; if (time > 2f && time < 2.5f) {hand = hands[4];}
+        if (time > 2.5f && time < 2.7f) {hand = hands[5];} if (time > 2.7f && time < 2.9f) {hand = hands[6];}
+        if (time > 2.9 && time < 3.1f) {hand = hands[7];} if (time > 3.1f && time < 4f) {hand = hands[8];}
+        if (time > 4f ) {
+            if(SoundController.getInstance().getMusicOn()) {
+                SoundController.getInstance().play("music_rolling", true, 0.7f);
+            }
+            listener.exitScreen(this, WorldController.GAMEVIEW);
+            time = 0f;
+        }
+
+
 
         float x = 10f*(float)Math.random() - 5f;
         float y = 360f;
