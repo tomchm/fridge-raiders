@@ -67,7 +67,7 @@ public class LevelSelect implements Screen, InputProcessor {
 
         for(int i=0; i<9; i++){
             int code = 100+i;
-            if(i == 0 || i == 1){
+            if(i == 0 || i == 4){
                 code += 200;
             }
             if(i == 8){
@@ -330,7 +330,7 @@ public class LevelSelect implements Screen, InputProcessor {
         ScoreIOController.LevelData levelData[] = ScoreIOController.getScores();
         for(int i=0; i<9; i++){
             int code = 100+i;
-            if(i == 0 || i == 1){
+            if(i == 0 || i == 4){
                 code += 200;
             }
             if(i == 8){
