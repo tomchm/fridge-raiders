@@ -38,7 +38,7 @@ public class LevelSelect implements Screen, InputProcessor {
     private GuyState animation;
     private int levelCode;
     private int count, guyX;
-    private boolean playHighlight;
+    private boolean playHighlight, resetHighlight, creditsHighlight;
 
     private enum GuyState {WALK_LEFT, WALK_RIGHT, IDLE_LEFT, IDLE_RIGHT};
 
@@ -269,6 +269,19 @@ public class LevelSelect implements Screen, InputProcessor {
                     canvas.draw(play.getTexture(), tint, play.getOrigin().x, play.getOrigin().y, xx, 150f, 0, -0.5f, 0.5f);
 
                 }
+
+                ImageAsset reset = (ImageAsset)assets.getAsset("reset_button");
+                if(reset != null){
+                    Color tint = (resetHighlight ? Color.WHITE: Color.GRAY);
+                    canvas.draw(reset.getTexture(), tint, reset.getOrigin().x, reset.getOrigin().y, 602, -93.5f, 0, 0.5f, 0.5f);
+                }
+
+                ImageAsset credits = (ImageAsset)assets.getAsset("credits_button");
+                if(reset != null){
+                    Color tint = (creditsHighlight ? Color.WHITE: Color.GRAY);
+                    canvas.draw(credits.getTexture(), tint, credits.getOrigin().x, credits.getOrigin().y, 108, -93.5f, 0, 0.5f, 0.5f);
+                }
+
             }
 
 
@@ -456,6 +469,23 @@ public class LevelSelect implements Screen, InputProcessor {
                     levelCode = tutorial.exitCode;
                 }
 
+                tx = 6;
+                ty = 694;
+                creditsHighlight = false;
+                if(screenX >= tx && screenX <= tx+700 && screenY >= ty && screenY <= ty + 20){
+                    state = SelectState.FADE_OUT;
+                    levelCode = WorldController.CREDITS;
+                }
+
+                tx = 1220;
+                ty = 694;
+                resetHighlight = false;
+                if(screenX >= tx && screenX <= tx+53 && screenY >= ty && screenY <= ty + 20){
+                    ScoreIOController.saveDefaultScore();
+                    state = SelectState.FADE_OUT;
+                    levelCode = WorldController.LEVEL_SELECT;
+                }
+
                 float radius = 64f;
                 float dist = (screenX-200f)*(screenX-200f)+(screenY-120f)*(screenY-120f);
                 if (dist < radius*radius) {
@@ -503,6 +533,20 @@ public class LevelSelect implements Screen, InputProcessor {
             tutorial.highlight = false;
             if(screenX >= tx && screenX <= tx+161 && screenY >= ty && screenY <= ty + 161){
                 tutorial.highlight = true;
+            }
+
+            tx = 6;
+            ty = 694;
+            creditsHighlight = false;
+            if(screenX >= tx && screenX <= tx+70 && screenY >= ty && screenY <= ty + 20){
+                creditsHighlight = true;
+            }
+
+            tx = 1220;
+            ty = 694;
+            resetHighlight = false;
+            if(screenX >= tx && screenX <= tx+53 && screenY >= ty && screenY <= ty + 20){
+                resetHighlight = true;
             }
 
             playHighlight = false;
