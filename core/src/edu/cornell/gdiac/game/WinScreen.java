@@ -200,7 +200,12 @@ public class WinScreen implements Screen, InputProcessor {
             float radius = 64f;
             float dist = (screenX-1140f)*(screenX-1140f)+(screenY-620f)*(screenY-620f);
             if (dist < radius*radius) {
-                listener.exitScreen(this, WorldController.LEVEL_SELECT);
+                if(levelCode == 0){
+                    listener.exitScreen(this, 350);
+                }
+                else{
+                    listener.exitScreen(this, WorldController.LEVEL_SELECT);
+                }
                 SoundController.getInstance().safeStop("music_cymbals");
                 playHighlight = false;
             }
