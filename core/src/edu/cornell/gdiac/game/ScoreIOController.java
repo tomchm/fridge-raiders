@@ -16,9 +16,9 @@ import java.io.IOException;
 public class ScoreIOController {
 
     public static void saveDefaultScore(){
-        LevelData[] levels = new LevelData[9];
+        LevelData[] levels = new LevelData[10];
         levels[0] = new LevelData("level0.json", true, "none", "none");
-        for(int i=1; i<9; i++){
+        for(int i=1; i<10; i++){
             levels[i] = new LevelData("level"+i+".json", false, "none", "none");
         }
 
@@ -71,9 +71,9 @@ public class ScoreIOController {
             //System.out.println(json.toJson(levels));
             JsonValue level = levels.child();
 
-            LevelData[] levelData = new LevelData[9];
+            LevelData[] levelData = new LevelData[10];
 
-            for(int i=0; i<9; i++){
+            for(int i=0; i<10; i++){
                 String filename = level.get("filename").asString();
                 boolean unlocked = level.get("unlocked").asBoolean();
                 String foodMedal = level.get("foodMedal").asString();

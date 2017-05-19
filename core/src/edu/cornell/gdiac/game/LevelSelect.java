@@ -45,6 +45,7 @@ public class LevelSelect implements Screen, InputProcessor {
     private enum SelectState {ZOOM_IN, ZOOM_OUT, SELECTION, HOME, FADE_OUT, FADE_IN};
 
     private Level[][] levels;
+    private Level tutorial;
 
     private float[] randAngles;
 
@@ -123,6 +124,7 @@ public class LevelSelect implements Screen, InputProcessor {
         ImageAsset silverFood = (ImageAsset) assets.getAsset("medal_silver_food");
         ImageAsset bronzeShots = (ImageAsset) assets.getAsset("medal_bronze_shots");
         ImageAsset bronzeFood = (ImageAsset) assets.getAsset("medal_bronze_food");
+        ImageAsset polaroid = (ImageAsset) assets.getAsset("polaroid");
 
         ImageAsset title = (ImageAsset) assets.getAsset("title");
         if(bg != null && closed != null && magnet != null && title != null){
@@ -165,6 +167,46 @@ public class LevelSelect implements Screen, InputProcessor {
 
             canvas.draw(bg.getTexture(), Color.WHITE, 0, 0, -640f, -360f, 0, 0.54f, 0.54f);
             canvas.draw(title.getTexture(), Color.WHITE, 0, 0, -640f, -360f, 0, 1, 1);
+
+            //Draw Tutorial Image
+
+            int tx = 150, ty = 75;
+            canvas.draw(polaroid.getTexture(), newsTint, 0, 480, tx, ty, 0, 0.14f, 0.14f);
+            if(tutorial.highlight && state == SelectState.SELECTION){
+                canvas.setBlendState(GameCanvas.BlendState.ADDITIVE);
+                canvas.draw(polaroid.getTexture(), new Color(0.3f, 0.3f, 0.3f, 1f), 0, 480, tx, ty, 0, 0.14f, 0.14f);
+                canvas.setBlendState(GameCanvas.BlendState.NO_PREMULT);
+            }
+            if(!tutorial.golfMedal.equals("none") && !tutorial.foodMedal.equals("none")) {
+
+                String golfMedal = tutorial.golfMedal;
+                TextureRegion golfMedalTexture = null;
+                if (golfMedal.equals("bronze")) {
+                    golfMedalTexture = bronzeShots.getTexture();
+                } else if (golfMedal.equals("silver")) {
+                    golfMedalTexture = silverShots.getTexture();
+                } else if (golfMedal.equals("gold")) {
+                    golfMedalTexture = goldShots.getTexture();
+                }
+                if (golfMedalTexture != null) {
+                    canvas.draw(golfMedalTexture, newsTint, 70, 70, tx + 64, ty + 4, 0, 0.18f, 0.18f);
+
+                }
+
+                String foodMedal = tutorial.foodMedal;
+                TextureRegion foodMedalTexture = null;
+                if (foodMedal.equals("bronze")) {
+                    foodMedalTexture = bronzeFood.getTexture();
+                } else if (foodMedal.equals("silver")) {
+                    foodMedalTexture = silverFood.getTexture();
+                } else if (foodMedal.equals("gold")) {
+                    foodMedalTexture = goldFood.getTexture();
+                }
+                if (foodMedalTexture != null) {
+                    canvas.draw(foodMedalTexture, newsTint, 70, 70, tx + 4, ty + 4, 0, 0.18f, 0.18f);
+
+                }
+            }
 
 
 
@@ -254,41 +296,44 @@ public class LevelSelect implements Screen, InputProcessor {
                         }
                     }
 
-                    if(levels[i][j].golfMedal.equals("none")){
+                    if(levels[i][j].golfMedal.equals("none") || levels[i][j].foodMedal.equals("none")){
                         canvas.draw(magnet.getTexture(), magnetTint, 0, 0, px+23, py-8, 0, 0.10f, 0.10f);
                     }
+                    else{
+                        String golfMedal = levels[i][j].golfMedal;
+                        TextureRegion golfMedalTexture = null;
+                        if(golfMedal.equals("bronze")){
+                            golfMedalTexture = bronzeShots.getTexture();
+                        }
+                        else if(golfMedal.equals("silver")){
+                            golfMedalTexture = silverShots.getTexture();
+                        }
+                        else if(golfMedal.equals("gold")){
+                            golfMedalTexture = goldShots.getTexture();
+                        }
+                        if(golfMedalTexture != null){
+                            canvas.draw(golfMedalTexture, newsTint, 70, 70, px+62, py+4, randAngles[(i*3+j)], 0.18f, 0.18f);
 
-                    String golfMedal = levels[i][j].golfMedal;
-                    TextureRegion golfMedalTexture = null;
-                    if(golfMedal.equals("bronze")){
-                        golfMedalTexture = bronzeShots.getTexture();
-                    }
-                    else if(golfMedal.equals("silver")){
-                        golfMedalTexture = silverShots.getTexture();
-                    }
-                    else if(golfMedal.equals("gold")){
-                        golfMedalTexture = goldShots.getTexture();
-                    }
-                    if(golfMedalTexture != null){
-                        canvas.draw(golfMedalTexture, newsTint, 70, 70, px+2, py+4, randAngles[(i*3+j)], 0.18f, 0.18f);
+                        }
 
+                        String foodMedal = levels[i][j].foodMedal;
+                        TextureRegion foodMedalTexture = null;
+                        if(foodMedal.equals("bronze")){
+                            foodMedalTexture = bronzeFood.getTexture();
+                        }
+                        else if(foodMedal.equals("silver")){
+                            foodMedalTexture = silverFood.getTexture();
+                        }
+                        else if(foodMedal.equals("gold")){
+                            foodMedalTexture = goldFood.getTexture();
+                        }
+                        if(foodMedalTexture != null){
+                            canvas.draw(foodMedalTexture, newsTint, 70, 70, px+2, py+4, randAngles[(i*3+j)*2], 0.18f, 0.18f);
+
+                        }
                     }
 
-                    String foodMedal = levels[i][j].foodMedal;
-                    TextureRegion foodMedalTexture = null;
-                    if(foodMedal.equals("bronze")){
-                        foodMedalTexture = bronzeFood.getTexture();
-                    }
-                    else if(foodMedal.equals("silver")){
-                        foodMedalTexture = silverFood.getTexture();
-                    }
-                    else if(foodMedal.equals("gold")){
-                        foodMedalTexture = goldFood.getTexture();
-                    }
-                    if(foodMedalTexture != null){
-                        canvas.draw(foodMedalTexture, newsTint, 70, 70, px+62, py+4, randAngles[(i*3+j)*2], 0.18f, 0.18f);
 
-                    }
 
 
 
@@ -338,6 +383,7 @@ public class LevelSelect implements Screen, InputProcessor {
             }
             levels[i/3][i%3] = new Level(code, "newspaper"+i, levelData[i].unlocked, levelData[i].foodMedal, levelData[i].golfMedal);
         }
+        tutorial = new Level(109, "polaroid", levelData[9].unlocked, levelData[9].foodMedal, levelData[9].golfMedal);
     }
 
     private class Level{
@@ -403,6 +449,12 @@ public class LevelSelect implements Screen, InputProcessor {
                         }
                     }
                 }
+                int tx = 114, ty = 301;
+                tutorial.highlight = false;
+                if(screenX >= tx && screenX <= tx+161 && screenY >= ty && screenY <= ty + 161){
+                    state = SelectState.FADE_OUT;
+                    levelCode = tutorial.exitCode;
+                }
 
                 float radius = 64f;
                 float dist = (screenX-200f)*(screenX-200f)+(screenY-120f)*(screenY-120f);
@@ -446,6 +498,11 @@ public class LevelSelect implements Screen, InputProcessor {
                         levels[j][i].highlight = true;
                     }
                 }
+            }
+            int tx = 114, ty = 301;
+            tutorial.highlight = false;
+            if(screenX >= tx && screenX <= tx+161 && screenY >= ty && screenY <= ty + 161){
+                tutorial.highlight = true;
             }
 
             playHighlight = false;

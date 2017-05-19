@@ -113,6 +113,7 @@ public class FileIOController {
                 float height = f.get("height").asFloat();
                 float theta = f.get("theta").asFloat() * (float)Math.PI / 180f;
                 boolean dessert = f.get("dessert").asBoolean();
+                System.out.println("Dessert: "+dessert);
                 float amount = f.get("amount").asFloat();
                 String[] tags = f.get("tags").asStringArray();
                 if (radius > 0) {
@@ -122,6 +123,8 @@ public class FileIOController {
                     worldModel.addGameObject(new FoodModel(x, y, width, height, theta, dessert, amount, tags));
                 }
             }
+
+            System.out.println("got to ais");
 
             // array of AI objects
             JsonValue ais = level.get("ais");
