@@ -17,10 +17,10 @@ public class ScoreIOController {
 
     public static void saveDefaultScore(){
         LevelData[] levels = new LevelData[10];
-        levels[0] = new LevelData("level0.json", true, "none", "none");
-        for(int i=1; i<10; i++){
+        for(int i=0; i<10; i++){
             levels[i] = new LevelData("level"+i+".json", false, "none", "none");
         }
+
 
         Json json  = new Json();
         json.setOutputType(JsonWriter.OutputType.json);

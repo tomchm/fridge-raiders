@@ -35,6 +35,7 @@ public class Credits implements Screen {
         creditsTime = 0f;
         tint = new Color(1f, 1f, 1f, 1f);
         totalHeight = NUM_IMAGES*IMAGE_HEIGHT + (NUM_IMAGES-1)*IMAGE_SPACE + 720;
+        SoundController.getInstance().safeStop("music_level");
     }
 
     public void dispose() {

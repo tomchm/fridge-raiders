@@ -2363,6 +2363,26 @@
       "origin_x": "0",
       "origin_y": "0",
       "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "credits_button",
+      "filename": "gui/credits_button.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "reset_button",
+      "filename": "gui/reset_button.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
+      "shape": "none"
     }
   ]
 }
