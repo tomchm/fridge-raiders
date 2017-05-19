@@ -158,10 +158,10 @@ public class WorldModel {
         if (detective.getAmountEaten() >= 0.5f * (detective.getThreshold() + detective.getMaximumFood() ) ) {
             foodMedal = "silver";
         }
-        if (detective.getAmountEaten() >= 0.99f*detective.getMaximumFood()) { foodMedal = "gold"; }
+        if (detective.getAmountEaten() >= detective.getMaximumFood()) { foodMedal = "gold"; }
         String golfMedal = "bronze";
-        if (detective.getShotsTaken() <= detective.getPar()) { golfMedal = "silver"; }
-        if (detective.getShotsTaken() == getMinShots()) { golfMedal = "gold"; }
+        if (detective.getShotsTaken() == detective.getPar()) { golfMedal = "silver"; }
+        if (detective.getShotsTaken() < detective.getPar()) { golfMedal = "gold"; }
         ScoreIOController.updateLevel(getLevelNumber(), true, foodMedal, golfMedal);
 
         WinScreen.foodMedal = foodMedal;
