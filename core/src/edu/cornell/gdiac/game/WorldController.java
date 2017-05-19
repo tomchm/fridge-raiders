@@ -376,6 +376,11 @@ public class WorldController implements Screen {
 		detectiveController.update(input);
 
 		if (worldModel.getPlayer().isSecondStage() && !playedScene) {
+		    for(GameObject go: worldModel.getGameObjects()){
+		        if(go instanceof FurnitureModel) {
+		            worldModel.setStatic(go.getBody());
+                }
+            }
 			worldModel.zoomOutRaycamera(1.5f);
 			playedScene = true;
 			if(shouldPlayScene) {
