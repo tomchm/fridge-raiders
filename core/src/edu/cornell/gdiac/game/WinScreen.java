@@ -200,7 +200,7 @@ public class WinScreen implements Screen, InputProcessor {
             float radius = 64f;
             float dist = (screenX-1140f)*(screenX-1140f)+(screenY-620f)*(screenY-620f);
             if (dist < radius*radius) {
-                if(levelCode == 0){
+                if(levelCode == 8){
                     listener.exitScreen(this, 350);
                 }
                 else{
