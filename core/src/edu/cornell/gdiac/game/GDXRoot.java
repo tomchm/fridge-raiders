@@ -194,6 +194,8 @@ public class GDXRoot extends Game implements ScreenListener {
 		}
 		else if(exitCode == WorldController.CREDITS){
 			Credits cs = new Credits(canvas);
+			SoundController.getInstance().play("music_credits", true);
+			SoundController.getInstance().safeStop("music_title");
 			cs.setScreenListener(this);
 			setScreen(cs);
 		}

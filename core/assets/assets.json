@@ -1348,6 +1348,11 @@
     },
     {
       "type": "sound",
+      "tag": "music_credits",
+      "filename": "sound/credits.ogg"
+    },
+    {
+      "type": "sound",
       "tag": "stretch",
       "filename": "sound/stretch.ogg"
     },
@@ -1444,7 +1449,7 @@
     {
       "type": "image",
       "tag": "credits0",
-      "filename": "gui/credits0.png",
+      "filename": "gui/shea.png",
       "scale_x": "1",
       "scale_y": "1",
       "origin_x": "640",
@@ -1454,7 +1459,7 @@
     {
       "type": "image",
       "tag": "credits1",
-      "filename": "gui/credits1.png",
+      "filename": "gui/tomasz.png",
       "scale_x": "1",
       "scale_y": "1",
       "origin_x": "640",
@@ -1464,7 +1469,57 @@
     {
       "type": "image",
       "tag": "credits2",
-      "filename": "gui/credits2.png",
+      "filename": "gui/sal.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "640",
+      "origin_y": "300",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "credits3",
+      "filename": "gui/gabe.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "640",
+      "origin_y": "300",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "credits4",
+      "filename": "gui/lucy.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "640",
+      "origin_y": "300",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "credits5",
+      "filename": "gui/sean.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "640",
+      "origin_y": "300",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "credits6",
+      "filename": "gui/ivan.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "640",
+      "origin_y": "300",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "credits2",
+      "filename": "gui/sal.png",
       "scale_x": "1",
       "scale_y": "1",
       "origin_x": "640",

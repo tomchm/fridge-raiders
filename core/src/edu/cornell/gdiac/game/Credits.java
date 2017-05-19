@@ -17,10 +17,10 @@ import edu.cornell.gdiac.util.SoundController;
  * Created by Sal on 5/18/2017.
  */
 public class Credits implements Screen {
-    private static float TOTAL_TIME = 10f;
+    private static float TOTAL_TIME = 32f;
     private static float IMAGE_SPACE = 300f;
     private static float IMAGE_HEIGHT = 300f;
-    private static int NUM_IMAGES = 3;
+    private static int NUM_IMAGES = 7;
 
     private GameCanvas canvas;
     /** Overall time that the credits have been up */
@@ -58,8 +58,8 @@ public class Credits implements Screen {
 
         for (int k = 0; k < NUM_IMAGES; ++k) {
             ImageAsset ia = (ImageAsset)AssetLoader.getInstance().getAsset("credits"+k);
-            float y = k * (IMAGE_HEIGHT + IMAGE_SPACE) + totalHeight * creditsTime / TOTAL_TIME;
-            canvas.draw(ia.getTexture(), Color.WHITE, 0f, 300f,-640f, y-720f, 0f, 1f, 1f);
+            float y = -k * (IMAGE_HEIGHT + IMAGE_SPACE) + totalHeight * creditsTime / TOTAL_TIME;
+            canvas.draw(ia.getTexture(), Color.WHITE, 0f, 300f,-640f, y-360f, 0f, 1f, 1f);
         }
 
         canvas.end();
