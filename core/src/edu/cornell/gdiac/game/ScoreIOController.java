@@ -46,6 +46,19 @@ public class ScoreIOController {
     public static void updateLevel(int i, boolean unlocked, String foodMedal, String golfMedal){
         LevelData[] levels = getScores();
         levels[i].unlocked = unlocked;
+
+        if (unlocked) {
+            if (i == 9) { levels[0].unlocked = true; }
+            if (i == 0) { levels[1].unlocked = true; levels[3].unlocked = true; }
+            if (i == 1) { levels[2].unlocked = true; levels[4].unlocked = true; }
+            if (i == 2) { levels[5].unlocked = true; }
+            if (i == 3) { levels[4].unlocked = true; levels[6].unlocked = true; }
+            if (i == 4) { levels[7].unlocked = true; levels[5].unlocked = true; }
+            if (i == 5) { levels[8].unlocked = true; }
+            if (i == 6) { levels[7].unlocked = true; }
+            if (i == 7) { levels[8].unlocked = true; }
+        }
+
         if (better(levels[i].foodMedal, foodMedal)) levels[i].foodMedal = foodMedal;
         if (better(levels[i].golfMedal, golfMedal)) levels[i].golfMedal = golfMedal;
 
