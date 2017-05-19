@@ -1518,8 +1518,8 @@
     },
     {
       "type": "image",
-      "tag": "credits2",
-      "filename": "gui/sal.png",
+      "tag": "credits7",
+      "filename": "gui/copyright.png",
       "scale_x": "1",
       "scale_y": "1",
       "origin_x": "640",

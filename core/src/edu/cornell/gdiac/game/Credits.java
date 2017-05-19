@@ -20,7 +20,7 @@ public class Credits implements Screen {
     private static float TOTAL_TIME = 32f;
     private static float IMAGE_SPACE = 300f;
     private static float IMAGE_HEIGHT = 300f;
-    private static int NUM_IMAGES = 7;
+    private static int NUM_IMAGES = 8;
 
     private GameCanvas canvas;
     /** Overall time that the credits have been up */
