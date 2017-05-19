@@ -101,16 +101,6 @@
       "shape": "none"
     },
     {
-      "type": "image",
-      "tag": "",
-      "filename": "gui/circle2.png",
-      "origin_x": "0",
-      "origin_y": "0",
-      "scale_x": "0",
-      "scale_y": "0",
-      "shape": "none"
-    },
-    {
       "type": "filmstrip",
       "tag": "player_down",
       "filename": "player/man_down.png",
@@ -280,32 +270,12 @@
     },
     {
       "type": "image",
-      "tag": "",
-      "filename": "gui/circle2.png",
-      "origin_x": "0",
-      "origin_y": "0",
-      "scale_x": "0",
-      "scale_y": "0",
-      "shape": "none"
-    },
-    {
-      "type": "image",
       "tag": "ball",
       "filename": "gui/circle2.png",
       "origin_x": "64",
       "origin_y": "64",
       "scale_x": "0.6",
       "scale_y": "0.6",
-      "shape": "none"
-    },
-    {
-      "type": "image",
-      "tag": "",
-      "filename": "gui/circle2.png",
-      "origin_x": "0",
-      "origin_y": "0",
-      "scale_x": "0",
-      "scale_y": "0",
       "shape": "none"
     },
     {
@@ -606,7 +576,7 @@
       "shape": "rectangle",
       "width": "1.7",
       "height": "1.11",
-      "angle": ""
+      "angle": "0"
     },
     {
       "type": "image",
@@ -619,7 +589,7 @@
       "shape": "rectangle",
       "width": "1.27",
       "height": "0.78",
-      "angle": ""
+      "angle": "0"
     },
     {
       "type": "image",
@@ -633,16 +603,6 @@
       "width": "5.59",
       "height": "1.7",
       "angle": "0"
-    },
-    {
-      "type": "image",
-      "tag": "",
-      "filename": "gui/circle2.png",
-      "origin_x": "0",
-      "origin_y": "0",
-      "scale_x": "0",
-      "scale_y": "0",
-      "shape": "none"
     },
     {
       "type": "image",
@@ -917,16 +877,6 @@
     },
     {
       "type": "image",
-      "tag": "",
-      "filename": "gui/circle2.png",
-      "origin_x": "0",
-      "origin_y": "0",
-      "scale_x": "0",
-      "scale_y": "0",
-      "shape": "none"
-    },
-    {
-      "type": "image",
       "tag": "Floor-Linoleum",
       "filename": "floor/linoleum.png",
       "origin_x": "50",
@@ -1023,16 +973,6 @@
       "scale_y": "1",
       "origin_x": "50",
       "origin_y": "50",
-      "shape": "none"
-    },
-    {
-      "type": "image",
-      "tag": "",
-      "filename": "gui/circle2.png",
-      "origin_x": "0",
-      "origin_y": "0",
-      "scale_x": "0",
-      "scale_y": "0",
       "shape": "none"
     },
     {
@@ -1289,16 +1229,6 @@
       "scale_y": "1",
       "origin_x": "104.5",
       "origin_y": "69.5",
-      "shape": "none"
-    },
-    {
-      "type": "image",
-      "tag": "",
-      "filename": "gui/circle2.png",
-      "origin_x": "0",
-      "origin_y": "0",
-      "scale_x": "0",
-      "scale_y": "0",
       "shape": "none"
     },
     {
@@ -2422,6 +2352,16 @@
       "scale_y": "0.2",
       "origin_x": "267",
       "origin_y": "360",
+      "shape": "none"
+    },
+    {
+      "type": "image",
+      "tag": "polaroid",
+      "filename": "gui/polaroid.png",
+      "scale_x": "1",
+      "scale_y": "1",
+      "origin_x": "0",
+      "origin_y": "0",
       "shape": "none"
     }
   ]

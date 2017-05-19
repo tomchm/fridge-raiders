@@ -45,14 +45,20 @@
 	{
 		"filename": "level7.json",
 		"unlocked": true,
-		"foodMedal": "none",
-		"golfMedal": "none"
+		"foodMedal": "silver",
+		"golfMedal": "gold"
 	},
 	{
 		"filename": "level8.json",
 		"unlocked": true,
 		"foodMedal": "none",
 		"golfMedal": "none"
+	},
+	{
+		"filename": "tutorial.json",
+		"unlocked": true,
+		"foodMedal": "gold",
+		"golfMedal": "gold"
 	}
 ]
 }
