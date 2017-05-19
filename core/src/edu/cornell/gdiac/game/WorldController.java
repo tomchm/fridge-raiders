@@ -127,7 +127,11 @@ public class WorldController implements Screen {
 		if (SoundController.getInstance().isActive("music_rolling")) {
 			SoundController.getInstance().stop("music_rolling");
 		}
-
+		if (hardReset) {
+			SoundController.getInstance().play("music_level", true, 0.75f);
+		} else {
+			SoundController.getInstance().play("music_rolling", true, 0.7f);
+		}
 
 		if(this.detectiveController == null || hardReset) {
 			shouldPlayScene = true;

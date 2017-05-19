@@ -145,9 +145,6 @@ public class ResetGUIModel extends GUIModel{
             } else if (myX >= 515 && myX <= 830 && myY >= 190 && myY <= 265) {
                 //second option
                 softReset = true;
-                if (SoundController.getInstance().getMusicOn()) {
-                    SoundController.getInstance().play("music_rolling", true, 0.7f);
-                }
                 inputController.getInstance().getMyProcessor().pauseX = 0;
                 inputController.getInstance().getMyProcessor().pauseY = 0;
                 tint = new Color(1f, 1f, 1f, 1f);
@@ -158,9 +155,6 @@ public class ResetGUIModel extends GUIModel{
             } else if (myX >= 515 && myX <= 830 && myY >= 275 && myY <= 350) {
                 //third option
                 hardReset = true;
-                if (SoundController.getInstance().getMusicOn()) {
-                    SoundController.getInstance().play("music_level", true, 0.7f);
-                }
                 inputController.getInstance().getMyProcessor().pauseX = 0;
                 inputController.getInstance().getMyProcessor().pauseY = 0;
                 tint = new Color(1f, 1f, 1f, 1f);
