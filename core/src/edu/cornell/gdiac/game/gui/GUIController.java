@@ -36,6 +36,8 @@ public class GUIController {
         guiMap.put(resetGUI.guiTag, resetGUI);
         GUIModel pauseGUI = new PauseGUI(worldModel, inputControlla);
         guiMap.put(pauseGUI.guiTag, pauseGUI);
+        GUIModel tutorialGUI = new TutorialGUIModel((SpacebarGUIModel)spacebarGUI, worldModel);
+        guiMap.put(tutorialGUI.guiTag, tutorialGUI);
 
         guiList.add(minimapGUI);
         guiList.add(spacebarGUI);
@@ -43,7 +45,7 @@ public class GUIController {
         guiList.add(textGUI);
         guiList.add(pauseGUI);
         guiList.add(resetGUI);
-
+        guiList.add(tutorialGUI);
 
     }
 

@@ -89,6 +89,7 @@ public class DetectiveController {
 
             aimGUI.setAimVector(myProcessor.magnitude, position);
             aimGUI.setAim(true);
+            worldModel.tutShootPlayer();
         }
     }
 
@@ -183,6 +184,9 @@ public class DetectiveController {
             player.getBody().setLinearVelocity(player.getThrust()*input.getHorizontal()* multiplier, player.getThrust() * input.getVertical()* multiplier);
 
 
+        }
+        if(player.getSpeed() > 0){
+            worldModel.tutMovePlayer();
         }
     }
 

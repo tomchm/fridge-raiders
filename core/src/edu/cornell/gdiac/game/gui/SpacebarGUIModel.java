@@ -21,7 +21,7 @@ import edu.cornell.gdiac.game.model.TrajectoryModel;
  */
 public class SpacebarGUIModel extends GUIModel{
 
-    private GameObject nearest;
+    public GameObject nearest;
     private SpacebarController controller;
     private int counter;
     private boolean isFirstStage;
@@ -83,6 +83,9 @@ public class SpacebarGUIModel extends GUIModel{
                             float x = food.getBody().getPosition().x*GameObject.getDrawScale().x;
                             float y = food.getBody().getPosition().y*GameObject.getDrawScale().y;
                             float scle = food.getRadius() * 0.7f;
+                            if(food.isDessert()){
+                                scle = 2.4f * 0.7f;
+                            }
                             canvas.draw(texture, Color.WHITE, asset.getOrigin().x, asset.getOrigin().y, x, y, 0, asset.getImageScale().x * scle, asset.getImageScale().y * scle);
                         }
                     }

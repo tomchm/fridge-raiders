@@ -97,7 +97,6 @@ public class WorldController implements Screen {
 	private boolean panToDessert = false;
 	private int levelNumber;
 
-
 	public WorldController(int levelNumber) {
 		this("levels/level" + levelNumber + ".json");
 		this.levelNumber = levelNumber;

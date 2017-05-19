@@ -132,9 +132,11 @@ public class SpacebarController implements RayCastCallback {
         else {
             Class objType = closest.getClass();
             if (objType == FurnitureModel.class) {
+                worldModel.tutGrabPlayer();
                 grabController.grab((FurnitureModel) closest);
             }
             else if (objType == FoodModel.class) {
+                worldModel.tutEatPlayer();
                 eatController.eat((FoodModel)closest);
             }
              else if (objType == DoorModel.class) {hingeController.toggle((DoorModel) closest); }

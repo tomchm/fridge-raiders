@@ -717,4 +717,40 @@ public class WorldModel {
         }
         return true;
     }
+
+    private boolean tutPlayerMoved = false;
+    public void tutMovePlayer(){
+        tutPlayerMoved = true;
+    }
+    public boolean tutGetPlayerMoved(){
+        return tutPlayerMoved;
+    }
+
+    private boolean tutPlayerAte = false;
+    public void tutEatPlayer(){
+        tutPlayerAte = true;
+    }
+    public boolean tutGetPlayerAte(){
+        return tutPlayerAte;
+    }
+
+    private boolean tutPlayerGrabbed = false;
+    public void tutGrabPlayer(){
+        tutPlayerGrabbed = true;
+    }
+    public boolean tutGetPlayerGrabbed(){
+        return tutPlayerGrabbed;
+    }
+
+    private boolean tutPlayerShot = false;
+    public void tutShootPlayer(){
+        tutPlayerShot = true;
+    }
+    public boolean tutGetPlayerShot(){
+        return tutPlayerShot;
+    }
+
+    public boolean isTutorial(){
+        return levelNumber == 9;
+    }
 }
