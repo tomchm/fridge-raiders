@@ -300,10 +300,10 @@ public class SoundController {
 	 */
 	public boolean play(String key, boolean loop, float volume) {
 		// Get the sound for the file
-		if((!musicOn && loop && (!(key.equals("chewing")))) || !sfxOn){
+		if((!musicOn && loop && (!(key.equals("chewing")))) || (!sfxOn && !loop)){
 			return false;
 		}
-
+		if (!sfxOn && key.equals("chewing")) return false;
 
 
 		if (!soundbank.containsKey(key) || current >= frameLimit) {
@@ -345,6 +345,7 @@ public class SoundController {
         Iterator<ObjectMap.Entry<String, ActiveSound>> s = actives.iterator();
 		while(s.hasNext()){
             String key = s.next().key;
+            System.out.println("active sound key: " + key);
             ActiveSound sound = actives.get(key);
             if(sound.loop){
                 sound.sound.setVolume(sound.id,0.0f);
