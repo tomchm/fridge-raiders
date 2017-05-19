@@ -34,10 +34,12 @@ public class ScoreIOController {
     }
 
     public static boolean better(String oldone, String newone) {
-        int oldval = 0;
+        int oldval = -1;
+        if (oldone.equals("bronze")) oldval = 0;
         if (oldone.equals("silver")) oldval = 1;
         if (oldone.equals("gold")) oldval = 2;
-        int newval = 0;
+        int newval = -1;
+        if (newone.equals("bronze")) newval = 0;
         if (newone.equals("silver")) newval = 1;
         if (newone.equals("gold")) newval = 2;
         return newval > oldval;
